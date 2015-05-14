@@ -17,14 +17,6 @@ from local_settings import *
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 't52*+v4n0u3f47*c2!y2(gpb9thg7s*$2llt6$9w!8t_8kw_sb'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -74,6 +66,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static_media"),
+)
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
