@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from lugar.models import *
 from smart_selects.db_fields import ChainedForeignKey
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class Organizaciones(models.Model):
@@ -46,6 +47,27 @@ class Beneficios(models.Model):
 	class Meta:
 		verbose_name = "Beneficio"
 		verbose_name_plural = "Beneficios"
+
+class Situacion(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+
+	class Meta:
+		verbose_name = "Situación"
+		verbose_name_plural = "Situaciones"
+
+class Lista_Certificaciones(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+
+	class Meta:
+		verbose_name = "Certificación"
+		verbose_name_plural = "Certificaciones"
+
 
 SEXO_CHOICE = (
 	(1,'Hombre'),
@@ -132,11 +154,6 @@ PROPIEDAD_CHOICE = (
 	(3,'A nombre de Hijas/hijos'),
 	(4,'A nombre del Hombre y Mujer'),
 	)
-class Situacion(models.Model):
-	nombre = models.CharField(max_length=200)
-
-	def __unicode__(self):
-		return self.nombre
 		
 class Tenencia_Propiedad(models.Model):
 	si = models.IntegerField(choices=PROPIEDAD_CHOICE,
@@ -306,8 +323,8 @@ class Organizacion_Asociada(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "8 - Con que Organización productiva-comercial esta asociado"
-		verbose_name_plural = "8 - Con que Organización productiva-comercial esta asociado"
+		verbose_name = "8 - Org. productiva-comercial asociado"
+		verbose_name_plural = "8 - Org. productiva-comercial asociado"
 
 class Area_Cacao(models.Model):
 	area = models.FloatField(verbose_name='Área total de cacao establecida en finca(Mz)')
@@ -316,3 +333,142 @@ class Area_Cacao(models.Model):
 	class Meta:
 		verbose_name = "9 - Área de cacao en finca"
 		verbose_name_plural = "9 - Área de cacao en fincas"
+
+EDAD_PLANTA_CHOICES = (
+	(1,'Menor de un año'),
+	(2,'De 1 a 3 años'),
+	(3,'De 4 a 10 años'),
+	(4,'De 10 a 20 años'),
+	(5,'Mayores de 20 años'),
+	)
+
+class Plantacion(models.Model):
+	edad = models.IntegerField(choices=EDAD_PLANTA_CHOICES)
+	area = models.FloatField(verbose_name='Área en Mz')
+	edad_real = models.FloatField(verbose_name='Edad real de la Plantación (años)')
+	numero_p_semilla = models.IntegerField(verbose_name='Número de plantas establecidas por semilla')
+	numero_p_injerto = models.IntegerField(verbose_name='Número de plantas establecidas por injerto')
+	numero_p_improductivas = models.IntegerField(verbose_name='Número de plantas improductivas en el área')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "9-1 - Edad de la plantación"
+		verbose_name_plural = "9-1 - Edad de la plantación"
+
+
+MESES_CHOICES = (
+	(1,'Enero'),
+	(2,'Febrero'),
+	(3,'Marzo'),
+	(4,'Abril'),
+	(5,'Mayo'),
+	(6,'Junio'),
+	(7,'Julio'),
+	(8,'Agosto'),
+	(9,'Septiembre'),
+	(10,'Octubre'),
+	(11,'Noviembre'),
+	(12,'Diciembre'),
+	)
+
+class Produccion_Cacao(models.Model):
+	produccion_c_baba = models.FloatField(verbose_name='Producción cacao en baba (qq baba/seco)')
+	produccion_c_seco = models.FloatField(verbose_name='Producción cacao seco sin fermentar (qq seco)')
+	produccion_c_fermentado = models.FloatField(verbose_name='Producción cacao fermentado convencional (qq seco)')
+	produccion_c_organico = models.FloatField(verbose_name='Producción cacao organico (qq seco)')
+	meses_produccion = MultiSelectField(choices=MESES_CHOICES,verbose_name='Meses de mayor producción de cacao')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "9-2 - Producción de cacao último año"
+		verbose_name_plural = "9-2 - Producción de cacao último año"
+
+QUIEN_CERTIFICA_CHOICES = (
+	(1,'UTZ/Sello'),
+	(2,'FAIR TRADE'),
+	(3,'SPP'),
+	)
+
+class Certificacion(models.Model):
+	tipo = models.ManyToManyField(Lista_Certificaciones,verbose_name='Tipo de certificación')
+	mant_area_cacao = models.FloatField(verbose_name='Mantenimiento de área de cacao (C$)')
+	mant_area_finca = models.FloatField(verbose_name='Mantenimiento de la finca (C$)')
+	quien_certifica = models.IntegerField(choices=QUIEN_CERTIFICA_CHOICES,verbose_name='¿Quién certifica?')
+	paga_certificacion = models.ManyToManyField(Organizaciones,verbose_name='¿Quién paga la certificación?')
+	costo_ccertificacion = models.FloatField(verbose_name='Costo de estar certificado')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "10-1 - Tipo de certificación que posee"
+		verbose_name_plural = "10-1 - Tipo de certificación que posee"
+
+VIVEROS_CHOICES = (
+	(1,'Preparación del sitio'),
+	(2,'Preparación del sustrato'),
+	(3,'Llenado de bolsa'),
+	(4,'Selección de semilla'),
+	(5,'Siembra de semilla'),
+	(6,'Uso de riego'),
+	(7,'Control de malas hierba'),
+	(8,'Fertilización orgánica'),
+	)
+
+FERTILIZACION_CHOICES = (
+	(1,'Aplicación de té de estiércol'),
+	(2,'Aplicación de gallinaza'),
+	(3,'Aplicación de Bocashi'),
+	(4,'Aplicación de foliares naturales'),
+	(5,'Uso de triple cal'),
+	(6,'Aplicación de lombrihumus'),
+	(7,'Aplicación de urea'),
+	(8,'Aplicación de fertilizante completo'),
+	)
+
+P_MANEJO_FIS_CHOICES = (
+	(1,'Control de malas hierbas con machete'),
+	(2,'Aplica herbicidas para controlar las malas hierbas'),
+	(3,'Manejo de plagas con productos naturales'),
+	(4,'Manejo de enfermedades con productos naturales'),
+	(5,'Manejo de enfermedades con fungicidas'),
+	(6,'Recolección e eliminación de frutos enfermos'),
+	)
+
+P_MANEJO_PROD_CHOICES = (
+	(1,'Poda de formación'),
+	(2,'Poda de mantenimiento'),
+	(3,'Poda de rehabilitación o renovación'),
+	(4,'Regulación en sombra'),
+	)
+
+P_MEJORA_PLANT_CHOICES = (
+	(1,'Selección de árboles superiores'),
+	(2,'Injertación en árboles adultos'),
+	(3,'Renovación de área con plantas injertadas'),
+	(4,'Enriquecimiento de áreas con plantas injertadas'),
+	)
+
+P_MANEJO_POST_C_CHOICES = (
+	(1,'Selección y clasificación de mazorcas por variedad'),
+	(2,'Selección de cacao en baba a fermentar'),
+	(3,'Fermentación en sacos'),
+	(4,'Fermentación en cajones'),
+	(5,'Fermentación en cajillas'),
+	(6,'Lo vende en baba a un centro de acopio'),
+	(7,'Solo la saca de la mazorca y lo seca'),
+	(8,'Lo saca de la mazorca, lo lava y luego lo seca'),
+	)
+
+class Tecnicas_Aplicadas(models.Model):
+	viveros = MultiSelectField(choices=VIVEROS_CHOICES)
+	fertilizacion = MultiSelectField(choices=FERTILIZACION_CHOICES,verbose_name='Prácticas de fertilización')
+	pract_manejo_fis = MultiSelectField(choices=P_MANEJO_FIS_CHOICES,verbose_name='Prácticas de manejo fitosanitario')
+	pract_manejo_prod = MultiSelectField(choices=P_MANEJO_PROD_CHOICES,verbose_name='Prácticas de manejo productivo')
+	pract_mejora_plat = MultiSelectField(choices=P_MEJORA_PLANT_CHOICES,verbose_name='Prácticas de mejoramiento de la plantación')
+	pract_manejo_post_c = MultiSelectField(choices=P_MANEJO_POST_C_CHOICES,verbose_name='Prácticas de manejo postcosecha y beneficiado')
+	acopio_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Acopio de cacao en la comunidad/municipio')
+	acopio_org = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Organización que acopia cacao')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "11 - Técn. aplicadas área de cacao"
+		verbose_name_plural = "11 - Técn. aplicadas área de cacao"

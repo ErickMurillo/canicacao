@@ -29,7 +29,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles', 
     'monitoreo',
     'lugar',
-    'smart_selects',  
+    'smart_selects',
+    'multiselectfield',
 )
 
 MIDDLEWARE_CLASSES = (

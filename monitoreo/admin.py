@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
-
 # Register your models here.
 
 class Familia_Inline(admin.TabularInline):
@@ -78,6 +77,27 @@ class Area_Cacao_Inline(admin.TabularInline):
 	max_num = 1
 	can_delete = False
 
+class Plantacion_Inline(admin.TabularInline):
+	model = Plantacion
+	max_num = 5
+	extra = 1
+	can_delete = False
+
+class Produccion_Cacao_Inline(admin.TabularInline):
+	model = Produccion_Cacao
+	max_num = 1
+	can_delete = False
+
+class Certificacion_Inline(admin.TabularInline):
+	model = Certificacion
+	max_num = 1
+	can_delete = False
+
+class Tecnicas_Aplicadas_Inline(admin.StackedInline):
+	model = Tecnicas_Aplicadas
+	max_num = 1
+	can_delete = False
+
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
@@ -96,7 +116,8 @@ class EncuestaAdmin(admin.ModelAdmin):
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
-				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline]
+				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
+				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline]
 	list_display = ('nombre','organizacion','recolector','departamento','municipio')
 	list_display_links = ('organizacion','nombre')
 	list_filter = ('departamento',)
@@ -111,3 +132,4 @@ admin.site.register(Recolector)
 admin.site.register(Situacion)
 admin.site.register(Tipos_Servicio)
 admin.site.register(Beneficios)
+admin.site.register(Lista_Certificaciones)
