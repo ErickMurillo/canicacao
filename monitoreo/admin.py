@@ -98,6 +98,12 @@ class Tecnicas_Aplicadas_Inline(admin.StackedInline):
 	max_num = 1
 	can_delete = False
 
+class Comercializacion_Cacao_Inline(admin.TabularInline):
+	model = Comercializacion_Cacao
+	max_num = 11
+	extra = 1
+	can_delete = False
+
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
@@ -117,7 +123,7 @@ class EncuestaAdmin(admin.ModelAdmin):
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
 				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
-				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline]
+				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline,Comercializacion_Cacao_Inline]
 	list_display = ('nombre','organizacion','recolector','departamento','municipio')
 	list_display_links = ('organizacion','nombre')
 	list_filter = ('departamento',)

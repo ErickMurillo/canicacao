@@ -472,3 +472,37 @@ class Tecnicas_Aplicadas(models.Model):
 	class Meta:
 		verbose_name = "11 - Técn. aplicadas área de cacao"
 		verbose_name_plural = "11 - Técn. aplicadas área de cacao"
+
+PRODUCTO_CHOICES = (
+	(1,'Mazorca de cacao (unidad)'),
+	(2,'Semilla para siembra (unidad)'),
+	(3,'Cacao en baba (qq)'),
+	(4,'Cacao rojo sin fermentar (qq)'),
+	(5,'Cacao fermentado (lb)'),
+	(6,'Chocolate artesanal (lb)'),
+	(7,'Cacao en polvo (lb)'),
+	(8,'Cacao procesado/ pinolillo (lb)'),
+	(9,'Cajeta de cacao (lb)'),
+	(10,'Pasta de cacao (lb)'),
+	(11,'Vino de cacao (lt)'),
+	)
+
+QUIEN_VENDE_CHOICES = (
+	(1,'Comunidad'),
+	(2,'Intermediario'),
+	(3,'Mercado'),
+	(4,'Cooperativa'),
+	)
+
+class Comercializacion_Cacao(models.Model):
+	producto = models.IntegerField(choices=PRODUCTO_CHOICES)
+	auto_consumo = models.FloatField(verbose_name='Auto-consumo')
+	venta =  models.FloatField()
+	precio_venta = models.FloatField(verbose_name='Precio venta por unidad')
+	quien_vende = models.IntegerField(choices=QUIEN_VENDE_CHOICES,verbose_name='¿A quién le vende?')
+	donde_vende = models.ManyToManyField(Municipio,verbose_name='¿Dónde lo vende?')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "12 - Comercialización de cacao"
+		verbose_name_plural = "12 - Comercialización de cacao"
