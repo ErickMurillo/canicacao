@@ -68,6 +68,15 @@ class Lista_Certificaciones(models.Model):
 		verbose_name = "Certificación"
 		verbose_name_plural = "Certificaciones"
 
+class Actividades_Produccion(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+
+	class Meta:
+		verbose_name = "Actividad de Producción"
+		verbose_name_plural = "Actividades de Producción"
 
 SEXO_CHOICE = (
 	(1,'Hombre'),
@@ -163,8 +172,8 @@ class Tenencia_Propiedad(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "2 - Tenencia de Propiedad"
-		verbose_name_plural = "2 - Tenencia de Propiedad"
+		verbose_name = "2 Tenencia de Propiedad"
+		verbose_name_plural = "2 Tenencia de Propiedad"
 
 class Uso_Tierra(models.Model):
 	area_total = models.FloatField(verbose_name='Área total en manzanas de la propiedad')
@@ -181,8 +190,9 @@ class Uso_Tierra(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "3 - Uso de Tierra"
-		verbose_name_plural = "3 - Uso de Tierra"
+		verbose_name = "3 Uso de Tierra"
+		verbose_name_plural = "3 Uso de Tierra"
+
 
 SI_NO_CHOICES = (
 	(1,'Si'),
@@ -201,8 +211,8 @@ class Reforestacion(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "4 - Reforestación"
-		verbose_name_plural = "4 - Reforestación"
+		verbose_name = "4 Reforestación"
+		verbose_name_plural = "4 Reforestación"
 
 TEXTURA_CHOICES = (
 	(1,'Arcilloso'),
@@ -244,8 +254,8 @@ class Caracterizacion_Terreno(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "5 - Caracterización de terreno"
-		verbose_name_plural = "5 - Caracterización de terreno"
+		verbose_name = "5 Caracterización de terreno"
+		verbose_name_plural = "5 Caracterización de terreno"
 
 RIESGOS_CHOICES = (
 	(1,'Fuerte'),
@@ -262,8 +272,8 @@ class Fenomenos_Naturales(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "6 - Fenómenos naturales"
-		verbose_name_plural = "6 - Fenómenos naturales"
+		verbose_name = "6 Fenómenos naturales"
+		verbose_name_plural = "6 Fenómenos naturales"
 
 P_IMPRODUCTIVAS_CHOICES = (
 	(1,'Alto (40%)'),
@@ -276,8 +286,8 @@ class Razones_Agricolas(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "6 - Razones agrícolas"
-		verbose_name_plural = "6 - Razones agrícolas"
+		verbose_name = "6 Razones agrícolas"
+		verbose_name_plural = "6 Razones agrícolas"
 
 class Razones_Mercado(models.Model):
 	bajo_precio = models.IntegerField(choices=SI_NO_CHOICES)
@@ -287,8 +297,8 @@ class Razones_Mercado(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "6 - Razones de mercado"
-		verbose_name_plural = "6 - Razones de mercado"
+		verbose_name = "6 Razones de mercado"
+		verbose_name_plural = "6 Razones de mercado"
 
 class Inversion(models.Model):
 	invierte_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Invierte en cacao')
@@ -299,8 +309,8 @@ class Inversion(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "6 - Inversión"
-		verbose_name_plural = "6 - Inversión"
+		verbose_name = "6 Inversión"
+		verbose_name_plural = "6 Inversión"
 
 class Mitigacion_Riesgos(models.Model):
 	monitoreo_plagas = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Realiza monitoreo de plagas y enfermedades?')
@@ -313,8 +323,8 @@ class Mitigacion_Riesgos(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "7 - Mitigación de Riesgos"
-		verbose_name_plural = "7 - Mitigación de Riesgos"
+		verbose_name = "7 Mitigación de Riesgos"
+		verbose_name_plural = "7 Mitigación de Riesgos"
 
 class Organizacion_Asociada(models.Model):
 	organizacion = models.ManyToManyField(Organizaciones,verbose_name='Organización/Institución con la que trabaja')
@@ -323,16 +333,16 @@ class Organizacion_Asociada(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "8 - Org. productiva-comercial asociado"
-		verbose_name_plural = "8 - Org. productiva-comercial asociado"
+		verbose_name = "8 Org. productiva-comercial asociado"
+		verbose_name_plural = "8 Org. productiva-comercial asociado"
 
 class Area_Cacao(models.Model):
 	area = models.FloatField(verbose_name='Área total de cacao establecida en finca(Mz)')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "9 - Área de cacao en finca"
-		verbose_name_plural = "9 - Área de cacao en fincas"
+		verbose_name = "9 Área de cacao en finca"
+		verbose_name_plural = "9 Área de cacao en fincas"
 
 EDAD_PLANTA_CHOICES = (
 	(1,'Menor de un año'),
@@ -352,8 +362,8 @@ class Plantacion(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "9-1 - Edad de la plantación"
-		verbose_name_plural = "9-1 - Edad de la plantación"
+		verbose_name = "9-1 Edad de la plantación"
+		verbose_name_plural = "9-1 Edad de la plantación"
 
 
 MESES_CHOICES = (
@@ -380,8 +390,8 @@ class Produccion_Cacao(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "9-2 - Producción de cacao último año"
-		verbose_name_plural = "9-2 - Producción de cacao último año"
+		verbose_name = "9-2 Producción de cacao último año"
+		verbose_name_plural = "9-2 Producción de cacao último año"
 
 QUIEN_CERTIFICA_CHOICES = (
 	(1,'UTZ/Sello'),
@@ -399,8 +409,8 @@ class Certificacion(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "10-1 - Tipo de certificación que posee"
-		verbose_name_plural = "10-1 - Tipo de certificación que posee"
+		verbose_name = "10-1 Tipo de certificación que posee"
+		verbose_name_plural = "10-1 Tipo de certificación que posee"
 
 VIVEROS_CHOICES = (
 	(1,'Preparación del sitio'),
@@ -470,8 +480,8 @@ class Tecnicas_Aplicadas(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "11 - Técn. aplicadas área de cacao"
-		verbose_name_plural = "11 - Técn. aplicadas área de cacao"
+		verbose_name = "11 Técn. aplicadas área de cacao"
+		verbose_name_plural = "11 Técn. aplicadas área de cacao"
 
 PRODUCTO_CHOICES = (
 	(1,'Mazorca de cacao (unidad)'),
@@ -504,5 +514,116 @@ class Comercializacion_Cacao(models.Model):
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
-		verbose_name = "12 - Comercialización de cacao"
-		verbose_name_plural = "12 - Comercialización de cacao"
+		verbose_name = "12 Comercialización de cacao"
+		verbose_name_plural = "12 Comercialización de cacao"
+
+class Distancia_Comercio_Cacao(models.Model):
+	distancia = models.FloatField()
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "12.1 Distancia recorrida (Km)"
+		verbose_name_plural = "12.1 Distancia recorrida (Km)"
+
+CAPACITACIONES_CHOICES = (
+	(1,'Regular en sombra'),
+	(2,'Poda'),
+	(3,'Manejo de plagas y enfermedades'),
+	(4,'Elaboración de abonos orgánicos'),
+	(5,'Elaboración de productos para control de plagas'),
+	(6,'Establecimiento de vivero'),
+	(7,'Injertación de cacao'),
+	(8,'Selección de árboles élites para producción de semillas'),
+	(9,'Manejo de post-cosecha (selección, cosecha, fermentado, secado)'),
+	(10,'Manejo de calidad de cacao'),
+	(11,'Certificación orgánica'),
+	)
+
+OPCIONES_CAPACITACIONES_CHOICES = (
+	(1,'Jefe familia varón'),
+	(2,'Jefa familia mujer'),
+	(3,'Hijos'),
+	(4,'Hijas'),
+	)
+
+class Capacitaciones_Tecnicas(models.Model):
+	capacitaciones = models.IntegerField(choices=CAPACITACIONES_CHOICES)
+	opciones = MultiSelectField(choices=OPCIONES_CAPACITACIONES_CHOICES)
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "13.1 Capacitación familia"
+		verbose_name_plural = "13.1 Capacitación familia"
+
+CAPACITACIONES_SOCIO_CHOICES = (
+	(1,'Formación y fortalecimiento organizacional'),
+	(2,'Contabilidad básica y administración'),
+	(3,'Equidad de género'),
+	(4,'Manejo de créditos'),
+	(5,'Administración de pequeños negocios'),
+	(6,'Gestión empresarial'),
+	(7,'Cadena de valor de cacao'),
+	(8,'Transformación de cacao'),
+	)
+
+
+class Capacitaciones_Socioeconomicas(models.Model):
+	capacitaciones_socio = models.IntegerField(choices=CAPACITACIONES_SOCIO_CHOICES,verbose_name='Capacitaciones')
+	opciones_socio = MultiSelectField(choices=OPCIONES_CAPACITACIONES_CHOICES,verbose_name='Opciones')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "13.2 Capacitaciones socioeconómico/org"
+		verbose_name_plural = "13.2 Capacitaciones socioeconómico/org"
+
+PRIORIDAD_CHOICES = (
+	(1,'1'),
+	(2,'2'),
+	(3,'3'),
+	(4,'4'),
+	(5,'5'),
+	)
+
+class Problemas_Cacao(models.Model):
+	fertilidad = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Baja fertilidad del suelo')
+	arboles = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Árboles poco productivos')
+	plantaciones = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Plantaciones muy viejas')
+	plagas = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Plagas y enfermedades')
+	produccion = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Poca producción')
+	mano_obra = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Poca disponibilidad de mano de obra')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "13.3 Problemas área de cacao"
+		verbose_name_plural = "13.3 Problemas área de cacao"
+
+DECISIONES_CHOICES = (
+	(1,'Decide Usted sobre la siembra de cacao'),
+	(2,'Decide Usted sobre la cosecha de cacao'),
+	(3,'Decide Usted sobre la venta de cacao'),
+	(4,'Decide Usted sobre la Ingresos de cacao'),
+	)
+
+class Genero(models.Model):
+	actividades = models.ManyToManyField(Actividades_Produccion,verbose_name='Actividades en las que participa')
+	ingresos = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Usted recibe ingresos por las actividades que realiza?')
+	ingreso_mesual = models.FloatField(null=True,blank=True,verbose_name='Ingreso mensual aproximado percibido')
+	destino_ingresos = models.CharField(max_length=300,verbose_name='Destino de los ingresos percibidos')
+	decisiones = MultiSelectField(choices=DECISIONES_CHOICES,verbose_name='Decisiones sobre destino de la producción')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "14 Género"
+		verbose_name_plural = "14 Género"
+
+class Genero_2(models.Model):
+	ganaderia = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Ganadería')
+	granos_basicos = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Granos Básicos')
+	cacao = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Cacao')
+	cafe = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Café')
+	madera = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Madera')
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "Sobre otros Ingresos"
+		verbose_name_plural = "Sobre otros Ingresos"

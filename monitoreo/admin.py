@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
+from .forms import *
 # Register your models here.
 
 class Familia_Inline(admin.TabularInline):
@@ -31,6 +32,7 @@ class Uso_Tierra_Inline(admin.StackedInline):
 																				('huerto_mixto_cacao',)
 			]}),
 	]
+	form = Uso_TierraForm
 
 class Reforestacion_Inline(admin.TabularInline):
 	model = Reforestacion
@@ -104,6 +106,40 @@ class Comercializacion_Cacao_Inline(admin.TabularInline):
 	extra = 1
 	can_delete = False
 
+class Distancia_Comercio_Cacao_Inline(admin.TabularInline):
+	model = Distancia_Comercio_Cacao
+	max_num = 1
+	can_delete = False
+
+class Capacitaciones_Tecnicas_Inline(admin.TabularInline):
+	model = Capacitaciones_Tecnicas
+	max_num = 11
+	extra = 1
+	can_delete = False
+
+class Capacitaciones_Socioeconomicas_Inline(admin.TabularInline):
+	model = Capacitaciones_Socioeconomicas
+	max_num = 8
+	extra = 1
+	can_delete = False
+
+class Problemas_Cacao_Inline(admin.TabularInline):
+	model = Problemas_Cacao
+	max_num = 1
+	can_delete = False
+
+class Genero_Inline(admin.StackedInline):
+	model = Genero
+	max_num = 1
+	can_delete = False
+	fieldsets = [(None, {'fields' : (('actividades'),('ingresos','ingreso_mesual','destino_ingresos'),('decisiones',))}),
+	]
+
+class Genero_2_Inline(admin.TabularInline):
+	model = Genero_2
+	max_num = 1
+	can_delete = False
+
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
@@ -123,7 +159,9 @@ class EncuestaAdmin(admin.ModelAdmin):
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
 				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
-				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline,Comercializacion_Cacao_Inline]
+				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline,Comercializacion_Cacao_Inline,
+				Distancia_Comercio_Cacao_Inline,Capacitaciones_Tecnicas_Inline,Capacitaciones_Socioeconomicas_Inline,
+				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline]
 	list_display = ('nombre','organizacion','recolector','departamento','municipio')
 	list_display_links = ('organizacion','nombre')
 	list_filter = ('departamento',)
@@ -139,3 +177,4 @@ admin.site.register(Situacion)
 admin.site.register(Tipos_Servicio)
 admin.site.register(Beneficios)
 admin.site.register(Lista_Certificaciones)
+admin.site.register(Actividades_Produccion)
