@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'canicacao.views.home', name='home'),
@@ -8,4 +9,5 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
+
 )

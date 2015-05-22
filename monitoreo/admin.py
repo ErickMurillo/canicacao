@@ -152,8 +152,8 @@ class EncuestaAdmin(admin.ModelAdmin):
 
 	exclude = ('usuario',)
 	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha','recolector','organizacion'),('nombre','cedula','fecha_nacimiento',)
-			,('sexo','profesion','nombre_finca'),('departamento','municipio','comunidad'),('latitud','longitud')
+		(('Informacion Básica'), {'fields' : (('fecha','recolector','organizacion'),('nombre','cedula'),('fecha_nacimiento','sexo'),
+			('profesion','nombre_finca'),('departamento','municipio','comunidad'),('latitud','longitud')
 			)}),
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
@@ -161,7 +161,9 @@ class EncuestaAdmin(admin.ModelAdmin):
 				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
 				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline,Comercializacion_Cacao_Inline,
 				Distancia_Comercio_Cacao_Inline,Capacitaciones_Tecnicas_Inline,Capacitaciones_Socioeconomicas_Inline,
-				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline]
+				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline
+				]
+
 	list_display = ('nombre','organizacion','recolector','departamento','municipio')
 	list_display_links = ('organizacion','nombre')
 	list_filter = ('departamento',)

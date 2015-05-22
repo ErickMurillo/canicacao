@@ -20,7 +20,7 @@ SECRET_KEY = 't52*+v4n0u3f47*c2!y2(gpb9thg7s*$2llt6$9w!8t_8kw_sb'
 # Application definition
 
 INSTALLED_APPS = (
-    'djamin',
+    'flat',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,4 +75,3 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
-
