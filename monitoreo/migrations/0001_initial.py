@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import multiselectfield.db.fields
 import smart_selects.db_fields
+import multiselectfield.db.fields
 from django.conf import settings
+import django.core.validators
 
 
 class Migration(migrations.Migration):
@@ -12,6 +13,7 @@ class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('lugar', '__first__'),
+        ('organizacion', '0001_initial'),
     ]
 
     operations = [
@@ -173,6 +175,7 @@ class Migration(migrations.Migration):
                 ('comunidad', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'municipio', chained_field=b'municipio', auto_choose=True, to='lugar.Comunidad')),
                 ('departamento', models.ForeignKey(to='lugar.Departamento')),
                 ('municipio', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'departamento', chained_field=b'departamento', auto_choose=True, to='lugar.Municipio')),
+                ('organizacion', models.ForeignKey(verbose_name=b'Organizaci\xc3\xb3n', to='organizacion.Organizacion')),
             ],
             options={
             },
@@ -296,22 +299,11 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('beneficios', models.ManyToManyField(to='monitoreo.Beneficios', verbose_name=b'Beneficios de estar asociado')),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
+                ('organizacion', models.ManyToManyField(to='organizacion.Organizacion', verbose_name=b'Organizaci\xc3\xb3n/Instituci\xc3\xb3n con la que trabaja')),
             ],
             options={
                 'verbose_name': '8 Org. productiva-comercial asociado',
                 'verbose_name_plural': '8 Org. productiva-comercial asociado',
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Organizaciones',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('nombre', models.CharField(max_length=200)),
-            ],
-            options={
-                'verbose_name': 'Organizaci\xf3n',
-                'verbose_name_plural': 'Organizaciones',
             },
             bases=(models.Model,),
         ),
@@ -453,7 +445,7 @@ class Migration(migrations.Migration):
                 ('pract_mejora_plat', multiselectfield.db.fields.MultiSelectField(max_length=7, verbose_name=b'Pr\xc3\xa1cticas de mejoramiento de la plantaci\xc3\xb3n', choices=[(1, b'Selecci\xc3\xb3n de \xc3\xa1rboles superiores'), (2, b'Injertaci\xc3\xb3n en \xc3\xa1rboles adultos'), (3, b'Renovaci\xc3\xb3n de \xc3\xa1rea con plantas injertadas'), (4, b'Enriquecimiento de \xc3\xa1reas con plantas injertadas')])),
                 ('pract_manejo_post_c', multiselectfield.db.fields.MultiSelectField(max_length=15, verbose_name=b'Pr\xc3\xa1cticas de manejo postcosecha y beneficiado', choices=[(1, b'Selecci\xc3\xb3n y clasificaci\xc3\xb3n de mazorcas por variedad'), (2, b'Selecci\xc3\xb3n de cacao en baba a fermentar'), (3, b'Fermentaci\xc3\xb3n en sacos'), (4, b'Fermentaci\xc3\xb3n en cajones'), (5, b'Fermentaci\xc3\xb3n en cajillas'), (6, b'Lo vende en baba a un centro de acopio'), (7, b'Solo la saca de la mazorca y lo seca'), (8, b'Lo saca de la mazorca, lo lava y luego lo seca')])),
                 ('acopio_cacao', models.IntegerField(verbose_name=b'Acopio de cacao en la comunidad/municipio', choices=[(1, b'Si'), (2, b'No')])),
-                ('acopio_org', models.IntegerField(verbose_name=b'Organizaci\xc3\xb3n que acopia cacao', choices=[(1, b'Si'), (2, b'No')])),
+                ('acopio_org', models.IntegerField(verbose_name=b'Asociaci\xc3\xb3n con Org. que acopia cacao', choices=[(1, b'Si'), (2, b'No')])),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
@@ -492,17 +484,17 @@ class Migration(migrations.Migration):
             name='Uso_Tierra',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('area_total', models.FloatField(verbose_name=b'\xc3\x81rea total en manzanas de la propiedad')),
-                ('bosque', models.FloatField(verbose_name=b'Bosques')),
-                ('tacotal', models.FloatField(verbose_name=b'Tacotal o \xc3\xa1rea de descanso')),
-                ('cultivo_anual', models.FloatField(verbose_name=b'Cultivo anual ( que produce en el a\xc3\xb1o)')),
-                ('plantacion_forestal', models.FloatField(verbose_name=b'Plantaci\xc3\xb3n forestal ( madera y le\xc3\xb1a)')),
-                ('area_pasto_abierto', models.FloatField(verbose_name=b'\xc3\x81rea de pastos abierto')),
-                ('area_pasto_arboles', models.FloatField(verbose_name=b'\xc3\x81rea de pastos con \xc3\xa1rboles')),
-                ('cultivo_perenne', models.FloatField(verbose_name=b'Cultivo perenne (frutales)')),
-                ('cultivo_semi_perenne', models.FloatField(verbose_name=b'Cultivo semi-perenne (mus\xc3\xa1cea, pi\xc3\xb1a)')),
-                ('cacao', models.FloatField(verbose_name=b'Solo destinado para cacao')),
-                ('huerto_mixto_cacao', models.FloatField(verbose_name=b'Huerto mixto con cacao')),
+                ('area_total', models.FloatField(verbose_name=b'\xc3\x81rea total en manzanas de la propiedad', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(200)])),
+                ('bosque', models.FloatField(verbose_name=b'Bosques', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('tacotal', models.FloatField(verbose_name=b'Tacotal o \xc3\xa1rea de descanso', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('cultivo_anual', models.FloatField(verbose_name=b'Cultivo anual ( que produce en el a\xc3\xb1o)', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('plantacion_forestal', models.FloatField(verbose_name=b'Plantaci\xc3\xb3n forestal ( madera y le\xc3\xb1a)', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('area_pasto_abierto', models.FloatField(verbose_name=b'\xc3\x81rea de pastos abierto', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('area_pasto_arboles', models.FloatField(verbose_name=b'\xc3\x81rea de pastos con \xc3\xa1rboles', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('cultivo_perenne', models.FloatField(verbose_name=b'Cultivo perenne (frutales)', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('cultivo_semi_perenne', models.FloatField(verbose_name=b'Cultivo semi-perenne (mus\xc3\xa1cea, pi\xc3\xb1a)', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('cacao', models.FloatField(verbose_name=b'Solo destinado para cacao', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
+                ('huerto_mixto_cacao', models.FloatField(verbose_name=b'Huerto mixto con cacao', validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
@@ -513,20 +505,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='organizacion_asociada',
-            name='organizacion',
-            field=models.ManyToManyField(to='monitoreo.Organizaciones', verbose_name=b'Organizaci\xc3\xb3n/Instituci\xc3\xb3n con la que trabaja'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='organizacion_asociada',
             name='tipos_servicio',
             field=models.ManyToManyField(to='monitoreo.Tipos_Servicio', verbose_name=b'Tipos de servicios que recibe'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='encuesta',
-            name='organizacion',
-            field=models.ForeignKey(verbose_name=b'Organizaci\xc3\xb3n', to='monitoreo.Organizaciones'),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -568,7 +548,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='certificacion',
             name='paga_certificacion',
-            field=models.ManyToManyField(to='monitoreo.Organizaciones', verbose_name=b'\xc2\xbfQui\xc3\xa9n paga la certificaci\xc3\xb3n?'),
+            field=models.ManyToManyField(to='organizacion.Organizacion', verbose_name=b'\xc2\xbfQui\xc3\xa9n paga la certificaci\xc3\xb3n?'),
             preserve_default=True,
         ),
         migrations.AddField(

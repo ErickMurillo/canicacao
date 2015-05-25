@@ -3,21 +3,12 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from lugar.models import *
+from organizacion.models import *
 from smart_selects.db_fields import ChainedForeignKey
 from multiselectfield import MultiSelectField
 from django.core.validators import MaxValueValidator,MinValueValidator
 
 # Create your models here.
-class Organizaciones(models.Model):
-	nombre = models.CharField(max_length=200)
-
-	def __unicode__(self):
-		return self.nombre
-
-	class Meta:
-		verbose_name = "Organización"
-		verbose_name_plural = "Organizaciones"
-
 
 class Recolector(models.Model):
 	nombre = models.CharField(max_length=200)
@@ -91,7 +82,7 @@ PROFESION_CHOICE = (
 class Encuesta(models.Model):
 	fecha = models.DateField()
 	recolector = models.ForeignKey(Recolector)
-	organizacion = models.ForeignKey(Organizaciones,verbose_name='Organización')
+	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización')
 	nombre =  models.CharField(max_length=200,verbose_name='Nombre de jefa/e de familia')
 	cedula = models.CharField(max_length=20,verbose_name='Céula de entrevistado/a',null=True,blank=True)
 	fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
@@ -339,7 +330,7 @@ class Mitigacion_Riesgos(models.Model):
 		verbose_name_plural = "7 Mitigación de Riesgos"
 
 class Organizacion_Asociada(models.Model):
-	organizacion = models.ManyToManyField(Organizaciones,verbose_name='Organización/Institución con la que trabaja')
+	organizacion = models.ManyToManyField(Organizacion,verbose_name='Organización/Institución con la que trabaja')
 	tipos_servicio = models.ManyToManyField(Tipos_Servicio,verbose_name='Tipos de servicios que recibe')
 	beneficios = models.ManyToManyField(Beneficios,verbose_name='Beneficios de estar asociado')
 	encuesta = models.ForeignKey(Encuesta)
@@ -416,7 +407,7 @@ class Certificacion(models.Model):
 	mant_area_cacao = models.FloatField(verbose_name='Mantenimiento de área de cacao (C$)')
 	mant_area_finca = models.FloatField(verbose_name='Mantenimiento de la finca (C$)')
 	quien_certifica = models.IntegerField(choices=QUIEN_CERTIFICA_CHOICES,verbose_name='¿Quién certifica?')
-	paga_certificacion = models.ManyToManyField(Organizaciones,verbose_name='¿Quién paga la certificación?')
+	paga_certificacion = models.ManyToManyField(Organizacion,verbose_name='¿Quién paga la certificación?')
 	costo_ccertificacion = models.FloatField(verbose_name='Costo de estar certificado')
 	encuesta = models.ForeignKey(Encuesta)
 

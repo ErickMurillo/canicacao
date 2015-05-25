@@ -173,7 +173,6 @@ class EncuestaAdmin(admin.ModelAdmin):
         }
 	
 admin.site.register(Encuesta,EncuestaAdmin)
-admin.site.register(Organizaciones)
 admin.site.register(Recolector)
 admin.site.register(Situacion)
 admin.site.register(Tipos_Servicio)
