@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('lugar', '__first__'),
-        ('organizacion', '0001_initial'),
+        ('organizacion', '0002_acopio_comercio_comercializacion_importancia_comercializacion_org'),
     ]
 
     operations = [
@@ -118,7 +118,7 @@ class Migration(migrations.Migration):
                 ('auto_consumo', models.FloatField(verbose_name=b'Auto-consumo')),
                 ('venta', models.FloatField()),
                 ('precio_venta', models.FloatField(verbose_name=b'Precio venta por unidad')),
-                ('quien_vende', models.IntegerField(verbose_name=b'\xc2\xbfA qui\xc3\xa9n le vende?', choices=[(1, b'Comunidad'), (2, b'Intermediario'), (3, b'Mercado'), (4, b'Cooperativa')])),
+                ('quien_vende', multiselectfield.db.fields.MultiSelectField(max_length=7, verbose_name=b'\xc2\xbfA qui\xc3\xa9n le vende?', choices=[(1, b'Comunidad'), (2, b'Intermediario'), (3, b'Mercado'), (4, b'Cooperativa')])),
                 ('donde_vende', models.ManyToManyField(to='lugar.Municipio', verbose_name=b'\xc2\xbfD\xc3\xb3nde lo vende?')),
             ],
             options={
@@ -164,17 +164,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('fecha', models.DateField()),
-                ('nombre', models.CharField(max_length=200, verbose_name=b'Nombre de jefa/e de familia')),
-                ('cedula', models.CharField(max_length=20, null=True, verbose_name=b'C\xc3\xa9ula de entrevistado/a', blank=True)),
-                ('fecha_nacimiento', models.DateField(verbose_name=b'Fecha de nacimiento')),
-                ('sexo', models.IntegerField(choices=[(1, b'Hombre'), (2, b'Mujer')])),
-                ('profesion', models.IntegerField(choices=[(1, b'Agricultor'), (2, b'-----')])),
-                ('nombre_finca', models.CharField(max_length=200, verbose_name=b'Nombre de la Finca')),
-                ('latitud', models.FloatField(null=True, blank=True)),
-                ('longitud', models.FloatField(null=True, blank=True)),
-                ('comunidad', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'municipio', chained_field=b'municipio', auto_choose=True, to='lugar.Comunidad')),
-                ('departamento', models.ForeignKey(to='lugar.Departamento')),
-                ('municipio', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'departamento', chained_field=b'departamento', auto_choose=True, to='lugar.Municipio')),
+                ('anno', models.IntegerField()),
                 ('organizacion', models.ForeignKey(verbose_name=b'Organizaci\xc3\xb3n', to='organizacion.Organizacion')),
             ],
             options={
@@ -198,11 +188,11 @@ class Migration(migrations.Migration):
             name='Fenomenos_Naturales',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('sequia', models.IntegerField(verbose_name=b'Sequ\xc3\xada', choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve')])),
-                ('innundacion', models.IntegerField(verbose_name=b'Inundaci\xc3\xb3n', choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve')])),
-                ('lluvia', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve')])),
-                ('viento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve')])),
-                ('deslizamiento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve')])),
+                ('sequia', models.IntegerField(verbose_name=b'Sequ\xc3\xada', choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
+                ('innundacion', models.IntegerField(verbose_name=b'Inundaci\xc3\xb3n', choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
+                ('lluvia', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
+                ('viento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
+                ('deslizamiento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
@@ -308,6 +298,27 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='Persona',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=200, verbose_name=b'Nombre de jefa/e de familia')),
+                ('cedula', models.CharField(max_length=20, null=True, verbose_name=b'C\xc3\xa9ula de entrevistado/a', blank=True)),
+                ('fecha_nacimiento', models.DateField(verbose_name=b'Fecha de nacimiento')),
+                ('sexo', models.IntegerField(choices=[(1, b'Hombre'), (2, b'Mujer')])),
+                ('profesion', models.IntegerField(choices=[(1, b'Agricultor'), (2, b'-----')])),
+                ('latitud', models.FloatField(null=True, blank=True)),
+                ('longitud', models.FloatField(null=True, blank=True)),
+                ('comunidad', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'municipio', chained_field=b'municipio', auto_choose=True, to='lugar.Comunidad')),
+                ('departamento', models.ForeignKey(to='lugar.Departamento')),
+                ('municipio', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'departamento', chained_field=b'departamento', auto_choose=True, to='lugar.Municipio')),
+            ],
+            options={
+                'verbose_name': 'Persona',
+                'verbose_name_plural': 'Personas',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Plantacion',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -364,8 +375,9 @@ class Migration(migrations.Migration):
             name='Razones_Agricolas',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('plantas_improductivas', models.IntegerField(choices=[(1, b'Alto (40%)'), (2, b'Medio (30%)')])),
+                ('plantas_improductivas', models.IntegerField(choices=[(1, b'Alto (40%)'), (2, b'Medio (30%)'), (3, b'Baja (10%)')])),
                 ('plagas_enfermedades', models.IntegerField(verbose_name=b'Plagas y enfermedades', choices=[(1, b'Si'), (2, b'No')])),
+                ('quemas', models.IntegerField(choices=[(1, b'Si'), (2, b'No')])),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
@@ -458,7 +470,7 @@ class Migration(migrations.Migration):
             name='Tenencia_Propiedad',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('si', models.IntegerField(blank=True, null=True, verbose_name=b'En el caso Si, a nombre de quien esta la propiedad', choices=[(1, b'A nombre del Hombre'), (2, b'A nombre de la Mujer'), (3, b'A nombre de Hijas/hijos'), (4, b'A nombre del Hombre y Mujer')])),
+                ('si', models.IntegerField(blank=True, null=True, verbose_name=b'En el caso Si, a nombre de quien esta la propiedad', choices=[(1, b'A nombre del Hombre'), (2, b'A nombre de la Mujer'), (3, b'A nombre de Hijas/hijos'), (4, b'A nombre del Hombre y Mujer'), (5, b'Colectivo')])),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
                 ('no', models.ForeignKey(verbose_name=b'En el caso que diga NO, especifique la situaci\xc3\xb3n', blank=True, to='monitoreo.Situacion', null=True)),
             ],
@@ -507,6 +519,12 @@ class Migration(migrations.Migration):
             model_name='organizacion_asociada',
             name='tipos_servicio',
             field=models.ManyToManyField(to='monitoreo.Tipos_Servicio', verbose_name=b'Tipos de servicios que recibe'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='encuesta',
+            name='persona',
+            field=models.ForeignKey(verbose_name=b'Nombre', to='monitoreo.Persona'),
             preserve_default=True,
         ),
         migrations.AddField(

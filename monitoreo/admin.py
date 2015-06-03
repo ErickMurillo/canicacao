@@ -14,6 +14,7 @@ class Educacion_Inline(admin.TabularInline):
 	extra = 1
 	max_num = 9
 	can_delete = True
+	form = EducacionForm
 
 class Tenencia_Propiedad_Inline(admin.TabularInline):
 	model = Tenencia_Propiedad
@@ -140,6 +141,12 @@ class Genero_2_Inline(admin.TabularInline):
 	max_num = 1
 	can_delete = False
 
+class Adicional_Inline(admin.TabularInline):
+	model = Adicional
+	max_num = 1
+	can_delete = False
+
+
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
@@ -150,23 +157,21 @@ class EncuestaAdmin(admin.ModelAdmin):
 		obj.usuario = request.user
 		obj.save()
 
-	exclude = ('usuario',)
+	exclude = ('usuario','anno')
 	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha','recolector','organizacion'),('nombre','cedula'),('fecha_nacimiento','sexo'),
-			('profesion','nombre_finca'),('departamento','municipio','comunidad'),('latitud','longitud')
-			)}),
+		(('Informacion Básica'), {'fields' : (('fecha','recolector'),('organizacion','persona'))}),
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
 				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
 				Produccion_Cacao_Inline,Certificacion_Inline,Tecnicas_Aplicadas_Inline,Comercializacion_Cacao_Inline,
 				Distancia_Comercio_Cacao_Inline,Capacitaciones_Tecnicas_Inline,Capacitaciones_Socioeconomicas_Inline,
-				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline
+				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline,Adicional_Inline
 				]
 
-	list_display = ('nombre','organizacion','recolector','departamento','municipio')
-	list_display_links = ('organizacion','nombre')
-	list_filter = ('departamento',)
+	list_display = ('persona','organizacion','recolector')
+	list_display_links = ('organizacion','persona')
+	#list_filter = ('departamento',)
 	class Media:
 		css = {
             'all': ('admin.css',)
@@ -179,3 +184,4 @@ admin.site.register(Tipos_Servicio)
 admin.site.register(Beneficios)
 admin.site.register(Lista_Certificaciones)
 admin.site.register(Actividades_Produccion)
+admin.site.register(Persona)

@@ -79,16 +79,14 @@ PROFESION_CHOICE = (
 	(1,'Agricultor'),
 	(2,'-----')
 	)
-class Encuesta(models.Model):
-	fecha = models.DateField()
-	recolector = models.ForeignKey(Recolector)
-	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización')
+
+class Persona(models.Model):
 	nombre =  models.CharField(max_length=200,verbose_name='Nombre de jefa/e de familia')
 	cedula = models.CharField(max_length=20,verbose_name='Céula de entrevistado/a',null=True,blank=True)
 	fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
 	sexo = models.IntegerField(choices=SEXO_CHOICE)
 	profesion = models.IntegerField(choices=PROFESION_CHOICE)
-	nombre_finca = models.CharField(max_length=200,verbose_name='Nombre de la Finca')
+	#nombre_finca = models.CharField(max_length=200,verbose_name='Nombre de la Finca')
 	departamento = models.ForeignKey(Departamento)
 	municipio = ChainedForeignKey(
                                 Municipio,
@@ -102,16 +100,31 @@ class Encuesta(models.Model):
                                 show_all=False, auto_choose=True)
 	latitud = models.FloatField(null=True,blank=True)
 	longitud = models.FloatField(null=True,blank=True)
-	usuario = models.ForeignKey(User)
-
 
 	def __unicode__(self):
 		return self.nombre
 
+	class Meta:
+		verbose_name = "Persona"
+		verbose_name_plural = "Personas"
+
+
+class Encuesta(models.Model):
+	fecha = models.DateField()
+	recolector = models.ForeignKey(Recolector)
+	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización')
+	persona =  models.ForeignKey(Persona,verbose_name='Nombre')
+	anno = models.IntegerField()
+	usuario = models.ForeignKey(User)
+
+
+	def __unicode__(self):
+		return self.persona.nombre
+
 	def save(self, *args, **kwargs):
-		if not  self.id:
-			self.slug = slugify(self.nombre)
+		self.anno = self.fecha.year 
 		super(Encuesta, self).save(*args, **kwargs)
+	
 
 class Familia(models.Model):
 	miembros = models.IntegerField(verbose_name='Número de miembros')
@@ -154,6 +167,7 @@ PROPIEDAD_CHOICE = (
 	(2,'A nombre de la Mujer'),
 	(3,'A nombre de Hijas/hijos'),
 	(4,'A nombre del Hombre y Mujer'),
+	(5,'Colectivo'),
 	)
 		
 class Tenencia_Propiedad(models.Model):
@@ -264,6 +278,7 @@ RIESGOS_CHOICES = (
 	(1,'Fuerte'),
 	(2,'Poco fuerte'),
 	(3,'Leve'),
+	(4,'No hubo'),
 	)
 
 class Fenomenos_Naturales(models.Model):
@@ -281,11 +296,13 @@ class Fenomenos_Naturales(models.Model):
 P_IMPRODUCTIVAS_CHOICES = (
 	(1,'Alto (40%)'),
 	(2,'Medio (30%)'),
+	(3,'Baja (10%)'),
 	)
 
 class Razones_Agricolas(models.Model):
 	plantas_improductivas = models.IntegerField(choices=P_IMPRODUCTIVAS_CHOICES)
 	plagas_enfermedades = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Plagas y enfermedades')
+	quemas = models.IntegerField(choices=SI_NO_CHOICES)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -512,7 +529,7 @@ class Comercializacion_Cacao(models.Model):
 	auto_consumo = models.FloatField(verbose_name='Auto-consumo')
 	venta =  models.FloatField()
 	precio_venta = models.FloatField(verbose_name='Precio venta por unidad')
-	quien_vende = models.IntegerField(choices=QUIEN_VENDE_CHOICES,verbose_name='¿A quién le vende?')
+	quien_vende = MultiSelectField(choices=QUIEN_VENDE_CHOICES,verbose_name='¿A quién le vende?')
 	donde_vende = models.ManyToManyField(Municipio,verbose_name='¿Dónde lo vende?')
 	encuesta = models.ForeignKey(Encuesta)
 
@@ -630,3 +647,12 @@ class Genero_2(models.Model):
 	class Meta:
 		verbose_name = "Sobre otros Ingresos"
 		verbose_name_plural = "Sobre otros Ingresos"
+
+class Adicional(models.Model):
+	interes = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Tiene interes en ampliar las áreas de cacao')
+	cuanto = models.FloatField()
+	encuesta = models.ForeignKey(Encuesta)
+
+	class Meta:
+		verbose_name = "Amplición áreas de cacao"
+		verbose_name_plural = "Amplición áreas de cacao"
