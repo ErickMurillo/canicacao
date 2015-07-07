@@ -2,18 +2,15 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import smart_selects.db_fields
 import multiselectfield.db.fields
-from django.conf import settings
+import smart_selects.db_fields
 import django.core.validators
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('lugar', '__first__'),
-        ('organizacion', '0002_acopio_comercio_comercializacion_importancia_comercializacion_org'),
     ]
 
     operations = [
@@ -26,6 +23,19 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Actividad de Producci\xf3n',
                 'verbose_name_plural': 'Actividades de Producci\xf3n',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Adicional',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('interes', models.IntegerField(verbose_name=b'Tiene interes en ampliar las \xc3\xa1reas de cacao', choices=[(1, b'Si'), (2, b'No')])),
+                ('cuanto', models.FloatField()),
+            ],
+            options={
+                'verbose_name': 'Amplici\xf3n \xe1reas de cacao',
+                'verbose_name_plural': 'Amplici\xf3n \xe1reas de cacao',
             },
             bases=(models.Model,),
         ),
@@ -101,7 +111,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('mant_area_cacao', models.FloatField(verbose_name=b'Mantenimiento de \xc3\xa1rea de cacao (C$)')),
                 ('mant_area_finca', models.FloatField(verbose_name=b'Mantenimiento de la finca (C$)')),
-                ('quien_certifica', models.IntegerField(verbose_name=b'\xc2\xbfQui\xc3\xa9n certifica?', choices=[(1, b'UTZ/Sello'), (2, b'FAIR TRADE'), (3, b'SPP')])),
                 ('costo_ccertificacion', models.FloatField(verbose_name=b'Costo de estar certificado')),
             ],
             options={
@@ -119,7 +128,6 @@ class Migration(migrations.Migration):
                 ('venta', models.FloatField()),
                 ('precio_venta', models.FloatField(verbose_name=b'Precio venta por unidad')),
                 ('quien_vende', multiselectfield.db.fields.MultiSelectField(max_length=7, verbose_name=b'\xc2\xbfA qui\xc3\xa9n le vende?', choices=[(1, b'Comunidad'), (2, b'Intermediario'), (3, b'Mercado'), (4, b'Cooperativa')])),
-                ('donde_vende', models.ManyToManyField(to='lugar.Municipio', verbose_name=b'\xc2\xbfD\xc3\xb3nde lo vende?')),
             ],
             options={
                 'verbose_name': '12 Comercializaci\xf3n de cacao',
@@ -165,7 +173,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('fecha', models.DateField()),
                 ('anno', models.IntegerField()),
-                ('organizacion', models.ForeignKey(verbose_name=b'Organizaci\xc3\xb3n', to='organizacion.Organizacion')),
             ],
             options={
             },
@@ -176,7 +183,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('miembros', models.IntegerField(verbose_name=b'N\xc3\xbamero de miembros')),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': '1-1 Miembros de la Familia',
@@ -193,7 +199,6 @@ class Migration(migrations.Migration):
                 ('lluvia', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
                 ('viento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
                 ('deslizamiento', models.IntegerField(choices=[(1, b'Fuerte'), (2, b'Poco fuerte'), (3, b'Leve'), (4, b'No hubo')])),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': '6 Fen\xf3menos naturales',
@@ -209,8 +214,6 @@ class Migration(migrations.Migration):
                 ('ingreso_mesual', models.FloatField(null=True, verbose_name=b'Ingreso mensual aproximado percibido', blank=True)),
                 ('destino_ingresos', models.CharField(max_length=300, verbose_name=b'Destino de los ingresos percibidos')),
                 ('decisiones', multiselectfield.db.fields.MultiSelectField(max_length=7, verbose_name=b'Decisiones sobre destino de la producci\xc3\xb3n', choices=[(1, b'Decide Usted sobre la siembra de cacao'), (2, b'Decide Usted sobre la cosecha de cacao'), (3, b'Decide Usted sobre la venta de cacao'), (4, b'Decide Usted sobre la Ingresos de cacao')])),
-                ('actividades', models.ManyToManyField(to='monitoreo.Actividades_Produccion', verbose_name=b'Actividades en las que participa')),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': '14 G\xe9nero',
@@ -227,7 +230,6 @@ class Migration(migrations.Migration):
                 ('cacao', models.IntegerField(verbose_name=b'Cacao', choices=[(1, b'1'), (2, b'2'), (3, b'3'), (4, b'4'), (5, b'5')])),
                 ('cafe', models.IntegerField(verbose_name=b'Caf\xc3\xa9', choices=[(1, b'1'), (2, b'2'), (3, b'3'), (4, b'4'), (5, b'5')])),
                 ('madera', models.IntegerField(verbose_name=b'Madera', choices=[(1, b'1'), (2, b'2'), (3, b'3'), (4, b'4'), (5, b'5')])),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': 'Sobre otros Ingresos',
@@ -244,7 +246,6 @@ class Migration(migrations.Migration):
                 ('falta_credito', models.IntegerField(verbose_name=b'Falta de cr\xc3\xa9dito', choices=[(1, b'Si'), (2, b'No')])),
                 ('altos_intereses', models.IntegerField(choices=[(1, b'Si'), (2, b'No')])),
                 ('robo_producto', models.IntegerField(verbose_name=b'Robo de producto', choices=[(1, b'Si'), (2, b'No')])),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': '6 Inversi\xf3n',
@@ -275,7 +276,6 @@ class Migration(migrations.Migration):
                 ('distribucion_cacao', models.IntegerField(verbose_name=b'\xc2\xbfParticipan en cadena de distribuci\xc3\xb3n de producto cacao?', choices=[(1, b'Si'), (2, b'No')])),
                 ('venta_cacao', models.IntegerField(verbose_name=b'\xc2\xbfCuenta con un contrato para la venta de cacao?', choices=[(1, b'Si'), (2, b'No')])),
                 ('tecnologia_secado', models.CharField(max_length=200, null=True, verbose_name=b'\xc2\xbfDispone de tecnolog\xc3\xada para el secado y almacenamiento de cosecha? Mencione', blank=True)),
-                ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
             ],
             options={
                 'verbose_name': '7 Mitigaci\xf3n de Riesgos',
@@ -289,11 +289,22 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('beneficios', models.ManyToManyField(to='monitoreo.Beneficios', verbose_name=b'Beneficios de estar asociado')),
                 ('encuesta', models.ForeignKey(to='monitoreo.Encuesta')),
-                ('organizacion', models.ManyToManyField(to='organizacion.Organizacion', verbose_name=b'Organizaci\xc3\xb3n/Instituci\xc3\xb3n con la que trabaja')),
             ],
             options={
                 'verbose_name': '8 Org. productiva-comercial asociado',
                 'verbose_name_plural': '8 Org. productiva-comercial asociado',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Paga_Certifica',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=200)),
+            ],
+            options={
+                'verbose_name': 'Qui\xe9n paga la certifica',
+                'verbose_name_plural': 'Quienes pagan la certificaci\xf3n',
             },
             bases=(models.Model,),
         ),
@@ -305,7 +316,7 @@ class Migration(migrations.Migration):
                 ('cedula', models.CharField(max_length=20, null=True, verbose_name=b'C\xc3\xa9ula de entrevistado/a', blank=True)),
                 ('fecha_nacimiento', models.DateField(verbose_name=b'Fecha de nacimiento')),
                 ('sexo', models.IntegerField(choices=[(1, b'Hombre'), (2, b'Mujer')])),
-                ('profesion', models.IntegerField(choices=[(1, b'Agricultor'), (2, b'-----')])),
+                ('profesion', models.IntegerField(choices=[(1, b'Agricultor(a)'), (2, b'Profesor(a)')])),
                 ('latitud', models.FloatField(null=True, blank=True)),
                 ('longitud', models.FloatField(null=True, blank=True)),
                 ('comunidad', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'municipio', chained_field=b'municipio', auto_choose=True, to='lugar.Comunidad')),
@@ -368,6 +379,18 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': '9-2 Producci\xf3n de cacao \xfaltimo a\xf1o',
                 'verbose_name_plural': '9-2 Producci\xf3n de cacao \xfaltimo a\xf1o',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Quien_Certifica',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=200)),
+            ],
+            options={
+                'verbose_name': 'Qui\xe9n certifica',
+                'verbose_name_plural': 'Quienes certifican',
             },
             bases=(models.Model,),
         ),
@@ -514,89 +537,5 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': '3 Uso de Tierra',
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='organizacion_asociada',
-            name='tipos_servicio',
-            field=models.ManyToManyField(to='monitoreo.Tipos_Servicio', verbose_name=b'Tipos de servicios que recibe'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='encuesta',
-            name='persona',
-            field=models.ForeignKey(verbose_name=b'Nombre', to='monitoreo.Persona'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='encuesta',
-            name='recolector',
-            field=models.ForeignKey(to='monitoreo.Recolector'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='encuesta',
-            name='usuario',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='educacion',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='distancia_comercio_cacao',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='comercializacion_cacao',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='certificacion',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='certificacion',
-            name='paga_certificacion',
-            field=models.ManyToManyField(to='organizacion.Organizacion', verbose_name=b'\xc2\xbfQui\xc3\xa9n paga la certificaci\xc3\xb3n?'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='certificacion',
-            name='tipo',
-            field=models.ManyToManyField(to='monitoreo.Lista_Certificaciones', verbose_name=b'Tipo de certificaci\xc3\xb3n'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='caracterizacion_terreno',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='capacitaciones_tecnicas',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='capacitaciones_socioeconomicas',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='area_cacao',
-            name='encuesta',
-            field=models.ForeignKey(to='monitoreo.Encuesta'),
-            preserve_default=True,
         ),
     ]

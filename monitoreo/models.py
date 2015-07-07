@@ -70,14 +70,28 @@ class Actividades_Produccion(models.Model):
 		verbose_name = "Actividad de Producción"
 		verbose_name_plural = "Actividades de Producción"
 
+class Quien_Certifica(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	class Meta:
+		verbose_name = "Quién certifica"
+		verbose_name_plural = "Quienes certifican"
+
+class Paga_Certifica(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	class Meta:
+		verbose_name = "Quién paga la certifica"
+		verbose_name_plural = "Quienes pagan la certificación"
+
 SEXO_CHOICE = (
 	(1,'Hombre'),
 	(2,'Mujer')
 	)
 
 PROFESION_CHOICE = (
-	(1,'Agricultor'),
-	(2,'-----')
+	(1,'Agricultor(a)'),
+	(2,'Profesor(a)'),
 	)
 
 class Persona(models.Model):
@@ -413,18 +427,14 @@ class Produccion_Cacao(models.Model):
 		verbose_name = "9-2 Producción de cacao último año"
 		verbose_name_plural = "9-2 Producción de cacao último año"
 
-QUIEN_CERTIFICA_CHOICES = (
-	(1,'UTZ/Sello'),
-	(2,'FAIR TRADE'),
-	(3,'SPP'),
-	)
+
 
 class Certificacion(models.Model):
 	tipo = models.ManyToManyField(Lista_Certificaciones,verbose_name='Tipo de certificación')
 	mant_area_cacao = models.FloatField(verbose_name='Mantenimiento de área de cacao (C$)')
 	mant_area_finca = models.FloatField(verbose_name='Mantenimiento de la finca (C$)')
-	quien_certifica = models.IntegerField(choices=QUIEN_CERTIFICA_CHOICES,verbose_name='¿Quién certifica?')
-	paga_certificacion = models.ManyToManyField(Organizacion,verbose_name='¿Quién paga la certificación?')
+	quien_certifica = models.ManyToManyField(Quien_Certifica,verbose_name='¿Quién certifica?')
+	paga_certificacion = models.ManyToManyField(Paga_Certifica,verbose_name='¿Quién paga la certificación?')
 	costo_ccertificacion = models.FloatField(verbose_name='Costo de estar certificado')
 	encuesta = models.ForeignKey(Encuesta)
 
