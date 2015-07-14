@@ -9,3 +9,7 @@
 ul li {
 	list-style: none;
 }
+
+.original p {
+	display: none;
+}

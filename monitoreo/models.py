@@ -361,9 +361,10 @@ class Mitigacion_Riesgos(models.Model):
 		verbose_name_plural = "7 Mitigación de Riesgos"
 
 class Organizacion_Asociada(models.Model):
-	organizacion = models.ManyToManyField(Organizacion,verbose_name='Organización/Institución con la que trabaja')
-	tipos_servicio = models.ManyToManyField(Tipos_Servicio,verbose_name='Tipos de servicios que recibe')
-	beneficios = models.ManyToManyField(Beneficios,verbose_name='Beneficios de estar asociado')
+	socio = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Trabaja con alguna Organización/Institución')
+	organizacion = models.ManyToManyField(Organizacion,verbose_name='Organización/Institución con la que trabaja',null=True,blank=True)
+	tipos_servicio = models.ManyToManyField(Tipos_Servicio,verbose_name='Tipos de servicios que recibe',null=True,blank=True)
+	beneficios = models.ManyToManyField(Beneficios,verbose_name='Beneficios de estar asociado',null=True,blank=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

@@ -174,7 +174,7 @@ class EncuestaAdmin(admin.ModelAdmin):
 	#list_filter = ('departamento',)
 	class Media:
 		css = {
-            'all': ('admin.css',)
+            'all': ('css/admin.css',)
         }
 	
 admin.site.register(Encuesta,EncuestaAdmin)

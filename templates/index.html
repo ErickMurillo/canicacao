@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}
+
+{% block content %}
+	<form action="." method="POST">{% csrf_token %}
+	{{form.anno.label}}: {{form.anno}}<br>
+	{{form.departamento.label}}: {{form.departamento}}
+	{{form.municipio.label}}: {{form.municipio}}
+	{{form.comunidad.label}}: {{form.comunidad}}<br>
+	{{form.organizacion.label}}: {{form.organizacion}}
+	{{form.socio.label}}: {{form.socio}}
+		<input type="submit" value="Consultar" name="consulta"/>
+	</form>
+
+{% endblock content %}
+

@@ -59,3 +59,24 @@ class EducacionForm(ModelForm):
             raise ValidationError("Distribución de Miembros de Familia mayor al número total")
 
         return self.cleaned_data
+
+#filtros
+def fecha_choice():
+    years = []
+    for en in Encuesta.objects.order_by('anno').values_list('anno', flat=True):
+        years.append((en,en))
+    return list(set(years))
+
+def departamentos():   
+    foo = Encuesta.objects.all().order_by('persona__comunidad__municipio__departamento__nombre').distinct().values_list('persona__comunidad__municipio__departamento__id', flat=True)
+    return Departamento.objects.filter(id__in=foo)
+
+SI_NO_CHOICE = (('','----'),(1,'Si'),(2,'No'))
+
+class EncuestaConsulta(forms.Form):
+    anno = forms.MultipleChoiceField(choices=fecha_choice(),required=True,label=u'Año')
+    departamento = forms.ModelMultipleChoiceField(queryset=departamentos(), required=False, label=u'Departamentos')
+    municipio = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all().order_by('nombre'), required=False)
+    comunidad = forms.ModelMultipleChoiceField(queryset=Comunidad.objects.all(), required=False)
+    organizacion = forms.ModelMultipleChoiceField(queryset=Organizacion.objects.all(),required=False)
+    socio = forms.ChoiceField(label=u'Socio',choices=SI_NO_CHOICE,required=False)
