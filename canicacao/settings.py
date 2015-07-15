@@ -76,3 +76,5 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

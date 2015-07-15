@@ -73,6 +73,9 @@ class Actividades_Produccion(models.Model):
 class Quien_Certifica(models.Model):
 	nombre = models.CharField(max_length=200)
 
+	def __unicode__(self):
+		return self.nombre
+
 	class Meta:
 		verbose_name = "Quién certifica"
 		verbose_name_plural = "Quienes certifican"
@@ -80,6 +83,9 @@ class Quien_Certifica(models.Model):
 class Paga_Certifica(models.Model):
 	nombre = models.CharField(max_length=200)
 
+	def __unicode__(self):
+		return self.nombre
+		
 	class Meta:
 		verbose_name = "Quién paga la certifica"
 		verbose_name_plural = "Quienes pagan la certificación"
@@ -161,15 +167,15 @@ RANGOS_CHOICE = (
 		)
 
 class Educacion(models.Model):
-	rango = models.IntegerField(choices=RANGOS_CHOICE,verbose_name='Selección')
-	numero_total = models.IntegerField()
-	no_lee_ni_escribe = models.IntegerField()
-	primaria_incompleta = models.IntegerField()
-	primaria_completa = models.IntegerField()
-	secundaria_incompleta = models.IntegerField()
-	bachiller = models.IntegerField()
-	universitario_tecnico = models.IntegerField()
-	viven_fuera = models.IntegerField(verbose_name='Número de personas que viven fuera de la finca')
+	rango = models.IntegerField(choices=RANGOS_CHOICE,verbose_name='Selección',null=True,blank=True)
+	numero_total = models.IntegerField(default='0',null=True,blank=True)
+	no_lee_ni_escribe = models.IntegerField(default='0',null=True,blank=True)
+	primaria_incompleta = models.IntegerField(default='0',null=True,blank=True)
+	primaria_completa = models.IntegerField(default='0',null=True,blank=True)
+	secundaria_incompleta = models.IntegerField(default='0',null=True,blank=True)
+	bachiller = models.IntegerField(default='0',null=True,blank=True)
+	universitario_tecnico = models.IntegerField(default='0',null=True,blank=True)
+	viven_fuera = models.IntegerField(verbose_name='Número de personas que viven fuera de la finca',default='0',null=True,blank=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -196,27 +202,27 @@ class Tenencia_Propiedad(models.Model):
 		verbose_name_plural = "2 Tenencia de Propiedad"
 
 class Uso_Tierra(models.Model):
-	area_total = models.FloatField(verbose_name='Área total en manzanas de la propiedad',
+	area_total = models.FloatField(default='0',verbose_name='Área total en manzanas de la propiedad',
 									validators = [MinValueValidator(0), MaxValueValidator(200)])
-	bosque = models.FloatField(verbose_name='Bosques',
+	bosque = models.FloatField(default='0',verbose_name='Bosques',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	tacotal = models.FloatField(verbose_name='Tacotal o área de descanso',
+	tacotal = models.FloatField(default='0',verbose_name='Tacotal o área de descanso',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	cultivo_anual = models.FloatField(verbose_name='Cultivo anual ( que produce en el año)',
+	cultivo_anual = models.FloatField(default='0',verbose_name='Cultivo anual ( que produce en el año)',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	plantacion_forestal = models.FloatField(verbose_name='Plantación forestal ( madera y leña)',
+	plantacion_forestal = models.FloatField(default='0',verbose_name='Plantación forestal ( madera y leña)',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	area_pasto_abierto = models.FloatField(verbose_name='Área de pastos abierto',
+	area_pasto_abierto = models.FloatField(default='0',verbose_name='Área de pastos abierto',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	area_pasto_arboles = models.FloatField(verbose_name='Área de pastos con árboles',
+	area_pasto_arboles = models.FloatField(default='0',verbose_name='Área de pastos con árboles',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	cultivo_perenne = models.FloatField(verbose_name='Cultivo perenne (frutales)',
+	cultivo_perenne = models.FloatField(default='0',verbose_name='Cultivo perenne (frutales)',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	cultivo_semi_perenne = models.FloatField(verbose_name='Cultivo semi-perenne (musácea, piña)',
+	cultivo_semi_perenne = models.FloatField(default='0',verbose_name='Cultivo semi-perenne (musácea, piña)',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	cacao = models.FloatField(verbose_name='Solo destinado para cacao',
+	cacao = models.FloatField(default='0',verbose_name='Solo destinado para cacao',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	huerto_mixto_cacao = models.FloatField(verbose_name='Huerto mixto con cacao',
+	huerto_mixto_cacao = models.FloatField(default='0',verbose_name='Huerto mixto con cacao',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
 	encuesta = models.ForeignKey(Encuesta)
 
@@ -431,12 +437,13 @@ class Produccion_Cacao(models.Model):
 
 
 class Certificacion(models.Model):
-	tipo = models.ManyToManyField(Lista_Certificaciones,verbose_name='Tipo de certificación')
-	mant_area_cacao = models.FloatField(verbose_name='Mantenimiento de área de cacao (C$)')
-	mant_area_finca = models.FloatField(verbose_name='Mantenimiento de la finca (C$)')
-	quien_certifica = models.ManyToManyField(Quien_Certifica,verbose_name='¿Quién certifica?')
-	paga_certificacion = models.ManyToManyField(Paga_Certifica,verbose_name='¿Quién paga la certificación?')
-	costo_ccertificacion = models.FloatField(verbose_name='Costo de estar certificado')
+	cacao_certificado = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Posee áreas de cacao certificada')
+	tipo = models.ManyToManyField(Lista_Certificaciones,verbose_name='Tipo de certificación',blank=True,null=True)
+	mant_area_cacao = models.FloatField(verbose_name='Mantenimiento de área de cacao (C$)',blank=True,null=True)
+	mant_area_finca = models.FloatField(verbose_name='Mantenimiento de la finca (C$)',blank=True,null=True)
+	quien_certifica = models.ManyToManyField(Quien_Certifica,verbose_name='¿Quién certifica?',blank=True,null=True)
+	paga_certificacion = models.ManyToManyField(Paga_Certifica,verbose_name='¿Quién paga la certificación?',blank=True,null=True)
+	costo_certificacion = models.FloatField(verbose_name='Costo de estar certificado',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

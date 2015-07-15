@@ -1,0 +1,56 @@
+<div class="filtros">
+	<ol class="breadcrumb">
+	<li>Filtros Seleccionados: </li>
+	{% if request.session.anno %}
+        <li><a href="#">
+            {% for fecha in request.session.anno %}
+                {{ fecha }},
+            {% endfor %}
+        </a></li>	
+	{% endif %}
+
+    {% if request.session.departamento %}
+        <li><a href="#">
+            {% for depto in request.session.departamento %}
+                {{ depto }},
+            {% endfor %}
+        </a></li>   
+    {% endif %}
+
+    {% if request.session.municipio %}
+        <li><a href="#">
+            {% for mun in request.session.municipio %}
+                {{ mun }},
+            {% endfor %}
+        </a></li>   
+    {% endif %}
+    
+    {% if request.session.comunidad %}
+        <li><a href="#">
+            {% for com in request.session.comunidad %}
+                {{ com }},
+            {% endfor %}
+        </a></li>   
+    {% endif %}
+
+   {% if request.session.organizacion %}
+        <li><a href="#">
+            {% for org in request.session.organizacion %}
+                {{ org }},
+            {% endfor %}
+        </a></li>   
+    {% endif %}
+
+    {% if request.session.socio %}
+        <li><a href="#">
+             {% if request.session.socio == "1" %}
+                Si
+             {% else %}
+                No
+         {% endif %} 
+    {% endif %}
+        </a></li>  
+       
+	</ol>
+
+</div>

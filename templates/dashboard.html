@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "filtros.html" %}
+<div class="container">
+	Familias : {{familias}}
+	Hombres : {{hombres}}%
+	Mujeres : {{mujeres}}%
+	Organizaciones : {{organizaciones}}
+	Socio : {{socio}}
+	No Socio : {{no_socio}}
+
+	Promedio mz cacao : {{avg_cacao}}
+	</div>
+	
+{% endblock content %}

@@ -173,10 +173,11 @@ class EncuestaAdmin(admin.ModelAdmin):
 	list_display_links = ('organizacion','persona')
 	#list_filter = ('departamento',)
 	class Media:
+		js = ('js/admin.js',)
 		css = {
             'all': ('css/admin.css',)
         }
-	
+      
 admin.site.register(Encuesta,EncuestaAdmin)
 admin.site.register(Recolector)
 admin.site.register(Situacion)
