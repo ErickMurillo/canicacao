@@ -77,19 +77,72 @@ def IndexView(request,template="index.html"):
 
 	return render(request, template, locals())
 
+
 def dashboard(request,template='dashboard.html'):
-	filtro = _queryset_filtrado(request)
+	filtro = _queryset_filtrado(request)	
 
 	familias = filtro.count()
-	hombres = (filtro.filter(persona__sexo='1').count()/familias)*100
-	mujeres = (filtro.filter(persona__sexo='2').count()/familias)*100
+	hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+	mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
 	socio = filtro.filter(organizacion_asociada__socio='1').count()
 	no_socio = filtro.filter(organizacion_asociada__socio='2').count()
 	avg_cacao = filtro.aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']
 
+	for x in filtro:
+		organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
+
+	avg_area_productor = filtro.aggregate(sum_area=Sum('uso_tierra__area_total'))['sum_area'] / familias
+
+	#graf volumen producido vs acopiado
+	dic = {}
+	for year in request.session['anno']:
+		produccion = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao', 
+													   field="produccion_c_baba + produccion_c_seco + " + 
+													   "produccion_c_fermentado + produccion_c_organico"))['total']
+		if produccion == None:
+			produccion = 0
+			
+		dic[year] = produccion
+
+	####################################################################################################################
+	#graf rendimiento socio
+	rend_socio =  filtro.filter(organizacion_asociada__socio='1').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+	baba_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
+	seco_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
+	fer_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_fer_s=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer_s']
+	org_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_org_s=Sum('produccion_cacao__produccion_c_organico'))['cacao_org_s']
+	
+	#graf rendimiento no socio
+	rend_no_socio =  filtro.filter(organizacion_asociada__socio='2').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+	baba_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_baba=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba']
+	seco_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_seco=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco']
+	fer_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_fer=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer']
+	org_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_org=Sum('produccion_cacao__produccion_c_organico'))['cacao_org']
+
+	if request.session['socio'] == "1":
+		s_result1 = rend_socio/float(baba_socio)
+		s_result2 = rend_socio/float(seco_socio)
+		s_result3 = rend_socio/float(fer_socio)
+		s_result4 = rend_socio/float(org_socio)
+	elif request.session['socio'] == "2":	
+		ns_result1 = rend_no_socio/float(baba_no_socio)
+		ns_result2 = rend_no_socio/float(seco_no_socio)
+		ns_result3 = rend_no_socio/float(fer_no_socio)
+		ns_result4 = rend_no_socio/float(org_no_socio)	
+	else:
+ 		s_result1 = rend_socio/float(baba_socio)
+		s_result2 = rend_socio/float(seco_socio)
+		s_result3 = rend_socio/float(fer_socio)
+		s_result4 = rend_socio/float(org_socio)
+
+		ns_result1 = rend_no_socio/float(baba_no_socio)
+		ns_result2 = rend_no_socio/float(seco_no_socio)
+		ns_result3 = rend_no_socio/float(fer_no_socio)
+		ns_result4 = rend_no_socio/float(org_no_socio)
+
 	return render(request, template, locals())
 
-#ajax #######
+#ajax filtros
 def get_munis(request):
     '''Metodo para obtener los municipios via Ajax segun los departamentos selectos'''
     ids = request.GET.get('ids', '')

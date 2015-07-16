@@ -149,14 +149,26 @@
 {% endblock extra_js %}
 
 {% block content %}
-	<form action="." method="POST">{% csrf_token %}
-	{{form.anno.label}}: {{form.anno}}<br>
-	{{form.departamento.label}}: {{form.departamento}}
-	{{form.municipio.label}}: {{form.municipio}}
-	{{form.comunidad.label}}: {{form.comunidad}}<br>
-	{{form.organizacion.label}}: {{form.organizacion}}
-	{{form.socio.label}}: {{form.socio}}
+<div class="container">
+	<div class="row">
+		<form action="." method="POST">{% csrf_token %}
+	<div class="col-md-4">
+		{{form.anno.label}}: {{form.anno}}
+	</div>
+	<div class="col-md-4">
+		<div class="col-md-12">{{form.departamento.label}}: {{form.departamento}}</div>
+		<div class="col-md-12">{{form.municipio.label}}: {{form.municipio}}</div>
+		<div class="col-md-12">{{form.comunidad.label}}: {{form.comunidad}}</div>
+	</div>
+	<div class="col-md-4">
+		<div class="col-md-12">{{form.organizacion.label}}: {{form.organizacion}}</div>
+		<div class="col-md-12">{{form.socio.label}}: {{form.socio}}</div>
+	</div>
 		<input type="submit" value="Consultar" name="consulta"/>
 	</form>
+	</div>
+	
+</div>
+	
 {% endblock content %}
 

@@ -13,7 +13,7 @@
 				$('.field-beneficios').hide();
 			};
 
-		var valor_tipo2 = $('#id_certificacion_set-0-cacao').val();
+		var valor_tipo2 = $('#id_certificacion_set-0-cacao_certificado').val();
 			if (valor_tipo2 === '1' ) {
 				$('.field-tipo').show();
 				$('.field-mant_area_cacao').show();

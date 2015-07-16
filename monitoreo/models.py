@@ -167,15 +167,15 @@ RANGOS_CHOICE = (
 		)
 
 class Educacion(models.Model):
-	rango = models.IntegerField(choices=RANGOS_CHOICE,verbose_name='Selección',null=True,blank=True)
-	numero_total = models.IntegerField(default='0',null=True,blank=True)
-	no_lee_ni_escribe = models.IntegerField(default='0',null=True,blank=True)
-	primaria_incompleta = models.IntegerField(default='0',null=True,blank=True)
-	primaria_completa = models.IntegerField(default='0',null=True,blank=True)
-	secundaria_incompleta = models.IntegerField(default='0',null=True,blank=True)
-	bachiller = models.IntegerField(default='0',null=True,blank=True)
-	universitario_tecnico = models.IntegerField(default='0',null=True,blank=True)
-	viven_fuera = models.IntegerField(verbose_name='Número de personas que viven fuera de la finca',default='0',null=True,blank=True)
+	rango = models.IntegerField(choices=RANGOS_CHOICE,verbose_name='Selección')
+	numero_total = models.IntegerField()
+	no_lee_ni_escribe = models.IntegerField()
+	primaria_incompleta = models.IntegerField()
+	primaria_completa = models.IntegerField()
+	secundaria_incompleta = models.IntegerField()
+	bachiller = models.IntegerField()
+	universitario_tecnico = models.IntegerField()
+	viven_fuera = models.IntegerField(verbose_name='Número de personas que viven fuera de la finca')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

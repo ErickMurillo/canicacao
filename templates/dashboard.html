@@ -1,17 +1,96 @@
 {% extends "base.html" %}
 
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+
+	<script>
+	$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Rendimiento de cacao por manzana'
+        },
+        xAxis: {
+            categories: [{% if request.session.socio != "2" %}'Socio',{% endif %} 'No socio']
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+
+        {
+            name: 'Baba',
+            data: [{% if request.session.socio != "2" %}{{s_result1}},{% endif %} {{ns_result1}}]
+        }, {
+            name: 'Seco sin fermentar',
+            data: [{% if request.session.socio != "2" %}{{s_result2}},{% endif %} {{ns_result2}}]
+        }, {
+            name: 'Fermentado convencional',
+            data: [{% if request.session.socio != "2" %}{{s_result3}},{% endif %} {{ns_result3}}]
+        }, {
+            name: 'Orgánico',
+            data: [{% if request.session.socio != "2" %}{{s_result4}},{% endif %} {{ns_result4}}]
+        }]
+    });
+});
+
+$(function () {
+    $('#container2').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Volumen de Producción vs Volumen acopiado'
+        },
+        xAxis: {
+            categories: ['Volumen de Producción','Volumen acopiado']
+        },
+        yAxis: {
+            title: {
+                text: 'Valores (QQ)'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in dic.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value}},12]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+	</script>
+{% endblock extra_js %}
+
 {% block content %}
-
-{% include "filtros.html" %}
 <div class="container">
-	Familias : {{familias}}
-	Hombres : {{hombres}}%
-	Mujeres : {{mujeres}}%
-	Organizaciones : {{organizaciones}}
-	Socio : {{socio}}
-	No Socio : {{no_socio}}
+{% include "filtros.html" %}
+	Familias : {{familias}}<br>
+	Hombres : {{hombres}}%<br>
+	Mujeres : {{mujeres}}%<br>
+	Organizaciones : {{organizaciones}}<br>
+	Socio : {{socio}}<br>
+	No Socio : {{no_socio}}<br>
+	Promedio mz cacao : {{avg_cacao}}<br>
+	Promedio área en mz por productor : {{avg_area_productor}}<br>
 
-	Promedio mz cacao : {{avg_cacao}}
+	<div id="container" style="min-width: 310px; width: 600px; margin: 0 auto"></div>
+	<div id="container2" style="min-width: 310px; width: 600px; margin: 0 auto"></div>
 	</div>
 	
 {% endblock content %}
