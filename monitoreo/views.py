@@ -6,7 +6,6 @@ import json as simplejson
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db.models import Sum, Count, Avg
 
-
 # Create your views here.
 def _queryset_filtrado(request):
 	params = {}
@@ -41,6 +40,16 @@ def _queryset_filtrado(request):
 	return Encuesta.objects.filter(**params)
 
 def IndexView(request,template="index.html"):
+	mujeres = Encuesta.objects.filter(persona__sexo='2').count()
+	hombres = Encuesta.objects.filter(persona__sexo='1').count()
+	area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
+	produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao', 
+													   		field="produccion_c_baba + produccion_c_seco + " + 
+													   		"produccion_c_fermentado + produccion_c_organico"))['total']
+
+	return render(request, template, locals())
+
+def consulta(request,template="consulta.html"):
 	if request.method == 'POST':
 		mensaje = None
 		form = EncuestaConsulta(request.POST)
@@ -142,6 +151,54 @@ def dashboard(request,template='dashboard.html'):
 
 	return render(request, template, locals())
 
+#nivel de educacion
+def educacion(request,template='educacion.html'):
+	filtro = _queryset_filtrado(request)
+
+	tabla_educacion = []
+	grafo = []
+	suma = 0
+	for e in RANGOS_CHOICE:
+		objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
+                no_leer = Sum('educacion__no_lee_ni_escribe'),
+                p_incompleta = Sum('educacion__primaria_incompleta'),
+                p_completa = Sum('educacion__primaria_completa'),
+                s_incompleta = Sum('educacion__secundaria_incompleta'),
+                bachiller = Sum('educacion__bachiller'),
+                universitario = Sum('educacion__universitario_tecnico'),
+                f_comunidad = Sum('educacion__viven_fuera'))
+		try:
+			suma = int(objeto['p_completa'] or 0) + int(objeto['s_incompleta'] or 0) + int(objeto['bachiller'] or 0) + int(objeto['universitario'] or 0)
+		except:
+			pass
+		variable = round(saca_porcentajes(suma,objeto['num_total']))
+		grafo.append([e[1],variable])
+		fila = [e[1], objeto['num_total'],
+                saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
+                saca_porcentajes(objeto['p_incompleta'], objeto['num_total'], False),
+                saca_porcentajes(objeto['p_completa'], objeto['num_total'], False),
+                saca_porcentajes(objeto['s_incompleta'], objeto['num_total'], False),
+                saca_porcentajes(objeto['bachiller'], objeto['num_total'], False),
+                saca_porcentajes(objeto['universitario'], objeto['num_total'], False),
+                saca_porcentajes(objeto['f_comunidad'], objeto['num_total'], False)]
+		tabla_educacion.append(fila)
+
+	return render(request, template, locals())
+
+#obtener puntos en el mapa
+def obtener_lista(request):
+    if request.is_ajax():
+        lista = []
+        for objeto in Encuesta.objects.all():
+            dicc = dict(nombre=objeto.persona.municipio.nombre, id=objeto.id,
+                        lon=float(objeto.persona.municipio.longitud),
+                        lat=float(objeto.persona.municipio.latitud)
+                        )
+            lista.append(dicc)
+
+        serializado = simplejson.dumps(lista)
+        return HttpResponse(serializado, content_type='application/json')
+
 #ajax filtros
 def get_munis(request):
     '''Metodo para obtener los municipios via Ajax segun los departamentos selectos'''
@@ -199,3 +256,17 @@ def get_organi(request):
     organizaciones = Organizacion.objects.filter(municipio__id__in = lista).order_by('nombre').values('id', 'siglas')
 
     return HttpResponse(simplejson.dumps(list(organizaciones)), content_type='application/json')
+
+#utils
+def saca_porcentajes(dato, total, formato=True):
+	if dato != None:
+		try:
+			porcentaje = (dato/float(total)) * 100 if total != None or total != 0 else 0
+		except:
+			return 0
+		if formato:
+			return porcentaje
+		else:
+			return '%.2f' % porcentaje
+	else:
+		return 0

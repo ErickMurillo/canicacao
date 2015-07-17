@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+<script>
+	$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Cantidad de mienbros del hogar que poseen algun tipo de educación'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+
+        {
+            name: 'Baba',
+            data: [{% if request.session.socio != "2" %}{{s_result1}},{% endif %} {{ns_result1}}]
+        }, {
+            name: 'Seco sin fermentar',
+            data: [{% if request.session.socio != "2" %}{{s_result2}},{% endif %} {{ns_result2}}]
+        }, {
+            name: 'Fermentado convencional',
+            data: [{% if request.session.socio != "2" %}{{s_result3}},{% endif %} {{ns_result3}}]
+        }, {
+            name: 'Orgánico',
+            data: [{% if request.session.socio != "2" %}{{s_result4}},{% endif %} {{ns_result4}}]
+        }]
+    });
+});
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
+	<div class="col-md-12">
+		<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <caption>Educación</caption>
+                        <thead>
+                            <tr>
+                                <th ></th>
+                                <th>Número total</th>
+                                <th>No sabe leer %</th>
+                                <th>Primaria incompleta %</th>
+                                <th>Primaria completa %</th>
+                                <th>Secundaria incompleta %</th>
+                                <th>Bachiller %</th>
+                                <th>Universitario %</th>
+                                <th>Vive fuera de la comunidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for fila in tabla_educacion%}
+                            <tr>
+                                {%for celda in fila %}
+                                <td>{{celda|default:'0'}}</td>
+                                {%endfor%}
+                            </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+	</div>
+{% endblock content %}

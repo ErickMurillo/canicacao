@@ -9,8 +9,11 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^$', 'IndexView', name='index'),
+    url(r'^consulta', 'consulta', name='consulta'),
     url(r'^dashboard', 'dashboard', name='dashboard'),
-
+    url(r'^educacion', 'educacion', name='educacion'),
+    #mapa
+    url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     #filtros
     url(r'^ajax/organi/$', 'get_organi', name='get-organi'),
     url(r'^ajax/munis/$', 'get_munis', name='get-munis'),
