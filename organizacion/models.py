@@ -18,10 +18,10 @@ class Organizacion(models.Model):
 	fundacion = models.DateField(verbose_name='Año fundación')
 	direccion = models.CharField(max_length=300)
 	municipio = models.ForeignKey(Municipio)
-	telefono = models.IntegerField(verbose_name='Número telefónico')
-	fax = models.IntegerField(verbose_name='Número fax')
-	email = models.EmailField()
-	web = models.URLField(verbose_name='Página web')
+	telefono = models.IntegerField(verbose_name='Número telefónico',null=True,blank=True)
+	fax = models.IntegerField(verbose_name='Número fax',null=True,blank=True)
+	email = models.EmailField(null=True,blank=True)
+	web = models.URLField(verbose_name='Página web',null=True,blank=True)
 	usuario = models.ForeignKey(User)
 
 	def __unicode__(self):
@@ -49,7 +49,7 @@ class Aspectos_Juridicos(models.Model):
 	mujeres = models.IntegerField()
 	hombres = models.IntegerField()
 	lista_socios = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Lista socias/os esta actualizada y certificada')
-	ruc = models.CharField(max_length=50,verbose_name='No. RUC')
+	ruc = models.CharField(max_length=50,verbose_name='No. RUC',null=True,blank=True)
 	organizacion = models.ForeignKey(Organizacion)
 
 	class Meta:
