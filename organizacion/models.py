@@ -5,16 +5,21 @@ from django.contrib.auth.models import User
 from lugar.models import *
 
 # Create your models here.
-STATUS_CHOICES = (
-	(1,'------'),
-	(2,'------'),
-	)
+class Status(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+
+	class Meta:
+		verbose_name = "Status Legal"
+		verbose_name_plural = "Status Legal"
 
 class Organizacion(models.Model):
 	nombre = models.CharField(max_length=200,verbose_name='Organización/Institución')
 	siglas = models.CharField(max_length=200)
 	gerente = models.CharField(max_length=200,verbose_name='Director/Gerente')
-	status = models.IntegerField(choices=STATUS_CHOICES,verbose_name='Status Legal')
+	status = models.ForeignKey(Status,verbose_name='Status Legal')
 	fundacion = models.DateField(verbose_name='Año fundación')
 	direccion = models.CharField(max_length=300)
 	municipio = models.ForeignKey(Municipio)

@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
             name='Adicional',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('interes', models.IntegerField(verbose_name=b'Tiene interes en ampliar las \xc3\xa1reas de cacao', choices=[(1, b'Si'), (2, b'No')])),
-                ('cuanto', models.FloatField()),
+                ('interes', models.IntegerField(blank=True, null=True, verbose_name=b'Tiene interes en ampliar las \xc3\xa1reas de cacao', choices=[(1, b'Si'), (2, b'No')])),
+                ('cuanto', models.FloatField(default=b'0', null=True, blank=True)),
             ],
             options={
                 'verbose_name': 'Amplici\xf3n \xe1reas de cacao',
@@ -331,7 +331,6 @@ class Migration(migrations.Migration):
                 ('cedula', models.CharField(max_length=20, null=True, verbose_name=b'C\xc3\xa9ula de entrevistado/a', blank=True)),
                 ('fecha_nacimiento', models.DateField(verbose_name=b'Fecha de nacimiento')),
                 ('sexo', models.IntegerField(choices=[(1, b'Hombre'), (2, b'Mujer')])),
-                ('profesion', models.IntegerField(choices=[(1, b'Agricultor(a)'), (2, b'Profesor(a)')])),
                 ('latitud', models.FloatField(null=True, blank=True)),
                 ('longitud', models.FloatField(null=True, blank=True)),
                 ('comunidad', smart_selects.db_fields.ChainedForeignKey(chained_model_field=b'municipio', chained_field=b'municipio', auto_choose=True, to='lugar.Comunidad')),
@@ -394,6 +393,18 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': '9-2 Producci\xf3n de cacao \xfaltimo a\xf1o',
                 'verbose_name_plural': '9-2 Producci\xf3n de cacao \xfaltimo a\xf1o',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Profesion',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=200)),
+            ],
+            options={
+                'verbose_name': 'Profesi\xf3n',
+                'verbose_name_plural': 'Profesiones',
             },
             bases=(models.Model,),
         ),
@@ -553,6 +564,12 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': '3 Uso de Tierra',
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='persona',
+            name='profesion',
+            field=models.ForeignKey(to='monitoreo.Profesion'),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='organizacion_asociada',

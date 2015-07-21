@@ -128,26 +128,48 @@ def dashboard(request,template='dashboard.html'):
 	fer_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_fer=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer']
 	org_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_org=Sum('produccion_cacao__produccion_c_organico'))['cacao_org']
 
-	if request.session['socio'] == "1":
+	#resultado rendimiento
+	#socio --------------------------------------------------
+	try:
 		s_result1 = rend_socio/float(baba_socio)
+	except:
+		s_result1 = 0
+	
+	try:
 		s_result2 = rend_socio/float(seco_socio)
-		s_result3 = rend_socio/float(fer_socio)
-		s_result4 = rend_socio/float(org_socio)
-	elif request.session['socio'] == "2":	
-		ns_result1 = rend_no_socio/float(baba_no_socio)
-		ns_result2 = rend_no_socio/float(seco_no_socio)
-		ns_result3 = rend_no_socio/float(fer_no_socio)
-		ns_result4 = rend_no_socio/float(org_no_socio)	
-	else:
- 		s_result1 = rend_socio/float(baba_socio)
-		s_result2 = rend_socio/float(seco_socio)
-		s_result3 = rend_socio/float(fer_socio)
-		s_result4 = rend_socio/float(org_socio)
+	except:
+		s_result2 = 0
 
+	try:
+		s_result3 = rend_socio/float(fer_socio)
+	except:
+		s_result3 = 0
+
+	try:
+		s_result4 = rend_socio/float(org_socio)
+	except:
+		s_result4 = 0
+	
+	#no socio -----------------------------------------------
+	try:
 		ns_result1 = rend_no_socio/float(baba_no_socio)
+	except:
+		ns_result1 = 0
+
+	try:
 		ns_result2 = rend_no_socio/float(seco_no_socio)
+	except:
+		ns_result2 = 0
+
+	try:
 		ns_result3 = rend_no_socio/float(fer_no_socio)
+	except:
+		ns_result3 = 0
+
+	try:
 		ns_result4 = rend_no_socio/float(org_no_socio)
+	except:
+		ns_result4 = 0	
 
 	return render(request, template, locals())
 
@@ -182,6 +204,37 @@ def educacion(request,template='educacion.html'):
                 saca_porcentajes(objeto['universitario'], objeto['num_total'], False),
                 saca_porcentajes(objeto['f_comunidad'], objeto['num_total'], False)]
 		tabla_educacion.append(fila)
+	print grafo
+
+	return render(request, template, locals())
+
+def propiedad(request,template='propiedad.html'):
+	filtro = _queryset_filtrado(request)
+
+	familias = filtro.count()
+
+	count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
+	count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
+	dueno = (count_si/familias)*100
+	no_dueno = (count_no/familias)*100
+
+	dic = {}
+	for e in PROPIEDAD_CHOICE:
+		for x in e:	
+			objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
+		try:
+			dic[x] = (objeto/count_si)*100
+		except:
+			dic[x] = 0
+
+	dic2 = {}
+	for x in Situacion.objects.all():
+		objeto = filtro.filter(tenencia_propiedad__no=x).count()
+		try:
+			dic2[x] = (objeto/count_no)*100
+		except:
+			dic2[x] = 0
+		
 
 	return render(request, template, locals())
 
@@ -270,3 +323,10 @@ def saca_porcentajes(dato, total, formato=True):
 			return '%.2f' % porcentaje
 	else:
 		return 0
+
+def get_fecha(request):
+    years = []
+    for en in Encuesta.objects.order_by('anno').values_list('anno', flat=True):
+        years.append((en))
+    lista = sorted(set(years))
+    return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')

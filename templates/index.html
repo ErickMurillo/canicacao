@@ -70,16 +70,90 @@
 		margin-bottom: 50px
 	}
 </style>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 consulta">
+				<div class=" row indicadores-inicio">
 
-	<div class="map col-md-8">
-		<div id="map-canvas"></div>
-	</div>
-	<div class="col-md-4">
-		Mujeres : {{mujeres}}<br>
-		Hombres : {{hombres}}<br>
-		Mz Cacao : {{area_cacao}}<br>
-		Produccion qq : {{produccion}}<br>
-		<a class="btn btn-default" href="/consulta/" role="button">Consulta</a>
-	</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+						<div class="row ind-mujer">
+							<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
+							<div class="col-lg-8 text-center">
+								<p>{{mujeres}}</p>
+								<p>Mujeres</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+						<div class="row ind-hombre">
+							<div class="col-lg-4"><span class="fa fa-male fa-4x"></span></div>
+							<div class="col-lg-8 text-center">
+								<p>{{hombres}}</p>
+								<p>Hombres</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+						<div class="row ind-cacao">
+							<div class="col-lg-4"><span class="fa fa-tree fa-4x"></span></div>
+							<div class="col-lg-8 text-center">
+								<p>{{area_cacao}} mz</p>
+								<p class="text-cacao">Cacao establecidas</p>
+							</div>
+						</div>	
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+						<div class="row ind-produccion">
+							<div class="col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
+							<div class="col-lg-8 text-center">
+								<p>{{produccion}} qq</p>
+								<p>Producción</p>
+							</div>
+						</div>
+						
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+						<div class="row ind-otro">
+							<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
+							<div class="col-lg-8 text-center">
+								<p>25</p>
+								<p>Mujeres</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+						<div class="row ind-consulta">
+							<div class="col-lg-4"><span class="fa fa-search fa-4x"></span></div>
+							<div class="col-lg-8 text-center">
+								<p>Explorar datos</p>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row mapeo">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-ni">
+						<div id="map-canvas"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+				<div class="informacion">
+					<div class="franja"></div>
+					
+					<div class="parrafo">
+						<div class="triangulo"></div>
+						<h4>Sistema de monitoreo de cacao.</h4>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam odio nihil harum possimus exercitationem, quaerat nemo eligendi, quis vel deleniti et porro cupiditate quod rerum quae. Reprehenderit perspiciatis, aliquid non.
+							<br><br>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, vel voluptas deleniti earum magni necessitatibus. Voluptatem, quidem ab repellendus unde cum error cumque in dolores voluptates quo minima molestias. Totam.
+							<br><br>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus dolorem, perferendis nemo repellendus ut tempora perspiciatis dolorum tempore ipsam sint a eum, quos ducimus. Tempore explicabo quisquam vero repellendus, deserunt.
+						</p>
 
+						<div class="btn-informacion text-right">
+							<a  href="">Continuar leyendo</a>
+						</div>
+					</div>
+				</div>
+			</div>
 {% endblock content %}

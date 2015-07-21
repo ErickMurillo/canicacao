@@ -1,56 +1,80 @@
-<div class="filtros">
-	<ol class="breadcrumb">
-	<li>Filtros Seleccionados: </li>
-	{% if request.session.anno %}
-        <li><a href="#">
-            {% for fecha in request.session.anno %}
-                {{ fecha }},
-            {% endfor %}
-        </a></li>	
-	{% endif %}
+<div class="seleccion">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 borde-filtro">
+                            <p>Filtros seleccionados</p>
+                        </div>
+                        <div class="col-xs-7 col-sm-7 col-md-10 col-lg-10 datos-filtro">
+                            <div class="row">
+                            {% if request.session.anno %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Año</h5>
+                                    <p>
+                                        {% for fecha in request.session.anno %}
+                                            {{ fecha }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                                
+                            {% if request.session.departamento %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Departamento</h5>
+                                    <p>
+                                        {% for depto in request.session.departamento %}
+                                            {{ depto }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                            
+                             {% if request.session.municipio %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Municipio</h5>
+                                    <p>
+                                        {% for mun in request.session.municipio %}
+                                            {{ mun }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                            
+                            {% if request.session.comunidad %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Comunidad</h5>
+                                    <p>
+                                        {% for com in request.session.comunidad %}
+                                            {{ com }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endif %}
 
-    {% if request.session.departamento %}
-        <li><a href="#">
-            {% for depto in request.session.departamento %}
-                {{ depto }},
-            {% endfor %}
-        </a></li>   
-    {% endif %}
+                            {% if request.session.organizacion %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Organización</h5>
+                                    <p>
+                                        {% for org in request.session.organizacion %}
+                                            {{ org }},
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endif %}
 
-    {% if request.session.municipio %}
-        <li><a href="#">
-            {% for mun in request.session.municipio %}
-                {{ mun }},
-            {% endfor %}
-        </a></li>   
-    {% endif %}
-    
-    {% if request.session.comunidad %}
-        <li><a href="#">
-            {% for com in request.session.comunidad %}
-                {{ com }},
-            {% endfor %}
-        </a></li>   
-    {% endif %}
+                            {% if request.session.socio %}
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Socio</h5>
+                                    <p>
+                                        {% if request.session.socio == "1" %}
+                                            Si
+                                         {% else %}
+                                            No
+                                        {% endif %} 
+                                    </p>
+                                </div>
+                            {% endif %}
 
-   {% if request.session.organizacion %}
-        <li><a href="#">
-            {% for org in request.session.organizacion %}
-                {{ org }},
-            {% endfor %}
-        </a></li>   
-    {% endif %}
 
-    {% if request.session.socio %}
-        <li><a href="#">
-             {% if request.session.socio == "1" %}
-                Si
-             {% else %}
-                No
-         {% endif %} 
-    {% endif %}
-        </a></li>  
-       
-	</ol>
-
-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

@@ -77,3 +77,4 @@ class OrganizacionAdmin(admin.ModelAdmin):
 	
 	
 admin.site.register(Organizacion,OrganizacionAdmin)
+admin.site.register(Status)

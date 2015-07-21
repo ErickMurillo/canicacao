@@ -9,6 +9,15 @@ from multiselectfield import MultiSelectField
 from django.core.validators import MaxValueValidator,MinValueValidator
 
 # Create your models here.
+class Profesion(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+
+	class Meta:
+		verbose_name = "Profesión"
+		verbose_name_plural = "Profesiones"
 
 class Recolector(models.Model):
 	nombre = models.CharField(max_length=200)
@@ -105,7 +114,7 @@ class Persona(models.Model):
 	cedula = models.CharField(max_length=20,verbose_name='Céula de entrevistado/a',null=True,blank=True)
 	fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
 	sexo = models.IntegerField(choices=SEXO_CHOICE)
-	profesion = models.IntegerField(choices=PROFESION_CHOICE)
+	profesion = models.ForeignKey(Profesion)
 	#nombre_finca = models.CharField(max_length=200,verbose_name='Nombre de la Finca')
 	departamento = models.ForeignKey(Departamento)
 	municipio = ChainedForeignKey(
@@ -668,8 +677,8 @@ class Genero_2(models.Model):
 		verbose_name_plural = "Sobre otros Ingresos"
 
 class Adicional(models.Model):
-	interes = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Tiene interes en ampliar las áreas de cacao')
-	cuanto = models.FloatField(default='0')
+	interes = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Tiene interes en ampliar las áreas de cacao',blank=True,null=True)
+	cuanto = models.FloatField(default='0',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

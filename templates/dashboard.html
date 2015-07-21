@@ -79,7 +79,8 @@ $(function () {
 
 {% block content %}
 
-{% include "filtros.html" %}
+<!-- {% include "filtros.html" %} -->
+
 	Familias : {{familias}}<br>
 	Hombres : {{hombres}}%<br>
 	Mujeres : {{mujeres}}%<br>
@@ -92,7 +93,8 @@ $(function () {
 	<div class="col-md-6" id="container" style="margin: 0 auto"></div>
 	<div class="col-md-6" id="container2" style="margin: 0 auto"></div>
 	<div class="col-md-12 indicadores">
-		<a class="btn btn-default" href="/educacion/" role="button">Familia</a>
+		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
+        <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
 	</div>
 	
 {% endblock content %}

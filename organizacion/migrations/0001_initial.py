@@ -133,7 +133,6 @@ class Migration(migrations.Migration):
                 ('nombre', models.CharField(max_length=200, verbose_name=b'Organizaci\xc3\xb3n/Instituci\xc3\xb3n')),
                 ('siglas', models.CharField(max_length=200)),
                 ('gerente', models.CharField(max_length=200, verbose_name=b'Director/Gerente')),
-                ('status', models.IntegerField(verbose_name=b'Status Legal', choices=[(1, b'------'), (2, b'------')])),
                 ('fundacion', models.DateField(verbose_name=b'A\xc3\xb1o fundaci\xc3\xb3n')),
                 ('direccion', models.CharField(max_length=300)),
                 ('telefono', models.IntegerField(null=True, verbose_name=b'N\xc3\xbamero telef\xc3\xb3nico', blank=True)),
@@ -141,13 +140,36 @@ class Migration(migrations.Migration):
                 ('email', models.EmailField(max_length=75, null=True, blank=True)),
                 ('web', models.URLField(null=True, verbose_name=b'P\xc3\xa1gina web', blank=True)),
                 ('municipio', models.ForeignKey(to='lugar.Municipio')),
-                ('usuario', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Organizaci\xf3n',
                 'verbose_name_plural': 'Organizaciones',
             },
             bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Status',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('nombre', models.CharField(max_length=200)),
+            ],
+            options={
+                'verbose_name': 'Status Legal',
+                'verbose_name_plural': 'Status Legal',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='organizacion',
+            name='status',
+            field=models.ForeignKey(verbose_name=b'Status Legal', to='organizacion.Status'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='organizacion',
+            name='usuario',
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='infraestructura',
