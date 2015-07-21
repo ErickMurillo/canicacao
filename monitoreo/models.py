@@ -189,8 +189,14 @@ PROPIEDAD_CHOICE = (
 	(4,'A nombre del Hombre y Mujer'),
 	(5,'Colectivo'),
 	)
-		
+	
+SI_NO_CHOICES = (
+	(1,'Si'),
+	(2,'No')
+	)
+
 class Tenencia_Propiedad(models.Model):
+	dueno_propiedad = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Son ustedes dueños de la propiedad')
 	si = models.IntegerField(choices=PROPIEDAD_CHOICE,
 		verbose_name='En el caso Si, a nombre de quien esta la propiedad',null=True,blank=True)
 	no = models.ForeignKey(Situacion,verbose_name='En el caso que diga NO, especifique la situación',
@@ -230,11 +236,6 @@ class Uso_Tierra(models.Model):
 		verbose_name = "3 Uso de Tierra"
 		verbose_name_plural = "3 Uso de Tierra"
 
-
-SI_NO_CHOICES = (
-	(1,'Si'),
-	(2,'No')
-	)
 
 class Reforestacion(models.Model):
 	enriquecimiento_bosques = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Enriquecimiento de los bosques')
@@ -668,7 +669,7 @@ class Genero_2(models.Model):
 
 class Adicional(models.Model):
 	interes = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Tiene interes en ampliar las áreas de cacao')
-	cuanto = models.FloatField()
+	cuanto = models.FloatField(default='0')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

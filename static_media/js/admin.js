@@ -30,6 +30,18 @@
 				$('.field-costo_certificacion').hide();
 			};
 
+		var valor_tipo3 = $('#id_tenencia_propiedad_set-0-dueno_propiedad').val();
+			if (valor_tipo3 === '1' ) {
+				$('#id_tenencia_propiedad_set-0-si').show();
+				$('#id_tenencia_propiedad_set-0-no').hide();
+			}else if(valor_tipo3 === '2'){
+				$('#id_tenencia_propiedad_set-0-si').hide();
+				$('#id_tenencia_propiedad_set-0-no').show();
+			}else{
+				$('#id_tenencia_propiedad_set-0-si').hide();
+				$('#id_tenencia_propiedad_set-0-no').hide();
+			};
+
 
 		$('#id_organizacion_asociada_set-0-socio').change(function(){
 			var valor_tipo = $('#id_organizacion_asociada_set-0-socio').val();
@@ -60,6 +72,17 @@
 				$('.field-quien_certifica').hide();
 				$('.field-paga_certificacion').hide();
 				$('.field-costo_certificacion').hide();
+			};
+		});
+
+		$('#id_tenencia_propiedad_set-0-dueno_propiedad').change(function(){
+			var valor_tipo = $('#id_tenencia_propiedad_set-0-dueno_propiedad').val();
+			if (valor_tipo === '1' ) {
+				$('#id_tenencia_propiedad_set-0-si').show();
+				$('#id_tenencia_propiedad_set-0-no').hide();
+			}else{
+				$('#id_tenencia_propiedad_set-0-si').hide();
+				$('#id_tenencia_propiedad_set-0-no').show();
 			};
 		});
 

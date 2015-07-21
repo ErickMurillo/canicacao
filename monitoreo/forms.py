@@ -73,10 +73,10 @@ def departamentos():
 
 SI_NO_CHOICE = (('','----'),(1,'Si'),(2,'No'))
 
-class EncuestaConsulta(forms.Form):
-    anno = forms.MultipleChoiceField(choices=fecha_choice(),required=True,label=u'Año')
-    departamento = forms.ModelMultipleChoiceField(queryset=departamentos(), required=False, label=u'Departamentos')
-    municipio = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all().order_by('nombre'), required=False)
-    comunidad = forms.ModelMultipleChoiceField(queryset=Comunidad.objects.all(), required=False)
-    organizacion = forms.ModelMultipleChoiceField(queryset=Organizacion.objects.all(),required=False)
-    socio = forms.ChoiceField(label=u'Socio',choices=SI_NO_CHOICE,required=False)
+# class EncuestaConsulta(forms.Form):
+#     anno = forms.MultipleChoiceField(choices=fecha_choice(),required=True,label=u'Año')
+#     departamento = forms.ModelMultipleChoiceField(queryset=departamentos(), required=False, label=u'Departamentos')
+#     municipio = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all().order_by('nombre'), required=False)
+#     comunidad = forms.ModelMultipleChoiceField(queryset=Comunidad.objects.all(), required=False)
+#     organizacion = forms.ModelMultipleChoiceField(queryset=Organizacion.objects.all(),required=False)
+#     socio = forms.ChoiceField(label=u'Socio',choices=SI_NO_CHOICE,required=False)
