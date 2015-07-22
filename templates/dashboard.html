@@ -74,11 +74,110 @@ $(function () {
         ]
     });
 });
+
+
+
+
+
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#prueba').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: ' grafico area vs  producion--pastel'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: [{
+                    name: "Microsoft Internet Explorer",
+                    y: 56.33
+                }, {
+                    name: "Chrome",
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: "Firefox",
+                    y: 10.38
+                }, {
+                    name: "Safari",
+                    y: 4.77
+                }, {
+                    name: "Opera",
+                    y: 0.91
+                }, {
+                    name: "Proprietary or Undetectable",
+                    y: 0.2
+                }]
+            }]
+        });
+    });
+});
 	</script>
 {% endblock extra_js %}
-
+{% block tablero %}
+    {% include "datostablero.html" %}
+{% endblock tablero %}
 {% block content %}
-
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Tablero de indicadores</h4>  
+        </div>
+    </div>
+</div>
+<div class="contenido-graficos">
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+          Grafico rendimiento por manzana -- barras 
+        </div>
+        <div class="col-md-12 col-lg-6">
+            grafico ingreso vs area producida--pastel
+        </div>
+        <div class="col-md-12 col-lg-6" id="prueba">
+           
+        </div>
+        <div class="col-md-12 col-lg-6">
+           <div class="promedio-cacao">
+               <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>6161 mz </h1>
+                       <h2>Promedio de cacao</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/arbol-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+           <div class="promedio-cultivo">
+               
+           </div>
+        </div>
+    </div>
+</div>
 <!-- {% include "filtros.html" %} -->
 
 	Familias : {{familias}}<br>

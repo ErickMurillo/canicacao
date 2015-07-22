@@ -1,18 +1,40 @@
+naranja=#CB6830
+cafe=#453021
+blanco=#FFFFFF
+cafeclaro=#6d4b35
+
+
 body
 	margin 0
 	font-size 16px
 	background url(../img/light_grey.png)
 	font-family 'Roboto', sans-serif
 
+/*!Mixins*/
+redondeado()
+	-webkit-border-radius arguments
+	-moz-border-radius arguments
+	-o-border-radius arguments
+	border-radius arguments
+  
+sombras()
+	-webkit-box-shadow arguments
+	-moz-box-shadow arguments
+	-o-border-radius arguments
+	box-shadow arguments
+
+
 /***********Inicio de header***************/
+
+   
 .encabezado
-	background #CB6830
+	background naranja
 
 .encabezado .row
 	margin-right 0px !important
 
 .encabezado h4
-	color #FFFFFF
+	color blanco
 	margin-left 50px
 	vertical-align middle
 	margin-top 20px
@@ -26,7 +48,7 @@ body
 a.sesion
 	padding-right 30px
 	font-size 18px
-	color #FFFFFF
+	color blanco
 	text-decoration none
 
 
@@ -41,8 +63,8 @@ a.sesion
 
 
 .navbar-default
-	background-color #453021
-	border-radius 0px
+	background-color cafe
+	redondeado 0px
 	border none
 
 .nav>li 
@@ -59,18 +81,16 @@ a.sesion
 
 
 .navbar-default .navbar-nav>.active>a,.navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover 
-	color #FFFFFF
+	color blanco
 	font-weight bold
-	background-color #604635
-	border-bottom 3px solid #FFFFFF
+	background-color cafeclaro
+	border-bottom 3px solid blanco
 
 
 
 /***********Inicio de contenido***************/
 .informacion
-	-webkit-box-shadow -5px 5px 10px 0px rgba(178,178,178,1)
-	-moz-box-shadow -5px 5px 10px 0px rgba(178,178,178,1)
-	box-shadow -5px 5px 10px 0px rgba(178,178,178,1)
+	sombras -5px 5px 10px 0px rgba(178,178,178,1)
 
 .informacion h4
 	margin 15px 15px
@@ -103,7 +123,7 @@ a.sesion
 
 .btn-informacion a
 	text-decoration none
-	color #453021
+	color cafe
 
 
 .btn-informacion
@@ -111,6 +131,9 @@ a.sesion
 	margin-right 15px
 
 /************Indicadores y mapeo***************/
+.consulta
+	padding-left 30px
+	
 .ind-mujer
 	background-color #DE4A4A
 	color white
@@ -154,7 +177,7 @@ a.sesion
 /*segunda fila de indicadores*/
 
 .ind-produccion
-	background-color #453021
+	background-color cafe
 	color white
 	padding-top 10px
 	padding-bottom 10px
@@ -204,12 +227,17 @@ a.sesion
 
 .mapa-ni
 	padding-left 0px !important
-
+.logos
+	margin-top 50px
+.catie
+	margin-left 10px
+.heifer
+	margin-left 25px	
 
 .footer
 	height 70px
 	width 100%
-	background-color #453021
+	background-color cafe
 	color white
 	margin-top 30px
 	
@@ -231,13 +259,13 @@ a.sesion
 
 
 .formulario-consulta
-	margin 60px auto 0 auto
+	margin 15px auto 15px auto
 	color white
 	
 
 
 .seleccion
-	background-color #453021
+	background-color cafe
 
 
 .seleccion p
@@ -249,7 +277,7 @@ a.sesion
 
 
 .borde-filtro
-	border-right 2px solid #FFFFFF
+	border-right 2px solid blanco
 
 
 .datos-filtro p
@@ -260,7 +288,7 @@ a.sesion
 
 .datos-filtro h5
 	text-align center
-	background-color #604635
+	background-color cafeclaro
 	padding-top 5px
 	padding-bottom 5px
 
@@ -270,8 +298,8 @@ a.sesion
 	padding-right 5px
 
 .filtros
-	background-color  #6D4B35
-	border-top 2px solid #FFFFFF
+	background-color  cafeclaro
+	border-top 2px solid blanco
 
 
 .filtros .row
@@ -287,15 +315,15 @@ a.sesion
 	padding 15px
 	width 80%
 	color white
-	background-color #CB6830
+	background-color naranja
 	border none
-	border-radius 0px
+	redondeado 0px
 	font-size 1em
 
 
 
 .btn-filtrohover
-	background-color #CB6830
+	background-color naranja
 	font-weight bold
 	color white
 
@@ -313,42 +341,70 @@ span.select2.select2-container.select2-container--default
 
 
 /******************dashboard*********************/
+.contenido-graficos
+	margin 0 auto
 .datos-dashboard
 	background-color #413A35
 	margin-top -20px
-	padding 20px
-
-
-.ind-familia
-	background-color #453021
+	padding: 20px 30px 20px 30px;
+.tablero-familia, .tablero-genero
+	padding-right 50px
+	
+.ind-familia, .tablero-hombre, .tablero-mujer, .ind-org
+	background-color cafe
 	color white
 	padding-top 10px
 	padding-bottom 10px
-	margin-right 20px
 	text-align center
+	
+	h1
+		margin-top 8px
+		margin-bottom 10px
+		color naranja
+	h2
+		margin-top 12px
+		margin-bottom 12px
+		color naranja
+	p
+		margin 15px 0px 0px 30px
 
-.ind-familia h1
-	margin-top 8px
-	margin-bottom 10px
-	color #CB6830
+.tablero-hombre
+	border-right 2px solid cafeclaro
 
-.ind-familia p
-	margin 15px 0px 0px 0px
+.ind-org 
+	p
+		margin 15px 0px 0px 0px !important
 
-.img-familia
-	margin-top 7px
+/*! inicio de contenido tablero*/
 
+.tablero-titulo
+	background cafeclaro
+	color blanco
+	margin-top 60px
+	margin-bottom 40px
 
-
-
-
-
-
-
-
-
-
-
+.titulo-inicio
+	margin-left 50px
+		
+	&:before
+		content ""
+		position absolute
+		left 0px
+		top 0px
+		height 39px
+		width 20px
+		background-color cafe
+.promedio-cacao
+	background-color blanco
+	border 3px solid #cacaca
+	padding 20px 20px 20px 60px
+	h1, h2
+		color naranja
+		font-weight bold
+		margin-bottom 5px
+		margin-top 5px
+.texto-indicador
+	margin-top 20px
 
 
 
@@ -362,7 +418,7 @@ span.select2.select2-container.select2-container--default
 
 
 @media (min-width 1200px)
-	.formulario-consulta
+	.formulario-consulta, .contenido-graficos
 		width 1170px
 	
 
