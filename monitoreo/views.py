@@ -9,7 +9,8 @@ from django.db.models import Sum, Count, Avg
 # Create your views here.
 def _queryset_filtrado(request):
 	params = {}
-	if 'anno' in request.session:
+	
+	if request.session['anno']:
 		params['anno__in'] = request.session['anno']
 
 	if request.session['departamento']:
@@ -215,8 +216,9 @@ def propiedad(request,template='propiedad.html'):
 
 	count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
 	count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
-	dueno = (count_si/familias)*100
-	no_dueno = (count_no/familias)*100
+	dueno = (count_si/float(familias))*100
+	no_dueno = (count_no/float(familias))*100
+
 
 	dic = {}
 	for e in PROPIEDAD_CHOICE:

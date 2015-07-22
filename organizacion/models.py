@@ -40,6 +40,7 @@ class Organizacion(models.Model):
 	class Meta:
 		verbose_name = "Organización"
 		verbose_name_plural = "Organizaciones"
+		unique_together = ("nombre",)
 
 SI_NO_CHOICES = (
 	(1,'Si'),

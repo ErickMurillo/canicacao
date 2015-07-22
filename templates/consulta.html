@@ -1,13 +1,84 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<link href="/static/css/select2.min.css" rel="stylesheet" />
+<script src="/static/js/select2.min.js"></script>
+<!--<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
 
 <script src="/static/js/jquery.multiselect.min.js" type="text/javascript"></script>
 <script src="/static/js/jquery.multiselect.filter.js" type="text/javascript"></script>
-<link href="/static/css/jquery.multiselect.css" rel="stylesheet" type="text/css"/>
+<link href="/static/css/jquery.multiselect.css" rel="stylesheet" type="text/css"/>-->
+
 <script type="text/javascript">
+  $('#id_anno').select2({tags: true});
+  $('#id_departamento').select2({tags: true});
+  $('#id_municipio').select2({tags: true});
+  $('#id_comunidad').select2({tags: true});
+  $('#id_socio').select2({minimumResultsForSearch: Infinity});
+  $('#id_organizacion').select2({tags: true});
+
+  $("#id_municipio").prop("disabled", true);
+  $("#id_comunidad").prop("disabled", true);
+  $("#id_organizacion").prop("disabled", true);
+  
+
+var foo = [];
+$(document).on('change','#id_departamento',function(){
+         
+    $('#id_departamento :selected').each(function(i, selected){ 
+        foo[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
+        $('#id_municipio').html('');
+        $("#id_municipio").prop("disabled", false);
+        var municipio = $('#id_municipio')
+        if(data){
+            
+           $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+                var group = $('<optgroup></optgroup>').attr('label', j);
+                $.each(item2, function(k, item3){
+                    group.append($('<option></option>').val(item3.id).html(item3.nombre));
+                });
+                group.appendTo(municipio);
+            });
+
+        });
+       }
+   });
+
+    });
+
+var foo2 = [];
+$(document).on('change','#id_municipio',function(){
+         
+    $('#id_municipio :selected').each(function(i, selected){ 
+        foo2[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
+        $('#id_comunidad').html('');
+        $("#id_comunidad").prop("disabled", false);
+        if(data){
+            $.each(data, function(i, item){
+                $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
+                });
+       }
+   });
+
+     $.getJSON('/ajax/organi/?ids='+foo2.join(","), function(data){
+        $('#id_organizacion').html('');
+        $("#id_organizacion").prop("disabled", false);
+        if(data){
+            $.each(data, function(i, item){
+                $('#id_organizacion').append($('<option></option>').val(item.id).html(item.siglas));
+                });
+       }
+   });
+    });
+</script>
+
+<!--<script type="text/javascript">
     var organizacion;
     var comunidad;
     var municipio;
@@ -145,7 +216,7 @@
             }
         });
     }
-</script>
+</script>-->
 {% endblock extra_js %}
 
 {% block content %}
@@ -154,6 +225,9 @@
 
         position: absolute;
         bottom: -150px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #CB6830 !important;
     }
 </style>
 
@@ -212,7 +286,5 @@
                     </div>
                 </div>
             </div>
-
-    
 
 {% endblock content %}

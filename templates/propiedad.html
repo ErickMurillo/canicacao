@@ -3,8 +3,8 @@
 {% block extra_js %}
 	<script src="/static/js/highcharts.js"></script>
 	<script src="/static/js/exporting.js"></script>
-	<script src="http://code.highcharts.com/modules/data.js"></script>
-	<script src="http://code.highcharts.com/modules/drilldown.js"></script>
+	<script src="/static/js/data.js"></script>
+	<script src="/static/js/drilldown.js"></script>
 <script>
 	$(function () {
     // Create the chart
@@ -72,5 +72,5 @@
 {% endblock extra_js %}
 
 {% block content %}
-	<div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+	<div id="container"></div>
 {% endblock content %}
