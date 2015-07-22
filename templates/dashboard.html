@@ -164,8 +164,8 @@ $(function () {
            <div class="promedio-cacao">
                <div class="row">
                    <div class="col-md-8 col-lg-8 texto-indicador">
-                       <h1>6161 mz </h1>
-                       <h2>Promedio de cacao</h2>
+                       <h1>{{avg_cacao}} mz </h1>
+                       <h2>Promedio de mz <br>de cacao establecidas</h2>
                    </div>
                    <div class="col-md-4 col-lg-4">
                        <img src="/static/img/arbol-01.png" alt="">
@@ -173,7 +173,15 @@ $(function () {
                </div>
            </div>
            <div class="promedio-cultivo">
-               
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{avg_area_productor|floatformat:2}} mz </h1>
+                       <h2>Promedio área en mz por productor</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/arbolito-01.png" alt="">
+                   </div>
+               </div>
            </div>
         </div>
     </div>
