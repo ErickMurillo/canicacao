@@ -362,17 +362,23 @@ span.select2.select2-container.select2-container--default {
   width: 20px;
   background-color: #453021;
 }
-.promedio-cacao {
+.promedio-cacao,
+.promedio-cultivo {
   background-color: #fff;
   border: 3px solid #cacaca;
   padding: 20px 20px 20px 60px;
 }
 .promedio-cacao h1,
-.promedio-cacao h2 {
+.promedio-cultivo h1,
+.promedio-cacao h2,
+.promedio-cultivo h2 {
   color: #cb6830;
   font-weight: bold;
   margin-bottom: 5px;
   margin-top: 5px;
+}
+.promedio-cultivo {
+  margin-top: 30px;
 }
 .texto-indicador {
   margin-top: 20px;
