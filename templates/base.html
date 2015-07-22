@@ -56,7 +56,8 @@
 				</div><!-- /.navbar-collapse -->
 			</nav>
 		</header>
-		<div class="container">
+		{% block tablero %}{% endblock tablero %}
+		<div class="container-fluid">
 		{% block content %}{% endblock content %}
 		</div>
 		<div class="footer">
