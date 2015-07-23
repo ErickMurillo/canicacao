@@ -377,15 +377,17 @@ span.select2.select2-container.select2-container--default
 
 /*! inicio de contenido tablero*/
 
-.tablero-titulo
+.tablero-titulo, .indicadores-titulo
 	background cafeclaro
 	color blanco
 	margin-top 60px
 	margin-bottom 40px
 
-.titulo-inicio
+
+.titulo-inicio, .titulo-indicadores
 	margin-left 50px
-		
+	span
+		margin-left 20px	
 	&:before
 		content ""
 		position absolute
@@ -394,7 +396,7 @@ span.select2.select2-container.select2-container--default
 		height 39px
 		width 20px
 		background-color cafe
-.promedio-cacao, .promedio-cultivo
+.promedio-cacao, .promedio-cultivo, .socio, .no-socio
 	background-color blanco
 	border 3px solid #cacaca
 	padding 20px 20px 20px 60px
@@ -404,15 +406,36 @@ span.select2.select2-container.select2-container--default
 		margin-bottom 5px
 		margin-top 5px
 
-.promedio-cultivo
-	margin-top 30px
-
+.promedio-cultivo, .no-socio
+	margin-top 33px
+	
+.no-socio, .socio
+	padding-top 24px
+	padding-bottom 24px
+	
 .texto-indicador
 	margin-top 20px
 
+#grafico3, #grafico4
+	background-color blanco
+	border 3px solid #cacaca
+	
 
+	/*mayor a 760*/
+.indicadores-t1
+	padding-right 0px
+.indicadores-t2
+	padding-left 0px
+.grafico-4
+	width 49%
+	margin-left 1%
+.grafico-3
+	width 49%
+	margin-right 1%
 
-
+.fila1,.fila2,.fila3
+	margin-top 20px
+		
 
 
 
