@@ -10,7 +10,7 @@ class Uso_TierraForm(ModelForm):
     class Meta:
         model = Uso_Tierra
         fields = ('area_total','bosque','tacotal','cultivo_anual','plantacion_forestal','area_pasto_abierto','area_pasto_arboles',
-                    'cultivo_perenne','cultivo_semi_perenne','cacao','huerto_mixto_cacao')
+                    'cultivo_perenne','cultivo_semi_perenne','cacao','huerto_mixto_cacao','otros')
 
     def clean(self):
         area_total = self.cleaned_data.get('area_total')
@@ -24,9 +24,10 @@ class Uso_TierraForm(ModelForm):
         cultivo_semi_perenne = self.cleaned_data.get('cultivo_semi_perenne')
         cacao = self.cleaned_data.get('cacao')
         huerto_mixto_cacao = self.cleaned_data.get('huerto_mixto_cacao')
+        otros = self.cleaned_data.get('otros')
 
         suma_total = (bosque + tacotal + cultivo_anual + plantacion_forestal + area_pasto_abierto + area_pasto_arboles
-                    + cultivo_perenne + cultivo_semi_perenne + cacao + huerto_mixto_cacao)
+                    + cultivo_perenne + cultivo_semi_perenne + cacao + huerto_mixto_cacao + otros)
 
         if (area_total < suma_total):
 

@@ -21,6 +21,7 @@ class Profesion(models.Model):
 
 class Recolector(models.Model):
 	nombre = models.CharField(max_length=200)
+	organizacion = models.ForeignKey(Organizacion)
 
 	def __unicode__(self):
 		return self.nombre
@@ -136,13 +137,19 @@ class Persona(models.Model):
 	class Meta:
 		verbose_name = "Persona"
 		verbose_name_plural = "Personas"
+		unique_together = ("cedula",)
 
 
 class Encuesta(models.Model):
-	fecha = models.DateField()
-	recolector = models.ForeignKey(Recolector)
-	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización')
-	persona =  models.ForeignKey(Persona,verbose_name='Nombre')
+	fecha = models.DateField(verbose_name='Fecha de la encuesta')
+	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización que levanta datos')
+	recolector = ChainedForeignKey(
+                                Recolector,
+                                chained_field="organizacion", 
+                                chained_model_field="organizacion",
+                                show_all=False, auto_choose=True)
+                                #models.ForeignKey(Recolector,verbose_name='Nombre del encuestador')
+	persona =  models.ForeignKey(Persona,verbose_name='Nombre de la persona encuestada')
 	anno = models.IntegerField()
 	usuario = models.ForeignKey(User)
 
@@ -239,6 +246,7 @@ class Uso_Tierra(models.Model):
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
 	huerto_mixto_cacao = models.FloatField(default='0',verbose_name='Huerto mixto con cacao',
 									validators = [MinValueValidator(0), MaxValueValidator(100)])
+	otros = models.FloatField(default='0',validators = [MinValueValidator(0), MaxValueValidator(100)])
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -369,7 +377,8 @@ class Mitigacion_Riesgos(models.Model):
 	almacenamiento_agua = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Cuenta con obras para almacenamiento de agua?')
 	distribucion_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Participan en cadena de distribución de producto cacao?')
 	venta_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Cuenta con un contrato para la venta de cacao?')
-	tecnologia_secado = models.CharField(max_length=200,null=True,blank=True,verbose_name='¿Dispone de tecnología para el secado y almacenamiento de cosecha? Mencione')
+	d_tecnologia_secado = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Dispone de tecnología para el secado y almacenamiento de cosecha?')
+	tecnologia_secado = models.CharField(max_length=200,null=True,blank=True,verbose_name='Mencione')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -407,6 +416,7 @@ class Plantacion(models.Model):
 	edad = models.IntegerField(choices=EDAD_PLANTA_CHOICES)
 	area = models.FloatField(verbose_name='Área en Mz')
 	edad_real = models.FloatField(verbose_name='Edad real de la Plantación (años)')
+	numero_plantas = models.IntegerField(verbose_name='Número de plantas en el área')
 	numero_p_semilla = models.IntegerField(verbose_name='Número de plantas establecidas por semilla')
 	numero_p_injerto = models.IntegerField(verbose_name='Número de plantas establecidas por injerto')
 	numero_p_improductivas = models.IntegerField(verbose_name='Número de plantas improductivas en el área')
@@ -517,14 +527,14 @@ P_MANEJO_POST_C_CHOICES = (
 	)
 
 class Tecnicas_Aplicadas(models.Model):
-	viveros = MultiSelectField(choices=VIVEROS_CHOICES)
-	fertilizacion = MultiSelectField(choices=FERTILIZACION_CHOICES,verbose_name='Prácticas de fertilización')
-	pract_manejo_fis = MultiSelectField(choices=P_MANEJO_FIS_CHOICES,verbose_name='Prácticas de manejo fitosanitario')
-	pract_manejo_prod = MultiSelectField(choices=P_MANEJO_PROD_CHOICES,verbose_name='Prácticas de manejo productivo')
-	pract_mejora_plat = MultiSelectField(choices=P_MEJORA_PLANT_CHOICES,verbose_name='Prácticas de mejoramiento de la plantación')
-	pract_manejo_post_c = MultiSelectField(choices=P_MANEJO_POST_C_CHOICES,verbose_name='Prácticas de manejo postcosecha y beneficiado')
-	acopio_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Acopio de cacao en la comunidad/municipio')
-	acopio_org = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Asociación con Org. que acopia cacao')
+	viveros = MultiSelectField(choices=VIVEROS_CHOICES,null=True,blank=True)
+	fertilizacion = MultiSelectField(choices=FERTILIZACION_CHOICES,verbose_name='Prácticas de fertilización',blank=True,null=True)
+	pract_manejo_fis = MultiSelectField(choices=P_MANEJO_FIS_CHOICES,verbose_name='Prácticas de manejo fitosanitario',blank=True,null=True)
+	pract_manejo_prod = MultiSelectField(choices=P_MANEJO_PROD_CHOICES,verbose_name='Prácticas de manejo productivo',blank=True,null=True)
+	pract_mejora_plat = MultiSelectField(choices=P_MEJORA_PLANT_CHOICES,verbose_name='Prácticas de mejoramiento de la plantación',blank=True,null=True)
+	pract_manejo_post_c = MultiSelectField(choices=P_MANEJO_POST_C_CHOICES,verbose_name='Prácticas de manejo postcosecha y beneficiado',blank=True,null=True)
+	acopio_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Acopio de cacao en la comunidad/municipio',blank=True,null=True)
+	acopio_org = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Asociación con Org. que acopia cacao',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -633,12 +643,12 @@ PRIORIDAD_CHOICES = (
 	)
 
 class Problemas_Cacao(models.Model):
-	fertilidad = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Baja fertilidad del suelo')
-	arboles = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Árboles poco productivos')
-	plantaciones = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Plantaciones muy viejas')
-	plagas = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Plagas y enfermedades')
-	produccion = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Poca producción')
-	mano_obra = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Poca disponibilidad de mano de obra')
+	fertilidad = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Baja fertilidad del suelo')
+	arboles = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Árboles poco productivos')
+	plantaciones = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Plantaciones muy viejas')
+	plagas = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Plagas y enfermedades')
+	produccion = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Poca producción')
+	mano_obra = models.IntegerField(null=True, blank=True, choices=PRIORIDAD_CHOICES,verbose_name='Poca disponibilidad de mano de obra')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -653,11 +663,11 @@ DECISIONES_CHOICES = (
 	)
 
 class Genero(models.Model):
-	actividades = models.ManyToManyField(Actividades_Produccion,verbose_name='Actividades en las que participa')
-	ingresos = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Usted recibe ingresos por las actividades que realiza?')
+	actividades = models.ManyToManyField(Actividades_Produccion,verbose_name='Actividades en las que participa',blank=True,null=True)
+	ingresos = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Usted recibe ingresos por las actividades que realiza?',blank=True,null=True)
 	ingreso_mesual = models.FloatField(null=True,blank=True,verbose_name='Ingreso mensual aproximado percibido')
-	destino_ingresos = models.CharField(max_length=300,verbose_name='Destino de los ingresos percibidos')
-	decisiones = MultiSelectField(choices=DECISIONES_CHOICES,verbose_name='Decisiones sobre destino de la producción')
+	destino_ingresos = models.CharField(max_length=300,verbose_name='Destino de los ingresos percibidos',blank=True,null=True)
+	decisiones = MultiSelectField(choices=DECISIONES_CHOICES,verbose_name='Decisiones sobre destino de la producción',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
@@ -665,11 +675,11 @@ class Genero(models.Model):
 		verbose_name_plural = "14 Género"
 
 class Genero_2(models.Model):
-	ganaderia = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Ganadería')
-	granos_basicos = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Granos Básicos')
-	cacao = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Cacao')
-	cafe = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Café')
-	madera = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Madera')
+	ganaderia = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Ganadería',blank=True,null=True)
+	granos_basicos = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Granos Básicos',blank=True,null=True)
+	cacao = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Cacao',blank=True,null=True)
+	cafe = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Café',blank=True,null=True)
+	madera = models.IntegerField(choices=PRIORIDAD_CHOICES,verbose_name='Madera',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

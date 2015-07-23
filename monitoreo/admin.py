@@ -30,7 +30,7 @@ class Uso_Tierra_Inline(admin.StackedInline):
 		('Número de manzanas en la que esta distribuida la finca', {'fields': [('bosque','tacotal','cultivo_anual'),
 																				('plantacion_forestal','area_pasto_abierto','area_pasto_arboles'),
 																				('cultivo_perenne','cultivo_semi_perenne','cacao'),
-																				('huerto_mixto_cacao',)
+																				('huerto_mixto_cacao','otros')
 			]}),
 	]
 	form = Uso_TierraForm
@@ -159,7 +159,7 @@ class EncuestaAdmin(admin.ModelAdmin):
 
 	exclude = ('usuario','anno')
 	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha','recolector'),('organizacion','persona'))}),
+		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona',))}),
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
