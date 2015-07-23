@@ -18,7 +18,7 @@ class Status(models.Model):
 class Organizacion(models.Model):
 	nombre = models.CharField(max_length=200,verbose_name='Organización/Institución')
 	siglas = models.CharField(max_length=200)
-	gerente = models.CharField(max_length=200,verbose_name='Director/Gerente',null=True,blank=True)
+	gerente = models.CharField(max_length=200,verbose_name='Representante legal',null=True,blank=True)
 	status = models.ForeignKey(Status,verbose_name='Status Legal',null=True,blank=True)
 	fundacion = models.DateField(verbose_name='Año fundación',null=True,blank=True)
 	direccion = models.CharField(max_length=300,null=True,blank=True)
