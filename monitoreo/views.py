@@ -92,8 +92,17 @@ def dashboard(request,template='dashboard.html'):
 	filtro = _queryset_filtrado(request)	
 
 	familias = filtro.count()
-	hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
-	mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+	try:
+		hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+	except:
+		hombres = 0 
+	
+	try:
+		mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+	except:
+		mujeres = 0 
+	
+	
 	socio = filtro.filter(organizacion_asociada__socio='1').count()
 	no_socio = filtro.filter(organizacion_asociada__socio='2').count()
 	avg_cacao = filtro.aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']
@@ -101,7 +110,11 @@ def dashboard(request,template='dashboard.html'):
 	for x in filtro:
 		organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
 
-	avg_area_productor = filtro.aggregate(sum_area=Sum('uso_tierra__area_total'))['sum_area'] / familias
+	try:
+		avg_area_productor = filtro.aggregate(sum_area=Sum('uso_tierra__area_total'))['sum_area'] / familias
+	except:
+		avg_area_productor = 0
+	
 
 	#graf volumen producido vs acopiado
 	dic = {}
