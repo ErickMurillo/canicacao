@@ -330,3 +330,7 @@ def get_fecha(request):
         years.append((en))
     lista = sorted(set(years))
     return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')
+
+def get_organizacion(request):
+    
+    return render(request, "organizacion.html")

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" src="/static/js/markerclusterer.js"></script>
+<script type="text/javascript" src="/static/js/infobox.js"></script>t>
+<script src="/static/js/select2.js" type="text/javascript"></script>
+<link href="/static/css/select2.css" rel="stylesheet" type="text/css"/>
+
+<script>
+
+    $(document).ready(function() {
+        
+        $('li.item-org').addClass('active');
+    
+    })
+
+    $(document).ready(function() {
+			$("#id_departamento").select2();
+		  	$("#id_municipio").select2();
+		  	$("#id_comunidad").select2();
+		});
+    
+	var markers = [];
+	function initialize()
+	{	
+		var infowindow = new google.maps.InfoWindow();
+		var myLatlng = new google.maps.LatLng(13,-85);
+		var myOptions = {
+			zoom: 7,
+			center: myLatlng, 
+		}
+
+		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+		var bounds = new google.maps.LatLngBounds();
+		var infowindow = new google.maps.InfoWindow();
+		var image = new google.maps.MarkerImage('/static/img/m2.png');
+		
+		
+		$.getJSON("{% url 'obtener-lista' %}", function(data){
+			$.each(data, function(i, elemento){
+				var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
+				bounds.extend(latlng);	
+				var marker = new google.maps.Marker({
+					position: latlng,
+					map: map,
+					title: elemento.nombre,
+					icon: image,
+					item: '',
+                    id: elemento.id
+				});
+				markers.push(marker);
+
+				google.maps.event.addListener(marker, 'click', (function(mm, tt) {
+					return function() {
+						infowindow.setContent(tt);
+						infowindow.open(map, mm);
+					}
+				})(marker, elemento.nombre));
+				
+			});
+			var markerCluster = new MarkerClusterer(map, markers);
+
+		});
+		
+		//map.fitBounds(bounds);	
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+
+<style>
+	#map-canvas{
+		height: 400px;
+		width: 95%;
+  		margin: 20px auto;
+
+	
+		padding: 0px;
+	}
+
+	.map{
+		margin-bottom: 50px
+	}
+</style>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+	<div class="row mapeo-organizaciones">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-titulo">
+			<h4>Ubicación de las organizaciones socias</h4>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-organizaciones">
+			<div id="map-canvas"></div>
+		</div>
+	</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+				<div class="consulta-org">
+		
+					
+					<div class="consulta-org-titulo">
+						<h4>Filtrar datos de las organizaciones</h4>
+					</div>
+					<div class="filtro-org-consulta">
+							<div class="form-group">
+                                <label >Departamento</label>
+                                <br>
+                                <select multiple="multiple" id="id_departamento" name="fecha">
+									<option value="Managua">Managua</option>
+									<option value="Rivas">Rivas</option>
+									<option value="Rivas">Rio san juan</option>
+								</select>                     
+                            </div>
+
+                            <div class="form-group">
+                                <label >Municipio</label>
+                                <br>
+                                <select multiple="multiple" id="id_municipio" name="fecha">
+									<option value="San carlos">San carlos</option>
+								
+								</select>                     
+                            </div>
+
+                            <div class="form-group">
+                                <label >Comunidad</label>
+                                <br>
+                                <select multiple="multiple" id="id_comunidad" name="fecha">
+									<option value="San isidro">San isidro</option>
+									
+								</select>                     
+                            </div>
+
+						<div class="btn btn-org-consulta">
+							<a  href="">Continuar leyendo</a>
+						</div>	
+					</div>	
+
+					
+					
+				</div>
+
+
+			</div>
+{% endblock content %}
