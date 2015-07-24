@@ -5,8 +5,13 @@
 	<script src="/static/js/exporting.js"></script>
 
 	<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
 	$(function () {
-    $('#container').highcharts({
+    $('#grafico1').highcharts({
         chart: {
             type: 'column'
         },
@@ -44,7 +49,7 @@
 });
 
 $(function () {
-    $('#container2').highcharts({
+    $('#grafico5').highcharts({
         chart: {
             type: 'column'
         },
@@ -226,9 +231,7 @@ $(function () {
 </div>
 <div class="contenido-graficos">
     <div class="row  fila 1">
-        <div class="col-md-12 col-lg-6">
-          Grafico rendimiento por manzana -- barras 
-        </div>
+        <div class="col-md-12 col-lg-6" id="grafico1"></div>
         <div class="col-md-12 col-lg-6">
             grafico ingreso vs area producida--pastel
         </div>
@@ -296,6 +299,11 @@ $(function () {
            
         </div>
     </div>
+
+    <!--fila 4-->
+    <div class="row">
+        <div class="col-md-12 col-lg-12" id="grafico5"></div>
+    </div>
 </div>
 
 <div class="indocadores-monitore">
@@ -311,9 +319,48 @@ $(function () {
     </div>
 </div>
 <div class="botonera">
-    hola que haces
+    <div class="row">
+
+        <a class="btn col-lg-3" href="">Miembros del hogar</a>
+
+        <a class="btn col-lg-3" href="/propiedad/">Tenencia de la propiedad</a>
+        <a class="btn col-lg-3" href="">Producción</a>
+        <a class="btn col-lg-3" href="">practicas</a>
+        <a class="btn col-lg-3" href="/educacion/">Nivel educativo</a>
+        <a class="btn col-lg-3" href="">Uso de tierra</a>
+        <a class="btn col-lg-3" href="">Riesgo</a>
+        <a class="btn col-lg-3" href="">Comercialización</a>
+    </div>
 </div>
-<!-- {% include "filtros.html" %} -->
+
+<!--<div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div>
+        
+        <div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div> 
+<br>
+<br>
+<!-- {% include "filtros.html" %} 
 
 	Familias : {{familias}}<br>
 	Hombres : {{hombres}}%<br>
@@ -324,11 +371,11 @@ $(function () {
 	Promedio mz cacao : {{avg_cacao}}<br>
 	Promedio área en mz por productor : {{avg_area_productor}}<br>
 
-	<div class="col-md-6" id="container" style="margin: 0 auto"></div>
-	<div class="col-md-6" id="container2" style="margin: 0 auto"></div>
+	
+	
 	<div class="col-md-12 indicadores">
 		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
         <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
 	</div>
-	
+	-->
 {% endblock content %}

@@ -374,7 +374,7 @@ span.select2.select2-container.select2-container--default {
 .socio,
 .no-socio {
   background-color: #fff;
-  border: 3px solid #cacaca;
+  border: 3px solid #e7e6e4;
   padding: 20px 20px 20px 60px;
 }
 .promedio-cacao h1,
@@ -403,9 +403,14 @@ span.select2.select2-container.select2-container--default {
   margin-top: 20px;
 }
 #grafico3,
-#grafico4 {
+#grafico4,
+#grafico5,
+#grafico1 {
   background-color: #fff;
-  border: 3px solid #cacaca;
+  border: 3px solid #e7e6e4;
+}
+#grafico5 {
+  margin-top: 20px;
 /*mayor a 760*/
 }
 .indicadores-t1 {
@@ -418,7 +423,8 @@ span.select2.select2-container.select2-container--default {
   width: 49%;
   margin-left: 1%;
 }
-.grafico-3 {
+.grafico-3,
+#grafico1 {
   width: 49%;
   margin-right: 1%;
 }
@@ -426,6 +432,56 @@ span.select2.select2-container.select2-container--default {
 .fila2,
 .fila3 {
   margin-top: 20px;
+}
+.botonera {
+  background-color: #e7e6e4;
+  display: none;
+}
+.botonera .row {
+  padding: 10px;
+}
+.botonera a {
+  background-color: #9ac15a;
+  color: #fff;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  padding: 10px;
+  width: 23%;
+  margin-right: 1%;
+  margin-left: 1%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-box-shadow: 5px 5px 0px -2px #88b84f;
+  -moz-box-shadow: 5px 5px 0px -2px #88b84f;
+  -o-border-radius: 5px 5px 0px -2px #88b84f;
+  box-shadow: 5px 5px 0px -2px #88b84f;
+}
+.botonera a:hover {
+  font-weight: bold;
+  color: #fff;
+  background-color: #cb6830;
+  -webkit-box-shadow: 5px 5px 0px -2px #d46325;
+  -moz-box-shadow: 5px 5px 0px -2px #d46325;
+  -o-border-radius: 5px 5px 0px -2px #d46325;
+  box-shadow: 5px 5px 0px -2px #d46325;
+}
+.botonera a:nth-child(4n+3),
+.botonera a:nth-child(4n+4) {
+  background-color: #7cb4eb;
+  -webkit-box-shadow: 5px 5px 0px -2px #6ba7de;
+  -moz-box-shadow: 5px 5px 0px -2px #6ba7de;
+  -o-border-radius: 5px 5px 0px -2px #6ba7de;
+  box-shadow: 5px 5px 0px -2px #6ba7de;
+}
+.botonera a:nth-child(4n+3):hover,
+.botonera a:nth-child(4n+4):hover {
+  background-color: #cb6830;
+  -webkit-box-shadow: 5px 5px 0px -2px #d46325;
+  -moz-box-shadow: 5px 5px 0px -2px #d46325;
+  -o-border-radius: 5px 5px 0px -2px #d46325;
+  box-shadow: 5px 5px 0px -2px #d46325;
 }
 @media (min-width: 1200px) {
   .formulario-consulta,

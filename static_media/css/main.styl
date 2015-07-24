@@ -398,7 +398,7 @@ span.select2.select2-container.select2-container--default
 		background-color cafe
 .promedio-cacao, .promedio-cultivo, .socio, .no-socio
 	background-color blanco
-	border 3px solid #cacaca
+	border 3px solid #e7e6e4
 	padding 20px 20px 20px 60px
 	h1, h2
 		color naranja
@@ -416,10 +416,12 @@ span.select2.select2-container.select2-container--default
 .texto-indicador
 	margin-top 20px
 
-#grafico3, #grafico4
+#grafico3, #grafico4, #grafico5, #grafico1
 	background-color blanco
-	border 3px solid #cacaca
-	
+	border 3px solid #e7e6e4
+
+#grafico5
+	margin-top 20px	
 
 	/*mayor a 760*/
 .indicadores-t1
@@ -429,16 +431,42 @@ span.select2.select2-container.select2-container--default
 .grafico-4
 	width 49%
 	margin-left 1%
-.grafico-3
+.grafico-3, #grafico1
 	width 49%
 	margin-right 1%
 
 .fila1,.fila2,.fila3
 	margin-top 20px
 		
-
-
-
+.botonera
+	background-color #e7e6e4
+	display none
+	.row
+		padding 10px
+	a
+		background-color #9ac15a
+		color blanco
+		redondeado 0px
+		padding 10px
+		width 23%
+		margin-right 1%
+		margin-left 1%
+		margin-top 10px
+		margin-bottom 10px
+		sombras 5px 5px 0px -2px #88b84f
+		
+		&:hover
+			font-weight bold
+			color blanco
+			background-color naranja
+			sombras 5px 5px 0px -2px #d46325
+		
+		&:nth-child(4n+3), &:nth-child(4n+4)
+			background-color #7cb4eb
+			sombras 5px 5px 0px -2px #6ba7de
+			&:hover
+				background-color naranja
+				sombras 5px 5px 0px -2px #d46325
 
 
 
