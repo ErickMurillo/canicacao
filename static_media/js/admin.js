@@ -2,6 +2,7 @@
 
 	$(document).ready( function() 
 	{
+		
 		// var valor_tipo = $('#id_organizacion_asociada_set-0-socio').val();
 		// 	if (valor_tipo === '1' ) {
 		// 		$('#id_organizacion_asociada_set-0-organizacion').show();

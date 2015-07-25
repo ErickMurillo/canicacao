@@ -171,7 +171,8 @@ class EncuestaAdmin(admin.ModelAdmin):
 
 	list_display = ('persona','organizacion','recolector')
 	list_display_links = ('organizacion','persona')
-	#list_filter = ('departamento',)
+	list_filter = ('organizacion__nombre','recolector__nombre')
+	search_fields = ['persona__nombre']
 	class Media:
 		js = ('js/admin.js',)
 		css = {

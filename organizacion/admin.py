@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
+from .forms import *
 
 # Register your models here.
 class Aspectos_JuridicosInline(admin.StackedInline):
@@ -41,6 +42,8 @@ class Comercializacion_OrgInline(admin.TabularInline):
 	model = Comercializacion_Org
 	max_num = 1
 	can_delete = False
+	form = Comercializacion_OrgForm
+	extra = 1
 
 class Comercializacion_ImportanciaInline(admin.TabularInline):
 	model = Comercializacion_Importancia

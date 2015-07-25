@@ -116,6 +116,7 @@ class Persona(models.Model):
 	fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
 	sexo = models.IntegerField(choices=SEXO_CHOICE)
 	profesion = models.ForeignKey(Profesion)
+	organizacion = models.ForeignKey(Organizacion,verbose_name='A que Organización pertenece')
 	#nombre_finca = models.CharField(max_length=200,verbose_name='Nombre de la Finca')
 	departamento = models.ForeignKey(Departamento)
 	municipio = ChainedForeignKey(
@@ -149,7 +150,12 @@ class Encuesta(models.Model):
                                 chained_model_field="organizacion",
                                 show_all=False, auto_choose=True)
                                 #models.ForeignKey(Recolector,verbose_name='Nombre del encuestador')
-	persona =  models.ForeignKey(Persona,verbose_name='Nombre de la persona encuestada')
+	persona =  ChainedForeignKey(
+                                Persona,
+                                chained_field="organizacion", 
+                                chained_model_field="organizacion",
+                                show_all=False, auto_choose=True)
+                                #models.ForeignKey(Persona,verbose_name='Nombre de la persona encuestada')
 	anno = models.IntegerField()
 	usuario = models.ForeignKey(User)
 
@@ -564,11 +570,11 @@ QUIEN_VENDE_CHOICES = (
 
 class Comercializacion_Cacao(models.Model):
 	producto = models.IntegerField(choices=PRODUCTO_CHOICES)
-	auto_consumo = models.FloatField(verbose_name='Auto-consumo')
-	venta =  models.FloatField()
-	precio_venta = models.FloatField(verbose_name='Precio venta por unidad')
-	quien_vende = MultiSelectField(choices=QUIEN_VENDE_CHOICES,verbose_name='¿A quién le vende?')
-	donde_vende = models.ManyToManyField(Municipio,verbose_name='¿Dónde lo vende?')
+	auto_consumo = models.FloatField(verbose_name='Auto-consumo',blank=True, null=True)
+	venta =  models.FloatField(blank=True, null=True)
+	precio_venta = models.FloatField(verbose_name='Precio venta por unidad',blank=True, null=True)
+	quien_vende = MultiSelectField(choices=QUIEN_VENDE_CHOICES,verbose_name='¿A quién le vende?',blank=True, null=True)
+	donde_vende = models.ManyToManyField(Municipio,verbose_name='¿Dónde lo vende?',blank=True, null=True)
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

@@ -148,6 +148,7 @@ DESTINO_CHOICES = (
 	)
 
 class Comercializacion_Org(models.Model):
+	fecha = models.IntegerField(verbose_name='Año de recolección de información')
 	cacao_baba_acopiado = models.FloatField(verbose_name='Cacao en baba acopiado (qq)')
 	cacao_seco_comercializado = models.FloatField(verbose_name='Cacao en seco comercializado (qq)')
 	socios_cacao = models.IntegerField(verbose_name='Socios que entregaron cacao al acopio')
