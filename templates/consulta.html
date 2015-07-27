@@ -234,10 +234,10 @@ $(document).on('change','#id_municipio',function(){
 
 {% block content %}
 <style type="text/css">
-    footer{
+    .footer{
 
-        position: absolute;
-        bottom: -200px;
+        position: relative;
+        bottom: -50px;
     }
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
         background-color: #CB6830 !important;
@@ -289,10 +289,12 @@ $(document).on('change','#id_municipio',function(){
                                 {{form.socio}}
                             </div>
                         </div>
+                         
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 select-filtro">
                             
-                           
+                          
                             <input type="submit" value="Consultar" class="btn btn-default btn-filtro" name="consulta"/>
+
 
                         </div>
                         </form>

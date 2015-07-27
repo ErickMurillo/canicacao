@@ -12,6 +12,8 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^consulta', 'consulta', name='consulta'),
     url(r'^dashboard', 'dashboard', name='dashboard'),
     url(r'^organizacion', 'get_organizacion', name='organizacion'),
+    url(r'^orgdetail', 'get_org_detail', name='orgdetail'),
+    
     #indicadores
     url(r'^educacion', 'educacion', name='educacion'),
     url(r'^propiedad', 'propiedad', name='propiedad'),

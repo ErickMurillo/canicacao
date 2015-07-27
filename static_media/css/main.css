@@ -485,6 +485,9 @@ span.select2.select2-container.select2-container--default {
   box-shadow: 5px 5px 0px -2px #d46325;
 }
 /* organizaciones*/
+.org-detail {
+  margin: 0 auto;
+}
 .mapa-titulo,
 .consulta-org-titulo {
   background-color: #fff;
@@ -521,10 +524,113 @@ span.select2.select2-container.select2-container--default {
   margin-top: 35px;
   margin-left: 10px;
 }
+/**organizacion detail***/
+.logo-org {
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+.mapa-org {
+  background-color: #fff;
+  border: 3px solid #e7e6e4;
+}
+.informacion-org {
+  background-color: #fff;
+  border-right: 3px solid #e7e6e4;
+  border-top: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
+  height: 244px;
+}
+.informacion-org span {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.informacion-org span a {
+  color: #333;
+  text-decoration: none;
+}
+.informacion-org .fa:before {
+  color: #717171;
+  margin-right: 10px;
+}
+.tabs-org {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+  background-color: #fff;
+  border-right: 3px solid #e7e6e4;
+  border-left: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
+}
+li[role=presentation] {
+  width: 100%;
+}
+li[role=presentation] a {
+  color: #333;
+}
+.nav-tabs>li {
+  border-bottom: 3px solid #e7e6e4;
+  background-color: #fff;
+  width: 100%;
+  margin-left: 0px;
+}
+.nav-tabs>li.active {
+  border-left: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
+  border-right: 0px;
+  background-color: #fff;
+  position: static;
+  width: 102%;
+  margin-left: -3px;
+}
+.nav-tabs>li.active a,
+.nav-tabs>li.active a:hover,
+.nav-tabs>li.active a:focus {
+  background-color: transparent !important;
+  color: #cb6830 !important;
+  border: 0px;
+}
+div[role=tabpanel] {
+  background-color: #fff;
+  border-right: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
+  width: 100%;
+  padding: 30px 20px;
+}
+.conten-org {
+  padding-right: 0;
+  padding-left: 0;
+}
+.table>tbody>tr {
+  border-top: 2px solid #e7e6e4;
+}
+.table>tbody>tr:last-child {
+  border-bottom: 2px solid #e7e6e4;
+}
+.table>tbody>tr td {
+  border-right: 2px solid #e7e6e4;
+  border-left: 2px solid #e7e6e4;
+}
+.datos-sueltos {
+  margin-bottom: 30px;
+}
+.dato-orgdetail {
+  background-color: #efefef;
+  border: 3px solid #e7e6e4;
+  padding: 10px;
+  text-align: center;
+}
+#documentacion,
+#infra,
+#comercializacion,
+#prodructividad {
+  height: 500px;
+}
 @media (min-width: 1200px) {
   .formulario-consulta,
   .contenido-graficos {
-    width: 1170px;
+    width: 90%;
+  }
+  .org-detail {
+    width: 95%;
   }
 }
 /*.ui-widget 

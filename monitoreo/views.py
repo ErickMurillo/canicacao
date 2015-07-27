@@ -396,3 +396,7 @@ def get_fecha(request):
 def get_organizacion(request):
     
     return render(request, "organizacion.html")
+
+def get_org_detail(request):
+    
+    return render(request, "orgdetail.html")
