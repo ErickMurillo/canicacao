@@ -40,7 +40,6 @@ class InfraestructuraInline(admin.TabularInline):
 
 class Comercializacion_OrgInline(admin.TabularInline):
 	model = Comercializacion_Org
-	max_num = 1
 	can_delete = False
 	form = Comercializacion_OrgForm
 	extra = 1

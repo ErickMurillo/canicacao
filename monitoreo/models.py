@@ -136,8 +136,8 @@ class Persona(models.Model):
 		return self.nombre
 
 	class Meta:
-		verbose_name = "Persona"
-		verbose_name_plural = "Personas"
+		verbose_name = "Persona encuestada"
+		verbose_name_plural = "Personas encuestadas"
 		unique_together = ("cedula",)
 
 

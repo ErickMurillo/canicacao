@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script src="/static/js/highcharts.js"></script>
-	<script src="/static/js/exporting.js"></script>
-	<script src="/static/js/data.js"></script>
-	<script src="/static/js/drilldown.js"></script>
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+<script src="/static/js/data.js"></script>
+<script src="/static/js/drilldown.js"></script>
 <script>
-	$(function () {
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+        
+    })
+    $(function () {
     // Create the chart
     $('#container').highcharts({
         chart: {
@@ -15,7 +20,7 @@
         title: {
             text: 'Personas que son dueños de la propiedad'
         },
-       
+        
         plotOptions: {
             series: {
                 dataLabels: {
@@ -50,18 +55,18 @@
                 id: "Dueños",
                 data: [
                 {% for x,y in dic.items %}
-                    ["{{x}}", {{y}}],
+                ["{{x}}", {{y}}],
                 {% endfor %}
-                    
+                
                 ]
             }, {
                 name: "No Dueños",
                 id: "No Dueños",
                 data: [
                 {% for x,y in dic2.items %}
-                    ["{{x}}", {{y}}],
+                ["{{x}}", {{y}}],
                 {% endfor %}
-                   
+                
                 ]
             }
             ]
@@ -72,5 +77,6 @@
 {% endblock extra_js %}
 
 {% block content %}
-	<div id="container"></div>
+    <div id="container"></div>
+    {% include "indicadores.html" %}
 {% endblock content %}

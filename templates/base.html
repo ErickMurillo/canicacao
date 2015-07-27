@@ -48,10 +48,10 @@
 					
 
 					<ul class="nav navbar-nav navbar-right">
-						<li class="active"><a href="/">Inicio</a></li>
-						<li><a href="/consulta/">Consulta</a></li>
-						<li><a href="#">Organizaciones</a></li>
-						<li><a href="#">Acerca de</a></li>
+						<li class="item-inicio activate"><a href="/">Inicio</a></li>
+						<li class="item-consulta"><a href="/consulta/">Consulta</a></li>
+						<li class="item-org"><a href="/organizacion/">Organizaciones</a></li>
+						<li class="item-acerca"><a href="#">Acerca de</a></li>
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</nav>
@@ -71,5 +71,22 @@
 	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script src="/static/js/bootstrap.min.js"></script>
 	{% block extra_js %}{% endblock extra_js %}
+	<script>
+	    var flag = true;
+    $(document).ready(function(){
+        $('#mas').click(function(){
+            if(flag==true){
+                $('.botonera').slideDown('slow');
+                $('#estado').html('<span class="fa fa-arrow-up"></span>');
+                flag = false;
+            }else if (flag==false){
+                $('.botonera').slideUp('slow');
+                $('#estado').html('<span class="fa fa-arrow-down"></span>');
+                flag = true;
+            }
+            return false;
+            });
+        });
+    </script>
 </body>
 </html>

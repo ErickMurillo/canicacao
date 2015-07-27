@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+
+<script>
+	$(function () {
+		$('#container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Uso de la Tierra (Total en Mz: {{total}})'
+			},
+			yAxis: {
+				title: {
+					text: 'Valores'
+				}
+
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: 'Área (Mz)'
+				}
+			},
+
+			tooltip: {
+				formatter: function() {
+					return ''+
+					this.series.name +': '+ this.y + 'Mz';
+				}
+			},
+			series: [
+			{name: 'Bosques', data: [{{bosque}}]},
+			{name: 'Tacotal', data: [{{tacotal}}]},
+			{name: 'Cultivo anual', data: [{{cultivo_anual}}]},
+			{name: 'Plantación forestal', data: [{{plantacion_forestal}}]},
+			{name: 'Área de pasto abierto', data: [{{area_pasto_abierto}}]},
+			{name: 'Área de pasto con arboles', data: [{{area_pasto_arboles}}]},
+			{name: 'Cultivo perenne', data: [{{cultivo_perenne}}]},
+			{name: 'Cultivo semiperenne', data: [{{cultivo_semi_perenne}}]},
+			{name: 'Cacao', data: [{{cacao}}]},
+			{name: 'Huerto mixto de cacao', data: [{{huerto_mixto_cacao}}]},
+			{name: 'Otros', data: [{{otros}}]},
+			]
+		});
+	});
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+<style>
+	.table{
+		width: 50% !important;
+		margin: 0 auto !important
+	}
+</style>
+
+<div id="container"></div>
+<div class="col-md-12">
+	<table id="example" class="table table-bordered table-hover" cellspacing="0" width="50%">
+		<caption>Distribución de las áreas de la finca</caption>
+		<tr>
+			<td></td>
+			<td>%</td>
+		</tr>
+		<tr>
+			<td>Bosques</td>
+			<td>{{t_bosque|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Tacotal</td>
+			<td>{{t_tacotal|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Cultivo anual</td>
+			<td>{{t_cultivo_anual|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Plantación forestal</td>
+			<td>{{t_plantacion_forestal|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Área de pasto abierto</td>
+			<td>{{t_area_pasto_abierto|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Área de pasto con árboles</td>
+			<td>{{t_area_pasto_arboles|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Cultivo perenne</td>
+			<td>{{t_cultivo_perenne|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Cultivo semi perenne</td>
+			<td>{{t_cultivo_semi_perenne|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Cacao</td>
+			<td>{{t_cacao|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Huerto mixto de cacao</td>
+			<td>{{t_huerto_mixto_cacao|floatformat:2}}</td>
+		</tr>
+		<tr>
+			<td>Otros</td>
+			<td>{{t_otros|floatformat:2}}</td>
+		</tr>
+
+
+
+	</table>
+</div>
+{% include "indicadores.html" %}
+{% endblock content %}

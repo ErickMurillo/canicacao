@@ -11,9 +11,12 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^$', 'IndexView', name='index'),
     url(r'^consulta', 'consulta', name='consulta'),
     url(r'^dashboard', 'dashboard', name='dashboard'),
+    url(r'^organizacion', 'get_organizacion', name='organizacion'),
     #indicadores
     url(r'^educacion', 'educacion', name='educacion'),
     url(r'^propiedad', 'propiedad', name='propiedad'),
+    url(r'^uso-tierra', 'uso_tierra', name='uso-tierra'),
+    url(r'^produccion', 'produccion', name='produccion'),
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     #filtros

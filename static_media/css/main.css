@@ -344,16 +344,23 @@ span.select2.select2-container.select2-container--default {
   margin: 15px 0px 0px 0px !important;
 }
 /* inicio de contenido tablero*/
-.tablero-titulo {
+.tablero-titulo,
+.indicadores-titulo {
   background: #6d4b35;
   color: #fff;
   margin-top: 60px;
   margin-bottom: 40px;
 }
-.titulo-inicio {
+.titulo-inicio,
+.titulo-indicadores {
   margin-left: 50px;
 }
-.titulo-inicio:before {
+.titulo-inicio span,
+.titulo-indicadores span {
+  margin-left: 20px;
+}
+.titulo-inicio:before,
+.titulo-indicadores:before {
   content: "";
   position: absolute;
   left: 0px;
@@ -363,25 +370,156 @@ span.select2.select2-container.select2-container--default {
   background-color: #453021;
 }
 .promedio-cacao,
-.promedio-cultivo {
+.promedio-cultivo,
+.socio,
+.no-socio {
   background-color: #fff;
-  border: 3px solid #cacaca;
+  border: 3px solid #e7e6e4;
   padding: 20px 20px 20px 60px;
 }
 .promedio-cacao h1,
 .promedio-cultivo h1,
+.socio h1,
+.no-socio h1,
 .promedio-cacao h2,
-.promedio-cultivo h2 {
+.promedio-cultivo h2,
+.socio h2,
+.no-socio h2 {
   color: #cb6830;
   font-weight: bold;
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.promedio-cultivo {
-  margin-top: 30px;
+.promedio-cultivo,
+.no-socio {
+  margin-top: 33px;
+}
+.no-socio,
+.socio {
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 .texto-indicador {
   margin-top: 20px;
+}
+#grafico3,
+#grafico4,
+#grafico5,
+#grafico1 {
+  background-color: #fff;
+  border: 3px solid #e7e6e4;
+}
+#grafico5 {
+  margin-top: 20px;
+/*mayor a 760*/
+}
+.indicadores-t1 {
+  padding-right: 0px;
+}
+.indicadores-t2 {
+  padding-left: 0px;
+}
+.grafico-4 {
+  width: 49%;
+  margin-left: 1%;
+}
+.grafico-3,
+#grafico1 {
+  width: 49%;
+  margin-right: 1%;
+}
+.fila1,
+.fila2,
+.fila3 {
+  margin-top: 20px;
+}
+.botonera {
+  background-color: #e7e6e4;
+  display: none;
+}
+.botonera .row {
+  padding: 10px;
+}
+.botonera a {
+  background-color: #9ac15a;
+  color: #fff;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  padding: 10px;
+  width: 23%;
+  margin-right: 1%;
+  margin-left: 1%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  -webkit-box-shadow: 5px 5px 0px -2px #88b84f;
+  -moz-box-shadow: 5px 5px 0px -2px #88b84f;
+  -o-border-radius: 5px 5px 0px -2px #88b84f;
+  box-shadow: 5px 5px 0px -2px #88b84f;
+  font-size: 1em;
+}
+.botonera a:hover {
+  font-weight: bold;
+  color: #fff;
+  background-color: #cb6830;
+  -webkit-box-shadow: 5px 5px 0px -2px #d46325;
+  -moz-box-shadow: 5px 5px 0px -2px #d46325;
+  -o-border-radius: 5px 5px 0px -2px #d46325;
+  box-shadow: 5px 5px 0px -2px #d46325;
+}
+.botonera a:nth-child(4n+3),
+.botonera a:nth-child(4n+4) {
+  background-color: #7cb4eb;
+  -webkit-box-shadow: 5px 5px 0px -2px #6ba7de;
+  -moz-box-shadow: 5px 5px 0px -2px #6ba7de;
+  -o-border-radius: 5px 5px 0px -2px #6ba7de;
+  box-shadow: 5px 5px 0px -2px #6ba7de;
+}
+.botonera a:nth-child(4n+3):hover,
+.botonera a:nth-child(4n+4):hover {
+  background-color: #cb6830;
+  -webkit-box-shadow: 5px 5px 0px -2px #d46325;
+  -moz-box-shadow: 5px 5px 0px -2px #d46325;
+  -o-border-radius: 5px 5px 0px -2px #d46325;
+  box-shadow: 5px 5px 0px -2px #d46325;
+}
+/* organizaciones*/
+.mapa-titulo,
+.consulta-org-titulo {
+  background-color: #fff;
+  border: 3px solid #e7e6e4;
+  text-align: center;
+}
+.mapa-organizaciones,
+.filtro-org-consulta {
+  background-color: #fff;
+  border-right: 3px solid #e7e6e4;
+  border-left: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
+}
+.btn-org-consulta a {
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+  padding: 15px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #cb6830;
+  text-decoration: none;
+}
+.filtro-org-consulta {
+  padding-top: 20px;
+}
+.filtro-org-consulta .form-group {
+  margin-left: 20px;
+  margin-top: 36px;
+}
+.filtro-org-consulta .btn-org-consulta {
+  margin-bottom: 35px;
+  margin-top: 35px;
+  margin-left: 10px;
 }
 @media (min-width: 1200px) {
   .formulario-consulta,

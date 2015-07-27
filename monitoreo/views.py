@@ -122,6 +122,7 @@ def dashboard(request,template='dashboard.html'):
 		produccion = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao', 
 													   field="produccion_c_baba + produccion_c_seco + " + 
 													   "produccion_c_fermentado + produccion_c_organico"))['total']
+		
 		if produccion == None:
 			produccion = 0
 			
@@ -253,6 +254,52 @@ def propiedad(request,template='propiedad.html'):
 
 	return render(request, template, locals())
 
+def uso_tierra(request,template='uso_tierra.html'):
+	filtro = _queryset_filtrado(request)
+
+	total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
+
+	#grafico numero de manzanas
+	bosque = filtro.aggregate(bosque=Sum('uso_tierra__bosque'))['bosque']
+	tacotal = filtro.aggregate(tacotal=Sum('uso_tierra__tacotal'))['tacotal']
+	cultivo_anual = filtro.aggregate(cultivo_anual=Sum('uso_tierra__cultivo_anual'))['cultivo_anual']
+	plantacion_forestal = filtro.aggregate(plantacion_forestal=Sum('uso_tierra__plantacion_forestal'))['plantacion_forestal']
+	area_pasto_abierto = filtro.aggregate(area_pasto_abierto=Sum('uso_tierra__area_pasto_abierto'))['area_pasto_abierto']
+	area_pasto_arboles = filtro.aggregate(area_pasto_arboles=Sum('uso_tierra__area_pasto_arboles'))['area_pasto_arboles']
+	cultivo_perenne = filtro.aggregate(cultivo_perenne=Sum('uso_tierra__cultivo_perenne'))['cultivo_perenne']
+	cultivo_semi_perenne = filtro.aggregate(cultivo_semi_perenne=Sum('uso_tierra__cultivo_semi_perenne'))['cultivo_semi_perenne']
+	cacao =  filtro.aggregate(cacao=Sum('uso_tierra__cacao'))['cacao']
+	huerto_mixto_cacao = filtro.aggregate(huerto_mixto_cacao=Sum('uso_tierra__huerto_mixto_cacao'))['huerto_mixto_cacao']
+	otros = filtro.aggregate(otros=Sum('uso_tierra__otros'))['otros']
+
+	#tabla distribucion de la tierra
+	t_bosque = (bosque/total) * 100
+	t_tacotal = (tacotal/total) * 100
+	t_cultivo_anual = (cultivo_anual/total) * 100
+	t_plantacion_forestal = (plantacion_forestal/total) * 100
+	t_area_pasto_abierto = (area_pasto_abierto/total) * 100
+	t_area_pasto_arboles = (area_pasto_arboles/total) * 100
+	t_cultivo_perenne = (cultivo_perenne/total) * 100
+	t_cultivo_semi_perenne = (cultivo_semi_perenne/total) * 100
+	t_cacao = (cacao/total) * 100
+	t_huerto_mixto_cacao = (huerto_mixto_cacao/total) * 100
+	t_otros = (otros/total) * 100
+
+	return render(request, template, locals())
+
+def produccion(request,template='produccion.html'):
+	filtro = _queryset_filtrado(request)
+
+	baba = filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba']
+	seco = filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco']
+	fermentado = filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado']
+	organico = filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico']
+
+	for x in MESES_CHOICES:
+		pass
+
+	return render(request, template, locals())
+
 #obtener puntos en el mapa
 def obtener_lista(request):
     if request.is_ajax():
@@ -345,3 +392,7 @@ def get_fecha(request):
         years.append((en))
     lista = sorted(set(years))
     return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')
+
+def get_organizacion(request):
+    
+    return render(request, "organizacion.html")

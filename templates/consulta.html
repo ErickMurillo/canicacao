@@ -11,6 +11,12 @@
 <link href="/static/css/jquery.multiselect.css" rel="stylesheet" type="text/css"/>-->
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
   $('#id_anno').select2({tags: true});
   $('#id_departamento').select2({tags: true});
   $('#id_municipio').select2({tags: true});
@@ -79,6 +85,13 @@ $(document).on('change','#id_municipio',function(){
 </script>
 
 <!--<script type="text/javascript">
+
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+
     var organizacion;
     var comunidad;
     var municipio;

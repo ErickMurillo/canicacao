@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+	<script>
+	$(function () {
+		$('#container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Producción de Cacao'
+			},
+			yAxis: {
+				title: {
+					text: 'Valores'
+				}
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: 'Valores (QQ)'
+				}
+			},
+
+			tooltip: {
+				formatter: function() {
+					return ''+
+					this.series.name +': '+ this.y + 'QQ';
+				}
+			},
+			series: [
+			{name: 'Baba', data: [{{baba}}]},
+			{name: 'Seco', data: [{{seco}}]},
+			{name: 'Fermentado', data: [{{fermentado}}]},
+			{name: 'Organico', data: [{{organico}}]},
+			]
+		});
+	});
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+	<div id="container"></div>
+	{% include "indicadores.html" %}
+{% endblock content %}

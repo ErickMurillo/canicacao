@@ -5,8 +5,13 @@
 	<script src="/static/js/exporting.js"></script>
 
 	<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
 	$(function () {
-    $('#container').highcharts({
+    $('#grafico1').highcharts({
         chart: {
             type: 'column'
         },
@@ -44,7 +49,7 @@
 });
 
 $(function () {
-    $('#container2').highcharts({
+    $('#grafico5').highcharts({
         chart: {
             type: 'column'
         },
@@ -75,17 +80,69 @@ $(function () {
     });
 });
 
+$(function () {
 
+    $(document).ready(function () {
 
-
-
+        // Build the chart
+        $('#grafico3, #grafico4').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: ' grafico area vs  producion--pastel'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: [{
+                    name: "Microsoft Internet Explorer",
+                    y: 56.33
+                }, {
+                    name: "Chrome",
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: "Firefox",
+                    y: 10.38
+                }, {
+                    name: "Safari",
+                    y: 4.77
+                }, {
+                    name: "Opera",
+                    y: 0.91
+                }, {
+                    name: "Proprietary or Undetectable",
+                    y: 0.2
+                }]
+            }]
+        });
+    });
+});
 
 $(function () {
 
     $(document).ready(function () {
 
         // Build the chart
-        $('#prueba').highcharts({
+        $('#grafico4').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -142,6 +199,8 @@ $(function () {
     {% include "datostablero.html" %}
 {% endblock tablero %}
 {% block content %}
+
+
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
@@ -150,17 +209,20 @@ $(function () {
     </div>
 </div>
 <div class="contenido-graficos">
-    <div class="row">
-        <div class="col-md-12 col-lg-6">
-          Grafico rendimiento por manzana -- barras 
-        </div>
+    <div class="row  fila 1">
+        <div class="col-md-12 col-lg-6" id="grafico1"></div>
         <div class="col-md-12 col-lg-6">
             grafico ingreso vs area producida--pastel
         </div>
-        <div class="col-md-12 col-lg-6" id="prueba">
+    </div>
+
+
+        <!--fila 2-->
+    <div class="row fila2">
+        <div class="col-md-12 col-lg-6 grafico-3" id="grafico3">
            
         </div>
-        <div class="col-md-12 col-lg-6">
+        <div class="col-md-12 col-lg-6 indicadores-t1">
            <div class="promedio-cacao">
                <div class="row">
                    <div class="col-md-8 col-lg-8 texto-indicador">
@@ -185,8 +247,75 @@ $(function () {
            </div>
         </div>
     </div>
+
+    <!--fila 3-->
+    <div class="row fila3">
+        <div class="col-md-12 col-lg-6  indicadores-t2">
+           <div class="socio">
+               <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{socio}} </h1>
+                       <h2>Productores Socios</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/socio-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+           <div class="no-socio">
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{no_socio}}</h1>
+                       <h2>Productores no asociados</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/nosocio-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico-4" id="grafico4">
+           
+        </div>
+    </div>
+
+    <!--fila 4-->
+    <div class="row">
+        <div class="col-md-12 col-lg-12" id="grafico5"></div>
+    </div>
 </div>
-<!-- {% include "filtros.html" %} -->
+
+
+{% include "indicadores.html" %}
+
+<!--<div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div>
+        
+        <div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div> 
+<br>
+<br>
+<!-- {% include "filtros.html" %} 
 
 	Familias : {{familias}}<br>
 	Hombres : {{hombres}}%<br>
@@ -197,11 +326,11 @@ $(function () {
 	Promedio mz cacao : {{avg_cacao}}<br>
 	Promedio área en mz por productor : {{avg_area_productor|floatformat:2}}<br>
 
-	<div class="col-md-6" id="container" style="margin: 0 auto"></div>
-	<div class="col-md-6" id="container2" style="margin: 0 auto"></div>
+	
+	
 	<div class="col-md-12 indicadores">
 		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
         <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
 	</div>
-	
+	-->
 {% endblock content %}
