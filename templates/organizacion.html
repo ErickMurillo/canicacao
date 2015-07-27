@@ -38,7 +38,7 @@
 		var image = new google.maps.MarkerImage('/static/img/m2.png');
 		
 		
-		$.getJSON("{% url 'obtener-lista' %}", function(data){
+		$.getJSON("{% url 'obtener-lista-org' %}", function(data){
 			$.each(data, function(i, elemento){
 				var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
 				bounds.extend(latlng);	

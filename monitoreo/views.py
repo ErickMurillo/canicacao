@@ -122,11 +122,16 @@ def dashboard(request,template='dashboard.html'):
 		produccion = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao', 
 													   field="produccion_c_baba + produccion_c_seco + " + 
 													   "produccion_c_fermentado + produccion_c_organico"))['total']
-		
+
+		acopio = Organizacion.objects.filter(comercializacion_org__fecha=year).aggregate(total=Sum(
+															'comercializacion_org__cacao_baba_acopiado'))['total']
 		if produccion == None:
 			produccion = 0
+
+		if acopio == None:
+			acopio = 0
 			
-		dic[year] = produccion
+		dic[year] = (produccion,acopio)
 
 	####################################################################################################################
 	#graf rendimiento socio
@@ -295,9 +300,12 @@ def produccion(request,template='produccion.html'):
 	fermentado = filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado']
 	organico = filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico']
 
-	for x in MESES_CHOICES:
-		pass
+	#baba = Produccion_Cacao.objects.filter(encuesta=filtro).aggregate(baba=Sum('produccion_c_baba'))['baba']
 
+	# years = []
+	# for x in Produccion_Cacao.objects.filter(encuesta=filtro):
+	# 	for y in x.meses_produccion:
+	# 		print y
 	return render(request, template, locals())
 
 #obtener puntos en el mapa

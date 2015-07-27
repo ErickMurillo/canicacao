@@ -3,6 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from lugar.models import *
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class Status(models.Model):
@@ -15,6 +16,10 @@ class Status(models.Model):
 		verbose_name = "Status Legal"
 		verbose_name_plural = "Status Legal"
 
+TIPO_CHOICES = (
+	(1,'Miembro Canicacao'),
+	(1,'Organización de apoyo'),
+	)
 class Organizacion(models.Model):
 	nombre = models.CharField(max_length=200,verbose_name='Organización/Institución')
 	siglas = models.CharField(max_length=200)
@@ -27,6 +32,7 @@ class Organizacion(models.Model):
 	fax = models.IntegerField(verbose_name='Número fax',null=True,blank=True)
 	email = models.EmailField(null=True,blank=True)
 	web = models.URLField(verbose_name='Página web',null=True,blank=True)
+	tipo = models.IntegerField(choices=TIPO_CHOICES)
 	usuario = models.ForeignKey(User)
 
 	def __unicode__(self):
@@ -47,16 +53,29 @@ SI_NO_CHOICES = (
 	(2,'No'),
 	)
 
+class Encuesta(models.Model):
+	fecha = models.DateField()
+	organizacion = models.ForeignKey(Organizacion,related_name='Organizacion')
+	anno = models.IntegerField()
+
+	def __unicode__(self):
+		return self.organizacion.siglas
+
+	def save(self, *args, **kwargs):
+		self.anno = self.fecha.year 
+		super(Encuesta, self).save(*args, **kwargs)
+
 class Aspectos_Juridicos(models.Model):
 	tiene_p_juridica = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Personería jurídica')
 	act_p_juridica = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Actualización personería jurídica')
 	solvencia_tributaria = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Cuenta con solvencia tributaria (DGI)')
 	junta_directiva = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Junta Directiva certificada')
-	mujeres = models.IntegerField()
-	hombres = models.IntegerField()
+	mujeres = models.IntegerField(verbose_name='Miembros mujeres JD')
+	hombres = models.IntegerField(verbose_name='Miembros hombres JD')
 	lista_socios = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Lista socias/os esta actualizada y certificada')
 	ruc = models.CharField(max_length=50,verbose_name='No. RUC',null=True,blank=True)
-	organizacion = models.ForeignKey(Organizacion)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Aspectos jurídicos"
@@ -75,7 +94,8 @@ class Documentacion(models.Model):
 	documentos = models.IntegerField(choices=DOCUMENTOS_CHOICES)
 	si_no = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Si/No')
 	fecha = models.DateField(verbose_name='Fecha de elaboración u actualización')
-	organizacion = models.ForeignKey(Organizacion)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Inform. sobre documentación en gestión"
@@ -93,7 +113,8 @@ class Datos_Productivos(models.Model):
 	area_cacao_baba =models.FloatField(verbose_name='Mz')
 	cacao_seco = models.FloatField(verbose_name='QQ')
 	area_cacao_seco =models.FloatField(verbose_name='Mz')
-	organizacion = models.ForeignKey(Organizacion)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Datos productivos de la Org. y asociado"
@@ -122,7 +143,8 @@ class Infraestructura(models.Model):
 	capacidad = models.FloatField(verbose_name='Capacidad de las instalaciones (qq)')
 	anno_construccion = models.DateField(verbose_name='Año de construcción')
 	estado = models.IntegerField(choices=ESTADO_CHOICES,verbose_name='Estado de infraestructura')
-	organizacion = models.ForeignKey(Organizacion)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Infraestructura y maquinaria"
@@ -148,15 +170,16 @@ DESTINO_CHOICES = (
 	)
 
 class Comercializacion_Org(models.Model):
-	fecha = models.IntegerField(verbose_name='Año de recolección de información')
+	#fecha = models.IntegerField(verbose_name='Año de recolección de información')
 	cacao_baba_acopiado = models.FloatField(verbose_name='Cacao en baba acopiado (qq)')
 	cacao_seco_comercializado = models.FloatField(verbose_name='Cacao en seco comercializado (qq)')
 	socios_cacao = models.IntegerField(verbose_name='Socios que entregaron cacao al acopio')
 	productores_no_asociados = models.IntegerField(verbose_name='Productores no asociados')
 	tipo_producto = models.IntegerField(choices=TIPO_PROD_CHOICES,verbose_name='Tipo de producto comercializado')
-	tipo_mercado = models.IntegerField(choices=TIPO_MERCADO_CHOICES)
-	destino_produccion = models.IntegerField(choices=DESTINO_CHOICES)
-	organizacion = models.ForeignKey(Organizacion)
+	tipo_mercado = MultiSelectField(choices=TIPO_MERCADO_CHOICES)
+	destino_produccion = MultiSelectField(choices=DESTINO_CHOICES)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Comercialización de la Organización"
@@ -164,7 +187,8 @@ class Comercializacion_Org(models.Model):
 
 class Comercializacion_Importancia(models.Model):
 	orden_importancia = models.CharField(max_length=200,verbose_name='Donde comercializa su cacao (por orden de importancia)')
-	organizacion = models.ForeignKey(Organizacion)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Comercialización Cacao"
@@ -178,8 +202,9 @@ ACOPIO_COMERCIO_CHOICES = (
 	)
 
 class Acopio_Comercio(models.Model):
-	seleccion = models.IntegerField(choices=ACOPIO_COMERCIO_CHOICES)
-	organizacion = models.ForeignKey(Organizacion)
+	seleccion = MultiSelectField(choices=ACOPIO_COMERCIO_CHOICES)
+	#organizacion = models.ForeignKey(Organizacion)
+	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
 		verbose_name = "Financiamiento de acopio y comerc."

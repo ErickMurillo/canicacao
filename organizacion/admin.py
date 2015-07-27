@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
 from .models import *
-from .forms import *
+
 
 # Register your models here.
 class Aspectos_JuridicosInline(admin.StackedInline):
@@ -10,8 +10,7 @@ class Aspectos_JuridicosInline(admin.StackedInline):
 	can_delete = False
 	fieldsets = [
 		((None), {'fields' : (('tiene_p_juridica','act_p_juridica','solvencia_tributaria','junta_directiva'),
-								('lista_socios','ruc'),)}),
-		(('Número de miembros de la JD'), {'fields' : (('mujeres','hombres'),)}),
+								('lista_socios','ruc'),('mujeres','hombres'))}),	
 	]
 
 class DocumentacionInline(admin.TabularInline):
@@ -41,13 +40,11 @@ class InfraestructuraInline(admin.TabularInline):
 class Comercializacion_OrgInline(admin.TabularInline):
 	model = Comercializacion_Org
 	can_delete = False
-	form = Comercializacion_OrgForm
-	extra = 1
+	max_num = 1
 
 class Comercializacion_ImportanciaInline(admin.TabularInline):
 	model = Comercializacion_Importancia
 	extra = 1
-	max_num = 5
 	can_delete = False
 
 class Acopio_ComercioInline(admin.TabularInline):
@@ -56,14 +53,14 @@ class Acopio_ComercioInline(admin.TabularInline):
 	can_delete = False
 
 class OrganizacionAdmin(admin.ModelAdmin):
-	def get_queryset(self, request):
-		if request.user.is_superuser:
-			return Organizacion.objects.all()
-		return Organizacion.objects.filter(usuario=request.user)
+	# def get_queryset(self, request):
+	# 	if request.user.is_superuser:
+	# 		return Organizacion.objects.all()
+	# 	return Organizacion.objects.filter(usuario=request.user)
 
-	def save_model(self, request, obj, form, change):
-		obj.usuario = request.user
-		obj.save()
+	# def save_model(self, request, obj, form, change):
+	# 	obj.usuario = request.user
+	# 	obj.save()
 
 	exclude = ('usuario',)
 	fieldsets = [
@@ -71,12 +68,32 @@ class OrganizacionAdmin(admin.ModelAdmin):
 			('direccion','municipio','telefono'),('fax','email'),('web',)
 			)}),
 	]
-	inlines = [Aspectos_JuridicosInline,DocumentacionInline,Datos_ProductivosInline,InfraestructuraInline,
-				Comercializacion_OrgInline,Comercializacion_ImportanciaInline,Acopio_ComercioInline]
 	list_display = ('siglas','gerente','status','municipio')
 	list_display_links = ('siglas',)
 	list_filter = ('municipio',)
-	
+
+class EncuestaAdmin(admin.ModelAdmin):
+	def get_queryset(self, request):
+		if request.user.is_superuser:
+			return Encuesta.objects.all()
+		return Encuesta.objects.filter(usuario=request.user)
+
+	def save_model(self, request, obj, form, change):
+		obj.usuario = request.user
+		obj.save()
+
+	exclude = ('usuario',)
+	fieldsets = [
+		('Información de la Organización', {'fields': ('fecha','organizacion')}),
+	]
+
+	inlines = [Aspectos_JuridicosInline,DocumentacionInline,Datos_ProductivosInline,InfraestructuraInline,
+				Comercializacion_OrgInline,Comercializacion_ImportanciaInline,Acopio_ComercioInline]
+	list_display = ('organizacion','fecha')
+	# list_display_links = ('organizacion',)
+	list_filter = ('organizacion__municipio',)
+
 	
 admin.site.register(Organizacion,OrganizacionAdmin)
 admin.site.register(Status)
+admin.site.register(Encuesta,EncuestaAdmin)
