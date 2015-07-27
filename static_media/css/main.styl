@@ -470,7 +470,8 @@ span.select2.select2-container.select2-container--default
 				sombras 5px 5px 0px -2px #d46325
 
 /*! organizaciones*/ 
-	
+.org-detail
+	margin 0 auto
 .mapa-titulo
 .consulta-org-titulo
 	background-color blanco
@@ -502,32 +503,107 @@ span.select2.select2-container.select2-container--default
 		margin-top 35px
 		margin-left 10px
 	
+/**organizacion detail***/
 
+.logo-org
+	margin-top 60px
+	margin-bottom 40px
 
+.mapa-org
+	background-color blanco
+	border 3px solid #e7e6e4	
 
+.informacion-org
+	background-color blanco
+	border-right 3px solid #e7e6e4
+	border-top 3px solid #e7e6e4
+	border-bottom 3px solid #e7e6e4
+	height 244px
+	span
+		margin-bottom 5px
+		margin-top 5px
+		a
+			color #333
+			text-decoration none
+	.fa:before
+		color #717171
+		margin-right 10px
+.tabs-org
+	padding-right 0px !important
+	padding-left 0px !important
+	background-color blanco
+	border-right 3px solid #e7e6e4
+	border-left 3px solid #e7e6e4
+	border-bottom 3px solid #e7e6e4
+	
 
+li[role=presentation]
+	width 100%
+	a
+		color #333
+		
 
+.nav-tabs>li
+	border-bottom 3px solid #e7e6e4
+	background-color blanco
+	width 100%
+	margin-left 0px
+	
+.nav-tabs>li.active
+	border-left 3px solid #e7e6e4
+	border-bottom 3px solid #e7e6e4
+	border-right 0px
+	background-color blanco
+	position static
+	width 102%
+	margin-left -3px
+	
+	a,a:hover,a:focus
+		background-color transparent !important
+		color naranja !important
+		border 0px
 
+div[role=tabpanel]		
+	background-color blanco
+	border-right 3px solid #e7e6e4
+	border-bottom 3px solid #e7e6e4
+	width 100%
+	padding 30px 20px
 
+.conten-org
+	padding-right 0
+	padding-left 0
 
+.table>tbody>tr
+	border-top 2px solid #e7e6e4
+	&:last-child
+		border-bottom 2px solid #e7e6e4
+	td
+		border-right 2px solid #e7e6e4
+		border-left 2px solid #e7e6e4
 
+.datos-sueltos
+	margin-bottom 30px
+.dato-orgdetail
+	background-color #efefef
+	border 3px solid #e7e6e4
+	padding 10px
+	text-align center
 
-
-
-
-
-
-
-
+#documentacion
+#infra
+#comercializacion
+#prodructividad
+	height 500px
 
 	
 
 @media (min-width 1200px)
 	.formulario-consulta, .contenido-graficos
-		width 1170px
+		width 90%
 	
-
-
+	.org-detail
+		width 95%
 
 
 /*.ui-widget 
