@@ -17,6 +17,8 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^propiedad', 'propiedad', name='propiedad'),
     url(r'^uso-tierra', 'uso_tierra', name='uso-tierra'),
     url(r'^produccion', 'produccion', name='produccion'),
+    url(r'^riesgos', 'riesgos', name='riesgos'),
+    url(r'^comercializacion', 'comercializacion', name='comercializacion'),
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     

@@ -123,7 +123,7 @@ def dashboard(request,template='dashboard.html'):
 													   field="produccion_c_baba + produccion_c_seco + " + 
 													   "produccion_c_fermentado + produccion_c_organico"))['total']
 
-		acopio = Organizacion.objects.filter(comercializacion_org__fecha=year).aggregate(total=Sum(
+		acopio = Encuesta_Org.objects.filter(anno=year).aggregate(total=Sum(
 															'comercializacion_org__cacao_baba_acopiado'))['total']
 		if produccion == None:
 			produccion = 0
@@ -306,6 +306,85 @@ def produccion(request,template='produccion.html'):
 	# for x in Produccion_Cacao.objects.filter(encuesta=filtro):
 	# 	for y in x.meses_produccion:
 	# 		print y
+	return render(request, template, locals())
+
+def riesgos(request,template='riesgos.html'):
+	filtro = _queryset_filtrado(request)
+	familias = filtro.count()
+
+	riesgos = {}
+	riesgos_tabla = {}
+	for obj in RIESGOS_CHOICES:
+		sequia = filtro.filter(fenomenos_naturales__sequia=obj[0]).count()
+		innundacion = filtro.filter(fenomenos_naturales__innundacion=obj[0]).count()
+		lluvia = filtro.filter(fenomenos_naturales__lluvia=obj[0]).count()
+		viento = filtro.filter(fenomenos_naturales__viento=obj[0]).count()
+		deslizamiento = filtro.filter(fenomenos_naturales__deslizamiento=obj[0]).count()
+
+		riesgos[obj[1]] = (saca_porcentajes(sequia,familias,False),
+							saca_porcentajes(innundacion,familias,False),
+							saca_porcentajes(lluvia,familias,False),
+							saca_porcentajes(viento,familias,False),
+							saca_porcentajes(deslizamiento,familias,False))
+
+		riesgos_tabla[obj[1]] = (sequia,innundacion,lluvia,viento,deslizamiento)
+
+	plantas = {}
+	for obj in P_IMPRODUCTIVAS_CHOICES:
+		p_improduct = filtro.filter(razones_agricolas__plantas_improductivas=obj[0]).count()
+		plantas[obj[1]] = p_improduct
+
+	plagas = {}
+	for obj in SI_NO_CHOICES:
+		plagas_enfermedades = filtro.filter(razones_agricolas__plagas_enfermedades=obj[0]).count()
+		quemas = filtro.filter(razones_agricolas__quemas=obj[0]).count()
+
+		plagas[obj[1]] = (saca_porcentajes(plagas_enfermedades,familias,False),
+							saca_porcentajes(quemas,familias,False))
+
+	mercados = {}
+	for obj in SI_NO_CHOICES:
+		bajo_precio = filtro.filter(razones_mercado__bajo_precio=obj[0]).count()
+		falta_venta = filtro.filter(razones_mercado__falta_venta=obj[0]).count()
+		estafa_contrato = filtro.filter(razones_mercado__estafa_contrato=obj[0]).count()
+		calidad_producto = filtro.filter(razones_mercado__calidad_producto=obj[0]).count()
+
+		mercados[obj[1]] = (saca_porcentajes(bajo_precio,familias,False),
+							saca_porcentajes(falta_venta,familias,False),
+							saca_porcentajes(estafa_contrato,familias,False),
+							saca_porcentajes(calidad_producto,familias,False))
+
+	inversion = {}
+	for obj in SI_NO_CHOICES:
+		invierte_cacao = filtro.filter(inversion__invierte_cacao=obj[0]).count()
+		interes_invertrir = filtro.filter(inversion__interes_invertrir=obj[0]).count()
+		falta_credito = filtro.filter(inversion__falta_credito=obj[0]).count()
+		altos_intereses = filtro.filter(inversion__altos_intereses=obj[0]).count()
+		robo_producto = filtro.filter(inversion__robo_producto=obj[0]).count()
+
+		inversion[obj[1]] = (saca_porcentajes(invierte_cacao,familias,False),
+							saca_porcentajes(interes_invertrir,familias,False),
+							saca_porcentajes(falta_credito,familias,False),
+							saca_porcentajes(altos_intereses,familias,False),
+							saca_porcentajes(robo_producto,familias,False))
+	return render(request, template, locals())
+
+def comercializacion(request,template='comercializacion.html'):
+	filtro = _queryset_filtrado(request)
+	familias = filtro.count()
+
+	tabla_productos = []
+	for obj in PRODUCTO_CHOICES:
+		producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
+					auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
+					venta=Avg('comercializacion_cacao__venta'),
+					precio_venta=Avg('comercializacion_cacao__precio_venta'))
+
+		fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
+		tabla_productos.append(fila)
+
+
+
 	return render(request, template, locals())
 
 #obtener puntos en el mapa

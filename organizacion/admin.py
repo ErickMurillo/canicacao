@@ -62,21 +62,20 @@ class OrganizacionAdmin(admin.ModelAdmin):
 	# 	obj.usuario = request.user
 	# 	obj.save()
 
-	exclude = ('usuario',)
 	fieldsets = [
 		(('Información de la Organización'), {'fields' : (('nombre','siglas'),('gerente',),('status','fundacion'),
-			('direccion','municipio','telefono'),('fax','email'),('web',)
+			('direccion','municipio','telefono'),('fax','email'),('web','tipo')
 			)}),
 	]
 	list_display = ('siglas','gerente','status','municipio')
 	list_display_links = ('siglas',)
 	list_filter = ('municipio',)
 
-class EncuestaAdmin(admin.ModelAdmin):
+class Encuesta_OrgAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
-			return Encuesta.objects.all()
-		return Encuesta.objects.filter(usuario=request.user)
+			return Encuesta_Org.objects.all()
+		return Encuesta_Org.objects.filter(usuario=request.user)
 
 	def save_model(self, request, obj, form, change):
 		obj.usuario = request.user
@@ -96,4 +95,4 @@ class EncuestaAdmin(admin.ModelAdmin):
 	
 admin.site.register(Organizacion,OrganizacionAdmin)
 admin.site.register(Status)
-admin.site.register(Encuesta,EncuestaAdmin)
+admin.site.register(Encuesta_Org,Encuesta_OrgAdmin)

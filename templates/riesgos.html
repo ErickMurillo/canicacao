@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+	<script>
+		$(function () {
+    $('#grafico').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Fenomenos naturales'
+        },
+        xAxis: {
+            categories: ['Sequia','Innundación','Lluvia','Viento','Desplazamiento']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in riesgos.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Plantas improductivas'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for key,value in plantas.items %}
+                	{
+	                    name: "{{key}}",
+	                    y: {{value}}
+                	},
+                {% endfor %}
+                ]
+            }]
+        });
+    });
+});
+
+$(function () {
+    $('#plagas').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Otras Razones Agricolas'
+        },
+        xAxis: {
+            categories: ['Plagas y enfermedades','Quemas']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in plagas.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+
+$(function () {
+    $('#mercado').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Razones de mercado'
+        },
+        xAxis: {
+            categories: ['Bajo precio','Falta de venta','Estafa de contrato','Calidad del producto']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in mercados.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+
+$(function () {
+    $('#inversion').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Inversiones'
+        },
+        xAxis: {
+            categories: ['Invierte en cacao','Interés de invertir','Falta de crédito','Altos intereses','Robo de producto']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in inversion.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+	</script>
+	</script>
+{% endblock extra_js %}
+
+{% block content %}
+<!--<div class="col-md-12">
+		<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <caption>Fenomenos Naturales</caption>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Sequia</th>
+                                <th>Innundación</th>
+                                <th>Lluvia</th>
+                                <th>Viento</th>
+                                <th>Desplazamiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,value in riesgos_tabla.items %}
+                            <tr>
+								<td>{{key}}</td>
+								<td>{{value.0}}</td>
+								<td>{{value.1}}</td>
+								<td>{{value.2}}</td>
+								<td>{{value.3}}</td>
+								<td>{{value.4}}</td>
+                            </tr>
+        		
+        				{% endfor %}
+                        </tbody>
+                    </table>
+	</div> -->
+	<div class="col-md-12 col-lg-12">
+		<div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+	</div>
+
+	<div class="col-md-12 col-lg-12">
+		<h3 align="center">Razones Agricolas</h3>
+		<div  class="col-md-12 col-lg-6" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+		<div  class="col-md-12 col-lg-6" id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	</div>
+
+	<div class="col-md-12 col-lg-12">
+		<br>
+		<div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+	</div>
+
+	<div class="col-md-12 col-lg-12">
+	<br>
+		<div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+	</div>
+
+	
+{% endblock content %}

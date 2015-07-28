@@ -3,24 +3,29 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import multiselectfield.db.fields
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('organizacion', '0003_auto_20150725_0630'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Encuesta',
+            name='Encuesta_Org',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('fecha', models.DateField()),
                 ('anno', models.IntegerField()),
                 ('organizacion', models.ForeignKey(related_name='Organizacion', to='organizacion.Organizacion')),
+                ('usuario', models.ForeignKey(related_name='User', to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'verbose_name': 'Encuesta',
+                'verbose_name_plural': 'Encuestas',
             },
             bases=(models.Model,),
         ),
@@ -56,52 +61,56 @@ class Migration(migrations.Migration):
             model_name='infraestructura',
             name='organizacion',
         ),
+        migrations.RemoveField(
+            model_name='organizacion',
+            name='usuario',
+        ),
         migrations.AddField(
             model_name='acopio_comercio',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='aspectos_juridicos',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='comercializacion_importancia',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='comercializacion_org',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='datos_productivos',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='documentacion',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='infraestructura',
             name='encuesta',
-            field=models.ForeignKey(default=1, to='organizacion.Encuesta'),
+            field=models.ForeignKey(default=1, to='organizacion.Encuesta_Org'),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='organizacion',
             name='tipo',
-            field=models.IntegerField(default=1, choices=[(1, b'Miembro Canicacao'), (1, b'Organizaci\xc3\xb3n de apoyo')]),
+            field=models.IntegerField(default=1, verbose_name=b'Tipo de Organizaci\xc3\xb3n', choices=[(1, b'Miembro Canicacao'), (1, b'Organizaci\xc3\xb3n de apoyo')]),
             preserve_default=False,
         ),
         migrations.AlterField(

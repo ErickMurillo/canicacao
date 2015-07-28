@@ -105,11 +105,6 @@ SEXO_CHOICE = (
 	(2,'Mujer')
 	)
 
-PROFESION_CHOICE = (
-	(1,'Agricultor(a)'),
-	(2,'Profesor(a)'),
-	)
-
 class Persona(models.Model):
 	nombre =  models.CharField(max_length=200,verbose_name='Nombre de jefa/e de familia')
 	cedula = models.CharField(max_length=20,verbose_name='Céula de entrevistado/a',null=True,blank=True)

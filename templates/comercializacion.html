@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	
+{% endblock extra_js %}
+
+{% block content %}
+	<div class="col-md-12 col-lg-12">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Producto</th>
+					<th>Promedio Auto-consumo</th>
+					<th>Promedio de venta</th>
+					<th>Promedio precio de venta (C$)</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for fila in tabla_productos %}
+	                <tr>
+	                    {% for celda in fila %}
+	                    <td>{{celda|default:'0'}}</td>
+	                    {% endfor %}
+	                </tr>
+                {%endfor%}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock content %}
