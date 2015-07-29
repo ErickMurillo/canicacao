@@ -383,8 +383,6 @@ def comercializacion(request,template='comercializacion.html'):
 		fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
 		tabla_productos.append(fila)
 
-
-
 	return render(request, template, locals())
 
 #obtener puntos en el mapa

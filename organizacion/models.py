@@ -32,7 +32,7 @@ class Organizacion(models.Model):
 	fax = models.IntegerField(verbose_name='Número fax',null=True,blank=True)
 	email = models.EmailField(null=True,blank=True)
 	web = models.URLField(verbose_name='Página web',null=True,blank=True)
-	tipo = models.IntegerField(choices=TIPO_CHOICES,verbose_name='Tipo de Organización')
+	tipo = models.IntegerField(choices=TIPO_CHOICES,verbose_name='Tipo de Organización',null=True,blank=True)
 	#usuario = models.ForeignKey(User)
 
 	def __unicode__(self):
@@ -80,7 +80,7 @@ class Aspectos_Juridicos(models.Model):
 	lista_socios = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Lista socias/os esta actualizada y certificada')
 	ruc = models.CharField(max_length=50,verbose_name='No. RUC',null=True,blank=True)
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Aspectos jurídicos"
@@ -100,7 +100,7 @@ class Documentacion(models.Model):
 	si_no = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Si/No')
 	fecha = models.DateField(verbose_name='Fecha de elaboración u actualización')
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Inform. sobre documentación en gestión"
@@ -119,7 +119,7 @@ class Datos_Productivos(models.Model):
 	cacao_seco = models.FloatField(verbose_name='QQ')
 	area_cacao_seco =models.FloatField(verbose_name='Mz')
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Datos productivos de la Org. y asociado"
@@ -149,7 +149,7 @@ class Infraestructura(models.Model):
 	anno_construccion = models.DateField(verbose_name='Año de construcción')
 	estado = models.IntegerField(choices=ESTADO_CHOICES,verbose_name='Estado de infraestructura')
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Infraestructura y maquinaria"
@@ -184,7 +184,7 @@ class Comercializacion_Org(models.Model):
 	tipo_mercado = MultiSelectField(choices=TIPO_MERCADO_CHOICES)
 	destino_produccion = MultiSelectField(choices=DESTINO_CHOICES)
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Comercialización de la Organización"
@@ -193,7 +193,7 @@ class Comercializacion_Org(models.Model):
 class Comercializacion_Importancia(models.Model):
 	orden_importancia = models.CharField(max_length=200,verbose_name='Donde comercializa su cacao (por orden de importancia)')
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Comercialización Cacao"
@@ -209,7 +209,7 @@ ACOPIO_COMERCIO_CHOICES = (
 class Acopio_Comercio(models.Model):
 	seleccion = MultiSelectField(choices=ACOPIO_COMERCIO_CHOICES)
 	#organizacion = models.ForeignKey(Organizacion)
-	encuesta = models.ForeignKey(Encuesta_Org)
+	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
 
 	class Meta:
 		verbose_name = "Financiamiento de acopio y comerc."
