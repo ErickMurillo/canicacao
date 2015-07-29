@@ -9,8 +9,6 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^$', 'IndexView', name='index'),
     url(r'^consulta', 'consulta', name='consulta'),
     url(r'^dashboard', 'dashboard', name='dashboard'),
-    url(r'^organizacion', 'get_organizacion', name='organizacion'),
-    url(r'^orgdetail', 'get_org_detail', name='orgdetail'),
     
     #indicadores
     url(r'^educacion', 'educacion', name='educacion'),
@@ -19,6 +17,7 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^produccion', 'produccion', name='produccion'),
     url(r'^riesgos', 'riesgos', name='riesgos'),
     url(r'^comercializacion', 'comercializacion', name='comercializacion'),
+     url(r'^genero', 'genero', name='genero'),
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     
@@ -29,7 +28,12 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^ajax/comunies/$', 'get_comunies', name='get-comunies'),
 )
 
+urlpatterns += patterns('',
+    url(r'^xls/$', 'monitoreo.utils.save_as_xls'),
+    )
 #url organizacion
 urlpatterns += patterns('organizacion.views',
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
+    url(r'^organizacion', 'get_organizacion', name='organizacion'),
+    url(r'^orgdetail', 'get_org_detail', name='orgdetail'),
 )

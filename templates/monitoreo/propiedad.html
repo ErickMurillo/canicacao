@@ -11,31 +11,48 @@
         $('li.item-consulta').addClass('active');
         
     })
-    $(function () {
+
+$(function () {
     // Create the chart
     $('#container').highcharts({
         chart: {
-            type: 'pie'
+            type: 'column'
         },
         title: {
-            text: 'Personas que son dueños de la propiedad'
+            text: 'Tenencia de Propiedad'
         },
-        
+        // subtitle: {
+        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+        // },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentaje (%)'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
         plotOptions: {
             series: {
+                borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.name}: {point.y:.1f}%'
+                    format: '{point.y:.1f}%'
                 }
             }
         },
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
         },
+
         series: [{
-            name: "Brands",
+            name: "Distribución",
             colorByPoint: true,
             data: [
             {
@@ -73,10 +90,11 @@
         }
     });
 });
+
 </script>
 {% endblock extra_js %}
 
 {% block content %}
-    <div id="container"></div>
-    {% include "indicadores.html" %}
+    <div id="container" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+    {% include "monitoreo/indicadores.html" %}
 {% endblock content %}

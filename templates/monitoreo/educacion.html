@@ -3,6 +3,8 @@
 {% block extra_js %}
 	<script src="/static/js/highcharts.js"></script>
 	<script src="/static/js/exporting.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script src="/static/js/table.exporting.js"></script>
 <script>
     $(document).ready(function() {
         
@@ -69,14 +71,18 @@
 {% endblock extra_js %}
 
 {% block content %}
-<!-- {% include "filtros.html" %}  -->
+
+<!-- {% include "monitoreo/filtros.html" %}  -->
+
 	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
-	<div class="col-md-12">
+
+    <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+	<div class="col-md-12" id="modalidad">
 		<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
                         <caption>Educación</caption>
                         <thead>
                             <tr>
-                                <th ></th>
+                                <th></th>
                                 <th>Número total</th>
                                 <th>No sabe leer %</th>
                                 <th>Primaria incompleta %</th>
@@ -99,5 +105,5 @@
                     </table>
 	</div>
 
-{% include "indicadores.html" %}
+{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

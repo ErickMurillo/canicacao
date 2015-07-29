@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+	<script>
+		$(function () {
+    // Create the chart
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Actividades en las que participa la mujer'
+        },
+       
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
+        },
+
+        series: [{
+            name: "Brands",
+            colorByPoint: true,
+            data: [
+            {% for key,value in genero.items %}
+            	{
+                name: "{{key}}",
+                y: {{value}},
+            	},
+            {% endfor %}
+            
+            ]
+        }],
+    });
+});
+	</script>
+{% endblock extra_js %}
+
+{% block content %}
+	<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+	{% include "monitoreo/indicadores.html" %}
+{% endblock content %}

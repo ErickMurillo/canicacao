@@ -40,7 +40,7 @@ def _queryset_filtrado(request):
 
 	return Encuesta.objects.filter(**params)
 
-def IndexView(request,template="index.html"):
+def IndexView(request,template="monitoreo/index.html"):
 	mujeres = Encuesta.objects.filter(persona__sexo='2').count()
 	hombres = Encuesta.objects.filter(persona__sexo='1').count()
 	area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
@@ -50,7 +50,7 @@ def IndexView(request,template="index.html"):
 
 	return render(request, template, locals())
 
-def consulta(request,template="consulta.html"):
+def consulta(request,template="monitoreo/consulta.html"):
 	if request.method == 'POST':
 		mensaje = None
 		form = EncuestaConsulta(request.POST)
@@ -88,7 +88,7 @@ def consulta(request,template="consulta.html"):
 	return render(request, template, locals())
 
 
-def dashboard(request,template='dashboard.html'):
+def dashboard(request,template='monitoreo/dashboard.html'):
 	filtro = _queryset_filtrado(request)	
 
 	familias = filtro.count()
@@ -194,7 +194,7 @@ def dashboard(request,template='dashboard.html'):
 	return render(request, template, locals())
 
 #nivel de educacion
-def educacion(request,template='educacion.html'):
+def educacion(request,template='monitoreo/educacion.html'):
 	filtro = _queryset_filtrado(request)
 
 	tabla_educacion = []
@@ -228,7 +228,7 @@ def educacion(request,template='educacion.html'):
 
 	return render(request, template, locals())
 
-def propiedad(request,template='propiedad.html'):
+def propiedad(request,template='monitoreo/propiedad.html'):
 	filtro = _queryset_filtrado(request)
 
 	familias = filtro.count()
@@ -238,28 +238,20 @@ def propiedad(request,template='propiedad.html'):
 	dueno = (count_si/float(familias))*100
 	no_dueno = (count_no/float(familias))*100
 
-
+	dic2 = {}
+	for x in Situacion.objects.all():
+		objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
+		dic2[x] = saca_porcentajes(objeto1,count_no,False)
+	
 	dic = {}
 	for e in PROPIEDAD_CHOICE:
 		for x in e:	
 			objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
-		try:
-			dic[x] = (objeto/count_si)*100
-		except:
-			dic[x] = 0
-
-	dic2 = {}
-	for x in Situacion.objects.all():
-		objeto = filtro.filter(tenencia_propiedad__no=x).count()
-		try:
-			dic2[x] = (objeto/count_no)*100
-		except:
-			dic2[x] = 0
-		
+			dic[e[1]] = saca_porcentajes(objeto,count_si,False)
 
 	return render(request, template, locals())
 
-def uso_tierra(request,template='uso_tierra.html'):
+def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 	filtro = _queryset_filtrado(request)
 
 	total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
@@ -292,7 +284,7 @@ def uso_tierra(request,template='uso_tierra.html'):
 
 	return render(request, template, locals())
 
-def produccion(request,template='produccion.html'):
+def produccion(request,template='monitoreo/produccion.html'):
 	filtro = _queryset_filtrado(request)
 
 	baba = filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba']
@@ -308,7 +300,7 @@ def produccion(request,template='produccion.html'):
 	# 		print y
 	return render(request, template, locals())
 
-def riesgos(request,template='riesgos.html'):
+def riesgos(request,template='monitoreo/riesgos.html'):
 	filtro = _queryset_filtrado(request)
 	familias = filtro.count()
 
@@ -369,7 +361,7 @@ def riesgos(request,template='riesgos.html'):
 							saca_porcentajes(robo_producto,familias,False))
 	return render(request, template, locals())
 
-def comercializacion(request,template='comercializacion.html'):
+def comercializacion(request,template='monitoreo/comercializacion.html'):
 	filtro = _queryset_filtrado(request)
 	familias = filtro.count()
 
@@ -382,6 +374,17 @@ def comercializacion(request,template='comercializacion.html'):
 
 		fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
 		tabla_productos.append(fila)
+
+	return render(request, template, locals())
+
+def genero(request,template='monitoreo/genero.html'):
+	filtro = _queryset_filtrado(request)
+
+	genero = {}
+	suma = 0
+	for obj in Actividades_Produccion.objects.all():
+		mujer = filtro.filter(genero__actividades=obj).count()
+		genero[obj] = mujer
 
 	return render(request, template, locals())
 
@@ -478,10 +481,3 @@ def get_fecha(request):
     lista = sorted(set(years))
     return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')
 
-def get_organizacion(request):
-    
-    return render(request, "organizacion.html")
-
-def get_org_detail(request):
-    
-    return render(request, "orgdetail.html")

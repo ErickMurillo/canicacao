@@ -689,7 +689,7 @@ class Genero_2(models.Model):
 
 class Adicional(models.Model):
 	interes = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='Tiene interes en ampliar las áreas de cacao',blank=True,null=True)
-	cuanto = models.FloatField(default='0',blank=True,null=True)
+	cuanto = models.FloatField(default='0',blank=True,null=True,verbose_name='Cuanto (Mz)')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
