@@ -66,7 +66,7 @@ def fecha_choice():
     years = []
     for en in Encuesta.objects.order_by('anno').values_list('anno', flat=True):
         years.append((en,en))
-    return list(set(years))
+    return list(sorted(set(years)))
 
 def departamentos():   
     foo = Encuesta.objects.all().order_by('persona__comunidad__municipio__departamento__nombre').distinct().values_list('persona__comunidad__municipio__departamento__id', flat=True)

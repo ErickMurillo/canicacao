@@ -38,7 +38,7 @@ def _queryset_filtrado(request):
 	for key in unvalid_keys:
 		del params[key]
 
-	return Encuesta.objects.filter(**params)
+	return Encuesta.objects.filter(**params).order_by('anno')
 
 def IndexView(request,template="monitoreo/index.html"):
 	mujeres = Encuesta.objects.filter(persona__sexo='2').count()
@@ -47,6 +47,7 @@ def IndexView(request,template="monitoreo/index.html"):
 	produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao', 
 													   		field="produccion_c_baba + produccion_c_seco + " + 
 													   		"produccion_c_fermentado + produccion_c_organico"))['total']
+	organizaciones = Organizacion.objects.all().count()
 
 	return render(request, template, locals())
 
@@ -89,7 +90,26 @@ def consulta(request,template="monitoreo/consulta.html"):
 
 
 def dashboard(request,template='monitoreo/dashboard.html'):
-	filtro = _queryset_filtrado(request)	
+	filtro = _queryset_filtrado(request)
+# 	#nuevas salidas
+# 	hectarea = 0.7050
+# 	anno = {}
+# 	print request.session['anno']
+# 	for year in request.session['anno']:
+# 		areas = {}
+# 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
+# 		ha_area_total = area_total * hectarea
+
+# 		for obj in EDAD_PLANTA_CHOICES:
+# 			conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
+# 			if conteo == None:
+# 				conteo = 0
+# 			result = conteo * hectarea
+# 			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
+# 		anno[year] = areas
+# 	print anno
+		
+	######################	
 
 	familias = filtro.count()
 	try:
@@ -480,4 +500,17 @@ def get_fecha(request):
         years.append((en))
     lista = sorted(set(years))
     return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')
+
+def hectarea(dato):
+	if dato != None:
+		try:
+			total = dato*float(hectarea) if total != None or total != 0 else 0
+		except:
+			return 0
+		if formato:
+			return total
+		else:
+			return '%.2f' % total
+	else:
+		return 0
 

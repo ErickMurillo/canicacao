@@ -6,12 +6,12 @@
 <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
 <script type="text/javascript" src="/static/js/infobox.js"></script>t>
 <script>
-    $(document).ready(function() {
-        
-        $('li.item-inicio').addClass('active');
-    
-    })
-    
+	$(document).ready(function() {
+
+		$('li.item-inicio').addClass('active');
+
+	})
+
 	var markers = [];
 	function initialize()
 	{	
@@ -38,7 +38,7 @@
 					title: elemento.nombre,
 					icon: image,
 					item: '',
-                    id: elemento.id
+					id: elemento.id
 				});
 				markers.push(marker);
 
@@ -77,103 +77,105 @@
 	}
 </style>
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 consulta">
-				<div class=" row indicadores-inicio">
+	<div class=" row indicadores-inicio">
 
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-						<div class="row ind-mujer">
-							<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
-							<div class="col-lg-8 text-center">
-								<p>{{mujeres}}</p>
-								<p>Mujeres</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-						<div class="row ind-hombre">
-							<div class="col-lg-4"><span class="fa fa-male fa-4x"></span></div>
-							<div class="col-lg-8 text-center">
-								<p>{{hombres}}</p>
-								<p>Hombres</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-						<div class="row ind-cacao">
-							<div class="col-lg-4"><span class="fa fa-tree fa-4x"></span></div>
-							<div class="col-lg-8 text-center">
-								<p>{{area_cacao}} mz</p>
-								<p class="text-cacao">Cacao establecidas</p>
-							</div>
-						</div>	
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-						<div class="row ind-produccion">
-							<div class="col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
-							<div class="col-lg-8 text-center">
-								<p>{{produccion}} qq</p>
-								<p>Producción</p>
-							</div>
-						</div>
-						
-					</div>
-					<!--<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-						<div class="row ind-otro">
-							<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
-							<div class="col-lg-8 text-center">
-								<p>25</p>
-								<p>Mujeres</p>
-							</div>
-						</div>
-					</div>-->
-					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-						<div class="row ind-consulta">
-							<div class="col-lg-4"><span class="fa fa-search fa-4x"></span></div>
-							<div class="col-lg-8 text-center">
-								<p>Explorar datos</p>
-								
-							</div>
-						</div>
-					</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+			<div class="row ind-mujer">
+				<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
+				<div class="col-lg-8 text-center">
+					<p>{{mujeres}}</p>
+					<p>Mujeres</p>
 				</div>
-				<div class="row mapeo">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-ni">
-						<div id="map-canvas"></div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+			<div class="row ind-hombre">
+				<div class="col-lg-4"><span class="fa fa-male fa-4x"></span></div>
+				<div class="col-lg-8 text-center">
+					<p>{{hombres}}</p>
+					<p>Hombres</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+			<div class="row ind-cacao">
+				<div class="col-lg-4"><span class="fa fa-tree fa-4x"></span></div>
+				<div class="col-lg-8 text-center">
+					<p>{{area_cacao}} mz</p>
+					<p class="text-cacao">Cacao establecidas</p>
+				</div>
+			</div>	
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+			<div class="row ind-produccion">
+				<div class="col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
+				<div class="col-lg-8 text-center">
+					<p>{{produccion}} qq</p>
+					<p>Producción</p>
+				</div>
+			</div>
+
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+			<div class="row ind-otro">
+				<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
+				<div class="col-lg-8 text-center">
+					<p>{{organizaciones}}</p>
+					<p style="font-size:20px">Organizaciones</p>
+				</div>
+			</div>
+		</div>
+		<a href="/consulta/">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+				<div class="row ind-consulta">
+					<div class="col-lg-4"><span class="fa fa-search fa-4x"></span></div>
+					<div class="col-lg-8 text-center">
+						<p>Explorar datos</p>
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-				<div class="informacion">
-					<div class="franja"></div>
-					
-					<div class="parrafo">
-						<div class="triangulo"></div>
-						<h4>Sistema de monitoreo de cacao.</h4>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam odio nihil harum possimus exercitationem, quaerat nemo eligendi, quis vel deleniti et porro cupiditate quod rerum quae. Reprehenderit perspiciatis, aliquid non.
-							<br><br>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, vel voluptas deleniti earum magni necessitatibus. Voluptatem, quidem ab repellendus unde cum error cumque in dolores voluptates quo minima molestias. Totam.
-							<br><br>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus dolorem, perferendis nemo repellendus ut tempora perspiciatis dolorum tempore ipsam sint a eum, quos ducimus. Tempore explicabo quisquam vero repellendus, deserunt.
-						</p>
+		</a>
 
-						<div class="btn-informacion text-right">
-							<a  href="">Continuar leyendo</a>
-						</div>
-					</div>
-				</div>
+	</div>
+	<div class="row mapeo">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-ni">
+			<div id="map-canvas"></div>
+		</div>
+	</div>
+</div>
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	<div class="informacion">
+		<div class="franja"></div>
 
-				<div class="row logos">
-					<div class="col-md-4 col-lg-3">
-						<img src="/static/img/logo1.png" alt="">
-					</div>
-					<div class="col-md-4 col-lg-4 catie">
+		<div class="parrafo">
+			<div class="triangulo"></div>
+			<h4>Sistema de monitoreo de cacao.</h4>
+			<p>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam odio nihil harum possimus exercitationem, quaerat nemo eligendi, quis vel deleniti et porro cupiditate quod rerum quae. Reprehenderit perspiciatis, aliquid non.
+				<br><br>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, vel voluptas deleniti earum magni necessitatibus. Voluptatem, quidem ab repellendus unde cum error cumque in dolores voluptates quo minima molestias. Totam.
+				<br><br>
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus dolorem, perferendis nemo repellendus ut tempora perspiciatis dolorum tempore ipsam sint a eum, quos ducimus. Tempore explicabo quisquam vero repellendus, deserunt.
+			</p>
 
-						<img src="/static/img/images.png" alt="">
-					</div>
-					<div class="col-md-4 col-lg-4 heifer">
-					
-						<img src="/static/img/logo3.png" alt="">
-					</div>
-				</div>
+			<div class="btn-informacion text-right">
+				<a  href="">Continuar leyendo</a>
 			</div>
+		</div>
+	</div>
+
+	<div class="row logos">
+		<div class="col-md-4 col-lg-3">
+			<img src="/static/img/logo1.png" alt="">
+		</div>
+		<div class="col-md-4 col-lg-4 catie">
+
+			<img src="/static/img/images.png" alt="">
+		</div>
+		<div class="col-md-4 col-lg-4 heifer">
+
+			<img src="/static/img/logo3.png" alt="">
+		</div>
+	</div>
+</div>
 {% endblock content %}

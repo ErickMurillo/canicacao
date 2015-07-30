@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+    <script>
+
+{% for year,values in anno.items %}
+     $(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#grafico{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Total de áreas de cacao en Hectareas'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in values.items %}
+                    {
+                    name: "{{x}}",
+                    y: {{y}}
+                },
+                {% endfor %}
+                
+
+                ]
+            }]
+        });
+    });
+});
+{% endfor %}
+       
+    </script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Tablero de indicadores</h4>  
+        </div>
+    </div>
+</div>
+
+<div>
+    
+    
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+  
+    {% for year in anno.keys %}
+         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+    {% endfor %}
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    {% for year,value in anno.items %}
+      <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+    <div class="contenido-graficos">
+    <div class="row  fila 1">
+        <div class="col-md-12 col-lg-6" id="grafico{{year}}" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+        <div class="col-md-12 col-lg-6">
+            grafico ingreso vs area producida--pastel
+        </div>
+    </div>
+
+
+        <!--fila 2-->
+    <div class="row fila2">
+        <div class="col-md-12 col-lg-6 grafico-3" id="grafico3">
+           
+        </div>
+        <div class="col-md-12 col-lg-6 indicadores-t1">
+           <div class="promedio-cacao">
+               <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{avg_cacao|floatformat:2}} mz </h1>
+                       <h2>Promedio de mz <br>de cacao establecidas</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/arbol-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+           <div class="promedio-cultivo">
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{avg_area_productor|floatformat:2}} mz </h1>
+                       <h2>Promedio área en mz por productor</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/arbolito-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+        </div>
+    </div>
+
+    <!--fila 3-->
+    <div class="row fila3">
+        <div class="col-md-12 col-lg-6  indicadores-t2">
+           <div class="socio">
+               <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{socio}} </h1>
+                       <h2>Productores Socios</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/socio-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+           <div class="no-socio">
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{no_socio}}</h1>
+                       <h2>Productores no asociados</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/nosocio-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico-4" id="grafico4">
+           
+        </div>
+    </div>
+
+    <!--fila 4-->
+    <div class="row">
+        <div class="col-md-12 col-lg-12" id="grafico5"></div>
+    </div>
+</div>
+    </div>
+  {% endfor %}
+  </div>
+
+</div>
+
+
+
+{% include "monitoreo/indicadores.html" %}
+
+<!--<div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div>
+        
+        <div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div> 
+<br>
+<br>
+ {% include "monitoreo/filtros.html" %} 
+
+	Familias : {{familias}}<br>
+	Hombres : {{hombres}}%<br>
+	Mujeres : {{mujeres}}%<br>
+	Organizaciones : {{organizaciones}}<br>
+	Socio : {{socio}}<br>
+	No Socio : {{no_socio}}<br>
+	Promedio mz cacao : {{avg_cacao}}<br>
+	Promedio área en mz por productor : {{avg_area_productor|floatformat:2}}<br>
+
+	
+	
+	<div class="col-md-12 indicadores">
+		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
+        <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
+	</div>
+	-->
+{% endblock content %}
