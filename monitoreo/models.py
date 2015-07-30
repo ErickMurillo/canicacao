@@ -100,6 +100,16 @@ class Paga_Certifica(models.Model):
 		verbose_name = "Quién paga la certifica"
 		verbose_name_plural = "Quienes pagan la certificación"
 
+class Destino_Ingresos(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+		
+	class Meta:
+		verbose_name = "Destino de ingresos percibidos"
+		verbose_name_plural = "Destino de ingresos percibidos"
+
 SEXO_CHOICE = (
 	(1,'Hombre'),
 	(2,'Mujer')
@@ -667,7 +677,9 @@ class Genero(models.Model):
 	actividades = models.ManyToManyField(Actividades_Produccion,verbose_name='Actividades en las que participa',blank=True,null=True)
 	ingresos = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Usted recibe ingresos por las actividades que realiza?',blank=True,null=True)
 	ingreso_mesual = models.FloatField(null=True,blank=True,verbose_name='Ingreso mensual aproximado percibido')
-	destino_ingresos = models.CharField(max_length=300,verbose_name='Destino de los ingresos percibidos',blank=True,null=True)
+	#destino_ingresos = models.CharField(max_length=300,verbose_name='Destino de los ingresos percibidos',blank=True,null=True)
+	#destino_ingresos_1 = models.ForeignKey(Destino_Ingresos,verbose_name='Destino de los ingresos percibidos',blank=True,null=True)
+	destino_ingresos_2 = models.ManyToManyField(Destino_Ingresos,verbose_name='Destino de los ingresos percibidos',blank=True,null=True)
 	decisiones = MultiSelectField(choices=DECISIONES_CHOICES,verbose_name='Decisiones sobre destino de la producción',blank=True,null=True)
 	encuesta = models.ForeignKey(Encuesta)
 

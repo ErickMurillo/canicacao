@@ -133,7 +133,7 @@ class Genero_Inline(admin.StackedInline):
 	model = Genero
 	max_num = 1
 	can_delete = False
-	fieldsets = [(None, {'fields' : (('actividades'),('ingresos','ingreso_mesual','destino_ingresos'),('decisiones',))}),
+	fieldsets = [(None, {'fields' : (('actividades'),('ingresos','ingreso_mesual'),('destino_ingresos_2',),('decisiones',))}),
 	]
 
 class Genero_2_Inline(admin.TabularInline):
@@ -190,3 +190,4 @@ admin.site.register(Persona)
 admin.site.register(Quien_Certifica)
 admin.site.register(Paga_Certifica)
 admin.site.register(Profesion)
+admin.site.register(Destino_Ingresos)
