@@ -3,15 +3,89 @@
 {% block extra_js %}
 	<script src="/static/js/highcharts.js"></script>
 	<script src="/static/js/exporting.js"></script>
-    <script>
 
-{% for year,values in anno.items %}
-     $(function () {
+	<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+	$(function () {
+    $('#grafico1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Rendimiento de cacao por manzana'
+        },
+        xAxis: {
+            categories: [{% if request.session.socio != "2" %}'Socio',{% endif %} 'No socio']
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+
+        {
+            name: 'Baba',
+            data: [{% if request.session.socio != "2" %}{{s_result1}},{% endif %} {{ns_result1}}]
+        }, {
+            name: 'Seco sin fermentar',
+            data: [{% if request.session.socio != "2" %}{{s_result2}},{% endif %} {{ns_result2}}]
+        }, {
+            name: 'Fermentado convencional',
+            data: [{% if request.session.socio != "2" %}{{s_result3}},{% endif %} {{ns_result3}}]
+        }, {
+            name: 'Orgánico',
+            data: [{% if request.session.socio != "2" %}{{s_result4}},{% endif %} {{ns_result4}}]
+        }]
+    });
+});
+
+$(function () {
+    $('#grafico5').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Volumen de Producción vs Volumen acopiado'
+        },
+        xAxis: {
+            categories: ['Volumen de Producción','Volumen acopiado']
+        },
+        yAxis: {
+            title: {
+                text: 'Valores (QQ)'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        series: [
+        	{% for key,value in dic.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+
+$(function () {
 
     $(document).ready(function () {
 
         // Build the chart
-        $('#grafico{{year}}').highcharts({
+        $('#grafico3, #grafico4').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -19,7 +93,7 @@
                 type: 'pie'
             },
             title: {
-                text: 'Total de áreas de cacao en Hectareas'
+                text: ' grafico area vs  producion--pastel'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -35,31 +109,95 @@
                 }
             },
             series: [{
-                name: "Porcentajes",
+                name: "Brands",
                 colorByPoint: true,
-                data: [
-                {% for x,y in values.items %}
-                    {
-                    name: "{{x}}",
-                    y: {{y}}
-                },
-                {% endfor %}
-                
-
-                ]
+                data: [{
+                    name: "Microsoft Internet Explorer",
+                    y: 56.33
+                }, {
+                    name: "Chrome",
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: "Firefox",
+                    y: 10.38
+                }, {
+                    name: "Safari",
+                    y: 4.77
+                }, {
+                    name: "Opera",
+                    y: 0.91
+                }, {
+                    name: "Proprietary or Undetectable",
+                    y: 0.2
+                }]
             }]
         });
     });
 });
-{% endfor %}
-       
-    </script>
-{% endblock extra_js %}
 
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#grafico4').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: ' grafico area vs  producion--pastel'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Brands",
+                colorByPoint: true,
+                data: [{
+                    name: "Microsoft Internet Explorer",
+                    y: 56.33
+                }, {
+                    name: "Chrome",
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: "Firefox",
+                    y: 10.38
+                }, {
+                    name: "Safari",
+                    y: 4.77
+                }, {
+                    name: "Opera",
+                    y: 0.91
+                }, {
+                    name: "Proprietary or Undetectable",
+                    y: 0.2
+                }]
+            }]
+        });
+    });
+});
+	</script>
+{% endblock extra_js %}
 {% block tablero %}
     {% include "monitoreo/datostablero.html" %}
 {% endblock tablero %}
-
 {% block content %}
 
 
@@ -70,25 +208,9 @@
         </div>
     </div>
 </div>
-
-<div>
-    
-    
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-  
-    {% for year in anno.keys %}
-         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
-    {% endfor %}
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    {% for year,value in anno.items %}
-      <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
-    <div class="contenido-graficos">
+<div class="contenido-graficos">
     <div class="row  fila 1">
-        <div class="col-md-12 col-lg-6" id="grafico{{year}}" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+        <div class="col-md-12 col-lg-6" id="grafico1"></div>
         <div class="col-md-12 col-lg-6">
             grafico ingreso vs area producida--pastel
         </div>
@@ -162,12 +284,6 @@
         <div class="col-md-12 col-lg-12" id="grafico5"></div>
     </div>
 </div>
-    </div>
-  {% endfor %}
-  </div>
-
-</div>
-
 
 
 {% include "monitoreo/indicadores.html" %}

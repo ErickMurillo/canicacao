@@ -91,23 +91,27 @@ def consulta(request,template="monitoreo/consulta.html"):
 
 def dashboard(request,template='monitoreo/dashboard.html'):
 	filtro = _queryset_filtrado(request)
-# 	#nuevas salidas
-# 	hectarea = 0.7050
-# 	anno = {}
-# 	print request.session['anno']
-# 	for year in request.session['anno']:
-# 		areas = {}
-# 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
-# 		ha_area_total = area_total * hectarea
+	#nuevas salidas
+	hectarea = 0.7050
+	anno = {}
+	print request.session['anno']
+	for year in request.session['anno']:
+		areas = {}
+		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
+		try:
+			ha_area_total = area_total * hectarea
+		except:
+			ha_area_total = 0
+		
 
-# 		for obj in EDAD_PLANTA_CHOICES:
-# 			conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
-# 			if conteo == None:
-# 				conteo = 0
-# 			result = conteo * hectarea
-# 			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
-# 		anno[year] = areas
-# 	print anno
+		for obj in EDAD_PLANTA_CHOICES:
+			conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
+			if conteo == None:
+				conteo = 0
+			result = conteo * hectarea
+			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
+		anno[year] = areas
+	print anno
 		
 	######################	
 
