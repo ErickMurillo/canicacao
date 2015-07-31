@@ -93,10 +93,16 @@ def consulta(request,template="monitoreo/consulta.html"):
 def dashboard(request,template='monitoreo/dashboard.html'):
 	filtro = _queryset_filtrado(request)
 	#nuevas salidas
+
+	#conversiones###############
 	hectarea = 0.7050
+	tonelada = 0.1
+	############################
+
 	anno = collections.OrderedDict()
 
 	for year in request.session['anno']:
+		#areas de cacao por edad de plantacion -----------------------------------------------------------------
 		areas = {}
 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
 		try:
@@ -110,9 +116,106 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 				conteo = 0
 			result = conteo * hectarea
 			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
-		anno[year] = areas
+
+		#total de produccion cacao ----------------------------------------------------------------------------
+		produccion_seco = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
+		if produccion_seco == None:
+			produccion_seco = 0
+
+		produccion_fermentado = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
+		if produccion_fermentado == None:
+			produccion_fermentado = 0
+
+		produccion_organico = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
+		if produccion_organico == None:
+			produccion_organico = 0
+
+		produccion_baba = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
+		if produccion_baba == None:
+			produccion_baba = 0
+
+		try:
+			produccion_seco_total = produccion_seco + (produccion_baba/3)
+		except:
+			produccion_seco_total = 0
+
+		try:
+			total_produccion = (produccion_fermentado + produccion_organico + produccion_seco_total) * tonelada
+		except:
+			total_produccion = 0
+
+		#produccion x tipo cacao grafico------------------------------------------------------------------------
+		p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
+		p_fermentado = saca_porcentajes((produccion_fermentado*tonelada),total_produccion,False)
+		p_organico = saca_porcentajes((produccion_organico*tonelada),total_produccion,False)
+
+		#rendimiento cacao kg x ha -----------------------------------------------------------------------------
+		area_prod = filtro.filter(anno=year).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+		if area_prod == None:
+			area_prod = 0
+
+		baba = filtro.filter(anno=year).aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
+		if baba == None:
+			baba = 0
+
+		seco = filtro.filter(anno=year).aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
+		if seco == None:
+			seco = 0
+
+		fermentado = filtro.filter(anno=year).aggregate(cacao_fer_s=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer_s']
+		if fermentado == None:
+			fermentado = 0
+
+		organico = filtro.filter(anno=year).aggregate(cacao_org_s=Sum('produccion_cacao__produccion_c_organico'))['cacao_org_s']
+		if organico == None:
+			organico = 0
+
+		try:
+			rendimiento_seco = (((baba/3) + seco) * 100)/(float(area_prod * hectarea))
+		except:
+			rendimiento_seco = 0
+
+		try:
+			rendimiento_fer = (fermentado * 100)/(float(area_prod * hectarea))
 		
-	######################	
+		except:
+			rendimiento_fer = 0
+
+		try:
+			rendimiento_org = (organico * 100)/float(area_prod * hectarea)
+		except:
+			rendimiento_org = 0
+
+		#promedio areas de cacao x productor
+		try:
+			avg_cacao = (filtro.filter(anno=year).aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']) * hectarea
+		except:
+			avg_cacao = 0
+
+		#socio, no socio
+		socio = filtro.filter(anno=year,organizacion_asociada__socio='1').count()
+		no_socio = filtro.filter(anno=year,organizacion_asociada__socio='2').count()
+
+		#auto-consumo vs venta
+		comercializacion = {}
+		for obj in PRODUCTO_CHOICES:
+			auto_consumo = filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__auto_consumo'))['total']
+			if auto_consumo == None:
+				auto_consumo = 0
+
+			venta = filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__venta'))['total']
+			if venta == None:
+				venta = 0
+
+			comercializacion[obj[1]] = (auto_consumo,venta)
+		#diccionario todos los valores x anio
+		
+		anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
+						p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion)
+		
+	#-------------------------------------------------------------------------------------------------------------
 
 	familias = filtro.count()
 	try:

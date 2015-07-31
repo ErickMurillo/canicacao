@@ -402,14 +402,14 @@ span.select2.select2-container.select2-container--default {
 .texto-indicador {
   margin-top: 20px;
 }
-#grafico3,
-#grafico4,
-#grafico5,
+.grafico3,
+.grafico4,
+.grafico5,
 .grafico1 {
   background-color: #fff;
   border: 3px solid #e7e6e4;
 }
-#grafico5 {
+.grafico5 {
   margin-top: 20px;
 /*mayor a 760*/
 }
@@ -424,13 +424,14 @@ span.select2.select2-container.select2-container--default {
   margin-left: 1%;
 }
 .grafico-3,
-#grafico1 {
+.grafico1 {
   width: 49%;
   margin-right: 1%;
 }
 .fila1,
 .fila2,
-.fila3 {
+.fila3,
+.fila4 {
   margin-top: 20px;
 }
 .botonera {
