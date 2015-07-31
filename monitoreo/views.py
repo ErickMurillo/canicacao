@@ -5,6 +5,7 @@ from .forms import *
 import json as simplejson
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db.models import Sum, Count, Avg
+import collections
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -93,8 +94,8 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 	filtro = _queryset_filtrado(request)
 	#nuevas salidas
 	hectarea = 0.7050
-	anno = {}
-	print request.session['anno']
+	anno = collections.OrderedDict()
+
 	for year in request.session['anno']:
 		areas = {}
 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
@@ -102,7 +103,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			ha_area_total = area_total * hectarea
 		except:
 			ha_area_total = 0
-		
 
 		for obj in EDAD_PLANTA_CHOICES:
 			conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
@@ -111,7 +111,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			result = conteo * hectarea
 			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
 		anno[year] = areas
-	print anno
 		
 	######################	
 

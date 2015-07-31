@@ -110,6 +110,16 @@ class Destino_Ingresos(models.Model):
 		verbose_name = "Destino de ingresos percibidos"
 		verbose_name_plural = "Destino de ingresos percibidos"
 
+class Tecnologias(models.Model):
+	nombre = models.CharField(max_length=200)
+
+	def __unicode__(self):
+		return self.nombre
+		
+	class Meta:
+		verbose_name = "Tecnología de secado y almac. cacao"
+		verbose_name_plural = "Tecnologías de secado y almac. cacao"
+
 SEXO_CHOICE = (
 	(1,'Hombre'),
 	(2,'Mujer')
@@ -389,7 +399,8 @@ class Mitigacion_Riesgos(models.Model):
 	distribucion_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Participan en cadena de distribución de producto cacao?')
 	venta_cacao = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Cuenta con un contrato para la venta de cacao?')
 	d_tecnologia_secado = models.IntegerField(choices=SI_NO_CHOICES,verbose_name='¿Dispone de tecnología para el secado y almacenamiento de cosecha?')
-	tecnologia_secado = models.CharField(max_length=200,null=True,blank=True,verbose_name='Mencione')
+	#tecnologia_secado = models.CharField(max_length=200,null=True,blank=True,verbose_name='Mencione')
+	tecnologia_secado_1 = models.ManyToManyField(Tecnologias,null=True,blank=True,verbose_name='Mencione')
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:

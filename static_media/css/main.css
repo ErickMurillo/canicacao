@@ -405,7 +405,7 @@ span.select2.select2-container.select2-container--default {
 #grafico3,
 #grafico4,
 #grafico5,
-#grafico1 {
+.grafico1 {
   background-color: #fff;
   border: 3px solid #e7e6e4;
 }

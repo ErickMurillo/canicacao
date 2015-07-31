@@ -91,10 +91,18 @@ class Produccion_Cacao_Inline(admin.TabularInline):
 	max_num = 1
 	can_delete = False
 
-class Certificacion_Inline(admin.TabularInline):
+class Certificacion_Inline(admin.StackedInline):
 	model = Certificacion
 	max_num = 1
 	can_delete = False
+	fieldsets = (
+        (None, {
+            'fields': (('cacao_certificado', 'tipo', 'quien_certifica', 'paga_certificacion','costo_certificacion'),)
+        }),
+        ('Costo de producción', {
+            'fields': ('mant_area_cacao', 'mant_area_finca')
+        }),
+    )
 
 class Tecnicas_Aplicadas_Inline(admin.StackedInline):
 	model = Tecnicas_Aplicadas
@@ -191,3 +199,4 @@ admin.site.register(Quien_Certifica)
 admin.site.register(Paga_Certifica)
 admin.site.register(Profesion)
 admin.site.register(Destino_Ingresos)
+admin.site.register(Tecnologias)
