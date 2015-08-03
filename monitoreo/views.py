@@ -97,11 +97,13 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 	#conversiones###############
 	hectarea = 0.7050
 	tonelada = 0.1
+	libra_tonelada = 0.00045359237
 	############################
 
 	anno = collections.OrderedDict()
 
 	for year in request.session['anno']:
+		familias = filtro.filter(anno=year).count()
 		#areas de cacao por edad de plantacion -----------------------------------------------------------------
 		areas = {}
 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
@@ -193,23 +195,60 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			avg_cacao = 0
 
 		#socio, no socio
-		socio = filtro.filter(anno=year,organizacion_asociada__socio='1').count()
-		no_socio = filtro.filter(anno=year,organizacion_asociada__socio='2').count()
+		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / familias) * 100
+		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / familias) * 100
+		print socio,no_socio
 
 		#auto-consumo vs venta
-		comercializacion = {}
-		for obj in PRODUCTO_CHOICES:
-			auto_consumo = filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__auto_consumo'))['total']
-			if auto_consumo == None:
-				auto_consumo = 0
+		PRODUCTO_CHOICES = (
+			(3,'Cacao en baba'),
+			(4,'Cacao rojo sin fermentar'),
+			(5,'Cacao fermentado'),
+			(6,'Chocolate artesanal'),
+			(7,'Cacao en polvo'),
+			(8,'Cacao procesado/ pinolillo'),
+			(9,'Cajeta de cacao'),
+			(10,'Pasta de cacao'),
+			)
 
-			venta = filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__venta'))['total']
-			if venta == None:
-				venta = 0
+		comercializacion = {}
+
+		for obj in PRODUCTO_CHOICES:
+			if obj[0] == '3' or obj[0] == '4':
+				try:
+					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
+				except:
+					auto_consumo = 0
+				
+				try:
+					venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__venta'))['total']) * tonelada
+				except:
+					venta = 0
+				
+			else:
+				try:
+					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__auto_consumo'))['total']) * libra_tonelada
+				except:
+					auto_consumo = 0
+
+				try:
+					venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__venta'))['total'] ) * libra_tonelada
+				except:
+					venta = 0
 
 			comercializacion[obj[1]] = (auto_consumo,venta)
+
+		#destino de produccion
+		# destino_dic = {}
+		# for x in QUIEN_VENDE_CHOICES:
+		# 	for obj in Comercializacion_Cacao.objects.filter(encuesta=filtro,encuesta__anno=year):
+		# 		destino = obj.quien_vende 
+
+
 		#diccionario todos los valores x anio
 		
 		anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
