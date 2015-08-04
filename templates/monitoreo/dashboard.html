@@ -5,14 +5,13 @@
 	<script src="/static/js/exporting.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
   <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
-  <script type="text/javascript" src="/static/js/infobox.js"></script>t>
+  <script type="text/javascript" src="/static/js/infobox.js"></script>
   <script src="/static/js/markerwithlabel.js"></script>
 
-
-
 <script type="text/javascript">
-  //mapa
-function initialize() {
+{% for year,value in anno.items %}
+    function initialize{{forloop.counter}}() {
+
     var latlng = new google.maps.LatLng(13,-85);
 
     var myOptions = {
@@ -20,29 +19,44 @@ function initialize() {
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-    var image = new google.maps.MarkerImage('/static/img/m2.png');
+      var image = new google.maps.MarkerImage('/static/img/m2.png');
 
-     var marker = new MarkerWithLabel({
-       position: new google.maps.LatLng(13, -85),
-       map: map,
-       draggable: true,
-       raiseOnDrag: true,
-       labelContent: "30000",
-       labelAnchor: new google.maps.Point(3, 30),
-       labelClass: "labels", // the CSS class for the label
-       labelInBackground: false,
-       icon: image,
-     });
+      
+        var map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
+        {% for x,y in value.12.items %}
+           var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
+           position: new google.maps.LatLng({{y.0}}, {{y.1}}),
+           map: map_{{year}},
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "{{y.2|floatformat:2}}",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+         });
+        {% endfor %}
+        
+  
+     
      // var iw = new google.maps.InfoWindow({
      //   content: "Home For Sale"
      // });
-}
-google.maps.event.addDomListener(window, "load", initialize);
+  }
+  //google.maps.event.addDomListener(window, "load", initialize{{forloop.counter}});
 
+
+$( "#{{forloop.counter}}" ).click(function() {
+    
+    initialize{{forloop.counter}}();
+
+});
+{% endfor %}
 
 </script>
+
+
 {% for year,value in anno.items %}
 <script>
 $(function () {
@@ -267,7 +281,60 @@ $(function () {
     });
   });
 
-       
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in value.13.items %}
+                  {
+                    name: "{{x}}",
+                    y: {{y}}
+                }, 
+                {% endfor %}
+                
+                ]
+            }]
+        });
+    });
+});  
+
+$(function(){
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  var that=$($(e.target).attr('href')).find('.map');
+  if(!that.find('iframe').length){ 
+    that.append($('<iframe/>',{src:that.data('map')})
+                  .css({height:'300px',width:'100%',border:'none'}));
+  }
+}).first().trigger('shown.bs.tab');
+});   
     </script>
 {% endfor %}
 {% endblock extra_js %}
@@ -310,31 +377,31 @@ $(function () {
 
 <div>
     
-    
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
   
     {% for year in anno.keys %}
-         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %} id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
     {% endfor %}
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
+  
     {% for year,value in anno.items %}
       <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
     <div class="contenido-graficos">
+
     <div class="row fila1">
         <div class="col-md-12 col-lg-6 grafico1" id="grafico{{year}}" style="min-width: 310px; width: 580px;"></div>
         <div class="col-md-12 col-lg-6 grafico3" id="rendimiento{{year}}" style="min-width: 310px; width: 580px"></div>
     </div>
 
-
         <!--fila 2-->
     <div class="row fila2">
         
-          <div class="col-md-12 col-lg-6 indicadores-t1">
-            <div id="map_canvas"></div>
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
           </div>
 
 
@@ -372,19 +439,25 @@ $(function () {
 
     <!--fila 4-->
     <div class="row fila4">
-        <div class="col-md-12 col-lg-6 grafico3" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico3" id="destino{{year}}" style="min-width: 310px; width: 580px"></div>
         
     </div>
 </div>
     </div>
   {% endfor %}
+
+
   </div>
 
 </div>
 
-
-
 {% include "monitoreo/indicadores.html" %}
+
+
+<!--{% for year,value in anno.items %}
+  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
+{% endfor %}-->
 
 <!--<div class="col-lg-3">
             <a class="btn" href="">Miembros del hogar</a>

@@ -146,6 +146,39 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		except:
 			total_produccion = 0
 
+		#mapa cantidades producida x depto
+		prod_depto = {}
+		for depto in Departamento.objects.all():
+			produccion_seco_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
+			if produccion_seco_depto == None:
+				produccion_seco_depto = 0
+
+			produccion_fermentado_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
+			if produccion_fermentado_depto == None:
+				produccion_fermentado_depto = 0
+
+			produccion_organico_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
+			if produccion_organico_depto == None:
+				produccion_organico_depto = 0
+
+			produccion_baba_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
+			if produccion_baba_depto == None:
+				produccion_baba_depto = 0
+
+			try:
+				produccion_seco_total_depto = produccion_seco_depto + (produccion_baba_depto/3)
+			except:
+				produccion_seco_total_depto = 0
+
+			try:
+				total_produccion_depto = (produccion_fermentado_depto + produccion_organico_depto + produccion_seco_total_depto) * tonelada
+			except:
+				total_produccion_depto = 0
+
+			if total_produccion_depto != 0:
+				prod_depto[depto] = (depto.latitud_1,depto.longitud_1,total_produccion_depto)
+
+
 		#produccion x tipo cacao grafico------------------------------------------------------------------------
 		p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
 		p_fermentado = saca_porcentajes((produccion_fermentado*tonelada),total_produccion,False)
@@ -195,9 +228,8 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			avg_cacao = 0
 
 		#socio, no socio
-		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / familias) * 100
-		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / familias) * 100
-		print socio,no_socio
+		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias)) * 100
+		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias)) * 100
 
 		#auto-consumo vs venta
 		PRODUCTO_CHOICES = (
@@ -243,16 +275,24 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			comercializacion[obj[1]] = (auto_consumo,venta)
 
 		#destino de produccion
-		# destino_dic = {}
-		# for x in QUIEN_VENDE_CHOICES:
-		# 	for obj in Comercializacion_Cacao.objects.filter(encuesta=filtro,encuesta__anno=year):
-		# 		destino = obj.quien_vende 
+		destino_dic = {}
+		lista = []
+		for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
+			for y in x.quien_vende:
+				lista.append(int(y))
+		print lista
 
+		for obj in QUIEN_VENDE_CHOICES:
+			p = lista.count(obj[0])
+			destino_dic[obj[1]] = p
+		print destino_dic 
+			
 
 		#diccionario todos los valores x anio
 		
 		anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
-						p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion)
+						p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
+						prod_depto,destino_dic)
 		
 	#-------------------------------------------------------------------------------------------------------------
 
