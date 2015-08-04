@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
-from .forms import *
+#from .forms import *
 import json as simplejson
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db.models import Sum, Count, Avg
