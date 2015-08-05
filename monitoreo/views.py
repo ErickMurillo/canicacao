@@ -9,342 +9,342 @@ import collections
 
 # Create your views here.
 def _queryset_filtrado(request):
-	params = {}
-	
-	if request.session['anno']:
-		params['anno__in'] = request.session['anno']
+    params = {}
+    
+    if request.session['anno']:
+        params['anno__in'] = request.session['anno']
 
-	if request.session['departamento']:
-		if not request.session['municipio']:
-			municipios = Municipio.objects.filter(departamento__in=request.session['departamento'])
-			params['persona__comunidad__municipio__in'] = municipios
-		else:
-			if request.session['comunidad']:
-				params['persona__comunidad__in'] = request.session['comunidad']
-			else:
-				params['persona__comunidad__municipio__in'] = request.session['municipio']
+    if request.session['departamento']:
+        if not request.session['municipio']:
+            municipios = Municipio.objects.filter(departamento__in=request.session['departamento'])
+            params['persona__comunidad__municipio__in'] = municipios
+        else:
+            if request.session['comunidad']:
+                params['persona__comunidad__in'] = request.session['comunidad']
+            else:
+                params['persona__comunidad__municipio__in'] = request.session['municipio']
 
-	if request.session['organizacion']:
-		params['organizacion'] = request.session['organizacion']
+    if request.session['organizacion']:
+        params['organizacion'] = request.session['organizacion']
 
-	if request.session['socio']:
-		params['organizacion_asociada__socio'] = request.session['socio']
+    if request.session['socio']:
+        params['organizacion_asociada__socio'] = request.session['socio']
 
 
-	unvalid_keys = []
-	for key in params:
-		if not params[key]:
-			unvalid_keys.append(key)
+    unvalid_keys = []
+    for key in params:
+        if not params[key]:
+            unvalid_keys.append(key)
 
-	for key in unvalid_keys:
-		del params[key]
+    for key in unvalid_keys:
+        del params[key]
 
-	return Encuesta.objects.filter(**params).order_by('anno')
+    return Encuesta.objects.filter(**params).order_by('anno')
 
 def IndexView(request,template="monitoreo/index.html"):
-	mujeres = Encuesta.objects.filter(persona__sexo='2').count()
-	hombres = Encuesta.objects.filter(persona__sexo='1').count()
-	area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
-	produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao', 
-													   		field="produccion_c_baba + produccion_c_seco + " + 
-													   		"produccion_c_fermentado + produccion_c_organico"))['total']
-	organizaciones = Organizacion.objects.all().count()
+    mujeres = Encuesta.objects.filter(persona__sexo='2').count()
+    hombres = Encuesta.objects.filter(persona__sexo='1').count()
+    area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
+    produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao', 
+                                                            field="produccion_c_baba + produccion_c_seco + " + 
+                                                            "produccion_c_fermentado + produccion_c_organico"))['total']
+    organizaciones = Organizacion.objects.all().count()
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def consulta(request,template="monitoreo/consulta.html"):
-	if request.method == 'POST':
-		mensaje = None
-		form = EncuestaConsulta(request.POST)
-		if form.is_valid():
-			request.session['anno'] = form.cleaned_data['anno']
-			request.session['departamento'] = form.cleaned_data['departamento']
-			request.session['municipio'] = form.cleaned_data['municipio']
-			request.session['comunidad'] = form.cleaned_data['comunidad']
-			request.session['organizacion'] = form.cleaned_data['organizacion']
-			request.session['socio'] = form.cleaned_data['socio']
+    if request.method == 'POST':
+        mensaje = None
+        form = EncuestaConsulta(request.POST)
+        if form.is_valid():
+            request.session['anno'] = form.cleaned_data['anno']
+            request.session['departamento'] = form.cleaned_data['departamento']
+            request.session['municipio'] = form.cleaned_data['municipio']
+            request.session['comunidad'] = form.cleaned_data['comunidad']
+            request.session['organizacion'] = form.cleaned_data['organizacion']
+            request.session['socio'] = form.cleaned_data['socio']
 
-			mensaje = "Todas las variables estan correctamente :)"
-			request.session['activo'] = True
-			centinela = 1
+            mensaje = "Todas las variables estan correctamente :)"
+            request.session['activo'] = True
+            centinela = 1
 
-			return HttpResponseRedirect('/dashboard/')
+            return HttpResponseRedirect('/dashboard/')
 
-		else:
-			centinela = 0   
-		   
-	else:
-		form = EncuestaConsulta()
-		mensaje = "Existen alguno errores"
-		centinela = 0
-		try:
-			del request.session['anno']
-			del request.session['departamento']
-			del request.session['municipio']
-			del request.session['comunidad']
-			del request.session['organizacion']
-			del request.session['socio']
-		except:
-			pass
+        else:
+            centinela = 0   
+           
+    else:
+        form = EncuestaConsulta()
+        mensaje = "Existen alguno errores"
+        centinela = 0
+        try:
+            del request.session['anno']
+            del request.session['departamento']
+            del request.session['municipio']
+            del request.session['comunidad']
+            del request.session['organizacion']
+            del request.session['socio']
+        except:
+            pass
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 
 def dashboard(request,template='monitoreo/dashboard.html'):
-	filtro = _queryset_filtrado(request)
-	#nuevas salidas
+    filtro = _queryset_filtrado(request)
+    #nuevas salidas
 
-	#conversiones###############
-	hectarea = 0.7050
-	tonelada = 0.1
-	libra_tonelada = 0.00045359237
-	############################
+    #conversiones###############
+    hectarea = 0.7050
+    tonelada = 0.1
+    libra_tonelada = 0.00045359237
+    ############################
 
-	familias = filtro.count()
+    familias = filtro.count()
 
-	try:
-		hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
-	except:
-		hombres = 0 
-	
-	try:
-		mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
-	except:
-		mujeres = 0
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0 
+    
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
 
-	for x in filtro:
-		organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
+    for x in filtro:
+        organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
 
-	anno = collections.OrderedDict()
+    anno = collections.OrderedDict()
 
-	for year in request.session['anno']:
-		familias_year = filtro.filter(anno=year).count()
-		#areas de cacao por edad de plantacion -----------------------------------------------------------------
-		areas = {}
-		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
-		try:
-			ha_area_total = area_total * hectarea
-		except:
-			ha_area_total = 0
+    for year in request.session['anno']:
+        familias_year = filtro.filter(anno=year).count()
+        #areas de cacao por edad de plantacion -----------------------------------------------------------------
+        areas = {}
+        area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
+        try:
+            ha_area_total = area_total * hectarea
+        except:
+            ha_area_total = 0
 
-		for obj in EDAD_PLANTA_CHOICES:
-			conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
-			if conteo == None:
-				conteo = 0
-			result = conteo * hectarea
-			areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
+        for obj in EDAD_PLANTA_CHOICES:
+            conteo = filtro.filter(anno=year,plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']
+            if conteo == None:
+                conteo = 0
+            result = conteo * hectarea
+            areas[obj[1]] = saca_porcentajes(result,ha_area_total,False)
 
-		#total de produccion cacao ----------------------------------------------------------------------------
-		produccion_seco = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
-		if produccion_seco == None:
-			produccion_seco = 0
+        #total de produccion cacao ----------------------------------------------------------------------------
+        produccion_seco = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
+        if produccion_seco == None:
+            produccion_seco = 0
 
-		produccion_fermentado = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
-		if produccion_fermentado == None:
-			produccion_fermentado = 0
+        produccion_fermentado = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
+        if produccion_fermentado == None:
+            produccion_fermentado = 0
 
-		produccion_organico = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
-		if produccion_organico == None:
-			produccion_organico = 0
+        produccion_organico = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
+        if produccion_organico == None:
+            produccion_organico = 0
 
-		produccion_baba = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
-		if produccion_baba == None:
-			produccion_baba = 0
+        produccion_baba = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
+        if produccion_baba == None:
+            produccion_baba = 0
 
-		try:
-			produccion_seco_total = produccion_seco + (produccion_baba/3)
-		except:
-			produccion_seco_total = 0
+        try:
+            produccion_seco_total = produccion_seco + (produccion_baba/3)
+        except:
+            produccion_seco_total = 0
 
-		try:
-			total_produccion = (produccion_fermentado + produccion_organico + produccion_seco_total) * tonelada
-		except:
-			total_produccion = 0
+        try:
+            total_produccion = (produccion_fermentado + produccion_organico + produccion_seco_total) * tonelada
+        except:
+            total_produccion = 0
 
-		#mapa cantidades producida x depto
-		prod_depto = {}
-		for depto in Departamento.objects.all():
-			produccion_seco_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
-			if produccion_seco_depto == None:
-				produccion_seco_depto = 0
+        #mapa cantidades producida x depto
+        prod_depto = {}
+        for depto in Departamento.objects.all():
+            produccion_seco_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
+            if produccion_seco_depto == None:
+                produccion_seco_depto = 0
 
-			produccion_fermentado_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
-			if produccion_fermentado_depto == None:
-				produccion_fermentado_depto = 0
+            produccion_fermentado_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_fermentado'))['total']
+            if produccion_fermentado_depto == None:
+                produccion_fermentado_depto = 0
 
-			produccion_organico_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
-			if produccion_organico_depto == None:
-				produccion_organico_depto = 0
+            produccion_organico_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_organico'))['total']
+            if produccion_organico_depto == None:
+                produccion_organico_depto = 0
 
-			produccion_baba_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
-			if produccion_baba_depto == None:
-				produccion_baba_depto = 0
+            produccion_baba_depto = filtro.filter(anno=year,persona__departamento=depto).aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
+            if produccion_baba_depto == None:
+                produccion_baba_depto = 0
 
-			try:
-				produccion_seco_total_depto = produccion_seco_depto + (produccion_baba_depto/3)
-			except:
-				produccion_seco_total_depto = 0
+            try:
+                produccion_seco_total_depto = produccion_seco_depto + (produccion_baba_depto/3)
+            except:
+                produccion_seco_total_depto = 0
 
-			try:
-				total_produccion_depto = (produccion_fermentado_depto + produccion_organico_depto + produccion_seco_total_depto) * tonelada
-			except:
-				total_produccion_depto = 0
+            try:
+                total_produccion_depto = (produccion_fermentado_depto + produccion_organico_depto + produccion_seco_total_depto) * tonelada
+            except:
+                total_produccion_depto = 0
 
-			if total_produccion_depto != 0:
-				prod_depto[depto] = (depto.latitud_1,depto.longitud_1,total_produccion_depto)
-
-
-		#produccion x tipo cacao grafico------------------------------------------------------------------------
-		p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
-		p_fermentado = saca_porcentajes((produccion_fermentado*tonelada),total_produccion,False)
-		p_organico = saca_porcentajes((produccion_organico*tonelada),total_produccion,False)
-
-		#rendimiento cacao kg x ha -----------------------------------------------------------------------------
-		area_prod = filtro.filter(anno=year).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
-		if area_prod == None:
-			area_prod = 0
-
-		baba = filtro.filter(anno=year).aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
-		if baba == None:
-			baba = 0
-
-		seco = filtro.filter(anno=year).aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
-		if seco == None:
-			seco = 0
-
-		fermentado = filtro.filter(anno=year).aggregate(cacao_fer_s=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer_s']
-		if fermentado == None:
-			fermentado = 0
-
-		organico = filtro.filter(anno=year).aggregate(cacao_org_s=Sum('produccion_cacao__produccion_c_organico'))['cacao_org_s']
-		if organico == None:
-			organico = 0
-
-		area_hectarea = area_prod * float(hectarea)
-
-		try:
-			rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
-		except:
-			rendimiento_seco = 0
-
-		try:
-			rendimiento_fer = (fermentado * 100) / area_hectarea
-		
-		except:
-			rendimiento_fer = 0
-
-		try:
-			rendimiento_org = (organico * 100) / area_hectarea
-		except:
-			rendimiento_org = 0
-
-		#promedio areas de cacao x productor
-		try:
-			avg_cacao = (filtro.filter(anno=year).aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']) * hectarea
-		except:
-			avg_cacao = 0
-
-		#socio, no socio
-		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias_year)) * 100
-		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
-
-		#auto-consumo vs venta
-		PRODUCTO_CHOICES = (
-			(3,'Cacao en baba'),
-			(4,'Cacao rojo sin fermentar'),
-			(5,'Cacao fermentado'),
-			# (6,'Chocolate artesanal'),
-			# (7,'Cacao en polvo'),
-			# (8,'Cacao procesado/ pinolillo'),
-			# (9,'Cajeta de cacao'),
-			# (10,'Pasta de cacao'),
-			)
-
-		comercializacion = {}
-
-		for obj in PRODUCTO_CHOICES:
-			if obj[0] == 3:
-				try:
-					auto_consumo = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__auto_consumo'))['total'] )/ 3) * tonelada
-				except:
-					auto_consumo = 0
-				
-				try:
-					venta = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__venta'))['total'])/ 3) * tonelada
-				except:
-					venta = 0
-			
-			elif obj[0] == 4:
-				try:
-					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
-				except:
-					auto_consumo = 0
-				
-				try:
-					venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__venta'))['total']) * tonelada
-				except:
-					venta = 0
-			else:
-				try:
-					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__auto_consumo'))['total']) * libra_tonelada
-				except:
-					auto_consumo = 0
-
-				try:
-					venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-								'comercializacion_cacao__venta'))['total'] ) * libra_tonelada
-				except:
-					venta = 0
-
-			comercializacion[obj[1]] = (auto_consumo,venta)
-
-		#destino de produccion
-		destino_dic = {}
-		lista = []
-		for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
-			for y in x.quien_vende:
-				lista.append(int(y))
-
-		for obj in QUIEN_VENDE_CHOICES:
-			p = lista.count(obj[0])
-			destino_dic[obj[1]] = p
-
-		#destino de produccion de las organizaciones
-		destino_org_dic = {}
-		lista_org = []
-		for xz in Comercializacion_Org.objects.filter(encuesta__anno=year):
-			for yz in xz.destino_produccion:
-				lista_org.append(int(yz))
+            if total_produccion_depto != 0:
+                prod_depto[depto] = (depto.latitud_1,depto.longitud_1,total_produccion_depto)
 
 
-		for obj_1 in DESTINO_CHOICES:
-			p2 = lista_org.count(obj_1[0])
-			destino_org_dic[obj_1[1]] = p2
-		print destino_org_dic
+        #produccion x tipo cacao grafico------------------------------------------------------------------------
+        p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
+        p_fermentado = saca_porcentajes((produccion_fermentado*tonelada),total_produccion,False)
+        p_organico = saca_porcentajes((produccion_organico*tonelada),total_produccion,False)
 
-		#diccionario todos los valores x anio
-		
-		anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
-						p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
-						prod_depto,destino_dic,destino_org_dic)
-		
-	
-	return render(request, template, locals())
+        #rendimiento cacao kg x ha -----------------------------------------------------------------------------
+        area_prod = filtro.filter(anno=year).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+        if area_prod == None:
+            area_prod = 0
+
+        baba = filtro.filter(anno=year).aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
+        if baba == None:
+            baba = 0
+
+        seco = filtro.filter(anno=year).aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
+        if seco == None:
+            seco = 0
+
+        fermentado = filtro.filter(anno=year).aggregate(cacao_fer_s=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer_s']
+        if fermentado == None:
+            fermentado = 0
+
+        organico = filtro.filter(anno=year).aggregate(cacao_org_s=Sum('produccion_cacao__produccion_c_organico'))['cacao_org_s']
+        if organico == None:
+            organico = 0
+
+        area_hectarea = area_prod * float(hectarea)
+
+        try:
+            rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
+        except:
+            rendimiento_seco = 0
+
+        try:
+            rendimiento_fer = (fermentado * 100) / area_hectarea
+        
+        except:
+            rendimiento_fer = 0
+
+        try:
+            rendimiento_org = (organico * 100) / area_hectarea
+        except:
+            rendimiento_org = 0
+
+        #promedio areas de cacao x productor
+        try:
+            avg_cacao = (filtro.filter(anno=year).aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']) * hectarea
+        except:
+            avg_cacao = 0
+
+        #socio, no socio
+        socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias_year)) * 100
+        no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
+
+        #auto-consumo vs venta
+        PRODUCTO_CHOICES = (
+            (3,'Cacao en baba'),
+            (4,'Cacao rojo sin fermentar'),
+            (5,'Cacao fermentado'),
+            # (6,'Chocolate artesanal'),
+            # (7,'Cacao en polvo'),
+            # (8,'Cacao procesado/ pinolillo'),
+            # (9,'Cajeta de cacao'),
+            # (10,'Pasta de cacao'),
+            )
+
+        comercializacion = {}
+
+        for obj in PRODUCTO_CHOICES:
+            if obj[0] == 3:
+                try:
+                    auto_consumo = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__auto_consumo'))['total'] )/ 3) * tonelada
+                except:
+                    auto_consumo = 0
+                
+                try:
+                    venta = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__venta'))['total'])/ 3) * tonelada
+                except:
+                    venta = 0
+            
+            elif obj[0] == 4:
+                try:
+                    auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
+                except:
+                    auto_consumo = 0
+                
+                try:
+                    venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__venta'))['total']) * tonelada
+                except:
+                    venta = 0
+            else:
+                try:
+                    auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__auto_consumo'))['total']) * libra_tonelada
+                except:
+                    auto_consumo = 0
+
+                try:
+                    venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                'comercializacion_cacao__venta'))['total'] ) * libra_tonelada
+                except:
+                    venta = 0
+
+            comercializacion[obj[1]] = (auto_consumo,venta)
+
+        #destino de produccion
+        destino_dic = {}
+        lista = []
+        for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
+            for y in x.quien_vende:
+                lista.append(int(y))
+
+        for obj in QUIEN_VENDE_CHOICES:
+            p = lista.count(obj[0])
+            destino_dic[obj[1]] = p
+
+        #destino de produccion de las organizaciones
+        destino_org_dic = {}
+        lista_org = []
+        for xz in Comercializacion_Org.objects.filter(encuesta__anno=year):
+            for yz in xz.destino_produccion:
+                lista_org.append(int(yz))
+
+
+        for obj_1 in DESTINO_CHOICES:
+            p2 = lista_org.count(obj_1[0])
+            destino_org_dic[obj_1[1]] = p2
+        print destino_org_dic
+
+        #diccionario todos los valores x anio
+        
+        anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
+                        p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
+                        prod_depto,destino_dic,destino_org_dic)
+        
+    
+    return render(request, template, locals())
 
 #nivel de educacion
 def educacion(request,template='monitoreo/educacion.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	tabla_educacion = []
-	grafo = []
-	suma = 0
-	for e in RANGOS_CHOICE:
-		objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
+    tabla_educacion = []
+    grafo = []
+    suma = 0
+    for e in RANGOS_CHOICE:
+        objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
                 no_leer = Sum('educacion__no_lee_ni_escribe'),
                 p_incompleta = Sum('educacion__primaria_incompleta'),
                 p_completa = Sum('educacion__primaria_completa'),
@@ -352,13 +352,13 @@ def educacion(request,template='monitoreo/educacion.html'):
                 bachiller = Sum('educacion__bachiller'),
                 universitario = Sum('educacion__universitario_tecnico'),
                 f_comunidad = Sum('educacion__viven_fuera'))
-		try:
-			suma = int(objeto['p_completa'] or 0) + int(objeto['s_incompleta'] or 0) + int(objeto['bachiller'] or 0) + int(objeto['universitario'] or 0)
-		except:
-			pass
-		variable = round(saca_porcentajes(suma,objeto['num_total']))
-		grafo.append([e[1],variable])
-		fila = [e[1], objeto['num_total'],
+        try:
+            suma = int(objeto['p_completa'] or 0) + int(objeto['s_incompleta'] or 0) + int(objeto['bachiller'] or 0) + int(objeto['universitario'] or 0)
+        except:
+            pass
+        variable = round(saca_porcentajes(suma,objeto['num_total']))
+        grafo.append([e[1],variable])
+        fila = [e[1], objeto['num_total'],
                 saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
                 saca_porcentajes(objeto['p_incompleta'], objeto['num_total'], False),
                 saca_porcentajes(objeto['p_completa'], objeto['num_total'], False),
@@ -366,170 +366,170 @@ def educacion(request,template='monitoreo/educacion.html'):
                 saca_porcentajes(objeto['bachiller'], objeto['num_total'], False),
                 saca_porcentajes(objeto['universitario'], objeto['num_total'], False),
                 saca_porcentajes(objeto['f_comunidad'], objeto['num_total'], False)]
-		tabla_educacion.append(fila)
-	print grafo
+        tabla_educacion.append(fila)
+    print grafo
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def propiedad(request,template='monitoreo/propiedad.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	familias = filtro.count()
+    familias = filtro.count()
 
-	count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
-	count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
-	dueno = (count_si/float(familias))*100
-	no_dueno = (count_no/float(familias))*100
+    count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
+    count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
+    dueno = (count_si/float(familias))*100
+    no_dueno = (count_no/float(familias))*100
 
-	dic2 = {}
-	for x in Situacion.objects.all():
-		objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
-		dic2[x] = saca_porcentajes(objeto1,count_no,False)
-	
-	dic = {}
-	for e in PROPIEDAD_CHOICE:
-		for x in e:	
-			objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
-			dic[e[1]] = saca_porcentajes(objeto,count_si,False)
+    dic2 = {}
+    for x in Situacion.objects.all():
+        objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
+        dic2[x] = saca_porcentajes(objeto1,count_no,False)
+    
+    dic = {}
+    for e in PROPIEDAD_CHOICE:
+        for x in e: 
+            objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
+            dic[e[1]] = saca_porcentajes(objeto,count_si,False)
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def uso_tierra(request,template='monitoreo/uso_tierra.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
+    total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
 
-	#grafico numero de manzanas
-	bosque = filtro.aggregate(bosque=Sum('uso_tierra__bosque'))['bosque']
-	tacotal = filtro.aggregate(tacotal=Sum('uso_tierra__tacotal'))['tacotal']
-	cultivo_anual = filtro.aggregate(cultivo_anual=Sum('uso_tierra__cultivo_anual'))['cultivo_anual']
-	plantacion_forestal = filtro.aggregate(plantacion_forestal=Sum('uso_tierra__plantacion_forestal'))['plantacion_forestal']
-	area_pasto_abierto = filtro.aggregate(area_pasto_abierto=Sum('uso_tierra__area_pasto_abierto'))['area_pasto_abierto']
-	area_pasto_arboles = filtro.aggregate(area_pasto_arboles=Sum('uso_tierra__area_pasto_arboles'))['area_pasto_arboles']
-	cultivo_perenne = filtro.aggregate(cultivo_perenne=Sum('uso_tierra__cultivo_perenne'))['cultivo_perenne']
-	cultivo_semi_perenne = filtro.aggregate(cultivo_semi_perenne=Sum('uso_tierra__cultivo_semi_perenne'))['cultivo_semi_perenne']
-	cacao =  filtro.aggregate(cacao=Sum('uso_tierra__cacao'))['cacao']
-	huerto_mixto_cacao = filtro.aggregate(huerto_mixto_cacao=Sum('uso_tierra__huerto_mixto_cacao'))['huerto_mixto_cacao']
-	otros = filtro.aggregate(otros=Sum('uso_tierra__otros'))['otros']
+    #grafico numero de manzanas
+    bosque = filtro.aggregate(bosque=Sum('uso_tierra__bosque'))['bosque']
+    tacotal = filtro.aggregate(tacotal=Sum('uso_tierra__tacotal'))['tacotal']
+    cultivo_anual = filtro.aggregate(cultivo_anual=Sum('uso_tierra__cultivo_anual'))['cultivo_anual']
+    plantacion_forestal = filtro.aggregate(plantacion_forestal=Sum('uso_tierra__plantacion_forestal'))['plantacion_forestal']
+    area_pasto_abierto = filtro.aggregate(area_pasto_abierto=Sum('uso_tierra__area_pasto_abierto'))['area_pasto_abierto']
+    area_pasto_arboles = filtro.aggregate(area_pasto_arboles=Sum('uso_tierra__area_pasto_arboles'))['area_pasto_arboles']
+    cultivo_perenne = filtro.aggregate(cultivo_perenne=Sum('uso_tierra__cultivo_perenne'))['cultivo_perenne']
+    cultivo_semi_perenne = filtro.aggregate(cultivo_semi_perenne=Sum('uso_tierra__cultivo_semi_perenne'))['cultivo_semi_perenne']
+    cacao =  filtro.aggregate(cacao=Sum('uso_tierra__cacao'))['cacao']
+    huerto_mixto_cacao = filtro.aggregate(huerto_mixto_cacao=Sum('uso_tierra__huerto_mixto_cacao'))['huerto_mixto_cacao']
+    otros = filtro.aggregate(otros=Sum('uso_tierra__otros'))['otros']
 
-	#tabla distribucion de la tierra
-	t_bosque = (bosque/total) * 100
-	t_tacotal = (tacotal/total) * 100
-	t_cultivo_anual = (cultivo_anual/total) * 100
-	t_plantacion_forestal = (plantacion_forestal/total) * 100
-	t_area_pasto_abierto = (area_pasto_abierto/total) * 100
-	t_area_pasto_arboles = (area_pasto_arboles/total) * 100
-	t_cultivo_perenne = (cultivo_perenne/total) * 100
-	t_cultivo_semi_perenne = (cultivo_semi_perenne/total) * 100
-	t_cacao = (cacao/total) * 100
-	t_huerto_mixto_cacao = (huerto_mixto_cacao/total) * 100
-	t_otros = (otros/total) * 100
+    #tabla distribucion de la tierra
+    t_bosque = (bosque/total) * 100
+    t_tacotal = (tacotal/total) * 100
+    t_cultivo_anual = (cultivo_anual/total) * 100
+    t_plantacion_forestal = (plantacion_forestal/total) * 100
+    t_area_pasto_abierto = (area_pasto_abierto/total) * 100
+    t_area_pasto_arboles = (area_pasto_arboles/total) * 100
+    t_cultivo_perenne = (cultivo_perenne/total) * 100
+    t_cultivo_semi_perenne = (cultivo_semi_perenne/total) * 100
+    t_cacao = (cacao/total) * 100
+    t_huerto_mixto_cacao = (huerto_mixto_cacao/total) * 100
+    t_otros = (otros/total) * 100
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def produccion(request,template='monitoreo/produccion.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	baba = filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba']
-	seco = filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco']
-	fermentado = filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado']
-	organico = filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico']
+    baba = filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba']
+    seco = filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco']
+    fermentado = filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado']
+    organico = filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico']
 
-	#baba = Produccion_Cacao.objects.filter(encuesta=filtro).aggregate(baba=Sum('produccion_c_baba'))['baba']
+    #baba = Produccion_Cacao.objects.filter(encuesta=filtro).aggregate(baba=Sum('produccion_c_baba'))['baba']
 
-	# years = []
-	# for x in Produccion_Cacao.objects.filter(encuesta=filtro):
-	# 	for y in x.meses_produccion:
-	# 		print y
-	return render(request, template, locals())
+    # years = []
+    # for x in Produccion_Cacao.objects.filter(encuesta=filtro):
+    #   for y in x.meses_produccion:
+    #       print y
+    return render(request, template, locals())
 
 def riesgos(request,template='monitoreo/riesgos.html'):
-	filtro = _queryset_filtrado(request)
-	familias = filtro.count()
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
 
-	riesgos = {}
-	riesgos_tabla = {}
-	for obj in RIESGOS_CHOICES:
-		sequia = filtro.filter(fenomenos_naturales__sequia=obj[0]).count()
-		innundacion = filtro.filter(fenomenos_naturales__innundacion=obj[0]).count()
-		lluvia = filtro.filter(fenomenos_naturales__lluvia=obj[0]).count()
-		viento = filtro.filter(fenomenos_naturales__viento=obj[0]).count()
-		deslizamiento = filtro.filter(fenomenos_naturales__deslizamiento=obj[0]).count()
+    riesgos = {}
+    riesgos_tabla = {}
+    for obj in RIESGOS_CHOICES:
+        sequia = filtro.filter(fenomenos_naturales__sequia=obj[0]).count()
+        innundacion = filtro.filter(fenomenos_naturales__innundacion=obj[0]).count()
+        lluvia = filtro.filter(fenomenos_naturales__lluvia=obj[0]).count()
+        viento = filtro.filter(fenomenos_naturales__viento=obj[0]).count()
+        deslizamiento = filtro.filter(fenomenos_naturales__deslizamiento=obj[0]).count()
 
-		riesgos[obj[1]] = (saca_porcentajes(sequia,familias,False),
-							saca_porcentajes(innundacion,familias,False),
-							saca_porcentajes(lluvia,familias,False),
-							saca_porcentajes(viento,familias,False),
-							saca_porcentajes(deslizamiento,familias,False))
+        riesgos[obj[1]] = (saca_porcentajes(sequia,familias,False),
+                            saca_porcentajes(innundacion,familias,False),
+                            saca_porcentajes(lluvia,familias,False),
+                            saca_porcentajes(viento,familias,False),
+                            saca_porcentajes(deslizamiento,familias,False))
 
-		riesgos_tabla[obj[1]] = (sequia,innundacion,lluvia,viento,deslizamiento)
+        riesgos_tabla[obj[1]] = (sequia,innundacion,lluvia,viento,deslizamiento)
 
-	plantas = {}
-	for obj in P_IMPRODUCTIVAS_CHOICES:
-		p_improduct = filtro.filter(razones_agricolas__plantas_improductivas=obj[0]).count()
-		plantas[obj[1]] = p_improduct
+    plantas = {}
+    for obj in P_IMPRODUCTIVAS_CHOICES:
+        p_improduct = filtro.filter(razones_agricolas__plantas_improductivas=obj[0]).count()
+        plantas[obj[1]] = p_improduct
 
-	plagas = {}
-	for obj in SI_NO_CHOICES:
-		plagas_enfermedades = filtro.filter(razones_agricolas__plagas_enfermedades=obj[0]).count()
-		quemas = filtro.filter(razones_agricolas__quemas=obj[0]).count()
+    plagas = {}
+    for obj in SI_NO_CHOICES:
+        plagas_enfermedades = filtro.filter(razones_agricolas__plagas_enfermedades=obj[0]).count()
+        quemas = filtro.filter(razones_agricolas__quemas=obj[0]).count()
 
-		plagas[obj[1]] = (saca_porcentajes(plagas_enfermedades,familias,False),
-							saca_porcentajes(quemas,familias,False))
+        plagas[obj[1]] = (saca_porcentajes(plagas_enfermedades,familias,False),
+                            saca_porcentajes(quemas,familias,False))
 
-	mercados = {}
-	for obj in SI_NO_CHOICES:
-		bajo_precio = filtro.filter(razones_mercado__bajo_precio=obj[0]).count()
-		falta_venta = filtro.filter(razones_mercado__falta_venta=obj[0]).count()
-		estafa_contrato = filtro.filter(razones_mercado__estafa_contrato=obj[0]).count()
-		calidad_producto = filtro.filter(razones_mercado__calidad_producto=obj[0]).count()
+    mercados = {}
+    for obj in SI_NO_CHOICES:
+        bajo_precio = filtro.filter(razones_mercado__bajo_precio=obj[0]).count()
+        falta_venta = filtro.filter(razones_mercado__falta_venta=obj[0]).count()
+        estafa_contrato = filtro.filter(razones_mercado__estafa_contrato=obj[0]).count()
+        calidad_producto = filtro.filter(razones_mercado__calidad_producto=obj[0]).count()
 
-		mercados[obj[1]] = (saca_porcentajes(bajo_precio,familias,False),
-							saca_porcentajes(falta_venta,familias,False),
-							saca_porcentajes(estafa_contrato,familias,False),
-							saca_porcentajes(calidad_producto,familias,False))
+        mercados[obj[1]] = (saca_porcentajes(bajo_precio,familias,False),
+                            saca_porcentajes(falta_venta,familias,False),
+                            saca_porcentajes(estafa_contrato,familias,False),
+                            saca_porcentajes(calidad_producto,familias,False))
 
-	inversion = {}
-	for obj in SI_NO_CHOICES:
-		invierte_cacao = filtro.filter(inversion__invierte_cacao=obj[0]).count()
-		interes_invertrir = filtro.filter(inversion__interes_invertrir=obj[0]).count()
-		falta_credito = filtro.filter(inversion__falta_credito=obj[0]).count()
-		altos_intereses = filtro.filter(inversion__altos_intereses=obj[0]).count()
-		robo_producto = filtro.filter(inversion__robo_producto=obj[0]).count()
+    inversion = {}
+    for obj in SI_NO_CHOICES:
+        invierte_cacao = filtro.filter(inversion__invierte_cacao=obj[0]).count()
+        interes_invertrir = filtro.filter(inversion__interes_invertrir=obj[0]).count()
+        falta_credito = filtro.filter(inversion__falta_credito=obj[0]).count()
+        altos_intereses = filtro.filter(inversion__altos_intereses=obj[0]).count()
+        robo_producto = filtro.filter(inversion__robo_producto=obj[0]).count()
 
-		inversion[obj[1]] = (saca_porcentajes(invierte_cacao,familias,False),
-							saca_porcentajes(interes_invertrir,familias,False),
-							saca_porcentajes(falta_credito,familias,False),
-							saca_porcentajes(altos_intereses,familias,False),
-							saca_porcentajes(robo_producto,familias,False))
-	return render(request, template, locals())
+        inversion[obj[1]] = (saca_porcentajes(invierte_cacao,familias,False),
+                            saca_porcentajes(interes_invertrir,familias,False),
+                            saca_porcentajes(falta_credito,familias,False),
+                            saca_porcentajes(altos_intereses,familias,False),
+                            saca_porcentajes(robo_producto,familias,False))
+    return render(request, template, locals())
 
 def comercializacion(request,template='monitoreo/comercializacion.html'):
-	filtro = _queryset_filtrado(request)
-	familias = filtro.count()
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
 
-	tabla_productos = []
-	for obj in PRODUCTO_CHOICES:
-		producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
-					auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
-					venta=Avg('comercializacion_cacao__venta'),
-					precio_venta=Avg('comercializacion_cacao__precio_venta'))
+    tabla_productos = []
+    for obj in PRODUCTO_CHOICES:
+        producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
+                    auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
+                    venta=Avg('comercializacion_cacao__venta'),
+                    precio_venta=Avg('comercializacion_cacao__precio_venta'))
 
-		fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
-		tabla_productos.append(fila)
+        fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
+        tabla_productos.append(fila)
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def genero(request,template='monitoreo/genero.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	genero = {}
-	suma = 0
-	for obj in Actividades_Produccion.objects.all():
-		mujer = filtro.filter(genero__actividades=obj).count()
-		genero[obj] = mujer
+    genero = {}
+    suma = 0
+    for obj in Actividades_Produccion.objects.all():
+        mujer = filtro.filter(genero__actividades=obj).count()
+        genero[obj] = mujer
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 #obtener puntos en el mapa
 def obtener_lista(request):
@@ -545,6 +545,60 @@ def obtener_lista(request):
         serializado = simplejson.dumps(lista)
         return HttpResponse(serializado, content_type='application/json')
 
+
+
+#SALIDAS CARLOS
+def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.html'):
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
+
+    #caracteristicas del terrenos
+    tabla_textura = {}
+    for k in TEXTURA_CHOICES:
+        query = filtro.filter(caracterizacion_terreno__textura_suelo = k[0])
+        frecuencia = query.count()
+        textura = filtro.filter(caracterizacion_terreno__textura_suelo=k[0]).aggregate(textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
+        por_textura = saca_porcentajes(textura, familias)
+        tabla_textura[k[1]] = {'textura':textura,'por_textura':por_textura}
+
+    #pendientes
+    tabla_pendiente = {}
+    for k in PENDIENTE_CHOICES:
+        query = filtro.filter(caracterizacion_terreno__pendiente_terreno = k[0])
+        frecuencia = query.count()
+        pendiente = filtro.filter(caracterizacion_terreno__pendiente_terreno=k[0]).aggregate(pendiente=Count('caracterizacion_terreno__pendiente_terreno'))['pendiente']
+        por_pendiente = saca_porcentajes(pendiente, familias)
+        tabla_pendiente[k[1]] = {'pendiente':pendiente,'por_pendiente':por_pendiente}
+
+    #pendientes
+    tabla_hojarasca = {}
+    for k in HOJARASCA_CHOICES:
+        query = filtro.filter(caracterizacion_terreno__contenido_hojarasca = k[0])
+        frecuencia = query.count()
+        horajasca = filtro.filter(caracterizacion_terreno__contenido_hojarasca=k[0]).aggregate(horajasca=Count('caracterizacion_terreno__contenido_hojarasca'))['horajasca']
+        por_horajasca = saca_porcentajes(horajasca, familias)
+        tabla_hojarasca[k[1]] = {'horajasca':horajasca,'por_horajasca':por_horajasca}
+
+    #Profundo
+    tabla_profundidad = {}
+    for k in PROFUNDIDAD_CHOICES:
+        query = filtro.filter(caracterizacion_terreno__porfundidad_suelo = k[0])
+        frecuencia = query.count()
+        profundidad = filtro.filter(caracterizacion_terreno__porfundidad_suelo=k[0]).aggregate(profundidad=Count('caracterizacion_terreno__porfundidad_suelo'))['profundidad']
+        por_profundidad = saca_porcentajes(profundidad, familias)
+        tabla_profundidad[k[1]] = {'profundidad':profundidad,'por_profundidad':por_profundidad}
+
+    tabla_drenaje = {}
+    for k in DRENAJE_CHOICES:
+        query = filtro.filter(caracterizacion_terreno__drenaje_suelo = k[0])
+        frecuencia = query.count()
+        drenaje = filtro.filter(caracterizacion_terreno__drenaje_suelo=k[0]).aggregate(drenaje=Count('caracterizacion_terreno__drenaje_suelo'))['drenaje']
+        por_drenaje = saca_porcentajes(drenaje, familias)
+        tabla_drenaje[k[1]] = {'drenaje':drenaje,'por_drenaje':por_drenaje}
+
+
+
+    return render(request, template, locals())
 #ajax filtros
 def get_munis(request):
     '''Metodo para obtener los municipios via Ajax segun los departamentos selectos'''
@@ -605,17 +659,17 @@ def get_organi(request):
 
 #utils
 def saca_porcentajes(dato, total, formato=True):
-	if dato != None:
-		try:
-			porcentaje = (dato/float(total)) * 100 if total != None or total != 0 else 0
-		except:
-			return 0
-		if formato:
-			return porcentaje
-		else:
-			return '%.2f' % porcentaje
-	else:
-		return 0
+    if dato != None:
+        try:
+            porcentaje = (dato/float(total)) * 100 if total != None or total != 0 else 0
+        except:
+            return 0
+        if formato:
+            return porcentaje
+        else:
+            return '%.2f' % porcentaje
+    else:
+        return 0
 
 def get_fecha(request):
     years = []
@@ -625,15 +679,15 @@ def get_fecha(request):
     return HttpResponse(simplejson.dumps(lista), content_type='application/javascript')
 
 def hectarea(dato):
-	if dato != None:
-		try:
-			total = dato*float(hectarea) if total != None or total != 0 else 0
-		except:
-			return 0
-		if formato:
-			return total
-		else:
-			return '%.2f' % total
-	else:
-		return 0
+    if dato != None:
+        try:
+            total = dato*float(hectarea) if total != None or total != 0 else 0
+        except:
+            return 0
+        if formato:
+            return total
+        else:
+            return '%.2f' % total
+    else:
+        return 0
 
