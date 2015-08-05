@@ -100,10 +100,25 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 	libra_tonelada = 0.00045359237
 	############################
 
+	familias = filtro.count()
+
+	try:
+		hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+	except:
+		hombres = 0 
+	
+	try:
+		mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+	except:
+		mujeres = 0
+
+	for x in filtro:
+		organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
+
 	anno = collections.OrderedDict()
 
 	for year in request.session['anno']:
-		familias = filtro.filter(anno=year).count()
+		familias_year = filtro.filter(anno=year).count()
 		#areas de cacao por edad de plantacion -----------------------------------------------------------------
 		areas = {}
 		area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
@@ -205,19 +220,21 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		if organico == None:
 			organico = 0
 
+		area_hectarea = area_prod * float(hectarea)
+
 		try:
-			rendimiento_seco = (((baba/3) + seco) * 100)/(float(area_prod * hectarea))
+			rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
 		except:
 			rendimiento_seco = 0
 
 		try:
-			rendimiento_fer = (fermentado * 100)/(float(area_prod * hectarea))
+			rendimiento_fer = (fermentado * 100) / area_hectarea
 		
 		except:
 			rendimiento_fer = 0
 
 		try:
-			rendimiento_org = (organico * 100)/float(area_prod * hectarea)
+			rendimiento_org = (organico * 100) / area_hectarea
 		except:
 			rendimiento_org = 0
 
@@ -228,25 +245,38 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			avg_cacao = 0
 
 		#socio, no socio
-		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias)) * 100
-		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias)) * 100
+		socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias_year)) * 100
+		no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
 
 		#auto-consumo vs venta
 		PRODUCTO_CHOICES = (
 			(3,'Cacao en baba'),
 			(4,'Cacao rojo sin fermentar'),
 			(5,'Cacao fermentado'),
-			(6,'Chocolate artesanal'),
-			(7,'Cacao en polvo'),
-			(8,'Cacao procesado/ pinolillo'),
-			(9,'Cajeta de cacao'),
-			(10,'Pasta de cacao'),
+			# (6,'Chocolate artesanal'),
+			# (7,'Cacao en polvo'),
+			# (8,'Cacao procesado/ pinolillo'),
+			# (9,'Cajeta de cacao'),
+			# (10,'Pasta de cacao'),
 			)
 
 		comercializacion = {}
 
 		for obj in PRODUCTO_CHOICES:
-			if obj[0] == '3' or obj[0] == '4':
+			if obj[0] == 3:
+				try:
+					auto_consumo = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__auto_consumo'))['total'] )/ 3) * tonelada
+				except:
+					auto_consumo = 0
+				
+				try:
+					venta = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+								'comercializacion_cacao__venta'))['total'])/ 3) * tonelada
+				except:
+					venta = 0
+			
+			elif obj[0] == 4:
 				try:
 					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
 								'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
@@ -258,7 +288,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 								'comercializacion_cacao__venta'))['total']) * tonelada
 				except:
 					venta = 0
-				
 			else:
 				try:
 					auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
@@ -280,122 +309,31 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
 			for y in x.quien_vende:
 				lista.append(int(y))
-		print lista
 
 		for obj in QUIEN_VENDE_CHOICES:
 			p = lista.count(obj[0])
 			destino_dic[obj[1]] = p
-		print destino_dic 
-			
+
+		#destino de produccion de las organizaciones
+		destino_org_dic = {}
+		lista_org = []
+		for xz in Comercializacion_Org.objects.filter(encuesta__anno=year):
+			for yz in xz.destino_produccion:
+				lista_org.append(int(yz))
+
+
+		for obj_1 in DESTINO_CHOICES:
+			p2 = lista_org.count(obj_1[0])
+			destino_org_dic[obj_1[1]] = p2
+		print destino_org_dic
 
 		#diccionario todos los valores x anio
 		
 		anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
 						p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
-						prod_depto,destino_dic)
+						prod_depto,destino_dic,destino_org_dic)
 		
-	#-------------------------------------------------------------------------------------------------------------
-
-	familias = filtro.count()
-	try:
-		hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
-	except:
-		hombres = 0 
 	
-	try:
-		mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
-	except:
-		mujeres = 0 
-	
-	
-	socio = filtro.filter(organizacion_asociada__socio='1').count()
-	no_socio = filtro.filter(organizacion_asociada__socio='2').count()
-	avg_cacao = filtro.aggregate(avg_cacao=Avg('area_cacao__area'))['avg_cacao']
-
-	for x in filtro:
-		organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
-
-	try:
-		avg_area_productor = filtro.aggregate(sum_area=Sum('uso_tierra__area_total'))['sum_area'] / familias
-	except:
-		avg_area_productor = 0
-	
-
-	#graf volumen producido vs acopiado
-	dic = {}
-	for year in request.session['anno']:
-		produccion = filtro.filter(anno=year).aggregate(total=Sum('produccion_cacao', 
-													   field="produccion_c_baba + produccion_c_seco + " + 
-													   "produccion_c_fermentado + produccion_c_organico"))['total']
-
-		acopio = Encuesta_Org.objects.filter(anno=year).aggregate(total=Sum(
-															'comercializacion_org__cacao_baba_acopiado'))['total']
-		if produccion == None:
-			produccion = 0
-
-		if acopio == None:
-			acopio = 0
-			
-		dic[year] = (produccion,acopio)
-
-	####################################################################################################################
-	#graf rendimiento socio
-	rend_socio =  filtro.filter(organizacion_asociada__socio='1').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
-	baba_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
-	seco_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
-	fer_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_fer_s=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer_s']
-	org_socio = filtro.filter(organizacion_asociada__socio='1').aggregate(cacao_org_s=Sum('produccion_cacao__produccion_c_organico'))['cacao_org_s']
-	
-	#graf rendimiento no socio
-	rend_no_socio =  filtro.filter(organizacion_asociada__socio='2').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
-	baba_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_baba=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba']
-	seco_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_seco=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco']
-	fer_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_fer=Sum('produccion_cacao__produccion_c_fermentado'))['cacao_fer']
-	org_no_socio = filtro.filter(organizacion_asociada__socio='2').aggregate(cacao_org=Sum('produccion_cacao__produccion_c_organico'))['cacao_org']
-
-	#resultado rendimiento
-	#socio --------------------------------------------------
-	try:
-		s_result1 = rend_socio/float(baba_socio)
-	except:
-		s_result1 = 0
-	
-	try:
-		s_result2 = rend_socio/float(seco_socio)
-	except:
-		s_result2 = 0
-
-	try:
-		s_result3 = rend_socio/float(fer_socio)
-	except:
-		s_result3 = 0
-
-	try:
-		s_result4 = rend_socio/float(org_socio)
-	except:
-		s_result4 = 0
-	
-	#no socio -----------------------------------------------
-	try:
-		ns_result1 = rend_no_socio/float(baba_no_socio)
-	except:
-		ns_result1 = 0
-
-	try:
-		ns_result2 = rend_no_socio/float(seco_no_socio)
-	except:
-		ns_result2 = 0
-
-	try:
-		ns_result3 = rend_no_socio/float(fer_no_socio)
-	except:
-		ns_result3 = 0
-
-	try:
-		ns_result4 = rend_no_socio/float(org_no_socio)
-	except:
-		ns_result4 = 0	
-
 	return render(request, template, locals())
 
 #nivel de educacion

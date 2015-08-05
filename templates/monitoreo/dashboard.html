@@ -9,8 +9,13 @@
   <script src="/static/js/markerwithlabel.js"></script>
 
 <script type="text/javascript">
-{% for year,value in anno.items %}
-    function initialize{{forloop.counter}}() {
+
+// $(function(){
+// {% for year,value in anno.items %}
+//   var map_{{year}};
+// {% endfor %}
+
+    function initialize() {
 
     var latlng = new google.maps.LatLng(13,-85);
 
@@ -21,7 +26,7 @@
     };
       var image = new google.maps.MarkerImage('/static/img/m2.png');
 
-      
+      {% for year,value in anno.items %}
         var map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
         {% for x,y in value.12.items %}
@@ -37,22 +42,13 @@
            icon: image,
          });
         {% endfor %}
-        
-  
-     
-     // var iw = new google.maps.InfoWindow({
-     //   content: "Home For Sale"
-     // });
-  }
-  //google.maps.event.addDomListener(window, "load", initialize{{forloop.counter}});
 
-
-$( "#{{forloop.counter}}" ).click(function() {
+        {% endfor %}
     
-    initialize{{forloop.counter}}();
+  }
+  initialize();
 
-});
-{% endfor %}
+  google.maps.event.addDomListener(window, "click", initialize);
 
 </script>
 
@@ -269,11 +265,20 @@ $(function () {
         credits: {
             enabled: false
         },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}'
+                }
+            }
+        },
         series: [
         {% for x,y in value.11.items %}
           {
             name: '{{x}}',
-            data: [{{y.0|floatformat:2}},{{y.1|floatformat:2}}]
+            data: [{{y.0|floatformat:3}},{{y.1|floatformat:3}}]
         },
         {% endfor %}
          
@@ -326,15 +331,50 @@ $(function () {
     });
 });  
 
-$(function(){
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-  var that=$($(e.target).attr('href')).find('.map');
-  if(!that.find('iframe').length){ 
-    that.append($('<iframe/>',{src:that.data('map')})
-                  .css({height:'300px',width:'100%',border:'none'}));
-  }
-}).first().trigger('shown.bs.tab');
-});   
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino_org{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Mercado destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in value.14.items %}
+                  {
+                    name: "{{x}}",
+                    y: {{y}}
+                }, 
+                {% endfor %}
+                
+                ]
+            }]
+        });
+    });
+});  
     </script>
 {% endfor %}
 {% endblock extra_js %}
@@ -345,26 +385,27 @@ $(function(){
 
 {% block content %}
 <style>
-  #map_canvas {
-    height: 400px;
-    width: 97.5%;
-    margin: 0px;
-    padding: 0px;
-  }
-
   .map{
-    margin-bottom: 50px
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .labels {
      color: white;
-     background-color: red;
-     font-family: "Lucida Grande", "Arial", sans-serif;
-     font-size: 12px;
+     background-color: #ff2b00;
+     font-family: "Roboto", sans-serif;
+     font-size: 14px;
      text-align: center;
      width: auto;
      white-space: nowrap;
+     margin-left: -12.5px !important;
    }
+   .nav-tabs>li.active {
+    width: 22% !important;
+  }
+  .nav-tabs>li {
+    width: 20% !important;
+  }
 </style>
 
 <div class="row">
@@ -401,11 +442,12 @@ $(function(){
     <div class="row fila2">
         
           <div class="col-md-12 col-lg-6 grafico1">
-            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
+          <h4 align="center">Producción de Cacao en Toneladas por Despartamento</h4>
+            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:380px"></div>
           </div>
 
 
-        <div class="col-md-12 col-lg-6 indicadores-t1">
+        <div class="col-md-12 col-lg-6 indicadores-t2">
            <div class="promedio-cacao">
                <div class="row">
                    <div class="col-md-8 col-lg-8 texto-indicador">
@@ -441,6 +483,11 @@ $(function(){
     <div class="row fila4">
         <div class="col-md-12 col-lg-6 grafico1" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
         <div class="col-md-12 col-lg-6 grafico3" id="destino{{year}}" style="min-width: 310px; width: 580px"></div>
+        
+    </div>
+
+    <div class="row fila5">
+        <div class="col-md-12 col-lg-6 grafico1" id="destino_org{{year}}" style="min-width: 310px; width: 580px"></div>
         
     </div>
 </div>
