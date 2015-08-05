@@ -5,14 +5,18 @@
 	<script src="/static/js/exporting.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
   <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
-  <script type="text/javascript" src="/static/js/infobox.js"></script>t>
+  <script type="text/javascript" src="/static/js/infobox.js"></script>
   <script src="/static/js/markerwithlabel.js"></script>
 
-
-
 <script type="text/javascript">
-  //mapa
-function initialize() {
+
+// $(function(){
+// {% for year,value in anno.items %}
+//   var map_{{year}};
+// {% endfor %}
+
+    function initialize() {
+
     var latlng = new google.maps.LatLng(13,-85);
 
     var myOptions = {
@@ -20,29 +24,35 @@ function initialize() {
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
-    var image = new google.maps.MarkerImage('/static/img/m2.png');
+      var image = new google.maps.MarkerImage('/static/img/m2.png');
 
-     var marker = new MarkerWithLabel({
-       position: new google.maps.LatLng(13, -85),
-       map: map,
-       draggable: true,
-       raiseOnDrag: true,
-       labelContent: "30000",
-       labelAnchor: new google.maps.Point(3, 30),
-       labelClass: "labels", // the CSS class for the label
-       labelInBackground: false,
-       icon: image,
-     });
+      {% for year,value in anno.items %}
+        var map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
-     // var iw = new google.maps.InfoWindow({
-     //   content: "Home For Sale"
-     // });
-}
-google.maps.event.addDomListener(window, "load", initialize);
+        {% for x,y in value.12.items %}
+           var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
+           position: new google.maps.LatLng({{y.0}}, {{y.1}}),
+           map: map_{{year}},
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "{{y.2|floatformat:2}}",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+         });
+        {% endfor %}
 
+        {% endfor %}
+    
+  }
+  initialize();
+
+  google.maps.event.addDomListener(window, "click", initialize);
 
 </script>
+
+
 {% for year,value in anno.items %}
 <script>
 $(function () {
@@ -255,11 +265,20 @@ $(function () {
         credits: {
             enabled: false
         },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}'
+                }
+            }
+        },
         series: [
         {% for x,y in value.11.items %}
           {
             name: '{{x}}',
-            data: [{{y.0|floatformat:2}},{{y.1|floatformat:2}}]
+            data: [{{y.0|floatformat:3}},{{y.1|floatformat:3}}]
         },
         {% endfor %}
          
@@ -267,7 +286,95 @@ $(function () {
     });
   });
 
-       
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in value.13.items %}
+                  {
+                    name: "{{x}}",
+                    y: {{y}}
+                }, 
+                {% endfor %}
+                
+                ]
+            }]
+        });
+    });
+});  
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino_org{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Mercado destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in value.14.items %}
+                  {
+                    name: "{{x}}",
+                    y: {{y}}
+                }, 
+                {% endfor %}
+                
+                ]
+            }]
+        });
+    });
+});  
     </script>
 {% endfor %}
 {% endblock extra_js %}
@@ -278,26 +385,27 @@ $(function () {
 
 {% block content %}
 <style>
-  #map_canvas {
-    height: 400px;
-    width: 97.5%;
-    margin: 0px;
-    padding: 0px;
-  }
-
   .map{
-    margin-bottom: 50px
+    margin-bottom: 10px;
+    margin-top: 10px;
   }
 
   .labels {
      color: white;
-     background-color: red;
-     font-family: "Lucida Grande", "Arial", sans-serif;
-     font-size: 12px;
+     background-color: #ff2b00;
+     font-family: "Roboto", sans-serif;
+     font-size: 14px;
      text-align: center;
      width: auto;
      white-space: nowrap;
+     margin-left: -12.5px !important;
    }
+   .nav-tabs>li.active {
+    width: 22% !important;
+  }
+  .nav-tabs>li {
+    width: 20% !important;
+  }
 </style>
 
 <div class="row">
@@ -310,35 +418,36 @@ $(function () {
 
 <div>
     
-    
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
   
     {% for year in anno.keys %}
-         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %} id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
     {% endfor %}
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
+  
     {% for year,value in anno.items %}
       <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
     <div class="contenido-graficos">
+
     <div class="row fila1">
         <div class="col-md-12 col-lg-6 grafico1" id="grafico{{year}}" style="min-width: 310px; width: 580px;"></div>
         <div class="col-md-12 col-lg-6 grafico3" id="rendimiento{{year}}" style="min-width: 310px; width: 580px"></div>
     </div>
 
-
         <!--fila 2-->
     <div class="row fila2">
         
-          <div class="col-md-12 col-lg-6 indicadores-t1">
-            <div id="map_canvas"></div>
+          <div class="col-md-12 col-lg-6 grafico1">
+          <h4 align="center">Producción de Cacao en Toneladas por Despartamento</h4>
+            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:380px"></div>
           </div>
 
 
-        <div class="col-md-12 col-lg-6 indicadores-t1">
+        <div class="col-md-12 col-lg-6 indicadores-t2">
            <div class="promedio-cacao">
                <div class="row">
                    <div class="col-md-8 col-lg-8 texto-indicador">
@@ -372,19 +481,30 @@ $(function () {
 
     <!--fila 4-->
     <div class="row fila4">
-        <div class="col-md-12 col-lg-6 grafico3" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico3" id="destino{{year}}" style="min-width: 310px; width: 580px"></div>
+        
+    </div>
+
+    <div class="row fila5">
+        <div class="col-md-12 col-lg-6 grafico1" id="destino_org{{year}}" style="min-width: 310px; width: 580px"></div>
         
     </div>
 </div>
     </div>
   {% endfor %}
+
+
   </div>
 
 </div>
 
-
-
 {% include "monitoreo/indicadores.html" %}
+
+
+<!--{% for year,value in anno.items %}
+  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
+{% endfor %}-->
 
 <!--<div class="col-lg-3">
             <a class="btn" href="">Miembros del hogar</a>
