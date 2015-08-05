@@ -17,7 +17,8 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^produccion', 'produccion', name='produccion'),
     url(r'^riesgos', 'riesgos', name='riesgos'),
     url(r'^comercializacion', 'comercializacion', name='comercializacion'),
-     url(r'^genero', 'genero', name='genero'),
+    url(r'^genero', 'genero', name='genero'),
+    url(r'^reforestacion', 'reforestacion', name='reforestacion'),
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     

@@ -531,6 +531,32 @@ def genero(request,template='monitoreo/genero.html'):
 
 	return render(request, template, locals())
 
+def reforestacion(request,template='monitoreo/reforestacion.html'):
+	filtro = _queryset_filtrado(request)
+	familias = filtro.count()
+
+	bosques = saca_porcentajes(filtro.filter(reforestacion__enriquecimiento_bosques='1').count(),familias,False)
+	agua = saca_porcentajes(filtro.filter(reforestacion__proteccion_agua='1').count(),familias,False)
+	cercas_vivas = saca_porcentajes(filtro.filter(reforestacion__cercas_vivas='1').count(),familias,False)
+	viveros = saca_porcentajes(filtro.filter(reforestacion__viveros='1').count(),familias,False)
+	siembre_cacao = saca_porcentajes(filtro.filter(reforestacion__siembre_cacao='1').count(),familias,False)
+	forestales = saca_porcentajes(filtro.filter(reforestacion__forestales='1').count(),familias,False)
+	potrero = saca_porcentajes(filtro.filter(reforestacion__potrero='1').count(),familias,False)
+	frutales = saca_porcentajes(filtro.filter(reforestacion__frutales='1').count(),familias,False)
+
+	# reforestacion = {}
+	# for obj in SI_NO_CHOICES:
+	# 	bosques = filtro.filter(reforestacion__enriquecimiento_bosques='1').count()
+	# 	agua = filtro.filter(reforestacion__proteccion_agua='1').count()
+	# 	cercas_vivas = filtro.filter(reforestacion__cercas_vivas='1').count()
+
+		# reforestacion[obj[1]] = (saca_porcentajes(invierte_cacao,familias,False),
+		# 					saca_porcentajes(interes_invertrir,familias,False),
+		# 					saca_porcentajes(falta_credito,familias,False),
+		# 					saca_porcentajes(altos_intereses,familias,False),
+		# 					saca_porcentajes(robo_producto,familias,False))
+	return render(request, template, locals())
+
 #obtener puntos en el mapa
 def obtener_lista(request):
     if request.is_ajax():

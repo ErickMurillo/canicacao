@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+	<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+    
+	$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Reforestación'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentajes (%)'
+                }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        series: [
+           
+                {
+                    name: 'Enriquecimiento de los bosques',
+                    data: [{{bosques}}], 
+                },
+                {
+                    name: 'Protección de fuentes de agua',
+                    data: [{{agua}}], 
+                },
+                {
+                    name: 'Establecimiento de cercas viva',
+                    data: [{{cercas_vivas}}], 
+                },
+                {
+                    name: 'Establecimiento de viveros',
+                    data: [{{viveros}}], 
+                },
+                {
+                    name: 'Siembra de árboles en cacao',
+                    data: [{{siembre_cacao}}], 
+                },
+                {
+                    name: 'Plantaciones forestales',
+                    data: [{{forestales}}], 
+                },
+                {
+                    name: 'Siembra de árboles en potrero',
+                    data: [{{potrero}}], 
+                },
+                {
+                    name: 'Parcelas frutales',
+                    data: [{{frutales}}], 
+                },
+                
+                ]
+    });
+});
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
+	{% include "monitoreo/indicadores.html" %}
+{% endblock content %}
