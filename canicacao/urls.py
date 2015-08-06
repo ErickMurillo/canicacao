@@ -22,6 +22,8 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^caracterizacion', 'caracterizacion_terreno', name='caracterizacion-terreno'),
     url(r'^mitigacion', 'mitigacion_riesgos', name='mitigacion-riesgos'),
     url(r'^certificacion', 'tipo_certificacion', name='tipo-certificacion'),
+    url(r'^tecnicas', 'tecnicas_aplicadas', name='tipo-tecnicas-aplicadas'),
+
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
 

@@ -667,6 +667,22 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
         tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
 
     return render(request, template, locals())
+
+def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
+
+    #caracteristicas del terrenos
+    tabla_vivero = {}
+    for k in VIVEROS_CHOICES:
+        try:
+            tipos = filtro.filter(tecnicas_aplicadas__viveros = k[0]).count()
+        except:
+            tipos = 0
+        tabla_vivero[k[1]] = saca_porcentajes(tipos,familias,False)
+    print tabla_vivero
+    return render(request, template, locals())
+
 #ajax filtros
 def get_munis(request):
     '''Metodo para obtener los municipios via Ajax segun los departamentos selectos'''
