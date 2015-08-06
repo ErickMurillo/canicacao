@@ -20,6 +20,7 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^genero', 'genero', name='genero'),
     url(r'^reforestacion', 'reforestacion', name='reforestacion'),
     url(r'^caracterizacion', 'caracterizacion_terreno', name='caracterizacion-terreno'),
+    url(r'^mitigacion', 'mitigacion_riesgos', name='mitigacion-riesgos'),
 
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),

@@ -622,8 +622,44 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
         por_drenaje = saca_porcentajes(drenaje, familias)
         tabla_drenaje[k[1]] = {'drenaje':drenaje,'por_drenaje':por_drenaje}
 
+    return render(request, template, locals())
 
+def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
 
+    #caracteristicas del terrenos
+    tabla_mitigacion = {}
+    for k in SI_NO_CHOICES:
+        monitoreo_plagas = filtro.filter(mitigacion_riesgos__monitoreo_plagas = k[0])
+        frecuencia_monitoreo_plagas = monitoreo_plagas.count()
+        #------------------------------------------------------
+        manejo_cultivo = filtro.filter(mitigacion_riesgos__manejo_cultivo = k[0])
+        frecuencia_manejo_cultivo = manejo_cultivo.count()
+        #------------------------------------------------------
+        manejo_recursos = filtro.filter(mitigacion_riesgos__manejo_recursos = k[0])
+        frecuencia_manejo_recursos = manejo_recursos.count()
+        #------------------------------------------------------
+        almacenamiento_agua = filtro.filter(mitigacion_riesgos__almacenamiento_agua = k[0])
+        frecuencia_almacenamiento_agua = almacenamiento_agua.count()
+        #------------------------------------------------------
+        distribucion_cacao = filtro.filter(mitigacion_riesgos__distribucion_cacao = k[0])
+        frecuencia_distribucion_cacao = distribucion_cacao.count()
+        #------------------------------------------------------
+        venta_cacao = filtro.filter(mitigacion_riesgos__venta_cacao = k[0])
+        frecuencia_venta_cacao = venta_cacao.count()
+        #------------------------------------------------------
+        d_tecnologia_secado = filtro.filter(mitigacion_riesgos__d_tecnologia_secado = k[0])
+        frecuencia_d_tecnologia_secado = d_tecnologia_secado.count()
+        #
+        tabla_mitigacion[k[1]] = {'frecuencia_monitoreo_plagas':frecuencia_monitoreo_plagas,
+                                  'frecuencia_manejo_cultivo':frecuencia_manejo_cultivo,
+                                  'frecuencia_manejo_recursos':frecuencia_manejo_recursos,
+                                  'frecuencia_almacenamiento_agua':frecuencia_almacenamiento_agua,
+                                  'frecuencia_distribucion_cacao':frecuencia_distribucion_cacao,
+                                  'frecuencia_venta_cacao':frecuencia_venta_cacao,
+                                  'frecuencia_d_tecnologia_secado':frecuencia_d_tecnologia_secado}
+    print tabla_mitigacion
     return render(request, template, locals())
 #ajax filtros
 def get_munis(request):
