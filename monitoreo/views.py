@@ -10,7 +10,7 @@ import collections
 # Create your views here.
 def _queryset_filtrado(request):
     params = {}
-    
+
     if request.session['anno']:
         params['anno__in'] = request.session['anno']
 
@@ -45,8 +45,8 @@ def IndexView(request,template="monitoreo/index.html"):
     mujeres = Encuesta.objects.filter(persona__sexo='2').count()
     hombres = Encuesta.objects.filter(persona__sexo='1').count()
     area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
-    produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao', 
-                                                            field="produccion_c_baba + produccion_c_seco + " + 
+    produccion = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao',
+                                                            field="produccion_c_baba + produccion_c_seco + " +
                                                             "produccion_c_fermentado + produccion_c_organico"))['total']
     organizaciones = Organizacion.objects.all().count()
 
@@ -71,8 +71,8 @@ def consulta(request,template="monitoreo/consulta.html"):
             return HttpResponseRedirect('/dashboard/')
 
         else:
-            centinela = 0   
-           
+            centinela = 0
+
     else:
         form = EncuestaConsulta()
         mensaje = "Existen alguno errores"
@@ -105,8 +105,8 @@ def dashboard(request,template='monitoreo/dashboard.html'):
     try:
         hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
     except:
-        hombres = 0 
-    
+        hombres = 0
+
     try:
         mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
     except:
@@ -229,7 +229,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
         try:
             rendimiento_fer = (fermentado * 100) / area_hectarea
-        
+
         except:
             rendimiento_fer = 0
 
@@ -269,20 +269,20 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                                 'comercializacion_cacao__auto_consumo'))['total'] )/ 3) * tonelada
                 except:
                     auto_consumo = 0
-                
+
                 try:
                     venta = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
                                 'comercializacion_cacao__venta'))['total'])/ 3) * tonelada
                 except:
                     venta = 0
-            
+
             elif obj[0] == 4:
                 try:
                     auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
                                 'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
                 except:
                     auto_consumo = 0
-                
+
                 try:
                     venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
                                 'comercializacion_cacao__venta'))['total']) * tonelada
@@ -328,12 +328,12 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         print destino_org_dic
 
         #diccionario todos los valores x anio
-        
+
         anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
                         p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
                         prod_depto,destino_dic,destino_org_dic)
-        
-    
+
+
     return render(request, template, locals())
 
 #nivel de educacion
@@ -385,10 +385,10 @@ def propiedad(request,template='monitoreo/propiedad.html'):
     for x in Situacion.objects.all():
         objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
         dic2[x] = saca_porcentajes(objeto1,count_no,False)
-    
+
     dic = {}
     for e in PROPIEDAD_CHOICE:
-        for x in e: 
+        for x in e:
             objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
             dic[e[1]] = saca_porcentajes(objeto,count_si,False)
 
@@ -631,34 +631,28 @@ def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
     #caracteristicas del terrenos
     tabla_mitigacion = {}
     for k in SI_NO_CHOICES:
-        monitoreo_plagas = filtro.filter(mitigacion_riesgos__monitoreo_plagas = k[0])
-        frecuencia_monitoreo_plagas = monitoreo_plagas.count()
+        monitoreo_plagas = filtro.filter(mitigacion_riesgos__monitoreo_plagas = k[0]).count()
         #------------------------------------------------------
-        manejo_cultivo = filtro.filter(mitigacion_riesgos__manejo_cultivo = k[0])
-        frecuencia_manejo_cultivo = manejo_cultivo.count()
+        manejo_cultivo = filtro.filter(mitigacion_riesgos__manejo_cultivo = k[0]).count()
         #------------------------------------------------------
-        manejo_recursos = filtro.filter(mitigacion_riesgos__manejo_recursos = k[0])
-        frecuencia_manejo_recursos = manejo_recursos.count()
+        manejo_recursos = filtro.filter(mitigacion_riesgos__manejo_recursos = k[0]).count()
         #------------------------------------------------------
-        almacenamiento_agua = filtro.filter(mitigacion_riesgos__almacenamiento_agua = k[0])
-        frecuencia_almacenamiento_agua = almacenamiento_agua.count()
+        almacenamiento_agua = filtro.filter(mitigacion_riesgos__almacenamiento_agua = k[0]).count()
         #------------------------------------------------------
-        distribucion_cacao = filtro.filter(mitigacion_riesgos__distribucion_cacao = k[0])
-        frecuencia_distribucion_cacao = distribucion_cacao.count()
+        distribucion_cacao = filtro.filter(mitigacion_riesgos__distribucion_cacao = k[0]).count()
         #------------------------------------------------------
-        venta_cacao = filtro.filter(mitigacion_riesgos__venta_cacao = k[0])
-        frecuencia_venta_cacao = venta_cacao.count()
+        venta_cacao = filtro.filter(mitigacion_riesgos__venta_cacao = k[0]).count()
         #------------------------------------------------------
-        d_tecnologia_secado = filtro.filter(mitigacion_riesgos__d_tecnologia_secado = k[0])
-        frecuencia_d_tecnologia_secado = d_tecnologia_secado.count()
+        d_tecnologia_secado = filtro.filter(mitigacion_riesgos__d_tecnologia_secado = k[0]).count()
         #
-        tabla_mitigacion[k[1]] = {'frecuencia_monitoreo_plagas':frecuencia_monitoreo_plagas,
-                                  'frecuencia_manejo_cultivo':frecuencia_manejo_cultivo,
-                                  'frecuencia_manejo_recursos':frecuencia_manejo_recursos,
-                                  'frecuencia_almacenamiento_agua':frecuencia_almacenamiento_agua,
-                                  'frecuencia_distribucion_cacao':frecuencia_distribucion_cacao,
-                                  'frecuencia_venta_cacao':frecuencia_venta_cacao,
-                                  'frecuencia_d_tecnologia_secado':frecuencia_d_tecnologia_secado}
+        tabla_mitigacion[k[1]] = (saca_porcentajes(monitoreo_plagas,familias,False),
+                                saca_porcentajes(manejo_cultivo,familias,False),
+                                saca_porcentajes(manejo_recursos,familias,False),
+                                saca_porcentajes(almacenamiento_agua,familias,False),
+                                saca_porcentajes(distribucion_cacao,familias,False),
+                                saca_porcentajes(venta_cacao,familias,False),
+                                saca_porcentajes(d_tecnologia_secado,familias,False),
+                            )
     print tabla_mitigacion
     return render(request, template, locals())
 #ajax filtros
