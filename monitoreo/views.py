@@ -653,7 +653,19 @@ def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
                                 saca_porcentajes(venta_cacao,familias,False),
                                 saca_porcentajes(d_tecnologia_secado,familias,False),
                             )
-    print tabla_mitigacion
+    return render(request, template, locals())
+
+def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
+    filtro = _queryset_filtrado(request)
+    familias = filtro.count()
+
+    #caracteristicas del terrenos
+    tabla_certificacion = {}
+    for k in Lista_Certificaciones.objects.all():
+        tipos = filtro.filter(certificacion__tipo = k).count()
+
+        tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
+
     return render(request, template, locals())
 #ajax filtros
 def get_munis(request):

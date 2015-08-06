@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+<script type="text/javascript">
+   $(function () {
+    $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Tipos de certificación'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: "Porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in tabla_certificacion.items %}
+            {
+                name: "{{k}}",
+                y: {{v}} {% if forloop.counter == 1 %},
+                sliced: true,
+                selected: true
+                {% endif %}
+            },
+            {% endfor %}
+             ]
+        }]
+    });
+});
+
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container"></div>
+    </div>
+</div>
+{% include "monitoreo/indicadores.html" %}
+{% endblock content %}
