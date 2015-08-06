@@ -4,13 +4,19 @@
 	<script src="/static/js/highcharts.js"></script>
 	<script src="/static/js/exporting.js"></script>
 	<script>
+	    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+	    
 	$(function () {
 		$('#container').highcharts({
 			chart: {
 				type: 'column'
 			},
 			title: {
-				text: 'Producción de Cacao (QQ)'
+				text: 'Producción de Cacao (Toneladas)'
 			},
 			yAxis: {
 				title: {
@@ -20,7 +26,7 @@
 			yAxis: {
 				min: 0,
 				title: {
-					text: 'Valores (QQ)'
+					text: 'Valores'
 				}
 			},
 
@@ -31,17 +37,57 @@
 				}
 			},
 			series: [
-			{name: 'Baba', data: [{{baba}}]},
-			{name: 'Seco', data: [{{seco}}]},
-			{name: 'Fermentado', data: [{{fermentado}}]},
-			{name: 'Organico', data: [{{organico}}]},
+			{name: 'Seco', data: [{{seco|floatformat}}],dataLabels: {enabled: true},},
+			{name: 'Fermentado', data: [{{fermentado|floatformat}}],dataLabels: {enabled: true},},
+			{name: 'Organico', data: [{{organico|floatformat}}],dataLabels: {enabled: true},},
 			]
 		});
 	});
+
+$(function () {
+    $('#container1').highcharts({
+        title: {
+            text: 'Meses de mayor producción de Cacao',
+            x: -20 //center
+        },
+        
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+
+        	{
+	            name: 'Valores',
+	            data: [{% for value in produccion.values %}{{value}},{% endfor %}]
+        	},
+        
+        
+        ]
+    });
+});
 </script>
 {% endblock extra_js %}
 
 {% block content %}
-	<div id="container"></div>
+	<div id="container" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto"></div>
+	<br><br>
+	 <div id="container1" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto"></div>
 	{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

@@ -1,87 +1,170 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script src="/static/js/highcharts.js"></script>
-	<script src="/static/js/exporting.js"></script>
-	<script>
-    $(document).ready(function() {
-        
-        $('li.item-consulta').addClass('active');
-    
-    })
-    
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+<script>
+	$(document).ready(function() {
+
+		$('li.item-consulta').addClass('active');
+
+	})
+
 	$(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Reforestación'
-        },
-        yAxis: {
-            title: {
-                text: 'Valores'
-            }
+		$('#container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Reforestación'
+			},
+			yAxis: {
+				title: {
+					text: 'Valores'
+				}
 
-        },
-        credits: {
-            enabled: false
-        },
-        yAxis: {
-                min: 0,
-                title: {
-                    text: 'Porcentajes (%)'
-                }
-            },
+			},
+			credits: {
+				enabled: false
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: 'Porcentajes (%)'
+				}
+			},
 
-            tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y +'%';
-                }
-            },
-        series: [
-           
-                {
-                    name: 'Enriquecimiento de los bosques',
-                    data: [{{bosques}}], 
-                },
-                {
-                    name: 'Protección de fuentes de agua',
-                    data: [{{agua}}], 
-                },
-                {
-                    name: 'Establecimiento de cercas viva',
-                    data: [{{cercas_vivas}}], 
-                },
-                {
-                    name: 'Establecimiento de viveros',
-                    data: [{{viveros}}], 
-                },
-                {
-                    name: 'Siembra de árboles en cacao',
-                    data: [{{siembre_cacao}}], 
-                },
-                {
-                    name: 'Plantaciones forestales',
-                    data: [{{forestales}}], 
-                },
-                {
-                    name: 'Siembra de árboles en potrero',
-                    data: [{{potrero}}], 
-                },
-                {
-                    name: 'Parcelas frutales',
-                    data: [{{frutales}}], 
-                },
-                
-                ]
-    });
+			tooltip: {
+				formatter: function() {
+					return ''+
+					this.series.name +': '+ this.y +'%';
+				}
+			},
+			series: [
+
+			{
+				name: 'Enriquecimiento de los bosques',
+				data: [{{bosques}}], 
+			},
+			{
+				name: 'Protección de fuentes de agua',
+				data: [{{agua}}], 
+			},
+			{
+				name: 'Establecimiento de cercas viva',
+				data: [{{cercas_vivas}}], 
+			},
+			{
+				name: 'Establecimiento de viveros',
+				data: [{{viveros}}], 
+			},
+			{
+				name: 'Siembra de árboles en cacao',
+				data: [{{siembre_cacao}}], 
+			},
+			{
+				name: 'Plantaciones forestales',
+				data: [{{forestales}}], 
+			},
+			{
+				name: 'Siembra de árboles en potrero',
+				data: [{{potrero}}], 
+			},
+			{
+				name: 'Parcelas frutales',
+				data: [{{frutales}}], 
+			},
+
+			]
+		});
 });
 </script>
 {% endblock extra_js %}
 
 {% block content %}
-	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
-	{% include "monitoreo/indicadores.html" %}
+<style>
+	.table{
+		width: 50% !important;
+		margin: 0 auto !important
+	}
+	.btn-export {
+		margin-top: 30px;
+		margin-left: 1000px !important;
+		z-index: 10;
+		position: absolute
+	}
+</style>
+
+<div class="col-md-12 col-lg-12">
+	<div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+</div>
+
+<div class="col-md-12 col-lg-12">
+<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+<div id="modalidad">
+	<table class="table table-striped table-hover">
+		<caption>Reforestación</caption>
+		<thead>
+			<tr>
+				<th>Tipo</th>
+				<th>Frecuencia</th>
+				<th>%</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>Enriquecimiento de los bosques</td>
+				<td>{{frec_bosques|floatformat}}</td>
+				<td>{{bosques|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Protección de fuentes de agua</td>
+				<td>{{frec_agua|floatformat}}</td>
+				<td>{{agua|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Establecimiento de cercas viva</td>
+				<td>{{frec_cercas|floatformat}}</td>
+				<td>{{cercas_vivas|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Establecimiento de viveros</td>
+				<td>{{frec_vivereos|floatformat}}</td>
+				<td>{{viveros|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Siembra de árboles en cacao</td>
+				<td>{{frec_siembra|floatformat}}</td>
+				<td>{{siembre_cacao|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Plantaciones forestales</td>
+				<td>{{frec_forestales|floatformat}}</td>
+				<td>{{forestales|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Siembra de árboles en potrero</td>
+				<td>{{frec_potrero|floatformat}}</td>
+				<td>{{potrero|floatformat}}</td>
+			</tr>
+
+			<tr>
+				<td>Parcelas frutales</td>
+				<td>{{frec_frutales|floatformat}}</td>
+				<td>{{frutales|floatformat}}</td>
+			</tr>
+
+		</tbody>
+	</table>
+	</div>
+</div>
+
+{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

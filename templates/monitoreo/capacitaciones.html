@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+	<script>
+   $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+
+// $(function () {
+//     $('#container').highcharts({
+//         chart: {
+//             type: 'column'
+//         },
+//         title: {
+//             text: 'Capacitaciones técnicas'
+//         },
+//         xAxis: {
+//             categories: ['Hijas','Hijos','Jefe familia varón','Jefa familia mujer']
+//         },
+//         yAxis: {
+//             title: {
+//                 text: 'Frecuencia'
+//             }
+
+//         },
+//         tooltip: {
+//                 formatter: function() {
+//                     return ''+
+//                         this.series.name +': '+ this.y;
+//                 }
+//             },
+//         credits: {
+//             enabled: false
+//         },
+//         series: [
+//             {% for key,value in dic.items %}
+//                 {
+//                     name: '{{key}}',
+//                     data: [{% for x,y in value.items %}
+//                         {{y}},
+//                     {% endfor %}]
+//                 },
+//             {% endfor %}
+        
+//         ]
+//     });
+// });
+
+$(function () {
+    // Create the chart
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Capacitaciones técnicas recibidas'
+        },
+        // subtitle: {
+        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+        // },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentaje (%)'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+        },
+
+        series: [{
+            name: "Capacitaciones",
+            colorByPoint: true,
+            data: [
+
+            {% for key,value in capacitaciones_2.items %}
+                {
+                name: "{{key}}",
+                y: {{value}},
+                drilldown: "{{key}}"
+            },
+            {% endfor %}
+            ]
+        }],
+        // drilldown: {
+        //     series: [
+        //     {% for key,value in dic.items %}
+        //         {
+        //             name: '{{key}}',
+        //             id:"{{key}}",
+        //             data: [{% for x,y in value.items %}
+        //                 {{y}},
+        //             {% endfor %}]
+        //         },
+        //     {% endfor %}
+        //     {
+        //         name: "Dueños",
+        //         id: "Dueños",
+        //         data: [
+        //         {% for x,y in dic.items %}
+        //         ["{{x}}", {{y}}],
+        //         {% endfor %}
+                
+        //         ]
+        //     },
+        //     ]
+        // }
+        
+    });
+});
+
+	</script>
+{% endblock extra_js %}
+
+{% block content %}
+<style>
+    .table{
+        width: 70%;
+        margin: 0 auto;
+        margin-top: 40px
+    }
+
+    .btn-export{
+        margin-top: 40px;
+        margin-left: 80em !important;
+        z-index: 10;
+        position: absolute
+    }
+</style>
+<div class="col-md-12 col-lg-12">
+    <div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+</div>
+
+<div class="col-md-12 col-lg-12">
+<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+<div id="modalidad">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Capacitaciones técnicas recibidas</th>
+                    <th>Hijas</th>
+                    <th>Hijos</th>
+                    <th>Jefe familia varón</th>
+                    <th>Jefa familia mujer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in dic.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        {% for x,y in value.items %}
+                            <td>{{y}}</td>
+                        {% endfor %}
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+	{% include "monitoreo/indicadores.html" %}
+{% endblock content %}

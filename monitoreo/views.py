@@ -429,18 +429,24 @@ def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 
 def produccion(request,template='monitoreo/produccion.html'):
     filtro = _queryset_filtrado(request)
+    tonelada = 0.1
 
-    baba = filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba']
-    seco = filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco']
-    fermentado = filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado']
-    organico = filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico']
+    baba = (filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba'] ) / 3
+    seco = (filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco'] + baba ) * tonelada
+    fermentado = (filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado'] ) * tonelada
+    organico = (filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico'] ) * tonelada
 
-    #baba = Produccion_Cacao.objects.filter(encuesta=filtro).aggregate(baba=Sum('produccion_c_baba'))['baba']
+    #meses de produccion
+    produccion = {}
+    lista = []
+    for obj in Produccion_Cacao.objects.filter(encuesta=filtro):
+        for x in obj.meses_produccion:
+            lista.append(int(x))
 
-    # years = []
-    # for x in Produccion_Cacao.objects.filter(encuesta=filtro):
-    #   for y in x.meses_produccion:
-    #       print y
+    for mes in MESES_CHOICES:
+        p2 = lista.count(mes[0])
+        produccion[mes[1]] = p2
+
     return render(request, template, locals())
 
 def riesgos(request,template='monitoreo/riesgos.html'):
@@ -518,6 +524,8 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
         fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
         tabla_productos.append(fila)
 
+    distancia = filtro.aggregate(avg=Avg('distancia_comercio_cacao__distancia'))['avg']
+
     return render(request, template, locals())
 
 def genero(request,template='monitoreo/genero.html'):
@@ -535,26 +543,74 @@ def reforestacion(request,template='monitoreo/reforestacion.html'):
 	filtro = _queryset_filtrado(request)
 	familias = filtro.count()
 
-	bosques = saca_porcentajes(filtro.filter(reforestacion__enriquecimiento_bosques='1').count(),familias,False)
-	agua = saca_porcentajes(filtro.filter(reforestacion__proteccion_agua='1').count(),familias,False)
-	cercas_vivas = saca_porcentajes(filtro.filter(reforestacion__cercas_vivas='1').count(),familias,False)
-	viveros = saca_porcentajes(filtro.filter(reforestacion__viveros='1').count(),familias,False)
-	siembre_cacao = saca_porcentajes(filtro.filter(reforestacion__siembre_cacao='1').count(),familias,False)
-	forestales = saca_porcentajes(filtro.filter(reforestacion__forestales='1').count(),familias,False)
-	potrero = saca_porcentajes(filtro.filter(reforestacion__potrero='1').count(),familias,False)
-	frutales = saca_porcentajes(filtro.filter(reforestacion__frutales='1').count(),familias,False)
+	frec_bosques = filtro.filter(reforestacion__enriquecimiento_bosques='1').count()
+	bosques = saca_porcentajes(frec_bosques,familias,False)
 
-	# reforestacion = {}
-	# for obj in SI_NO_CHOICES:
-	# 	bosques = filtro.filter(reforestacion__enriquecimiento_bosques='1').count()
-	# 	agua = filtro.filter(reforestacion__proteccion_agua='1').count()
-	# 	cercas_vivas = filtro.filter(reforestacion__cercas_vivas='1').count()
+	frec_agua = filtro.filter(reforestacion__proteccion_agua='1').count()
+	agua = saca_porcentajes(frec_agua,familias,False)
 
-		# reforestacion[obj[1]] = (saca_porcentajes(invierte_cacao,familias,False),
-		# 					saca_porcentajes(interes_invertrir,familias,False),
-		# 					saca_porcentajes(falta_credito,familias,False),
-		# 					saca_porcentajes(altos_intereses,familias,False),
-		# 					saca_porcentajes(robo_producto,familias,False))
+	frec_cercas = filtro.filter(reforestacion__cercas_vivas='1').count()
+	cercas_vivas = saca_porcentajes(frec_cercas,familias,False)
+
+	frec_vivereos = filtro.filter(reforestacion__viveros='1').count()
+	viveros = saca_porcentajes(frec_vivereos,familias,False)
+
+	frec_siembra = filtro.filter(reforestacion__siembre_cacao='1').count()
+	siembre_cacao = saca_porcentajes(frec_siembra,familias,False)
+
+	frec_forestales = filtro.filter(reforestacion__forestales='1').count()
+	forestales = saca_porcentajes(frec_forestales,familias,False)
+
+	frec_potrero = filtro.filter(reforestacion__potrero='1').count()
+	potrero = saca_porcentajes(frec_potrero,familias,False)
+
+	frec_frutales = filtro.filter(reforestacion__frutales='1').count()
+	frutales = saca_porcentajes(frec_frutales,familias,False)
+
+	return render(request, template, locals())
+
+def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
+	filtro = _queryset_filtrado(request)
+
+	servicio_dic = {}
+	for obj in Tipos_Servicio.objects.all():
+		servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
+		servicio_dic[obj] = servicio
+
+	beneficio_dic = {}
+	for x in Beneficios.objects.all():
+		beneficio = filtro.filter(organizacion_asociada__beneficios=x).count()
+		beneficio_dic[x] = beneficio
+
+	return render(request, template, locals())
+
+def capacitaciones(request,template='monitoreo/capacitaciones.html'):
+	filtro = _queryset_filtrado(request)
+
+	dic = {}
+	for obj in CAPACITACIONES_CHOICES:
+		lista = []
+		capacitaciones = {}
+		for cap in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro,capacitaciones=obj[0]):
+			for x in cap.opciones:
+				lista.append(int(x))
+
+		for xz in OPCIONES_CAPACITACIONES_CHOICES:
+			p2 = lista.count(xz[0])
+			capacitaciones[xz[1]] = p2
+		dic[obj[1]] = capacitaciones
+
+
+	capacitaciones_2 = {}
+	lista = []
+	for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
+		for x in obj.opciones:
+			lista.append(int(x))
+
+	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
+		p2 = lista.count(obj_1[0])
+		capacitaciones_2[obj_1[1]] = p2
+
 	return render(request, template, locals())
 
 #obtener puntos en el mapa
@@ -570,7 +626,6 @@ def obtener_lista(request):
 
         serializado = simplejson.dumps(lista)
         return HttpResponse(serializado, content_type='application/json')
-
 
 
 #SALIDAS CARLOS
@@ -716,4 +771,11 @@ def hectarea(dato):
             return '%.2f' % total
     else:
         return 0
+
+def sumarLista(lista):
+    sum=0
+    for i in range(0,len(lista)):
+        sum=sum+lista[i]
+ 
+    return sum
 

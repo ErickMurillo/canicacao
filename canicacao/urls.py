@@ -18,11 +18,10 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^riesgos', 'riesgos', name='riesgos'),
     url(r'^comercializacion', 'comercializacion', name='comercializacion'),
     url(r'^genero', 'genero', name='genero'),
-<<<<<<< HEAD
     url(r'^reforestacion', 'reforestacion', name='reforestacion'),
-=======
     url(r'^caracterizacion', 'caracterizacion_terreno', name='caracterizacion-terreno'),
->>>>>>> carlos/master
+    url(r'^organizacion-productiva', 'organizacion_productiva', name='organizacion-productiva'),
+    url(r'^capacitaciones', 'capacitaciones', name='capacitaciones'),
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     

@@ -1,11 +1,42 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	
+	<script>
+	    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+	    </script>
 {% endblock extra_js %}
 
 {% block content %}
+<style>
+	.table{
+		width: 70%;
+		margin: 0 auto
+	}
+	#distancia{
+		background-color: #CB6830;
+		text-align: center;
+		padding: 10px 0 10px 0;
+		color: white;
+		border-radius: 15px
+	}
+	.btn-export{
+        margin-top: 30px;
+        margin-left: 80% !important;
+        z-index: 10;
+        position: absolute
+    }
+</style>
+<div class="col-md-4 col-lg-4">
+		<h4 id="distancia">Distancia promedio recorrida para la comercialización: {{distancia|floatformat:2}} Km</h4>
+	</div>
+	<br><br>
 	<div class="col-md-12 col-lg-12">
+	<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+	<div id="modalidad">
 		<table class="table">
 			<thead>
 				<tr>
@@ -25,7 +56,9 @@
                 {%endfor%}
 			</tbody>
 		</table>
+		</div>
 	</div>
+	
 
 {% include "monitoreo/indicadores.html" %}
 {% endblock content %}
