@@ -440,8 +440,9 @@ def produccion(request,template='monitoreo/produccion.html'):
     produccion = {}
     lista = []
     for obj in Produccion_Cacao.objects.filter(encuesta=filtro):
-        for x in obj.meses_produccion:
-            lista.append(int(x))
+        if obj.meses_produccion != None:
+            for x in obj.meses_produccion:
+                lista.append(int(x))
 
     for mes in MESES_CHOICES:
         p2 = lista.count(mes[0])
@@ -654,8 +655,9 @@ def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html')
 		lista = []
 		capacitaciones = {}
 		for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
-			for x in cap.opciones_socio:
-				lista.append(int(x))
+			if cap.opciones_socio != None:
+				for x in cap.opciones_socio:
+					lista.append(int(x))
 
 		for xz in OPCIONES_CAPACITACIONES_CHOICES:
 			p2 = lista.count(xz[0])
@@ -666,8 +668,9 @@ def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html')
 	capacitaciones_2 = {}
 	lista = []
 	for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
-		for x in obj.opciones_socio:
-			lista.append(int(x))
+		if obj.opciones_socio != None:
+			for x in obj.opciones_socio:
+				lista.append(int(x))
 
 	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
 		p2 = lista.count(obj_1[0])
@@ -792,9 +795,10 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     viveros = {}
     lista_viveros = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.viveros:
-            lista_viveros.append(int(x))
-
+        if obj.viveros != None:
+            for x in obj.viveros:
+                lista_viveros.append(int(x))
+ 
     for op in VIVEROS_CHOICES:
         p2 = lista_viveros.count(op[0])
         viveros[op[1]] = p2
@@ -803,8 +807,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     fertilizacion = {}
     lista_fertilizacion = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.fertilizacion:
-            lista_fertilizacion.append(int(x))
+        if obj.fertilizacion != None :
+            for x in obj.fertilizacion:
+                lista_fertilizacion.append(int(x))
 
     for op in FERTILIZACION_CHOICES:
         p2 = lista_fertilizacion.count(op[0])
@@ -814,8 +819,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     pract_manejo_fis = {}
     lista_pract_manejo_fis = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.pract_manejo_fis:
-            lista_pract_manejo_fis.append(int(x))
+        if obj.pract_manejo_fis != None:
+            for x in obj.pract_manejo_fis:
+                lista_pract_manejo_fis.append(int(x))
 
     for op in P_MANEJO_FIS_CHOICES:
         p2 = lista_pract_manejo_fis.count(op[0])
@@ -825,8 +831,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     pract_manejo_prod = {}
     lista_pract_manejo_prod = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.pract_manejo_prod:
-            lista_pract_manejo_prod.append(int(x))
+        if obj.pract_manejo_prod != None:
+            for x in obj.pract_manejo_prod:
+                lista_pract_manejo_prod.append(int(x))
 
     for op in P_MANEJO_PROD_CHOICES:
         p2 = lista_pract_manejo_prod.count(op[0])
@@ -836,8 +843,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     pract_mejora_plat = {}
     lista_pract_mejora_plat = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.pract_mejora_plat:
-            lista_pract_mejora_plat.append(int(x))
+        if obj.pract_mejora_plat != None:
+            for x in obj.pract_mejora_plat:
+                lista_pract_mejora_plat.append(int(x))
 
     for op in P_MEJORA_PLANT_CHOICES:
         p2 = lista_pract_mejora_plat.count(op[0])
@@ -847,8 +855,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     pract_manejo_post_c = {}
     lista_pract_manejo_post_c = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
-        for x in obj.pract_manejo_post_c:
-            lista_pract_manejo_post_c.append(int(x))
+        if obj.pract_manejo_post_c != None:
+            for x in obj.pract_manejo_post_c:
+                lista_pract_manejo_post_c.append(int(x))
 
     for op in P_MANEJO_POST_C_CHOICES:
         p2 = lista_pract_manejo_post_c.count(op[0])
