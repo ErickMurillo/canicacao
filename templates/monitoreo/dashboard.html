@@ -10,11 +10,6 @@
 
 <script type="text/javascript">
 
-// $(function(){
-// {% for year,value in anno.items %}
-//   var map_{{year}};
-// {% endfor %}
-
     $(document).ready(function() {
         
         $('li.item-consulta').addClass('active');
@@ -66,7 +61,7 @@ $(function () {
     $(document).ready(function () {
 
         // Build the chart
-        $('#grafico{{year}}').highcharts({
+        $('#hectarea{{year}}').highcharts({
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -440,8 +435,12 @@ $(function () {
     <div class="contenido-graficos">
 
     <div class="row fila1">
-        <div class="col-md-12 col-lg-6 grafico1" id="grafico{{year}}" style="min-width: 310px; width: 580px;"></div>
-        <div class="col-md-12 col-lg-6 grafico3" id="rendimiento{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1">
+            <div id="hectarea{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico3">
+            <div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px"></div>
+        </div>
     </div>
 
         <!--fila 2-->
@@ -449,7 +448,7 @@ $(function () {
         
           <div class="col-md-12 col-lg-6 grafico1">
           <h4 align="center">Producción de Cacao en Toneladas por Despartamento</h4>
-            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:380px"></div>
+            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:380px"></div>
           </div>
 
 
@@ -481,19 +480,29 @@ $(function () {
 
     <!--fila 3-->
     <div class="row fila3">
-        <div class="col-md-12 col-lg-6 grafico1" id="tipo{{year}}" style="min-width: 310px; width: 580px"></div>
-        <div class="col-md-12 col-lg-6 grafico3" id="socio{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1">
+            <div id="tipo{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico3">
+            <div id="socio{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
     </div>
 
     <!--fila 4-->
     <div class="row fila4">
-        <div class="col-md-12 col-lg-6 grafico1" id="venta{{year}}" style="min-width: 310px; width: 580px"></div>
-        <div class="col-md-12 col-lg-6 grafico3" id="destino{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1">
+            <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico3">
+            <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
         
     </div>
 
     <div class="row fila5">
-        <div class="col-md-12 col-lg-6 grafico1" id="destino_org{{year}}" style="min-width: 310px; width: 580px"></div>
+        <div class="col-md-12 col-lg-6 grafico1">
+            <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
         
     </div>
 </div>

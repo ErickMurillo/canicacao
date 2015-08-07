@@ -23,19 +23,21 @@
 		color: white;
 		border-radius: 15px
 	}
-	.btn-export{
-        margin-top: 30px;
-        margin-left: 80% !important;
-        z-index: 10;
-        position: absolute
-    }
+	.btn-export {
+  float: none;
+  margin:0 auto;
+  margin-top: 30px
+}
 </style>
 <div class="col-md-4 col-lg-4">
 		<h4 id="distancia">Distancia promedio recorrida para la comercialización: {{distancia|floatformat:2}} Km</h4>
 	</div>
+	<div class="col-md-2 col-lg-2">
+		<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+	</div>
 	<br><br>
+	
 	<div class="col-md-12 col-lg-12">
-	<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
 	<div id="modalidad">
 		<table class="table">
 			<thead>

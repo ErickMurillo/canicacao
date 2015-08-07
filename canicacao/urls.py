@@ -21,7 +21,9 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^reforestacion', 'reforestacion', name='reforestacion'),
     url(r'^caracterizacion', 'caracterizacion_terreno', name='caracterizacion-terreno'),
     url(r'^organizacion-productiva', 'organizacion_productiva', name='organizacion-productiva'),
-    url(r'^capacitaciones', 'capacitaciones', name='capacitaciones'),
+    url(r'^capacitaciones-tecnicas', 'capacitaciones_tecnicas', name='capacitaciones-tecnicas'),
+    url(r'^capacitaciones-socio', 'capacitaciones_socio', name='capacitaciones-socio'),
+
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
     

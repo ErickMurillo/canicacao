@@ -537,6 +537,13 @@ def genero(request,template='monitoreo/genero.html'):
         mujer = filtro.filter(genero__actividades=obj).count()
         genero[obj] = mujer
 
+    #recibe ingrsos x actividades
+    count_genero = Genero.objects.filter(encuesta=filtro).count()
+    dic = {}
+    for obj in SI_NO_CHOICES:
+    	recibe_ing = filtro.filter(genero__ingresos=obj[0]).count()
+    	dic[obj[1]] = saca_porcentajes(recibe_ing,count_genero,False)
+
     return render(request, template, locals())
 
 def reforestacion(request,template='monitoreo/reforestacion.html'):
@@ -584,7 +591,7 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
 
 	return render(request, template, locals())
 
-def capacitaciones(request,template='monitoreo/capacitaciones.html'):
+def capacitaciones_tecnicas(request,template='monitoreo/capacitaciones.html'):
 	filtro = _queryset_filtrado(request)
 
 	dic = {}
@@ -613,6 +620,34 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
 
 	return render(request, template, locals())
 
+def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html'):
+	filtro = _queryset_filtrado(request)
+
+	dic = {}
+	for obj in CAPACITACIONES_SOCIO_CHOICES:
+		lista = []
+		capacitaciones = {}
+		for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
+			for x in cap.opciones_socio:
+				lista.append(int(x))
+
+		for xz in OPCIONES_CAPACITACIONES_CHOICES:
+			p2 = lista.count(xz[0])
+			capacitaciones[xz[1]] = p2
+		dic[obj[1]] = capacitaciones
+
+
+	capacitaciones_2 = {}
+	lista = []
+	for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
+		for x in obj.opciones_socio:
+			lista.append(int(x))
+
+	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
+		p2 = lista.count(obj_1[0])
+		capacitaciones_2[obj_1[1]] = p2
+
+	return render(request, template, locals())
 #obtener puntos en el mapa
 def obtener_lista(request):
     if request.is_ajax():
