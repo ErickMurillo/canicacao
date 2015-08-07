@@ -761,13 +761,73 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     filtro = _queryset_filtrado(request)
     familias = filtro.count()
+   
+    #VVEROS
+    viveros = {}
+    lista_viveros = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.viveros:
+            lista_viveros.append(int(x))
 
-    #caracteristicas del terrenos
-    tabla_vivero = {}
-    for obj in VIVEROS_CHOICES:
-        tipos = filtro.filter(tecnicas_aplicadas__viveros = str(obj[0]) ).count()
-        tabla_vivero[obj[1]] = tipos#saca_porcentajes(tipos,familias,False)
-    print tabla_vivero
+    for op in VIVEROS_CHOICES:
+        p2 = lista_viveros.count(op[0])
+        viveros[op[1]] = p2
+    
+    #FERTILIZACION_CHOICES
+    fertilizacion = {}
+    lista_fertilizacion = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.fertilizacion:
+            lista_fertilizacion.append(int(x))
+
+    for op in FERTILIZACION_CHOICES:
+        p2 = lista_fertilizacion.count(op[0])
+        fertilizacion[op[1]] = p2
+
+    #pract_manejo_fis
+    pract_manejo_fis = {}
+    lista_pract_manejo_fis = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.pract_manejo_fis:
+            lista_pract_manejo_fis.append(int(x))
+
+    for op in P_MANEJO_FIS_CHOICES:
+        p2 = lista_pract_manejo_fis.count(op[0])
+        pract_manejo_fis[op[1]] = p2
+
+    #pract_manejo_prod
+    pract_manejo_prod = {}
+    lista_pract_manejo_prod = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.pract_manejo_prod:
+            lista_pract_manejo_prod.append(int(x))
+
+    for op in P_MANEJO_PROD_CHOICES:
+        p2 = lista_pract_manejo_prod.count(op[0])
+        pract_manejo_prod[op[1]] = p2
+
+    #pract_mejora_plat
+    pract_mejora_plat = {}
+    lista_pract_mejora_plat = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.pract_mejora_plat:
+            lista_pract_mejora_plat.append(int(x))
+
+    for op in P_MEJORA_PLANT_CHOICES:
+        p2 = lista_pract_mejora_plat.count(op[0])
+        pract_mejora_plat[op[1]] = p2
+
+    #pract_manejo_post_c
+    pract_manejo_post_c = {}
+    lista_pract_manejo_post_c = []
+    for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
+        for x in obj.pract_manejo_post_c:
+            lista_pract_manejo_post_c.append(int(x))
+
+    for op in P_MANEJO_POST_C_CHOICES:
+        p2 = lista_pract_manejo_post_c.count(op[0])
+        pract_manejo_post_c[op[1]] = p2
+    
     return render(request, template, locals())
 
 #ajax filtros

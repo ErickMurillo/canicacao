@@ -13,7 +13,7 @@ $(function () {
             type: 'pie'
         },
         title: {
-            text: 'Tipos de viviero'
+            text: 'Viveros'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -35,7 +35,7 @@ $(function () {
             name: "Porcentaje",
             colorByPoint: true,
             data: [
-            {% for k,v in tabla_vivero.items %}
+            {% for k,v in viveros.items %}
             {
                 name: "{{k}}",
                 y: {{v}} {% if forloop.counter == 1 %},
@@ -56,7 +56,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Vivieros'
+            text: 'Prácticas de fertilización'
         },
         // subtitle: {
         //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
@@ -92,16 +92,210 @@ $(function () {
             name: "porcentaje",
             colorByPoint: true,
             data: [
+            {% for k,v in fertilizacion.items %}
             {
-                name: "Seco",
-                y: {{value.2}},
-            }, {
-                name: "Fermentado",
-                y: {{value.3}},
-            }, {
-                name: "Orgánico",
-                y: {{value.4}},
+                name: "{{k}}",
+                y: {{v}},
+            },
+            {% endfor %}
+            ]
+        }],
+    });
+});
+
+$(function () {
+    $('#container2').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Prácticas de manejo fitosanitario'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
             }
+        },
+        series: [{
+            name: "Porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in pract_manejo_fis.items %}
+            {
+                name: "{{k}}",
+                y: {{v}} {% if forloop.counter == 1 %},
+                sliced: true,
+                selected: true
+                {% endif %}
+            },
+            {% endfor %}
+             ]
+        }]
+    });
+});
+
+$(function () {
+    // Create the chart
+    $('#container3').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Prácticas de manejo productivo'
+        },
+        // subtitle: {
+        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+        // },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'porcentaje'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
+        },
+
+        series: [{
+            name: "porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in pract_manejo_prod.items %}
+            {
+                name: "{{k}}",
+                y: {{v}},
+            },
+            {% endfor %}
+            ]
+        }],
+    });
+});
+
+$(function () {
+    $('#container4').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Prácticas de mejoramiento de la plantación'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: "Porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in pract_mejora_plat.items %}
+            {
+                name: "{{k}}",
+                y: {{v}} {% if forloop.counter == 1 %},
+                sliced: true,
+                selected: true
+                {% endif %}
+            },
+            {% endfor %}
+             ]
+        }]
+    });
+});
+
+$(function () {
+    // Create the chart
+    $('#container5').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Prácticas de manejo postcosecha y beneficiado'
+        },
+        // subtitle: {
+        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+        // },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'porcentaje'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
+        },
+
+        series: [{
+            name: "porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in pract_manejo_post_c.items %}
+            {
+                name: "{{k}}",
+                y: {{v}},
+            },
+            {% endfor %}
             ]
         }],
     });
@@ -115,9 +309,34 @@ $(function () {
         <div id="container0"></div>
     </div>
 </div>
+<br>
 <div class="row">
     <div class="col-md-12 col-lg-12">
         <div id="container1"></div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container2"></div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container3"></div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container4"></div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container5"></div>
     </div>
 </div>
 {% include "monitoreo/indicadores.html" %}
