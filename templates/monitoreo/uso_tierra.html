@@ -61,10 +61,18 @@
 		width: 50% !important;
 		margin: 0 auto !important
 	}
+
+	.btn-export {
+	  float: none;
+	  margin-left: 75%;
+	  margin-top: 30px;
+	}
 </style>
 
-<div id="container"></div>
+<div id="container" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
 <div class="col-md-12">
+	<div id="modalidad">
 	<table id="example" class="table table-bordered table-hover" cellspacing="0" width="50%">
 		<caption>Distribución de las áreas de la finca</caption>
 		<tr>
@@ -115,10 +123,8 @@
 			<td>Otros</td>
 			<td>{{t_otros|floatformat:2}}</td>
 		</tr>
-
-
-
 	</table>
+	</div>
 </div>
 {% include "monitoreo/indicadores.html" %}
 {% endblock content %}

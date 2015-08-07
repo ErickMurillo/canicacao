@@ -95,6 +95,12 @@ $(function () {
 {% endblock extra_js %}
 
 {% block content %}
+<div class="col-md-2 col-lg-2">
+    <p>Nota: Dar click a las barras del gráfico para ver detalle</p>
+</div>
+<div class="col-md-10 col-lg-10">
     <div id="container" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+</div>
+    
     {% include "monitoreo/indicadores.html" %}
 {% endblock content %}

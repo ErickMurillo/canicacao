@@ -325,7 +325,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         for obj_1 in DESTINO_CHOICES:
             p2 = lista_org.count(obj_1[0])
             destino_org_dic[obj_1[1]] = p2
-        print destino_org_dic
+        
 
         #diccionario todos los valores x anio
 
@@ -543,6 +543,32 @@ def genero(request,template='monitoreo/genero.html'):
     for obj in SI_NO_CHOICES:
     	recibe_ing = filtro.filter(genero__ingresos=obj[0]).count()
     	dic[obj[1]] = saca_porcentajes(recibe_ing,count_genero,False)
+
+    avg_ingresos = filtro.aggregate(avg=Avg('genero__ingreso_mesual'))['avg'] 
+
+    destino_dic = {}
+    for x in Destino_Ingresos.objects.all():
+    	destino = filtro.filter(genero__destino_ingresos_2=x).count()
+    	destino_dic[x] = destino
+    	
+    #---------------------------------------------------------------------
+    decisiones = {}
+    lista = []
+    for obj in Genero.objects.filter(encuesta=filtro):
+        if obj.decisiones != None:
+            for x in obj.decisiones:
+                lista.append(int(x))
+
+    DECISIONES_CHOICES = (
+	(1,'Siembra de cacao'),
+	(2,'Cosecha de cacao'),
+	(3,'Venta de cacao'),
+	(4,'Ingresos de cacao'),
+	)
+
+    for dec in DECISIONES_CHOICES:
+        p2 = lista.count(dec[0])
+        decisiones[dec[1]] = p2
 
     return render(request, template, locals())
 
