@@ -674,12 +674,9 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
 
     #caracteristicas del terrenos
     tabla_vivero = {}
-    for k in VIVEROS_CHOICES:
-        try:
-            tipos = filtro.filter(tecnicas_aplicadas__viveros = k[0]).count()
-        except:
-            tipos = 0
-        tabla_vivero[k[1]] = saca_porcentajes(tipos,familias,False)
+    for obj in VIVEROS_CHOICES:
+        tipos = filtro.filter(tecnicas_aplicadas__viveros = str(obj[0]) ).count()
+        tabla_vivero[obj[1]] = tipos#saca_porcentajes(tipos,familias,False)
     print tabla_vivero
     return render(request, template, locals())
 
