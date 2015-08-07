@@ -95,7 +95,7 @@ class Paga_Certifica(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-		
+
 	class Meta:
 		verbose_name = "Quién paga la certifica"
 		verbose_name_plural = "Quienes pagan la certificación"
@@ -105,7 +105,7 @@ class Destino_Ingresos(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-		
+
 	class Meta:
 		verbose_name = "Destino de ingresos percibidos"
 		verbose_name_plural = "Destino de ingresos percibidos"
@@ -115,7 +115,7 @@ class Tecnologias(models.Model):
 
 	def __unicode__(self):
 		return self.nombre
-		
+
 	class Meta:
 		verbose_name = "Tecnología de secado y almac. cacao"
 		verbose_name_plural = "Tecnologías de secado y almac. cacao"
@@ -136,12 +136,12 @@ class Persona(models.Model):
 	departamento = models.ForeignKey(Departamento)
 	municipio = ChainedForeignKey(
                                 Municipio,
-                                chained_field="departamento", 
+                                chained_field="departamento",
                                 chained_model_field="departamento",
                                 show_all=False, auto_choose=True)
 	comunidad = ChainedForeignKey(
                                 Comunidad,
-                                chained_field="municipio", 
+                                chained_field="municipio",
                                 chained_model_field="municipio",
                                 show_all=False, auto_choose=True)
 	latitud = models.FloatField(null=True,blank=True)
@@ -161,13 +161,13 @@ class Encuesta(models.Model):
 	organizacion = models.ForeignKey(Organizacion,verbose_name='Organización que levanta datos')
 	recolector = ChainedForeignKey(
                                 Recolector,
-                                chained_field="organizacion", 
+                                chained_field="organizacion",
                                 chained_model_field="organizacion",
                                 show_all=False, auto_choose=True)
                                 #models.ForeignKey(Recolector,verbose_name='Nombre del encuestador')
 	persona =  ChainedForeignKey(
                                 Persona,
-                                chained_field="organizacion", 
+                                chained_field="organizacion",
                                 chained_model_field="organizacion",
                                 show_all=False, auto_choose=True)
                                 #models.ForeignKey(Persona,verbose_name='Nombre de la persona encuestada')
@@ -179,9 +179,9 @@ class Encuesta(models.Model):
 		return self.persona.nombre
 
 	def save(self, *args, **kwargs):
-		self.anno = self.fecha.year 
+		self.anno = self.fecha.year
 		super(Encuesta, self).save(*args, **kwargs)
-	
+
 
 class Familia(models.Model):
 	miembros = models.IntegerField(verbose_name='Número de miembros')
@@ -226,7 +226,7 @@ PROPIEDAD_CHOICE = (
 	(4,'A nombre del Hombre y Mujer'),
 	(5,'Colectivo'),
 	)
-	
+
 SI_NO_CHOICES = (
 	(1,'Si'),
 	(2,'No')

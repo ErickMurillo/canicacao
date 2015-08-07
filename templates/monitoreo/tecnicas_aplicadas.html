@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script src="/static/js/highcharts.js"></script>
+<script src="/static/js/exporting.js"></script>
+<script type="text/javascript">
+$(function () {
+    $('#container0').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Tipos de viviero'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: "Porcentaje",
+            colorByPoint: true,
+            data: [
+            {% for k,v in tabla_vivero.items %}
+            {
+                name: "{{k}}",
+                y: {{v}} {% if forloop.counter == 1 %},
+                sliced: true,
+                selected: true
+                {% endif %}
+            },
+            {% endfor %}
+             ]
+        }]
+    });
+});
+
+$(function () {
+    // Create the chart
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Vivieros'
+        },
+        // subtitle: {
+        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+        // },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'porcentaje'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
+        },
+
+        series: [{
+            name: "porcentaje",
+            colorByPoint: true,
+            data: [
+            {
+                name: "Seco",
+                y: {{value.2}},
+            }, {
+                name: "Fermentado",
+                y: {{value.3}},
+            }, {
+                name: "Orgánico",
+                y: {{value.4}},
+            }
+            ]
+        }],
+    });
+});
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container0"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-lg-12">
+        <div id="container1"></div>
+    </div>
+</div>
+{% include "monitoreo/indicadores.html" %}
+{% endblock content %}
