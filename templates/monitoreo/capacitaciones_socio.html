@@ -12,7 +12,7 @@
 
 $(function () {
     // Create the chart
-    $('#container').highcharts({
+    $('#cap_socio').highcharts({
         chart: {
             type: 'column'
         },
@@ -52,7 +52,7 @@ $(function () {
             colorByPoint: true,
             data: [
 
-            {% for key,value in capacitaciones_2.items %}
+            {% for key,value in capacitaciones_socio.items %}
                 {
                 name: "{{key}}",
                 y: {{value}},
@@ -82,7 +82,7 @@ $(function () {
 }
 </style>
 <div class="col-md-12 col-lg-12">
-    <div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+    <div id="cap_socio" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
 </div>
 
 <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
@@ -99,7 +99,7 @@ $(function () {
                 </tr>
             </thead>
             <tbody>
-                {% for key,value in dic.items %}
+                {% for key,value in dic_socio.items %}
                     <tr>
                         <td>{{key}}</td>
                         {% for x,y in value.items %}

@@ -204,40 +204,52 @@ $(function () {
         ]
     });
 });
-	</script>
-	</script>
+</script>
+
+<script type="text/javascript">
+    $(function () {
+    $('#mitigacion').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Mitigración de riesgos'
+        },
+        xAxis: {
+            categories: ['Monitoreo plagas','Manejo de plagas','Manejo de recursos','Almacenamiento de agua','Distribución cacao', 'Venta de cacao', 'Tecnología de secado']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+            {% for key,value in tabla_mitigacion.items %}
+                {
+                    name: '{{key}}',
+                    data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}},{{value.6}}]
+                },
+            {% endfor %}
+
+        ]
+    });
+});
+</script>
 {% endblock extra_js %}
 
 {% block content %}
-<!--<div class="col-md-12">
-		<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
-                        <caption>Fenomenos Naturales</caption>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Sequia</th>
-                                <th>Innundación</th>
-                                <th>Lluvia</th>
-                                <th>Viento</th>
-                                <th>Desplazamiento</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for key,value in riesgos_tabla.items %}
-                            <tr>
-								<td>{{key}}</td>
-								<td>{{value.0}}</td>
-								<td>{{value.1}}</td>
-								<td>{{value.2}}</td>
-								<td>{{value.3}}</td>
-								<td>{{value.4}}</td>
-                            </tr>
-        		
-        				{% endfor %}
-                        </tbody>
-                    </table>
-	</div> -->
-	<div class="col-md-12 col-lg-12">
+
+	<!-- <div class="col-md-12 col-lg-12">
 		<div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
 	</div>
 
@@ -255,7 +267,34 @@ $(function () {
 	<div class="col-md-12 col-lg-12">
 	<br>
 		<div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-	</div>
+	</div> -->
+    
+    
+<style>
+    .nav-tabs>li {
+        width: 30% !important
+    }
+</style>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mitigación de Riesgos</a></li>
+  </ul>
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+        <h3 align="center">Razones Agricolas</h3>
+        <div  class="col-md-12 col-lg-6" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div  class="col-md-12 col-lg-6" id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+        <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">
+        <div id="mitigacion" style="min-width: 310px; height: 400px; width: 900px; margin: 0 auto"></div>
+    </div>
+  </div>
+
 
 	{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

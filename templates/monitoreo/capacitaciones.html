@@ -65,6 +65,63 @@ $(function () {
     });
 });
 
+
+
+
+$(function () {
+    // Create the chart
+    $('#cap_socio').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Capacitaciones socioeconómicas recibidas'
+        },
+
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+        },
+
+        series: [{
+            name: "Capacitaciones",
+            colorByPoint: true,
+            data: [
+
+            {% for key,value in capacitaciones_socio.items %}
+                {
+                name: "{{key}}",
+                y: {{value}},
+                drilldown: "{{key}}"
+            },
+            {% endfor %}
+            ]
+        }],
+
+    });
+});
 	</script>
 {% endblock extra_js %}
 
@@ -80,37 +137,101 @@ $(function () {
   margin-left: 75%;
   margin-top: 30px;
 }
+
+.nav-tabs>li {
+        width: 30% !important
+    }
 </style>
-<div class="col-md-12 col-lg-12">
-    <div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Capacitaciones Técnicas</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Capacitaciones Socioeconómicas</a></li>
+    </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+
+        <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+
+        <div id="modalidad">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Capacitaciones técnicas recibidas</th>
+                            <th>Hijas</th>
+                            <th>Hijos</th>
+                            <th>Jefe familia varón</th>
+                            <th>Jefa familia mujer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,value in dic.items %}
+                            <tr>
+                                <td>{{key}}</td>
+                                {% for x,y in value.items %}
+                                    <td>{{y}}</td>
+                                {% endfor %}
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+    <div role="tabpanel" class="tab-pane" id="profile">
+        <div id="cap_socio" style="min-width: 310px; height: 400px; width: 900px;margin: 0 auto"></div>
+        <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad2'); return false;">Exportar tabla</a>
+
+        <div id="modalidad2">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Capacitaciones socioeconómicas recibidas</th>
+                            <th>Hijas</th>
+                            <th>Hijos</th>
+                            <th>Jefe familia varón</th>
+                            <th>Jefa familia mujer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,value in dic_socio.items %}
+                            <tr>
+                                <td>{{key}}</td>
+                                {% for x,y in value.items %}
+                                    <td>{{y}}</td>
+                                {% endfor %}
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+
+            </div>
+    </div>
+  </div>
+
 </div>
 
-<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+
+
+
+
+
+
+
+
+
+
+
 <div class="col-md-12 col-lg-12">
-<div id="modalidad">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Capacitaciones técnicas recibidas</th>
-                    <th>Hijas</th>
-                    <th>Hijos</th>
-                    <th>Jefe familia varón</th>
-                    <th>Jefa familia mujer</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for key,value in dic.items %}
-                    <tr>
-                        <td>{{key}}</td>
-                        {% for x,y in value.items %}
-                            <td>{{y}}</td>
-                        {% endfor %}
-                    </tr>
-                {%endfor%}
-            </tbody>
-        </table>
-        </div>
-    </div>
+    
+</div>
+
+
 
 
 	{% include "monitoreo/indicadores.html" %}

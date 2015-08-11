@@ -509,6 +509,32 @@ def riesgos(request,template='monitoreo/riesgos.html'):
                             saca_porcentajes(falta_credito,familias,False),
                             saca_porcentajes(altos_intereses,familias,False),
                             saca_porcentajes(robo_producto,familias,False))
+
+    #mitigacion de riesgos
+    tabla_mitigacion = {}
+    for k in SI_NO_CHOICES:
+        monitoreo_plagas = filtro.filter(mitigacion_riesgos__monitoreo_plagas = k[0]).count()
+        #------------------------------------------------------
+        manejo_cultivo = filtro.filter(mitigacion_riesgos__manejo_cultivo = k[0]).count()
+        #------------------------------------------------------
+        manejo_recursos = filtro.filter(mitigacion_riesgos__manejo_recursos = k[0]).count()
+        #------------------------------------------------------
+        almacenamiento_agua = filtro.filter(mitigacion_riesgos__almacenamiento_agua = k[0]).count()
+        #------------------------------------------------------
+        distribucion_cacao = filtro.filter(mitigacion_riesgos__distribucion_cacao = k[0]).count()
+        #------------------------------------------------------
+        venta_cacao = filtro.filter(mitigacion_riesgos__venta_cacao = k[0]).count()
+        #------------------------------------------------------
+        d_tecnologia_secado = filtro.filter(mitigacion_riesgos__d_tecnologia_secado = k[0]).count()
+        #
+        tabla_mitigacion[k[1]] = (saca_porcentajes(monitoreo_plagas,familias,False),
+                                saca_porcentajes(manejo_cultivo,familias,False),
+                                saca_porcentajes(manejo_recursos,familias,False),
+                                saca_porcentajes(almacenamiento_agua,familias,False),
+                                saca_porcentajes(distribucion_cacao,familias,False),
+                                saca_porcentajes(venta_cacao,familias,False),
+                                saca_porcentajes(d_tecnologia_secado,familias,False),
+                            )
     return render(request, template, locals())
 
 def comercializacion(request,template='monitoreo/comercializacion.html'):
@@ -522,9 +548,25 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
                     venta=Avg('comercializacion_cacao__venta'),
                     precio_venta=Avg('comercializacion_cacao__precio_venta'))
 
-        fila = [obj[1],producto['auto_consumo'],producto['venta'],producto['precio_venta']]
-        tabla_productos.append(fila)
+        #validacion y formato float
+        if producto['auto_consumo'] != None:
+           auto_consumo = float("{0:.2f}".format(producto['auto_consumo']))
+        else:
+            auto_consumo = 0
 
+        if producto['venta'] != None:
+           venta = float("{0:.2f}".format(producto['venta']))
+        else:
+            venta = 0
+
+        if producto['precio_venta'] != None:
+           precio_venta = float("{0:.2f}".format(producto['precio_venta']))
+        else:
+            precio_venta = 0
+        #-----------------------------------------------------------
+        fila = [obj[1],auto_consumo,venta,precio_venta]
+
+        tabla_productos.append(fila)
     distancia = filtro.aggregate(avg=Avg('distancia_comercio_cacao__distancia'))['avg']
 
     return render(request, template, locals())
@@ -618,39 +660,66 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
 
 	return render(request, template, locals())
 
-def capacitaciones_tecnicas(request,template='monitoreo/capacitaciones.html'):
-	filtro = _queryset_filtrado(request)
+def capacitaciones(request,template='monitoreo/capacitaciones.html'):
+    filtro = _queryset_filtrado(request)
 
-	dic = {}
-	for obj in CAPACITACIONES_CHOICES:
-		lista = []
-		capacitaciones = {}
-		for cap in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro,capacitaciones=obj[0]):
-			for x in cap.opciones:
-				lista.append(int(x))
+    dic = {}
+    for obj in CAPACITACIONES_CHOICES:
+        lista = []
+        capacitaciones = {}
+        for cap in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro,capacitaciones=obj[0]):
+            for x in cap.opciones:
+                lista.append(int(x))
 
-		for xz in OPCIONES_CAPACITACIONES_CHOICES:
-			p2 = lista.count(xz[0])
-			capacitaciones[xz[1]] = p2
-		dic[obj[1]] = capacitaciones
+        for xz in OPCIONES_CAPACITACIONES_CHOICES:
+            p2 = lista.count(xz[0])
+            capacitaciones[xz[1]] = p2
+        dic[obj[1]] = capacitaciones
 
 
-	capacitaciones_2 = {}
-	lista = []
-	for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
-		for x in obj.opciones:
-			lista.append(int(x))
+    capacitaciones_2 = {}
+    lista = []
+    for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
+        for x in obj.opciones:
+            lista.append(int(x))
 
-	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
-		p2 = lista.count(obj_1[0])
-		capacitaciones_2[obj_1[1]] = p2
+    for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
+        p2 = lista.count(obj_1[0])
+        capacitaciones_2[obj_1[1]] = p2
 
-	return render(request, template, locals())
+    #socioeconomicas------------------------------------------------------------------------------
+    dic_socio = {}
+    for obj in CAPACITACIONES_SOCIO_CHOICES:
+        lista_socio = []
+        capacitaciones_socio = {}
+        for cap_socio in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
+            if cap_socio.opciones_socio != None:
+                for z in cap_socio.opciones_socio:
+                    lista_socio.append(int(z))
+
+        for xc in OPCIONES_CAPACITACIONES_CHOICES:
+            p = lista_socio.count(xc[0])
+            capacitaciones_socio[xc[1]] = p
+        dic_socio[obj[1]] = capacitaciones_socio
+
+
+    capacitaciones_socio = {}
+    lista_1 = []
+    for obj_socio in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
+        if obj_socio.opciones_socio != None:
+            for x in obj_socio.opciones_socio:
+                lista_1.append(int(x))
+
+    for obj_1_socio in OPCIONES_CAPACITACIONES_CHOICES:
+        p = lista_1.count(obj_1_socio[0])
+        capacitaciones_socio[obj_1_socio[1]] = p
+
+    return render(request, template, locals())
 
 def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html'):
 	filtro = _queryset_filtrado(request)
 
-	dic = {}
+	dic_socio = {}
 	for obj in CAPACITACIONES_SOCIO_CHOICES:
 		lista = []
 		capacitaciones = {}
@@ -660,21 +729,21 @@ def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html')
 					lista.append(int(x))
 
 		for xz in OPCIONES_CAPACITACIONES_CHOICES:
-			p2 = lista.count(xz[0])
-			capacitaciones[xz[1]] = p2
-		dic[obj[1]] = capacitaciones
+			p = lista.count(xz[0])
+			capacitaciones[xz[1]] = p
+		dic_socio[obj[1]] = capacitaciones
 
 
-	capacitaciones_2 = {}
-	lista = []
+	capacitaciones_socio = {}
+	lista_1 = []
 	for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
 		if obj.opciones_socio != None:
 			for x in obj.opciones_socio:
-				lista.append(int(x))
+				lista_1.append(int(x))
 
 	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
-		p2 = lista.count(obj_1[0])
-		capacitaciones_2[obj_1[1]] = p2
+		p = lista_1.count(obj_1[0])
+		capacitaciones_socio[obj_1[1]] = p
 
 	return render(request, template, locals())
 #obtener puntos en el mapa
