@@ -104,6 +104,12 @@ a.sesion {
 .btn-informacion {
   margin-right: 15px;
 }
+.logos img{
+  width: 100%;
+}
+.heiferimg img{
+  width: 50%;
+}
 /************Indicadores y mapeo***************/
 .consulta {
   padding-left: 30px;
