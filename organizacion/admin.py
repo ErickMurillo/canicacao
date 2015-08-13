@@ -69,7 +69,8 @@ class OrganizacionAdmin(admin.ModelAdmin):
 	]
 	list_display = ('siglas','gerente','status','municipio')
 	list_display_links = ('siglas',)
-	list_filter = ('municipio',)
+	list_filter = ('status',)
+	search_fields = ['nombre','siglas']
 
 class Encuesta_OrgAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
@@ -90,7 +91,8 @@ class Encuesta_OrgAdmin(admin.ModelAdmin):
 				Comercializacion_OrgInline,Comercializacion_ImportanciaInline,Acopio_ComercioInline]
 	list_display = ('organizacion','fecha')
 	# list_display_links = ('organizacion',)
-	list_filter = ('organizacion__municipio',)
+	#list_filter = ('organizacion__municipio',)
+	search_fields = ['organizacion__nombre','organizacion__siglas']
 
 	
 admin.site.register(Organizacion,OrganizacionAdmin)
