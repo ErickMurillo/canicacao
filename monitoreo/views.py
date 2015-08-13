@@ -307,8 +307,9 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         destino_dic = {}
         lista = []
         for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
-            for y in x.quien_vende:
-                lista.append(int(y))
+            if x.quien_vende != None:
+                for y in x.quien_vende:
+                    lista.append(int(y))
 
         for obj in QUIEN_VENDE_CHOICES:
             p = lista.count(obj[0])
