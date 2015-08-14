@@ -42,7 +42,9 @@ urlpatterns = patterns('monitoreo.views',
 
 urlpatterns += patterns('',
     url(r'^xls/$', 'monitoreo.utils.save_as_xls'),
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
     )
+
 #url organizacion
 urlpatterns += patterns('organizacion.views',
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
