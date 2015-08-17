@@ -43,6 +43,7 @@ urlpatterns = patterns('monitoreo.views',
 urlpatterns += patterns('',
     url(r'^xls/$', 'monitoreo.utils.save_as_xls'),
     url(r'^pages/', include('django.contrib.flatpages.urls')),
+    url(r'^ckeditor/', include('ckeditor.urls')),
     )
 
 #url organizacion

@@ -2,7 +2,22 @@
 from django.contrib import admin
 from .models import *
 from .forms import *
-# Register your models here.
+
+from django.contrib.flatpages.models import FlatPage
+# Note: we are renaming the original Admin and Form as we import them!
+from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
+from django.contrib.flatpages.forms import FlatpageForm as FlatpageFormOld
+
+from ckeditor.widgets import CKEditorWidget
+ 
+class FlatpageForm(FlatpageFormOld):
+    content = forms.CharField(widget=CKEditorWidget())
+    class Meta:
+        model = FlatPage # this is not automatically inherited from FlatpageFormOld
+        fields = '__all__'
+ 
+class FlatPageAdmin(FlatPageAdminOld):
+    form = FlatpageForm
 
 class Familia_Inline(admin.TabularInline):
 	model = Familia
@@ -200,3 +215,6 @@ admin.site.register(Paga_Certifica)
 admin.site.register(Profesion)
 admin.site.register(Destino_Ingresos)
 admin.site.register(Tecnologias)
+# We have to unregister the normal admin, and then reregister ours
+admin.site.unregister(FlatPage)
+admin.site.register(FlatPage, FlatPageAdmin)

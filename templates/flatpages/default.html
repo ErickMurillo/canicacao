@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+	#titulo{
+		margin-bottom: 25px
+	}
+</style>
+	<div class="container">
+		<h3 id="titulo">{{flatpage.title}}</h3>
+		<p>{{flatpage.content|safe}}</p>
+	</div>
+{% endblock content %}

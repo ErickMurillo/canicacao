@@ -76,6 +76,7 @@
 		margin-bottom: 50px
 	}
 </style>
+
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 consulta">
 	<div class=" row indicadores-inicio">
 
@@ -149,14 +150,18 @@
 
 		<div class="parrafo">
 			<div class="triangulo"></div>
-			<h4>Sistema de monitoreo de cacao.</h4>
-			<p>
-				El Sistema de Monitoreo de Cacao, es una iniciativa promovida por la Cámara Nicaragüense de Cacao (CANICACAO), que tiene como propósito, contar con información relevante y actualizada sobre el sector cacaotero que permita aumentar la venta de cacao a través de facilitar la vinculación entre las organizaciones productoras y los compradores actuales y potenciales.
 
-				<br><br>
-				También se propone que el sector cacaotero cuente con estadísticas actualizadas, que le permitan acercarse a instituciones gubernamentales y no gubernamentales para proponer el diseño y la implementación de políticas y programas encaminados a crear condiciones favorables para el desarrollar y elevar la competitividad del sector cacaotero, de las organizaciones y las familias productoras.
-			</p>
-
+			{% load flatpages %}
+			{% get_flatpages as flatpages %}
+			    {% for page in flatpages %}
+				    {% if page.url == '/acerca-de/' %}
+				    	<h4>{{page.title}}</h4>
+						<p>
+							{{ page.content|safe|truncatewords:130 }}
+						</p>
+				   
+				    {% endif %}	
+			    {% endfor %}
 			<div class="btn-informacion text-right">
 				<a  href="">Continuar leyendo</a>
 			</div>
