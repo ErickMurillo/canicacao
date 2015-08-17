@@ -112,8 +112,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
     except:
         mujeres = 0
 
-    for x in filtro:
-        organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct().count()
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
 
     anno = collections.OrderedDict()
 
@@ -245,9 +244,15 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             avg_cacao = 0
 
         #socio, no socio
-        socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias_year)) * 100
-        no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
+        try:
+            socio = (filtro.filter(anno=year,organizacion_asociada__socio='1').count() / float(familias_year)) * 100
+        except:
+            socio = 0
 
+        try:
+            no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
+        except:
+            no_socio = 0
         #auto-consumo vs venta
         PRODUCTO_CHOICES = (
             (3,'Cacao en baba'),

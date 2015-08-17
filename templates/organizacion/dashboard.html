@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script src="/static/js/highcharts.js"></script>
+	<script src="/static/js/exporting.js"></script>
+	<script>
+$(function () {
+    $('#aspectos_juridicos').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
+        },
+        xAxis: {
+            categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+        },
+        series: [
+        {% for key,value in dic.items %}
+        	{
+	            name: '{{key}}',
+	            data: {{value}}
+        	},
+        {% endfor %}
+  
+        ]
+    });
+})
+	</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+   <div class="datos-dashboard">
+        <div class="row">
+            <div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+                <div class="ind-familia row">
+                    <div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+                    <div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+                    <div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock tablero %}
+
+{% block content %}
+<br>
+   <div class="col-md-12 col-lg-6">
+    <div id="aspectos_juridicos" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+</div>
+{% endblock content %}

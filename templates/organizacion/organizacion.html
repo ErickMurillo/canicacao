@@ -68,6 +68,53 @@
 	}
 
 	google.maps.event.addDomListener(window, 'load', initialize);
+
+$("#id_municipio").prop("disabled", true);
+$("#id_comunidad").prop("disabled", true);
+
+var foo = [];
+$(document).on('change','#id_departamento',function(){
+         
+    $('#id_departamento :selected').each(function(i, selected){ 
+        foo[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
+        $('#id_municipio').html('');
+        $("#id_municipio").prop("disabled", false);
+        var municipio = $('#id_municipio')
+        if(data){
+            
+           $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+                var group = $('<optgroup></optgroup>').attr('label', j);
+                $.each(item2, function(k, item3){
+                    group.append($('<option></option>').val(item3.id).html(item3.nombre));
+                });
+                group.appendTo(municipio);
+            });
+
+        });
+       }
+   });
+
+    });
+
+var foo2 = [];
+$(document).on('change','#id_municipio',function(){
+         
+    $('#id_municipio :selected').each(function(i, selected){ 
+        foo2[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
+        $('#id_comunidad').html('');
+        $("#id_comunidad").prop("disabled", false);
+        if(data){
+            $.each(data, function(i, item){
+                $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
+                });
+       }
+   });
+    });
 </script>
 
 {% endblock extra_js %}
@@ -113,40 +160,31 @@
 					<div class="consulta-org-titulo">
 						<h4>Filtrar datos de las organizaciones</h4>
 					</div>
+					<form action="." method="POST">{% csrf_token %}
 					<div class="filtro-org-consulta">
 							<div class="form-group">
                                 <label >Departamento</label>
                                 <br>
-                                <select multiple="multiple" id="id_departamento" name="fecha">
-									<option value="Managua">Managua</option>
-									<option value="Rivas">Rivas</option>
-									<option value="Rivas">Rio san juan</option>
-								</select>                     
+                                {{form.departamento}}                    
                             </div>
 
                             <div class="form-group">
                                 <label >Municipio</label>
                                 <br>
-                                <select multiple="multiple" id="id_municipio" name="fecha">
-									<option value="San carlos">San carlos</option>
-								
-								</select>                     
+                                {{form.municipio}}                     
                             </div>
 
                             <div class="form-group">
                                 <label >Comunidad</label>
                                 <br>
-                                <select multiple="multiple" id="id_comunidad" name="fecha">
-									<option value="San isidro">San isidro</option>
-									
-								</select>                     
+                                {{form.comunidad}}                     
                             </div>
 
 						<div class="btn btn-org-consulta">
-							<a  href="">Continuar leyendo</a>
+							<input type="submit" value="Consultar" name="consulta"/>
 						</div>	
 					</div>	
-
+					</form>
 					
 					
 				</div>
@@ -154,4 +192,6 @@
 
 			</div>
 			<a href="/orgdetail/"> consulta</a>
+
+			
 {% endblock content %}

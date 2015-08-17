@@ -29,7 +29,6 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^certificacion', 'tipo_certificacion', name='tipo-certificacion'),
     url(r'^tecnicas', 'tecnicas_aplicadas', name='tipo-tecnicas-aplicadas'),
 
-
     #mapa
     url(r'^mapa/$', 'obtener_lista', name='obtener-lista'),
 
@@ -51,4 +50,5 @@ urlpatterns += patterns('organizacion.views',
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
     url(r'^organizacion', 'get_organizacion', name='organizacion'),
     url(r'^orgdetail', 'get_org_detail', name='orgdetail'),
+    url(r'^org-dashboard', 'orgdashboard', name='orgdashboard'),
 )
