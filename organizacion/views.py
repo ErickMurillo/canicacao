@@ -99,9 +99,20 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         for obj in SI_NO_CHOICES:
             result = filtro.filter(documentacion__documentos=x[0],documentacion__si_no=obj[0]).count()
             dic_result[obj[1]] = result
-        documentacion[x] = dic_result
+        documentacion[x[1]] = dic_result
 
-    print documentacion
+    socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
+    socios = int(filtro.aggregate(socios=Avg('datos_productivos__socios'))['socios'])
+
+    pre_socias = int(filtro.aggregate(pre_socias=Avg('datos_productivos__pre_socias'))['pre_socias'])
+    pre_socios = int(filtro.aggregate(pre_socios=Avg('datos_productivos__pre_socios'))['pre_socios'])
+
+    areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
+
+    area_organico = filtro.aggregate(organico=Avg('datos_productivos__area_cert_organico'))['organico']
+
+    area_convencional = filtro.aggregate(convencional=Avg('datos_productivos__area_convencional'))['convencional']
+
     return render(request, template, locals())
 
 #ajax filtros
