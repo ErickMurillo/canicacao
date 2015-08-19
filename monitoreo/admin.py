@@ -22,7 +22,7 @@ class FlatPageAdmin(FlatPageAdminOld):
 class Familia_Inline(admin.TabularInline):
 	model = Familia
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Educacion_Inline(admin.TabularInline):
 	model = Educacion
@@ -34,12 +34,12 @@ class Educacion_Inline(admin.TabularInline):
 class Tenencia_Propiedad_Inline(admin.TabularInline):
 	model = Tenencia_Propiedad
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Uso_Tierra_Inline(admin.StackedInline):
 	model = Uso_Tierra
 	max_num = 1
-	can_delete = False
+	can_delete = True
 	fieldsets = [
 		('Área total en manzanas que tiene la propiedad',{'fields': ['area_total']}),
 		('Número de manzanas en la que esta distribuida la finca', {'fields': [('bosque','tacotal','cultivo_anual'),
@@ -53,63 +53,63 @@ class Uso_Tierra_Inline(admin.StackedInline):
 class Reforestacion_Inline(admin.TabularInline):
 	model = Reforestacion
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Caracterizacion_Terreno_Inline(admin.TabularInline):
 	model = Caracterizacion_Terreno
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Fenomenos_Naturales_Inline(admin.TabularInline):
 	model = Fenomenos_Naturales
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Razones_Agricolas_Inline(admin.TabularInline):
 	model = Razones_Agricolas
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Razones_Mercado_Inline(admin.TabularInline):
 	model = Razones_Mercado
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Inversion_Inline(admin.TabularInline):
 	model = Inversion
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Mitigacion_Riesgos_Inline(admin.TabularInline):
 	model = Mitigacion_Riesgos
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Organizacion_Asociada_Inline(admin.TabularInline):
 	model = Organizacion_Asociada
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Area_Cacao_Inline(admin.TabularInline):
 	model = Area_Cacao
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Plantacion_Inline(admin.TabularInline):
 	model = Plantacion
 	max_num = 5
 	extra = 1
-	can_delete = False
+	can_delete = True
 
 class Produccion_Cacao_Inline(admin.TabularInline):
 	model = Produccion_Cacao
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Certificacion_Inline(admin.StackedInline):
 	model = Certificacion
 	max_num = 1
-	can_delete = False
+	can_delete = True
 	fieldsets = (
         (None, {
             'fields': (('cacao_certificado', 'tipo', 'quien_certifica', 'paga_certificacion','costo_certificacion'),)
@@ -122,52 +122,52 @@ class Certificacion_Inline(admin.StackedInline):
 class Tecnicas_Aplicadas_Inline(admin.StackedInline):
 	model = Tecnicas_Aplicadas
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Comercializacion_Cacao_Inline(admin.TabularInline):
 	model = Comercializacion_Cacao
 	max_num = 11
 	extra = 1
-	can_delete = False
+	can_delete = True
 
 class Distancia_Comercio_Cacao_Inline(admin.TabularInline):
 	model = Distancia_Comercio_Cacao
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Capacitaciones_Tecnicas_Inline(admin.TabularInline):
 	model = Capacitaciones_Tecnicas
 	max_num = 11
 	extra = 1
-	can_delete = False
+	can_delete = True
 
 class Capacitaciones_Socioeconomicas_Inline(admin.TabularInline):
 	model = Capacitaciones_Socioeconomicas
 	max_num = 8
 	extra = 1
-	can_delete = False
+	can_delete = True
 
 class Problemas_Cacao_Inline(admin.TabularInline):
 	model = Problemas_Cacao
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Genero_Inline(admin.StackedInline):
 	model = Genero
 	max_num = 1
-	can_delete = False
+	can_delete = True
 	fieldsets = [(None, {'fields' : (('actividades'),('ingresos','ingreso_mesual'),('destino_ingresos_2',),('decisiones',))}),
 	]
 
 class Genero_2_Inline(admin.TabularInline):
 	model = Genero_2
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 class Adicional_Inline(admin.TabularInline):
 	model = Adicional
 	max_num = 1
-	can_delete = False
+	can_delete = True
 
 
 class EncuestaAdmin(admin.ModelAdmin):
@@ -176,13 +176,13 @@ class EncuestaAdmin(admin.ModelAdmin):
 			return Encuesta.objects.all()
 		return Encuesta.objects.filter(usuario=request.user)
 
-	def save_model(self, request, obj, form, change):
-		obj.usuario = request.user
-		obj.save()
+	# def save_model(self, request, obj, form, change):
+	# 	obj.usuario = request.user
+	# 	obj.save()
 
-	exclude = ('usuario','anno')
+	exclude = ('anno',)
 	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona',))}),
+		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona','usuario'))}),
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
