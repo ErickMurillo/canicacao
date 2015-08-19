@@ -385,9 +385,9 @@ def propiedad(request,template='monitoreo/propiedad.html'):
 
     familias = filtro.count()
 
-    count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
+    count_si = filtro.filter(tenencia_propiedad__dueno_propiedad=1).count()
 
-    count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
+    count_no = filtro.filter(tenencia_propiedad__dueno_propiedad=2).count()
 
     dueno = saca_porcentajes(count_si,familias,False)
     no_dueno = saca_porcentajes(count_no,familias,False)
