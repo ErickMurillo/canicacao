@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script src="/static/js/highcharts.js"></script>
-	<script src="/static/js/exporting.js"></script>
 	<script>
         $(document).ready(function() {
         
@@ -32,6 +30,19 @@
                         this.series.name +': '+ this.y +'%';
                 }
             },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
         credits: {
             enabled: false
         },
@@ -70,10 +81,16 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
                     },
                     showInLegend: true
                 }
+               
             },
             series: [{
                 name: "Porcentajes",
@@ -117,6 +134,19 @@ $(function () {
         credits: {
             enabled: false
         },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
         series: [
         	{% for key,value in plagas.items %}
         		{
@@ -155,6 +185,19 @@ $(function () {
         credits: {
             enabled: false
         },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
         series: [
         	{% for key,value in mercados.items %}
         		{
@@ -192,6 +235,19 @@ $(function () {
             },
         credits: {
             enabled: false
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
         },
         series: [
         	{% for key,value in inversion.items %}
@@ -232,6 +288,19 @@ $(function () {
             },
         credits: {
             enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
         },
         series: [
             {% for key,value in tabla_mitigacion.items %}
@@ -274,6 +343,11 @@ $(function () {
     .nav-tabs>li {
         width: 30% !important
     }
+
+    .div-graf{
+        width: 50% !important;
+        left: 0 !important;
+    }
 </style>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
@@ -283,12 +357,26 @@ $(function () {
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-        <div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+        </div>
+        <div class="col-md-12 col-lg-12">
         <h3 align="center">Razones Agricolas</h3>
-        <div  class="col-md-12 col-lg-6" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        <div  class="col-md-12 col-lg-6" id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-        <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-        <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+            <div class="col-md-12 col-lg-6">
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+        </div>
+    </div>   
     </div>
     <div role="tabpanel" class="tab-pane" id="profile">
         <div id="mitigacion" style="min-width: 310px; height: 400px; width: 900px; margin: 0 auto"></div>

@@ -1,9 +1,6 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<script src="/static/js/highcharts.js"></script>
-<script src="/static/js/exporting.js"></script>
-
 <script>
     $(document).ready(function() {
         
@@ -37,6 +34,19 @@
 					this.series.name +': '+ this.y + 'Mz';
 				}
 			},
+			plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
 			series: [
 			{name: 'Bosques', data: [{{bosque}}]},
 			{name: 'Tacotal', data: [{{tacotal}}]},

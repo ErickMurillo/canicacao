@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script src="/static/js/highcharts.js"></script>
-	<script src="/static/js/exporting.js"></script>
 	<script>
         $(document).ready(function() {
         
@@ -36,7 +34,11 @@
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}'
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
         },
@@ -84,10 +86,16 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                    enabled: true,
+                    format: '{point.percentage:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
                     },
                     showInLegend: true
                 }
+               
             },
             series: [{
                 name: "Porcentaje",
@@ -131,7 +139,11 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}'
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
         },
@@ -180,10 +192,16 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                    enabled: true,
+                    format: '{point.percentage:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
                     },
                     showInLegend: true
                 }
+               
             },
             series: [{
                 name: "Porcentaje",

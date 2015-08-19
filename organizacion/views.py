@@ -101,18 +101,39 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             dic_result[obj[1]] = result
         documentacion[x[1]] = dic_result
 
-    socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
-    socios = int(filtro.aggregate(socios=Avg('datos_productivos__socios'))['socios'])
+    try:
+        socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
+    except:
+        socias = 0
 
-    pre_socias = int(filtro.aggregate(pre_socias=Avg('datos_productivos__pre_socias'))['pre_socias'])
-    pre_socios = int(filtro.aggregate(pre_socios=Avg('datos_productivos__pre_socios'))['pre_socios'])
+    try:
+        socios = int(filtro.aggregate(socios=Avg('datos_productivos__socios'))['socios'])
+    except:
+        socios = 0
+
+    try:
+        pre_socias = int(filtro.aggregate(pre_socias=Avg('datos_productivos__pre_socias'))['pre_socias'])
+    except:
+        pre_socias = 0
+
+    try:
+        pre_socios = int(filtro.aggregate(pre_socios=Avg('datos_productivos__pre_socios'))['pre_socios'])
+    except:
+        pre_socios = 0
+
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
+    if areas_establecidas == None:
+        areas_establecidas = 0
 
     area_organico = filtro.aggregate(organico=Avg('datos_productivos__area_cert_organico'))['organico']
+    if area_organico == None:
+        area_organico = 0
 
     area_convencional = filtro.aggregate(convencional=Avg('datos_productivos__area_convencional'))['convencional']
-
+    if area_convencional == None:
+        area_convencional = 0
+        
     return render(request, template, locals())
 
 #ajax filtros

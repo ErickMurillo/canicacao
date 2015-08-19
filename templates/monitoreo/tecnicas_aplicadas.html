@@ -1,41 +1,47 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<script src="/static/js/highcharts.js"></script>
-<script src="/static/js/exporting.js"></script>
 <script type="text/javascript">
+
 $(function () {
-    $('#container0').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Viveros'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container0').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Viveros'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
+                    format: '{point.percentage:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
                 }
-            }
-        },
-        series: [{
-            name: "Porcentaje",
-            colorByPoint: true,
-            data: [
-            {% for k,v in viveros.items %}
+               
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in viveros.items %}
             {
                 name: "{{k}}",
                 y: {{v}} {% if forloop.counter == 1 %},
@@ -44,10 +50,12 @@ $(function () {
                 {% endif %}
             },
             {% endfor %}
-             ]
-        }]
+                
+                ]
+            }]
+        });
     });
-});
+}); 
 
 $(function () {
     // Create the chart
@@ -66,7 +74,7 @@ $(function () {
         },
         yAxis: {
             title: {
-                text: 'porcentaje'
+                text: 'Frecuencia'
             }
 
         },
@@ -78,18 +86,22 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}'
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
         },
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
+            //pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
         },
 
         series: [{
-            name: "porcentaje",
+            name: "Frecuencia",
             colorByPoint: true,
             data: [
             {% for k,v in fertilizacion.items %}
@@ -103,34 +115,42 @@ $(function () {
     });
 });
 
+
 $(function () {
-    $('#container2').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Prácticas de manejo fitosanitario'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container2').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Prácticas de manejo fitosanitario'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
+                    format: '{point.percentage:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
                 }
-            }
-        },
-        series: [{
+               
+            },
+            series: [{
             name: "Porcentaje",
             colorByPoint: true,
             data: [
@@ -145,9 +165,9 @@ $(function () {
             {% endfor %}
              ]
         }]
+        });
     });
-});
-
+}); 
 $(function () {
     // Create the chart
     $('#container3').highcharts({
@@ -157,9 +177,7 @@ $(function () {
         title: {
             text: 'Prácticas de manejo productivo'
         },
-        // subtitle: {
-        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
-        // },
+
         xAxis: {
             type: 'category'
         },
@@ -177,18 +195,21 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}'
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
-        },
+        },  
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
         },
 
         series: [{
-            name: "porcentaje",
+            name: "Frecuencia",
             colorByPoint: true,
             data: [
             {% for k,v in pract_manejo_prod.items %}
@@ -217,18 +238,21 @@ $(function () {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
+                    format: '{point.percentage:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
                 }
-            }
-        },
+               
+            },
         series: [{
             name: "Porcentaje",
             colorByPoint: true,
@@ -276,18 +300,21 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}'
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
-        },
+        }, 
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
         },
 
         series: [{
-            name: "porcentaje",
+            name: "Frecuencia",
             colorByPoint: true,
             data: [
             {% for k,v in pract_manejo_post_c.items %}

@@ -316,9 +316,11 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                 for y in x.quien_vende:
                     lista.append(int(y))
 
+        list_count = len(lista)
+
         for obj in QUIEN_VENDE_CHOICES:
             p = lista.count(obj[0])
-            destino_dic[obj[1]] = p
+            destino_dic[obj[1]] = saca_porcentajes(p, list_count, False)
 
         #destino de produccion de las organizaciones
         destino_org_dic = {}
@@ -327,10 +329,11 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             for yz in xz.destino_produccion:
                 lista_org.append(int(yz))
 
+        list_count_org = len(lista_org)
 
         for obj_1 in DESTINO_CHOICES:
             p2 = lista_org.count(obj_1[0])
-            destino_org_dic[obj_1[1]] = p2
+            destino_org_dic[obj_1[1]] = saca_porcentajes(p2, list_count_org, False)
         
 
         #diccionario todos los valores x anio
@@ -383,21 +386,23 @@ def propiedad(request,template='monitoreo/propiedad.html'):
     familias = filtro.count()
 
     count_si = filtro.filter(tenencia_propiedad__dueno_propiedad='1').count()
+
     count_no = filtro.filter(tenencia_propiedad__dueno_propiedad='2').count()
-    dueno = (count_si/float(familias))*100
-    no_dueno = (count_no/float(familias))*100
+
+    dueno = saca_porcentajes(count_si,familias,False)
+    no_dueno = saca_porcentajes(count_no,familias,False)
 
     dic2 = {}
     for x in Situacion.objects.all():
         objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
         dic2[x] = saca_porcentajes(objeto1,count_no,False)
-
+    
     dic = {}
     for e in PROPIEDAD_CHOICE:
         for x in e:
             objeto = filtro.filter(tenencia_propiedad__si=e[0]).count()
             dic[e[1]] = saca_porcentajes(objeto,count_si,False)
-
+    print dic
     return render(request, template, locals())
 
 def uso_tierra(request,template='monitoreo/uso_tierra.html'):
@@ -480,7 +485,7 @@ def riesgos(request,template='monitoreo/riesgos.html'):
     plantas = {}
     for obj in P_IMPRODUCTIVAS_CHOICES:
         p_improduct = filtro.filter(razones_agricolas__plantas_improductivas=obj[0]).count()
-        plantas[obj[1]] = p_improduct
+        plantas[obj[1]] = saca_porcentajes(p_improduct,familias,False)
 
     plagas = {}
     for obj in SI_NO_CHOICES:
@@ -501,7 +506,7 @@ def riesgos(request,template='monitoreo/riesgos.html'):
                             saca_porcentajes(falta_venta,familias,False),
                             saca_porcentajes(estafa_contrato,familias,False),
                             saca_porcentajes(calidad_producto,familias,False))
-
+    print mercados
     inversion = {}
     for obj in SI_NO_CHOICES:
         invierte_cacao = filtro.filter(inversion__invierte_cacao=obj[0]).count()

@@ -1,54 +1,60 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<script src="/static/js/highcharts.js"></script>
-<script src="/static/js/exporting.js"></script>
 <script type="text/javascript">
-   $(function () {
-    $('#container').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Tipos de certificación'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                }
-            }
-        },
-        series: [{
-            name: "Porcentaje",
-            colorByPoint: true,
-            data: [
-            {% for k,v in tabla_certificacion.items %}
-            {
-                name: "{{k}}",
-                y: {{v}} {% if forloop.counter == 1 %},
-                sliced: true,
-                selected: true
-                {% endif %}
-            },
-            {% endfor %}
-             ]
-        }]
-    });
-});
+$(function () {
 
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                    enabled: true,
+                    format: '{point.percentage:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+               
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in tabla_certificacion.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}} {% if forloop.counter == 1 %},
+                    sliced: true,
+                    selected: true
+                    {% endif %}
+                },
+            {% endfor %}
+                
+                ]
+            }]
+        });
+    });
+});  
 </script>
 {% endblock extra_js %}
 
