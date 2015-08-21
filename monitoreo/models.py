@@ -246,28 +246,28 @@ class Tenencia_Propiedad(models.Model):
 
 class Uso_Tierra(models.Model):
 	area_total = models.FloatField(default='0',verbose_name='Área total en manzanas de la propiedad',
-									validators = [MinValueValidator(0), MaxValueValidator(200)])
+									validators = [MinValueValidator(0), MaxValueValidator(5500)])
 	bosque = models.FloatField(default='0',verbose_name='Bosques',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	tacotal = models.FloatField(default='0',verbose_name='Tacotal o área de descanso',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	cultivo_anual = models.FloatField(default='0',verbose_name='Cultivo anual ( que produce en el año)',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	plantacion_forestal = models.FloatField(default='0',verbose_name='Plantación forestal ( madera y leña)',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	area_pasto_abierto = models.FloatField(default='0',verbose_name='Área de pastos abierto',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	area_pasto_arboles = models.FloatField(default='0',verbose_name='Área de pastos con árboles',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	cultivo_perenne = models.FloatField(default='0',verbose_name='Cultivo perenne (frutales)',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	cultivo_semi_perenne = models.FloatField(default='0',verbose_name='Cultivo semi-perenne (musácea, piña)',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	cacao = models.FloatField(default='0',verbose_name='Solo destinado para cacao',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	huerto_mixto_cacao = models.FloatField(default='0',verbose_name='Huerto mixto con cacao',
-									validators = [MinValueValidator(0), MaxValueValidator(100)])
-	otros = models.FloatField(default='0',validators = [MinValueValidator(0), MaxValueValidator(100)])
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
+	otros = models.FloatField(default='0',validators = [MinValueValidator(0), MaxValueValidator(500)])
 	encuesta = models.ForeignKey(Encuesta)
 
 	class Meta:
