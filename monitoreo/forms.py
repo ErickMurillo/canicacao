@@ -52,8 +52,7 @@ class EducacionForm(ModelForm):
         universitario_tecnico = self.cleaned_data.get('universitario_tecnico')
         viven_fuera = self.cleaned_data.get('viven_fuera')
 
-        suma_total = (no_lee_ni_escribe + primaria_incompleta + primaria_completa + secundaria_incompleta
-                    + bachiller + universitario_tecnico + viven_fuera)
+        suma_total = no_lee_ni_escribe + primaria_incompleta + primaria_completa + secundaria_incompleta + bachiller + universitario_tecnico + viven_fuera
 
         if (numero_total < suma_total):
 
