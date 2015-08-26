@@ -176,13 +176,13 @@ class EncuestaAdmin(admin.ModelAdmin):
 			return Encuesta.objects.all()
 		return Encuesta.objects.filter(usuario=request.user)
 
-	# def save_model(self, request, obj, form, change):
-	# 	obj.usuario = request.user
-	# 	obj.save()
+	def save_model(self, request, obj, form, change):
+		obj.usuario = request.user
+		obj.save()
 
-	exclude = ('anno',)
+	exclude = ('usuario','anno')
 	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona','usuario'))}),
+		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona',))}),
 	]
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
