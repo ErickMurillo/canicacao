@@ -195,6 +195,7 @@ class EncuestaAdmin(admin.ModelAdmin):
 	list_display = ('persona','organizacion','recolector')
 	list_display_links = ('organizacion','persona')
 	#list_filter = ('organizacion__siglas','recolector__nombre')
+	list_filter = ('tenencia_propiedad__dueno_propiedad',)
 	search_fields = ['persona__nombre','recolector__nombre']
 	class Media:
 		js = ('js/admin.js',)
