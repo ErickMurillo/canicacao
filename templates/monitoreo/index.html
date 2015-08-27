@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block extra_js %}
 
@@ -84,7 +85,7 @@
 			<div class="row ind-mujer">
 				<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
 				<div class="col-lg-8 text-center">
-					<p>{{mujeres}}</p>
+					<p>{{mujeres|intcomma}}</p>
 					<p>Mujeres</p>
 				</div>
 			</div>
@@ -93,7 +94,7 @@
 			<div class="row ind-hombre">
 				<div class="col-lg-4"><span class="fa fa-male fa-4x"></span></div>
 				<div class="col-lg-8 text-center">
-					<p>{{hombres}}</p>
+					<p>{{hombres|intcomma}}</p>
 					<p>Hombres</p>
 				</div>
 			</div>
@@ -102,7 +103,7 @@
 			<div class="row ind-cacao">
 				<div class="col-lg-4"><img src="/static/img/cacao-01.png" alt=""></div>
 				<div class="col-lg-8 text-center">
-					<p>{{area_cacao}} mz</p>
+					<p>{{area_cacao|intcomma}} mz</p>
 					<p class="text-cacao">Cacao establecidas</p>
 				</div>
 			</div>	
@@ -111,7 +112,7 @@
 			<div class="row ind-produccion">
 				<div class="col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
 				<div class="col-lg-8 text-center">
-					<p>{{produccion}} qq</p>
+					<p>{{produccion|intcomma}} qq</p>
 					<p>Producción</p>
 				</div>
 			</div>
@@ -121,7 +122,7 @@
 			<div class="row ind-otro">
 				<div class="col-lg-4"><img src="/static/img/organizacion2.png" alt=""></div>
 				<div class="col-lg-8 text-center">
-					<p>{{organizaciones}}</p>
+					<p>{{organizaciones|intcomma}}</p>
 					<p style="font-size:20px">Organizaciones</p>
 				</div>
 			</div>
