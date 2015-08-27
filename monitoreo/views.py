@@ -47,10 +47,9 @@ def IndexView(request,template="monitoreo/index.html"):
 
     mujeres = Encuesta.objects.filter(persona__sexo='2').count()
     hombres = Encuesta.objects.filter(persona__sexo='1').count()
-    area_cacao = Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']
+    area_cacao = (Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']) * hectarea
     suma_prod = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao',
-                                                            field="produccion_c_seco + " +
-                                                            "produccion_c_fermentado + produccion_c_organico"))['total']
+                                                            field="produccion_c_seco + produccion_c_fermentado + produccion_c_organico"))['total']
     baba = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao__produccion_c_baba'))['total']
     produccion = (suma_prod + (baba/3)) * tonelada
     organizaciones = Organizacion.objects.all().count()
