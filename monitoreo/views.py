@@ -395,7 +395,8 @@ def propiedad(request,template='monitoreo/propiedad.html'):
     dic2 = {}
     for x in Situacion.objects.all():
         objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
-        dic2[x] = saca_porcentajes(objeto1,count_no,False)
+        #dic2[x] = saca_porcentajes(objeto1,count_no,False)
+        dic2[x] = objeto1
     
     dic = {}
     for e in PROPIEDAD_CHOICE:
