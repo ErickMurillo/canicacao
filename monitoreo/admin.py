@@ -176,9 +176,9 @@ class EncuestaAdmin(admin.ModelAdmin):
 			return Encuesta.objects.all()
 		return Encuesta.objects.filter(usuario=request.user)
 
-	def save_model(self, request, obj, form, change):
-		obj.usuario = request.user
-		obj.save()
+	# def save_model(self, request, obj, form, change):
+	# 	obj.usuario = request.user
+	# 	obj.save()
 
 	exclude = ('usuario','anno')
 	fieldsets = [
