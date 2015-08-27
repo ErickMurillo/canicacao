@@ -176,9 +176,9 @@ class EncuestaAdmin(admin.ModelAdmin):
 			return Encuesta.objects.all()
 		return Encuesta.objects.filter(usuario=request.user)
 
-	# def save_model(self, request, obj, form, change):
-	# 	obj.usuario = request.user
-	# 	obj.save()
+	def save_model(self, request, obj, form, change):
+		obj.usuario = request.user
+		obj.save()
 
 	exclude = ('usuario','anno')
 	fieldsets = [
@@ -195,7 +195,6 @@ class EncuestaAdmin(admin.ModelAdmin):
 	list_display = ('persona','organizacion','recolector')
 	list_display_links = ('organizacion','persona')
 	#list_filter = ('organizacion__siglas','recolector__nombre')
-	list_filter = ('tenencia_propiedad__no',)
 	search_fields = ['persona__nombre','recolector__nombre']
 	class Media:
 		js = ('js/admin.js',)
