@@ -645,3 +645,30 @@ div[role=tabpanel] {
   font-family 'Roboto',Tahoma,Verdana,Arial,sans-serif !important
   font-size 1em !important
 */
+
+/* nuevo codigo */
+.titulo-inicio a {
+  color: white;
+  text-decoration: none
+}
+
+.seleccion {
+  color: white;
+  margin-top: 10px
+}
+
+.h2, h2 {
+  font-size: 26px;
+}
+
+.h1, h1 {
+  font-size: 32px;
+}
+
+.titulo-inicio:before, .titulo-indicadores:before {
+  height: 100% !important;
+}
+
+.tablero-titulo, .indicadores-titulo {
+  margin-top: 50px !important; 
+}

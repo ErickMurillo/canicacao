@@ -17,7 +17,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'TEXTURA'
+            text: 'Textura'
         },
         subtitle: {
             text: ''
@@ -32,7 +32,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: '%'
+                text: 'Porcentajes (%)'
             }
         },
         plotOptions: {
@@ -75,7 +75,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'PENDIENTE'
+            text: 'Pendiente'
         },
         subtitle: {
             text: ''
@@ -90,7 +90,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: '%'
+                text: 'Porcentajes (%)'
             }
         },
         tooltip: {
@@ -131,7 +131,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'HOJARASCAS'
+            text: 'Hojarasca'
         },
         subtitle: {
             text: ''
@@ -146,7 +146,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: '%'
+                text: 'Porcentajes (%)'
             }
         },
         tooltip: {
@@ -187,7 +187,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'PROFUNDIDAD'
+            text: 'Profundidad'
         },
         subtitle: {
             text: ''
@@ -202,7 +202,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: '%'
+                text: 'Porcentajes (%)'
             }
         },
         tooltip: {
@@ -244,7 +244,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'DRENAJE'
+            text: 'Drenaje'
         },
         subtitle: {
             text: ''
@@ -259,7 +259,7 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: '%'
+                text: 'Porcentajes (%)'
             }
         },
         tooltip: {
@@ -302,7 +302,25 @@ $(function () {
 </script>
 {% endblock extra_js %}
 
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
 {% block content %}
+
+{% include "monitoreo/filtros.html" %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Indicador >> Caracterización del terreno</h4>  
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
+        </div>
+    </div>
+</div>
+
 <div class="row">
 	<div class="col-md-6 col-lg-6">
 	<div id="container0"></div>

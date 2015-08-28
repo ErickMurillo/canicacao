@@ -15,7 +15,7 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Destino de la Producción'
+                text: 'Tipos de certificaciones'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -58,10 +58,29 @@ $(function () {
 </script>
 {% endblock extra_js %}
 
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
 {% block content %}
+
+{% include "monitoreo/filtros.html" %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Indicador >> Certificaciones</h4>
+
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12 col-lg-12">
-        <div id="container"></div>
+        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 {% include "monitoreo/indicadores.html" %}

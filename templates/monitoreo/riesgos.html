@@ -316,28 +316,11 @@ $(function () {
 </script>
 {% endblock extra_js %}
 
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
 {% block content %}
-
-	<!-- <div class="col-md-12 col-lg-12">
-		<div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
-	</div>
-
-	<div class="col-md-12 col-lg-12">
-		<h3 align="center">Razones Agricolas</h3>
-		<div  class="col-md-12 col-lg-6" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-		<div  class="col-md-12 col-lg-6" id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-	</div>
-
-	<div class="col-md-12 col-lg-12">
-		<br>
-		<div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-	</div>
-
-	<div class="col-md-12 col-lg-12">
-	<br>
-		<div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-	</div> -->
-    
     
 <style>
     .nav-tabs>li {
@@ -348,7 +331,25 @@ $(function () {
         width: 50% !important;
         left: 0 !important;
     }
+    hr{
+         border: 0;
+        height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    }
 </style>
+{% include "monitoreo/filtros.html" %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Indicador >> Riesgos en la finca</h4>  
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
+        </div>
+    </div>
+</div>
+
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
@@ -359,8 +360,11 @@ $(function () {
     <div role="tabpanel" class="tab-pane active" id="home">
     <div class="row">
         <div class="col-md-12 col-lg-12">
-            <div id="grafico" style="min-width: 310px; height: 400px; max-width: 900px; margin: 0 auto"></div>
+            <div id="grafico" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+            <hr>
+            <br>
         </div>
+        
         <div class="col-md-12 col-lg-12">
         <h3 align="center">Razones Agricolas</h3>
             <div class="col-md-12 col-lg-6">
@@ -369,9 +373,15 @@ $(function () {
             <div class="col-md-12 col-lg-6">
                 <div id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
+            <div class="col-md-12 col-lg-12">
+                <hr>
+                <br>
+            </div>
         </div>
         <div class="col-md-12 col-lg-12">
-            <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+            <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
+            <hr> 
+            <br>
         </div>
         <div class="col-md-12 col-lg-12">
             <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 

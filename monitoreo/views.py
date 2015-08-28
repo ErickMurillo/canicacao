@@ -125,19 +125,18 @@ def dashboard(request,template='monitoreo/dashboard.html'):
     libra_tonelada = 0.00045359237
     ############################
 
+    ##############################################################
     familias = filtro.count()
-
     try:
         hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
     except:
         hombres = 0
-
     try:
         mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
     except:
         mujeres = 0
-
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     anno = collections.OrderedDict()
 
@@ -374,6 +373,19 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 def educacion(request,template='monitoreo/educacion.html'):
     filtro = _queryset_filtrado(request)
 
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
+
     tabla_educacion = []
     grafo = []
     suma = 0
@@ -408,7 +420,19 @@ def educacion(request,template='monitoreo/educacion.html'):
 def propiedad(request,template='monitoreo/propiedad.html'):
     filtro = _queryset_filtrado(request)
 
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     count_si = filtro.filter(tenencia_propiedad__dueno_propiedad=1).count()
 
@@ -432,6 +456,19 @@ def propiedad(request,template='monitoreo/propiedad.html'):
 def uso_tierra(request,template='monitoreo/uso_tierra.html'):
     filtro = _queryset_filtrado(request)
 
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
+    
     total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
 
     #grafico numero de manzanas
@@ -466,6 +503,19 @@ def produccion(request,template='monitoreo/produccion.html'):
     filtro = _queryset_filtrado(request)
     tonelada = 0.1
 
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
+
     baba = (filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba'] ) / 3
     seco = (filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco'] + baba ) * tonelada
     fermentado = (filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado'] ) * tonelada
@@ -487,7 +537,19 @@ def produccion(request,template='monitoreo/produccion.html'):
 
 def riesgos(request,template='monitoreo/riesgos.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     riesgos = {}
     riesgos_tabla = {}
@@ -574,7 +636,19 @@ def riesgos(request,template='monitoreo/riesgos.html'):
 
 def comercializacion(request,template='monitoreo/comercializacion.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     tabla_productos = []
     for obj in PRODUCTO_CHOICES:
@@ -608,6 +682,19 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
 
 def genero(request,template='monitoreo/genero.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     genero = {}
     suma = 0
@@ -651,52 +738,89 @@ def genero(request,template='monitoreo/genero.html'):
     return render(request, template, locals())
 
 def reforestacion(request,template='monitoreo/reforestacion.html'):
-	filtro = _queryset_filtrado(request)
-	familias = filtro.count()
+    filtro = _queryset_filtrado(request)
 
-	frec_bosques = filtro.filter(reforestacion__enriquecimiento_bosques='1').count()
-	bosques = saca_porcentajes(frec_bosques,familias,False)
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
-	frec_agua = filtro.filter(reforestacion__proteccion_agua='1').count()
-	agua = saca_porcentajes(frec_agua,familias,False)
+    frec_bosques = filtro.filter(reforestacion__enriquecimiento_bosques='1').count()
+    bosques = saca_porcentajes(frec_bosques,familias,False)
 
-	frec_cercas = filtro.filter(reforestacion__cercas_vivas='1').count()
-	cercas_vivas = saca_porcentajes(frec_cercas,familias,False)
+    frec_agua = filtro.filter(reforestacion__proteccion_agua='1').count()
+    agua = saca_porcentajes(frec_agua,familias,False)
 
-	frec_vivereos = filtro.filter(reforestacion__viveros='1').count()
-	viveros = saca_porcentajes(frec_vivereos,familias,False)
+    frec_cercas = filtro.filter(reforestacion__cercas_vivas='1').count()
+    cercas_vivas = saca_porcentajes(frec_cercas,familias,False)
 
-	frec_siembra = filtro.filter(reforestacion__siembre_cacao='1').count()
-	siembre_cacao = saca_porcentajes(frec_siembra,familias,False)
+    frec_vivereos = filtro.filter(reforestacion__viveros='1').count()
+    viveros = saca_porcentajes(frec_vivereos,familias,False)
 
-	frec_forestales = filtro.filter(reforestacion__forestales='1').count()
-	forestales = saca_porcentajes(frec_forestales,familias,False)
+    frec_siembra = filtro.filter(reforestacion__siembre_cacao='1').count()
+    siembre_cacao = saca_porcentajes(frec_siembra,familias,False)
 
-	frec_potrero = filtro.filter(reforestacion__potrero='1').count()
-	potrero = saca_porcentajes(frec_potrero,familias,False)
+    frec_forestales = filtro.filter(reforestacion__forestales='1').count()
+    forestales = saca_porcentajes(frec_forestales,familias,False)
 
-	frec_frutales = filtro.filter(reforestacion__frutales='1').count()
-	frutales = saca_porcentajes(frec_frutales,familias,False)
+    frec_potrero = filtro.filter(reforestacion__potrero='1').count()
+    potrero = saca_porcentajes(frec_potrero,familias,False)
 
-	return render(request, template, locals())
+    frec_frutales = filtro.filter(reforestacion__frutales='1').count()
+    frutales = saca_porcentajes(frec_frutales,familias,False)
+
+    return render(request, template, locals())
 
 def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	servicio_dic = {}
-	for obj in Tipos_Servicio.objects.all():
-		servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
-		servicio_dic[obj] = servicio
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
+    servicio_dic = {}
+    for obj in Tipos_Servicio.objects.all():
+        servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
+        servicio_dic[obj] = servicio
 
-	beneficio_dic = {}
-	for x in Beneficios.objects.all():
-		beneficio = filtro.filter(organizacion_asociada__beneficios=x).count()
-		beneficio_dic[x] = beneficio
+    beneficio_dic = {}
+    for x in Beneficios.objects.all():
+        beneficio = filtro.filter(organizacion_asociada__beneficios=x).count()
+        beneficio_dic[x] = beneficio
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 
 def capacitaciones(request,template='monitoreo/capacitaciones.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     dic = {}
     for obj in CAPACITACIONES_CHOICES:
@@ -706,11 +830,12 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             for x in cap.opciones:
                 lista.append(int(x))
 
-        for xz in OPCIONES_CAPACITACIONES_CHOICES:
+        conteo = 0 
+        for xz in OPCIONES_CAPACITACIONES_CHOICES: 
             p2 = lista.count(xz[0])
+            conteo += p2
             capacitaciones[xz[1]] = p2
-        dic[obj[1]] = capacitaciones
-
+        dic[obj[1]] = (capacitaciones,conteo)
 
     capacitaciones_2 = {}
     lista = []
@@ -732,10 +857,12 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
                 for z in cap_socio.opciones_socio:
                     lista_socio.append(int(z))
 
+        conteo = 0
         for xc in OPCIONES_CAPACITACIONES_CHOICES:
             p = lista_socio.count(xc[0])
             capacitaciones_socio[xc[1]] = p
-        dic_socio[obj[1]] = capacitaciones_socio
+            conteo += p
+        dic_socio[obj[1]] = (capacitaciones_socio,conteo)
 
 
     capacitaciones_socio = {}
@@ -752,35 +879,48 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
     return render(request, template, locals())
 
 def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html'):
-	filtro = _queryset_filtrado(request)
+    filtro = _queryset_filtrado(request)
 
-	dic_socio = {}
-	for obj in CAPACITACIONES_SOCIO_CHOICES:
-		lista = []
-		capacitaciones = {}
-		for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
-			if cap.opciones_socio != None:
-				for x in cap.opciones_socio:
-					lista.append(int(x))
+    ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
-		for xz in OPCIONES_CAPACITACIONES_CHOICES:
-			p = lista.count(xz[0])
-			capacitaciones[xz[1]] = p
-		dic_socio[obj[1]] = capacitaciones
+    dic_socio = {}
+    for obj in CAPACITACIONES_SOCIO_CHOICES:
+        lista = []
+        capacitaciones = {}
+        for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
+            if cap.opciones_socio != None:
+                for x in cap.opciones_socio:
+                    lista.append(int(x))
+
+        for xz in OPCIONES_CAPACITACIONES_CHOICES:
+            p = lista.count(xz[0])
+            capacitaciones[xz[1]] = p
+        dic_socio[obj[1]] = capacitaciones
 
 
-	capacitaciones_socio = {}
-	lista_1 = []
-	for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
-		if obj.opciones_socio != None:
-			for x in obj.opciones_socio:
-				lista_1.append(int(x))
+    capacitaciones_socio = {}
+    lista_1 = []
+    for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
+        if obj.opciones_socio != None:
+            for x in obj.opciones_socio:
+                lista_1.append(int(x))
 
-	for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
-		p = lista_1.count(obj_1[0])
-		capacitaciones_socio[obj_1[1]] = p
+    for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
+        p = lista_1.count(obj_1[0])
+        capacitaciones_socio[obj_1[1]] = p
 
-	return render(request, template, locals())
+    return render(request, template, locals())
 #obtener puntos en el mapa
 def obtener_lista(request):
     if request.is_ajax():
@@ -799,7 +939,19 @@ def obtener_lista(request):
 #SALIDAS CARLOS
 def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     #caracteristicas del terrenos
     tabla_textura = {}
@@ -849,7 +1001,19 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
 
 def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     #caracteristicas del terrenos
     tabla_mitigacion = {}
@@ -880,7 +1044,19 @@ def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
 
 def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     filtro = _queryset_filtrado(request)
+
+    ##############################################################
     familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
 
     #caracteristicas del terrenos
     tabla_certificacion = {}
@@ -893,8 +1069,20 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 
 def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     filtro = _queryset_filtrado(request)
-    familias = filtro.count()
    
+   ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    ##############################################################
+
     #VVEROS
     viveros = {}
     lista_viveros = []
