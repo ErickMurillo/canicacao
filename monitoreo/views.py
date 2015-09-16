@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
@@ -175,7 +176,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             produccion_baba = 0
 
         try:
-            produccion_seco_total = produccion_seco + (produccion_baba/3)
+            produccion_seco_total = produccion_seco #+ (produccion_baba/3)
         except:
             produccion_seco_total = 0
 
@@ -204,7 +205,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                 produccion_baba_depto = 0
 
             try:
-                produccion_seco_total_depto = produccion_seco_depto + (produccion_baba_depto/3)
+                produccion_seco_total_depto = produccion_seco_depto #+ (produccion_baba_depto/3)
             except:
                 produccion_seco_total_depto = 0
 
@@ -223,7 +224,8 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         p_organico = saca_porcentajes((produccion_organico*tonelada),total_produccion,False)
 
         #rendimiento cacao kg x ha -----------------------------------------------------------------------------
-        area_prod = filtro.filter(anno=year).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+
+        area_prod = filtro.filter(anno=year,plantacion__edad__in=[3,4,5]).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
         if area_prod == None:
             area_prod = 0
 
@@ -279,7 +281,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             no_socio = 0
         #auto-consumo vs venta
         PRODUCTO_CHOICES = (
-            (3,'Cacao en baba'),
+            #(3,'Cacao en baba'),
             (4,'Cacao rojo sin fermentar'),
             (5,'Cacao fermentado'),
             # (6,'Chocolate artesanal'),
@@ -291,46 +293,21 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
         comercializacion = {}
 
-        for obj in PRODUCTO_CHOICES:
-            if obj[0] == 3:
-                try:
-                    auto_consumo = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__auto_consumo'))['total'] )/ 3) * tonelada
-                except:
-                    auto_consumo = 0
+ 
+        try:
+            auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+                        'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
+        except:
+            auto_consumo = 0
 
-                try:
-                    venta = ((filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__venta'))['total'])/ 3) * tonelada
-                except:
-                    venta = 0
+        try:
+            venta = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+                        'comercializacion_cacao__venta'))['total']) * tonelada
+        except:
+            venta = 0
 
-            elif obj[0] == 4:
-                try:
-                    auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
-                except:
-                    auto_consumo = 0
 
-                try:
-                    venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__venta'))['total']) * tonelada
-                except:
-                    venta = 0
-            else:
-                try:
-                    auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__auto_consumo'))['total']) * libra_tonelada
-                except:
-                    auto_consumo = 0
-
-                try:
-                    venta = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                'comercializacion_cacao__venta'))['total'] ) * libra_tonelada
-                except:
-                    venta = 0
-
-            comercializacion[obj[1]] = (auto_consumo,venta)
+        # comercializacion[obj[1]] = (auto_consumo,venta)
 
         #destino de produccion
         destino_dic = {}
@@ -363,7 +340,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         #diccionario todos los valores x anio
 
         anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
-                        p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,comercializacion,
+                        p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,auto_consumo,venta,
                         prod_depto,destino_dic,destino_org_dic)
 
 

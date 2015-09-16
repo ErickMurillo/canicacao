@@ -27,9 +27,10 @@
       var image = new google.maps.MarkerImage('/static/img/m2.png');
 
       {% for year,value in anno.items %}
+
         var map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
-        {% for x,y in value.12.items %}
+        {% for x,y in value.13.items %}
            var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
            position: new google.maps.LatLng({{y.0}}, {{y.1}}),
            map: map_{{year}},
@@ -46,10 +47,9 @@
         {% endfor %}
     
   }
-  initialize();
-
-  google.maps.event.addDomListener(window, "click", initialize);
-
+initialize();
+  
+google.maps.event.addDomListener(window, "click", initialize);
 </script>
 
 
@@ -68,19 +68,33 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Total de áreas de cacao en Hectáreas'
+                text: 'Porcentaje de las áreas de cacao por edades'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
             plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+            plotOptions: {
                 pie: {
+                    stacking: 'normal',
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
@@ -89,6 +103,15 @@ $(function () {
                 }
                
             },
+            legend: {
+            layout: 'vertical',
+            align: 'right',
+            x: 0,
+            verticalAlign: 'top',
+            y: 30,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+        },
             series: [{
                 name: "Porcentajes",
                 colorByPoint: true,
@@ -107,18 +130,16 @@ $(function () {
     });
 });
 
+
 $(function () {
-    // Create the chart
     $('#rendimiento{{year}}').highcharts({
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Rendimiento Cacao (Kg x Ha)'
+            text: 'Rendimiento cacao (Kg/Ha)'
         },
-        // subtitle: {
-        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
-        // },
+        
         xAxis: {
             type: 'category'
         },
@@ -147,18 +168,19 @@ $(function () {
 
         tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg/ha<br/>'
         },
 
         series: [{
             name: "Rendimiento",
             colorByPoint: true,
             data: [
+            // {
+            //     name: "Seco",
+            //     y: {{value.2}},
+            // }, 
             {
-                name: "Seco",
-                y: {{value.2}},
-            }, {
-                name: "Fermentado",
+                name: "Fermentado convencional",
                 y: {{value.3}},
             }, {
                 name: "Orgánico",
@@ -182,7 +204,7 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Producción de Cacao'
+                text: 'Producción de cacao'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -203,15 +225,24 @@ $(function () {
                 }
                
             },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 30,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
                 data: [
                 {
-                    name: "Seco",
+                    name: "Seco sin fermentar",
                     y: {{value.5}}
                 },  {
-                    name: "Fermentado",
+                    name: "Fermentado convencional",
                     y: {{value.6}}
                 }, {
                     name: "Orgánico",
@@ -257,6 +288,15 @@ $(function () {
                 }
                
             },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 30,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -273,19 +313,23 @@ $(function () {
         });
     });
 });
+
+
 $(function () {
     $('#venta{{year}}').highcharts({
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Auto-consumo vs Venta en Toneladas'
-        },
-        xAxis: {
-            categories: ['Auto-consumo', 'Venta']
+            text: 'Auto-consumo vs Venta de cacao'
         },
         credits: {
             enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'Toneladas'
+            }
         },
         plotOptions: {
             series: {
@@ -300,13 +344,15 @@ $(function () {
                 }
             }
         },
+
         series: [
-        {% for x,y in value.11.items %}
           {
-            name: '{{x}}',
-            data: [{{y.0|floatformat:3}},{{y.1|floatformat:3}}]
+            name: 'Auto-consumo',
+            data: [{{value.11|floatformat:3}}]
+        }, {
+            name: 'Ventas',
+            data: [{{value.12|floatformat:3}}]
         },
-        {% endfor %}
          
         ]
     });
@@ -350,7 +396,7 @@ $(function () {
                 name: "Procentajes",
                 colorByPoint: true,
                 data: [
-                {% for x,y in value.13.items %}
+                {% for x,y in value.14.items %}
                   {
                     name: "{{x}}",
                     y: {{y}}
@@ -401,7 +447,7 @@ $(function () {
                 name: "Procentajes",
                 colorByPoint: true,
                 data: [
-                {% for x,y in value.14.items %}
+                {% for x,y in value.15.items %}
                   {
                     name: "{{x}}",
                     y: {{y}}
@@ -554,13 +600,16 @@ $(function () {
             <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
         </div>
         <div class="col-md-12 col-lg-6 grafico3">
-            <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+            <div id="" style="min-width: 310px; width: 540px"></div>
         </div>
         
     </div>
 
     <div class="row fila5">
-        <div class="col-md-12 col-lg-6 grafico1">
+     <div class="col-md-12 col-lg-6 grafico1">
+            <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+        </div>
+        <div class="col-md-12 col-lg-6 grafico3">
             <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
         </div>
         
