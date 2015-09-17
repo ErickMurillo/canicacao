@@ -1,39 +1,38 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
-    <script type="text/javascript" src="/static/js/infobox.js"></script>
-    <script src="/static/js/markerwithlabel.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" src="/static/js/markerclusterer.js"></script>
+<script type="text/javascript" src="/static/js/infobox.js"></script>
+<script src="/static/js/markerwithlabel.js"></script>
 
 <script type="text/javascript">
 
-    $(document).ready(function() {       
-        $('li.item-consulta').addClass('active');
-    })
-
-    function initialize() {
+    {% for year,value in anno.items %}
+    var map_{{year}};
+    {% endfor %}
 
     var latlng = new google.maps.LatLng(13,-85);
 
-    var myOptions = {
-        zoom: 7,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        panControl: false,
-        zoomControl: false,
-        scaleControl: false,
-    };
-      var image = new google.maps.MarkerImage('/static/img/m2.png');
+    function initialize() {
+        var myOptions = {
+            zoom: 7,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            panControl: false,
+            zoomControl: false,
+            scaleControl: false,
+        };
+        var image = new google.maps.MarkerImage('/static/img/m2.png');
 
-      {% for year,value in anno.items %}
+        {% for year,value in anno.items %}
 
-        var map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
+        map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
         {% for x,y in value.13.items %}
-           var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
-           position: new google.maps.LatLng({{y.0}}, {{y.1}}),
-           map: map_{{year}},
+        var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
+         position: new google.maps.LatLng({{y.0}}, {{y.1}}),
+         map: map_{{year}},
            //draggable: true,
            raiseOnDrag: true,
            labelContent: "{{y.2|floatformat:2}}",
@@ -41,23 +40,36 @@
            labelClass: "labels", // the CSS class for the label
            labelInBackground: false,
            icon: image,
-         });
+       });
         {% endfor %}
 
         {% endfor %}
-    
-  }
-initialize();
-  
-google.maps.event.addDomListener(window, "click", initialize);
+
+    }
+
+    $(document).ready(function() {       
+        $('li.item-consulta').addClass('active');
+        initialize();
+        $('.active').click(function() {
+           {% for year,value in anno.items %}
+           google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
+           map_{{year}}.setCenter(latlng);
+           {% endfor %}
+       });
+    });
+</script>
+
+<script>
+
+$( ".nav" ).tabs({ event: "click"})
 </script>
 
 
 {% for year,value in anno.items %}
 <script>
-$(function () {
+    $(function () {
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
         // Build the chart
         $('#hectarea{{year}}').highcharts({
@@ -74,18 +86,18 @@ $(function () {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
             plotOptions: {
-            column: {
-                stacking: 'normal',
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                    style: {
-                        textShadow: '0 0 3px black'
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                        style: {
+                            textShadow: '0 0 3px black'
+                        }
                     }
                 }
-            }
-        },
+            },
             plotOptions: {
                 pie: {
                     stacking: 'normal',
@@ -101,23 +113,23 @@ $(function () {
                     },
                     showInLegend: true
                 }
-               
+
             },
             legend: {
-            layout: 'vertical',
-            align: 'right',
-            x: 0,
-            verticalAlign: 'top',
-            y: 30,
-            floating: true,
-            backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-        },
+                layout: 'vertical',
+                align: 'right',
+                x: 0,
+                verticalAlign: 'top',
+                y: 30,
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+            },
             series: [{
                 name: "Porcentajes",
                 colorByPoint: true,
                 data: [
                 {% for x,y in value.0.items %}
-                    {
+                {
                     name: "{{x}}",
                     y: {{y}}
                 },
@@ -127,7 +139,7 @@ $(function () {
                 ]
             }]
         });
-    });
+});
 });
 
 
@@ -137,7 +149,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Rendimiento cacao (Kg/Ha)'
+            text: 'Rendimientos (kg/ha)'
         },
         
         xAxis: {
@@ -172,7 +184,7 @@ $(function () {
         },
 
         series: [{
-            name: "Rendimiento",
+            name: "Rendimientos",
             colorByPoint: true,
             data: [
             // {
@@ -183,7 +195,7 @@ $(function () {
                 name: "Fermentado convencional",
                 y: {{value.3}},
             }, {
-                name: "Orgánico",
+                name: "Fermentado Orgánico",
                 y: {{value.4}},
             }
             ]
@@ -214,16 +226,16 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
             legend: {
                 layout: 'vertical',
@@ -251,7 +263,7 @@ $(function () {
                 ]
             }]
         });
-    });
+});
 });
 
 $(function () {
@@ -277,16 +289,16 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
             legend: {
                 layout: 'vertical',
@@ -311,7 +323,7 @@ $(function () {
                 ]
             }]
         });
-    });
+});
 });
 
 
@@ -346,17 +358,17 @@ $(function () {
         },
 
         series: [
-          {
+        {
             name: 'Auto-consumo',
             data: [{{value.11|floatformat:3}}]
         }, {
             name: 'Ventas',
             data: [{{value.12|floatformat:3}}]
         },
-         
+
         ]
     });
-  });
+});
 
 $(function () {
 
@@ -381,23 +393,23 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
                 data: [
                 {% for x,y in value.14.items %}
-                  {
+                {
                     name: "{{x}}",
                     y: {{y}}
                 }, 
@@ -406,7 +418,7 @@ $(function () {
                 ]
             }]
         });
-    });
+});
 });  
 
 $(function () {
@@ -432,23 +444,23 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
                 data: [
                 {% for x,y in value.15.items %}
-                  {
+                {
                     name: "{{x}}",
                     y: {{y}}
                 }, 
@@ -457,14 +469,14 @@ $(function () {
                 ]
             }]
         });
-    });
+});
 });  
-    </script>
+</script>
 {% endfor %}
 {% endblock extra_js %}
 
 {% block tablero %}
-    {% include "monitoreo/datostablero.html" %}
+{% include "monitoreo/datostablero.html" %}
 {% endblock tablero %}
 
 {% block content %}
@@ -472,31 +484,31 @@ $(function () {
   .map{
     margin-bottom: 10px;
     margin-top: 10px;
-  }
+}
 
-  .labels {
-     color: white;
-     background-color: #ff2b00;
-     font-family: "Roboto", sans-serif;
-     font-size: 14px;
-     text-align: center;
-     width: auto;
-     white-space: nowrap;
-     margin-left: -15px !important;
-     margin-top: -39px !important;
-     padding: 2px;
-     border-radius: 15px
-   }
-   .nav-tabs>li.active {
+.labels {
+   color: white;
+   background-color: #ff2b00;
+   font-family: "Roboto", sans-serif;
+   font-size: 14px;
+   text-align: center;
+   width: auto;
+   white-space: nowrap;
+   margin-left: -15px !important;
+   margin-top: -39px !important;
+   padding: 2px;
+   border-radius: 15px
+}
+.nav-tabs>li.active {
     width: 22% !important;
-  }
-  .nav-tabs>li {
+}
+.nav-tabs>li {
     width: 20% !important;
-  }
-  table{
+}
+table{
     margin-top: 60px;
     margin-bottom: 40px;
-  }
+}
 </style>
 <div class="row">
     {% include "monitoreo/filtros.html" %}
@@ -506,86 +518,86 @@ $(function () {
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio">Tablero de indicadores</h4>  
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
           <table class="table table-condensed">
-          <caption>Conversiones</caption>
+              <caption>Conversiones</caption>
               <tr>
                   <th>1 quintal equivale a 0.1 toneladas</th>
               </tr>
               <tr>
                   <th>1 manzana equivale a 0.7050 hectáreas</th> 
               </tr>
-            </table>
+          </table>
 
-        </div>
-    </div>
+      </div>
+  </div>
 </div>
 
 
 <div>
-    
+
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-  
+
     {% for year in anno.keys %}
-         <li role="presentation" {% if forloop.counter == 1 %}class="active"{% endif %} id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+    <li role="presentation" class="{% if forloop.counter == 1 %}active{% endif %}" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab" class="update">{{year}}</a></li>
     {% endfor %}
-  </ul>
+</ul>
 
-  <!-- Tab panes -->
-  <div class="tab-content">
-  
+<!-- Tab panes -->
+<div class="tab-content">
+
     {% for year,value in anno.items %}
-      <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
-    <div class="contenido-graficos">
+    <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+        <div class="contenido-graficos">
 
-    <div class="row fila1">
-        <div class="col-md-12 col-lg-6 grafico1">
-            <div id="hectarea{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        <div class="col-md-12 col-lg-6 grafico3">
-            <div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px"></div>
-        </div>
-    </div>
+            <div class="row fila1">
+                <div class="col-md-12 col-lg-6 grafico1">
+                    <div id="hectarea{{year}}" style="min-width: 310px; width: 540px"></div>
+                </div>
+                <div class="col-md-12 col-lg-6 grafico3">
+                    <div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px"></div>
+                </div>
+            </div>
 
-        <!--fila 2-->
-    <div class="row fila2">
-        
-          <div class="col-md-12 col-lg-6 grafico1">
-          <h4 align="center">Producción de Cacao en Toneladas por Departamento</h4>
-            <div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:380px"></div>
-          </div>
+            <!--fila 2-->
+            <div class="row fila2">
+
+              <div class="col-md-12 col-lg-6 grafico1">
+                  <h4 align="center">Producción de Cacao en Toneladas por Departamento</h4>
+                  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:380px"></div>
+              </div>
 
 
-        <div class="col-md-12 col-lg-6 indicadores-t2">
-           <div class="promedio-cacao">
-               <div class="row">
-                   <div class="col-md-8 col-lg-8 texto-indicador">
-                       <h1>{{value.1|floatformat:2}} </h1>
-                       <h2>Producción total en Toneladas</h2>
-                   </div>
-                   <div class="col-md-4 col-lg-4">
-                       <img src="/static/img/arbol-01.png" alt="">
-                   </div>
-               </div>
-           </div>
-           <div class="promedio-cultivo">
-                <div class="row">
-                   <div class="col-md-8 col-lg-8 texto-indicador">
-                       <h1>{{value.8|floatformat:2}} ha</h1>
-                       <h2>Promedio áreas de Cacao por Productor</h2>
-                   </div>
-                   <div class="col-md-4 col-lg-4">
-                       <img src="/static/img/arbolito-01.png" alt="">
-                   </div>
-               </div>
-           </div>
-        </div>
-    </div>
+              <div class="col-md-12 col-lg-6 indicadores-t2">
+                 <div class="promedio-cacao">
+                     <div class="row">
+                         <div class="col-md-8 col-lg-8 texto-indicador">
+                             <h1>{{value.1|floatformat:2}} </h1>
+                             <h2>Producción total en Toneladas</h2>
+                         </div>
+                         <div class="col-md-4 col-lg-4">
+                             <img src="/static/img/arbol-01.png" alt="">
+                         </div>
+                     </div>
+                 </div>
+                 <div class="promedio-cultivo">
+                    <div class="row">
+                     <div class="col-md-8 col-lg-8 texto-indicador">
+                         <h1>{{value.8|floatformat:2}} ha</h1>
+                         <h2>Promedio áreas de Cacao por Productor</h2>
+                     </div>
+                     <div class="col-md-4 col-lg-4">
+                         <img src="/static/img/arbolito-01.png" alt="">
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
 
-    <!--fila 3-->
-    <div class="row fila3">
+     <!--fila 3-->
+     <div class="row fila3">
         <div class="col-md-12 col-lg-6 grafico1">
             <div id="tipo{{year}}" style="min-width: 310px; width: 540px"></div>
         </div>
@@ -606,20 +618,20 @@ $(function () {
     </div>
 
     <div class="row fila5">
-     <div class="col-md-12 col-lg-6 grafico1">
-            <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        <div class="col-md-12 col-lg-6 grafico3">
-            <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        
+       <div class="col-md-12 col-lg-6 grafico1">
+        <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
     </div>
+    <div class="col-md-12 col-lg-6 grafico3">
+        <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
+    </div>
+
 </div>
-    </div>
-  {% endfor %}
+</div>
+</div>
+{% endfor %}
 
 
-  </div>
+</div>
 
 </div>
 
@@ -628,7 +640,7 @@ $(function () {
 
 <!--{% for year,value in anno.items %}
   <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
-{% endfor %}-->
+  {% endfor %}-->
 
 <!--<div class="col-lg-3">
             <a class="btn" href="">Miembros del hogar</a>
@@ -674,5 +686,5 @@ $(function () {
 		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
         <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
 	</div>
-	-->
+-->
 {% endblock content %}
