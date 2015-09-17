@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
+
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
 <script type="text/javascript" src="/static/js/infobox.js"></script>
@@ -50,18 +51,16 @@
     $(document).ready(function() {       
         $('li.item-consulta').addClass('active');
         initialize();
-        $('.active').click(function() {
+        $(window).click(function() {
            {% for year,value in anno.items %}
            google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
            map_{{year}}.setCenter(latlng);
            {% endfor %}
        });
+
     });
-</script>
 
-<script>
-
-$( ".nav" ).tabs({ event: "click"})
+   
 </script>
 
 
@@ -535,7 +534,7 @@ table{
 </div>
 
 
-<div>
+<div id="tabs">
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
