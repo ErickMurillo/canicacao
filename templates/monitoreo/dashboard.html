@@ -48,18 +48,13 @@
 
     }
 
-    $(document).ready(function() {       
-        $('li.item-consulta').addClass('active');
-        initialize();
-        $(window).click(function() {
-           {% for year,value in anno.items %}
+    initialize();
+    $('.update').on('shown.bs.tab', function(e) {
+        {% for year,value in anno.items %}
            google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
            map_{{year}}.setCenter(latlng);
-           {% endfor %}
-       });
-
+       {% endfor %}
     });
-
    
 </script>
 
