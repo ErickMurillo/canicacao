@@ -3,6 +3,62 @@
 {% block extra_js %}
 <script type="text/javascript">
 $(function () {
+    $('#certificados').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Número de productores certificados'
+        },
+        
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+        },
+
+        series: [{
+            name: "Frecuencia",
+            colorByPoint: true,
+            data: [
+            {
+                name: "Certificado",
+                y: {{certificados}},
+            }, {
+                name: "No certificado",
+                y: {{no_certificados}},
+            }
+            ]
+        }],
+    });
+});
+
+$(function () {
 
     $(document).ready(function () {
 
@@ -15,7 +71,7 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Tipos de certificaciones'
+                text: 'Tipos de certificación'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -36,6 +92,12 @@ $(function () {
                 }
                
             },
+            // legend: {
+            //     layout: 'vertical',
+            //     align: 'right',
+            //     verticalAlign: 'middle',
+            //     borderWidth: 0
+            // },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -65,6 +127,11 @@ $(function () {
 {% block content %}
 
 {% include "monitoreo/filtros.html" %}
+<style>
+    .space{
+        margin-bottom: 3em;
+    }
+</style>
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -79,7 +146,10 @@ $(function () {
 </div>
 
 <div class="row">
-    <div class="col-md-12 col-lg-12">
+    <div class="col-md-12 col-lg-12 space">
+        <div id="certificados" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-12 col-lg-12 space">
         <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>

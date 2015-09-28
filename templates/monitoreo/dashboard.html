@@ -30,7 +30,7 @@
 
         map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
 
-        {% for x,y in value.13.items %}
+        {% for x,y in value.14.items %}
         var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
          position: new google.maps.LatLng({{y.0}}, {{y.1}}),
          map: map_{{year}},
@@ -74,27 +74,13 @@
                 type: 'pie'
             },
             title: {
-                text: 'Porcentaje de las áreas de cacao por edades'
+                text: 'Porcentaje de áreas de cacao por edad de plantación'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
             },
             plotOptions: {
-                column: {
-                    stacking: 'normal',
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.2f}',
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-                        style: {
-                            textShadow: '0 0 3px black'
-                        }
-                    }
-                }
-            },
-            plotOptions: {
                 pie: {
-                    stacking: 'normal',
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
@@ -108,15 +94,6 @@
                     showInLegend: true
                 }
 
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                x: 0,
-                verticalAlign: 'top',
-                y: 30,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
             },
             series: [{
                 name: "Porcentajes",
@@ -143,7 +120,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Rendimientos (kg/ha)'
+            text: 'Rendimiento expresado en kg por hectárea (Kg/ha)'
         },
         
         xAxis: {
@@ -231,15 +208,7 @@ $(function () {
                 }
 
             },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                x: 0,
-                verticalAlign: 'top',
-                y: 30,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-            },
+           
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -251,7 +220,7 @@ $(function () {
                     name: "Fermentado convencional",
                     y: {{value.6}}
                 }, {
-                    name: "Orgánico",
+                    name: "Fermentado orgánico",
                     y: {{value.7}}
                 }
                 ]
@@ -294,15 +263,7 @@ $(function () {
                 }
 
             },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                x: 0,
-                verticalAlign: 'top',
-                y: 30,
-                floating: true,
-                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
-            },
+            
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -337,6 +298,7 @@ $(function () {
                 text: 'Toneladas'
             }
         },
+
         plotOptions: {
             series: {
                 borderWidth: 0,
@@ -350,7 +312,10 @@ $(function () {
                 }
             }
         },
-
+         tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+        },
         series: [
         {
             name: 'Auto-consumo',
@@ -361,6 +326,54 @@ $(function () {
         },
 
         ]
+
+    });
+});
+
+$(function () {
+    $('#venta_cacao{{year}}').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Venta por calidad de cacao en Tn'
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'Toneladas'
+            }
+        },
+
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+         tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+        },
+        series: [
+        {% for key,values in value.13.items %}
+            {
+            name: '{{key}}',
+            data: [{{values|floatformat:2}}]
+        }, 
+        {% endfor %}
+        
+        ]
+
     });
 });
 
@@ -377,10 +390,10 @@ $(function () {
                 type: 'pie'
             },
             title: {
-                text: 'Destino de la Producción'
+                text: '¿A quién (es) venden los productores su producción de cacao?'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
             },
             plotOptions: {
                 pie: {
@@ -399,10 +412,10 @@ $(function () {
 
             },
             series: [{
-                name: "Procentajes",
+                name: "Procentaje",
                 colorByPoint: true,
                 data: [
-                {% for x,y in value.14.items %}
+                {% for x,y in value.15.items %}
                 {
                     name: "{{x}}",
                     y: {{y}}
@@ -431,7 +444,7 @@ $(function () {
                 text: 'Mercado destino de la Producción'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
             },
             plotOptions: {
                 pie: {
@@ -450,10 +463,10 @@ $(function () {
 
             },
             series: [{
-                name: "Procentajes",
+                name: "Procentaje",
                 colorByPoint: true,
                 data: [
-                {% for x,y in value.15.items %}
+                {% for x,y in value.16.items %}
                 {
                     name: "{{x}}",
                     y: {{y}}
@@ -517,10 +530,16 @@ table{
           <table class="table table-condensed">
               <caption>Conversiones</caption>
               <tr>
-                  <th>1 quintal equivale a 0.1 toneladas</th>
+                  <th>1 tonelada = 1000 kg = 2,204.62 lb</th>
               </tr>
               <tr>
-                  <th>1 manzana equivale a 0.7050 hectáreas</th> 
+                  <th>1 libra = 0.453592 kg</th> 
+              </tr>
+              <tr>
+                  <th>1 qq = 100 lb = 45.35 kg</th> 
+              </tr>
+              <tr>
+                  <th>1 tonelada = 22.05 qq</th> 
               </tr>
           </table>
 
@@ -606,7 +625,7 @@ table{
             <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
         </div>
         <div class="col-md-12 col-lg-6 grafico3">
-            <div id="" style="min-width: 310px; width: 540px"></div>
+            <div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px"></div>
         </div>
         
     </div>

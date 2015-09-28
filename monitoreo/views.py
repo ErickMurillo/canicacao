@@ -123,6 +123,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
     #conversiones###############
     hectarea = 0.7050
     tonelada = 0.1
+    #1 libra = 0.00045359237 toneladas 
     libra_tonelada = 0.00045359237
     ############################
 
@@ -144,7 +145,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
     for year in request.session['anno']:
         familias_year = filtro.filter(anno=year).count()
         #areas de cacao por edad de plantacion -----------------------------------------------------------------
-        areas = {}
+        areas = collections.OrderedDict()
         area_total = filtro.filter(anno=year).aggregate(area_total=Sum('plantacion__area'))['area_total']
         try:
             ha_area_total = area_total * hectarea
@@ -279,9 +280,10 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             no_socio = (filtro.filter(anno=year,organizacion_asociada__socio='2').count() / float(familias_year)) * 100
         except:
             no_socio = 0
-        #auto-consumo vs venta
+
+        #auto-consumo vs venta -----------------------------------------------------------------------------------------
         PRODUCTO_CHOICES = (
-            #(3,'Cacao en baba'),
+            (3,'Cacao en baba'),
             (4,'Cacao rojo sin fermentar'),
             (5,'Cacao fermentado'),
             # (6,'Chocolate artesanal'),
@@ -290,27 +292,53 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             # (9,'Cajeta de cacao'),
             # (10,'Pasta de cacao'),
             )
-
-        comercializacion = {}
-
  
-        try:
-            auto_consumo = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
-                        'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
-        except:
-            auto_consumo = 0
+        
+        auto_consumo1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+                    'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
+        if auto_consumo1 == None:
+            auto_consumo1 = 0
 
-        try:
-            venta = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
-                        'comercializacion_cacao__venta'))['total']) * tonelada
-        except:
-            venta = 0
+        auto_consumo2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
+                    'comercializacion_cacao__auto_consumo'))['total'] ) * libra_tonelada
+        if auto_consumo2 == None:
+            auto_consumo2 = 0
+
+        auto_consumo = auto_consumo1 + auto_consumo2
+
+       
+        venta1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+                    'comercializacion_cacao__venta'))['total']) * tonelada
+        if venta1 == None:
+            venta1 = 0
+
+        venta2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
+                    'comercializacion_cacao__venta'))['total']) * libra_tonelada
+        if venta2 == None:
+            venta2 = 0
+
+        venta = venta1 + venta2
 
 
-        # comercializacion[obj[1]] = (auto_consumo,venta)
+        #Venta por calidad de cacao en Tn -----------------------------------------------------------------------------------
+        comercializacion = collections.OrderedDict()
+        for obj in PRODUCTO_CHOICES:
+            if obj[0] == 3:
+                try:
+                    total = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                                            'comercializacion_cacao__venta'))['total']) * libra_tonelada
+                except Exception, e:
+                    total = 0
+            else:
+                try:
+                    total = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
+                            'comercializacion_cacao__venta'))['total']) * tonelada
+                except Exception, e:
+                    total = 0
+            comercializacion[obj[1]] = total
 
         #destino de produccion
-        destino_dic = {}
+        destino_dic = collections.OrderedDict()
         lista = []
         for x in Comercializacion_Cacao.objects.filter(encuesta__anno=year):
             if x.quien_vende != None:
@@ -318,10 +346,17 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                     lista.append(int(y))
 
         list_count = len(lista)
-
+        r1 = lista.count(3)
+        r2 = lista.count(4)
+        suma = r1 + r2
         for obj in QUIEN_VENDE_CHOICES:
             p = lista.count(obj[0])
-            destino_dic[obj[1]] = saca_porcentajes(p, list_count, False)
+            if obj[0] == 3:
+                destino_dic["Otros"] = saca_porcentajes(suma, list_count, False)
+            elif obj[0] != 4 and obj[0] != 3:
+                destino_dic[obj[1]] = saca_porcentajes(p, list_count, False)
+        #print suma
+
 
         #destino de produccion de las organizaciones
         destino_org_dic = {}
@@ -341,7 +376,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
         anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
                         p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,auto_consumo,venta,
-                        prod_depto,destino_dic,destino_org_dic)
+                        comercializacion,prod_depto,destino_dic,destino_org_dic)
 
 
     return render(request, template, locals())
@@ -364,8 +399,11 @@ def educacion(request,template='monitoreo/educacion.html'):
     ##############################################################
 
     tabla_educacion = []
-    grafo = []
+    grafo_hombres = []
+    grafo_mujeres = []
     suma = 0
+    lista_hombres = [1,3,5,7,9]
+    lista_mujeres = [2,4,6,8]
     for e in RANGOS_CHOICE:
         objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
                 no_leer = Sum('educacion__no_lee_ni_escribe'),
@@ -380,7 +418,12 @@ def educacion(request,template='monitoreo/educacion.html'):
         except:
             pass
         variable = round(saca_porcentajes(suma,objeto['num_total']))
-        grafo.append([e[1],variable])
+
+        if e[0] in lista_hombres:
+            grafo_hombres.append([e[1],variable])
+        elif e[0] in lista_mujeres:
+            grafo_mujeres.append([e[1],variable])
+
         fila = [e[1], objeto['num_total'],
                 saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
                 saca_porcentajes(objeto['p_incompleta'], objeto['num_total'], False),
@@ -390,7 +433,6 @@ def educacion(request,template='monitoreo/educacion.html'):
                 saca_porcentajes(objeto['universitario'], objeto['num_total'], False),
                 saca_porcentajes(objeto['f_comunidad'], objeto['num_total'], False)]
         tabla_educacion.append(fila)
-    print grafo
 
     return render(request, template, locals())
 
@@ -1035,9 +1077,15 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
-    #caracteristicas del terrenos
+    #productores certificados y no certificados
+    certificados = Lista_Certificaciones.objects.exclude(nombre='Convencional').count()
+    no_certificados = Lista_Certificaciones.objects.filter(nombre='Convencional').count()
+
+    #No de productores con uno o más sellos
+
+    #tipo de certificacion
     tabla_certificacion = {}
-    for k in Lista_Certificaciones.objects.all():
+    for k in Lista_Certificaciones.objects.all().exclude(nombre='Convencional'):
         tipos = filtro.filter(certificacion__tipo = k).count()
 
         tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)

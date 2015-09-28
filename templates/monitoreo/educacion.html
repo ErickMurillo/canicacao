@@ -14,7 +14,7 @@
             type: 'column'
         },
         title: {
-            text: 'Nivel educativo según sexo y edad'
+            text: 'Nivel educativo por sexo y edad en unidades productivas cacaoteras'
         },
         yAxis: {
             title: {
@@ -53,7 +53,7 @@
             }
         },
         series: [
-                {% for value in grafo %}
+                {% for value in grafo_hombres %}
                 {
                     name: '{{value.0}}',
                     data: [{{value.1}}],
