@@ -267,6 +267,8 @@ class Uso_Tierra(models.Model):
 									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	huerto_mixto_cacao = models.FloatField(default='0',verbose_name='Huerto mixto con cacao',
 									validators = [MinValueValidator(0), MaxValueValidator(500)])
+	cafe = models.FloatField(default='0',verbose_name='Café',
+									validators = [MinValueValidator(0), MaxValueValidator(500)])
 	otros = models.FloatField(default='0',validators = [MinValueValidator(0), MaxValueValidator(500)])
 	encuesta = models.ForeignKey(Encuesta)
 
@@ -298,9 +300,9 @@ TEXTURA_CHOICES = (
 	(5,'Franco arenoso'),
 	)
 PENDIENTE_CHOICES = (
-	(1,'Plana'),
-	(2,'Inclinada'),
-	(3,'Muy inclinada'),
+	(1,'Plana (0-10%)'),
+	(2,'Inclinada (11-30%)'),
+	(3,'Muy inclinada (> 30%)'),
 	)
 
 HOJARASCA_CHOICES = (
@@ -310,15 +312,15 @@ HOJARASCA_CHOICES = (
 	)
 
 PROFUNDIDAD_CHOICES = (
-	(1,'Poco profundo'),
-	(2,'Medio profundo'),
-	(3,'Muy profundo'),
+	(1,'Poco profundo (< 50 cm)'),
+	(2,'Medio profundo (51-80 cm)'),
+	(3,'Muy profundo (> 80 cm)'),
 	)
 
 DRENAJE_CHOICES = (
-	(1,'Bueno'),
-	(2,'Regular'),
-	(3,'Malo'),
+	(1,'Bueno (no se encharca)'),
+	(2,'Regular (poco se encharca)'),
+	(3,'Malo (se encharca con lluvia o después de una lluvia)'),
 	)
 
 class Caracterizacion_Terreno(models.Model):

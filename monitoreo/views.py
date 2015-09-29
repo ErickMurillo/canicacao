@@ -327,13 +327,13 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                 try:
                     total = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
                                             'comercializacion_cacao__venta'))['total']) * libra_tonelada
-                except Exception, e:
+                except:
                     total = 0
             else:
                 try:
                     total = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
                             'comercializacion_cacao__venta'))['total']) * tonelada
-                except Exception, e:
+                except:
                     total = 0
             comercializacion[obj[1]] = total
 
@@ -399,11 +399,13 @@ def educacion(request,template='monitoreo/educacion.html'):
     ##############################################################
 
     tabla_educacion = []
+    grafo = []
     grafo_hombres = []
     grafo_mujeres = []
     suma = 0
     lista_hombres = [1,3,5,7,9]
     lista_mujeres = [2,4,6,8]
+
     for e in RANGOS_CHOICE:
         objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
                 no_leer = Sum('educacion__no_lee_ni_escribe'),
@@ -417,12 +419,19 @@ def educacion(request,template='monitoreo/educacion.html'):
             suma = int(objeto['p_completa'] or 0) + int(objeto['s_incompleta'] or 0) + int(objeto['bachiller'] or 0) + int(objeto['universitario'] or 0)
         except:
             pass
-        variable = round(saca_porcentajes(suma,objeto['num_total']))
+        variables = round(saca_porcentajes(suma,objeto['num_total']))
 
-        if e[0] in lista_hombres:
-            grafo_hombres.append([e[1],variable])
-        elif e[0] in lista_mujeres:
-            grafo_mujeres.append([e[1],variable])
+        # p_incompleta = round(saca_porcentajes(objeto['p_incompleta'],objeto['num_total']))
+        # p_completa = round(saca_porcentajes(objeto['p_completa'],objeto['num_total']))
+        # s_incompleta = round(saca_porcentajes(objeto['s_incompleta'],objeto['num_total']))
+        # bachiller = round(saca_porcentajes(objeto['bachiller'],objeto['num_total']))
+        # universitario = round(saca_porcentajes(objeto['universitario'],objeto['num_total']))
+
+        # if e[0] in lista_hombres:
+        #     grafo_hombres.append([e[1],p_incompleta,p_completa,s_incompleta,bachiller,universitario])
+        # elif e[0] in lista_mujeres:
+        #     grafo_mujeres.append([e[1],p_incompleta,p_completa,s_incompleta,bachiller,universitario])
+        grafo.append([e[1],variables])
 
         fila = [e[1], objeto['num_total'],
                 saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
@@ -461,9 +470,10 @@ def propiedad(request,template='monitoreo/propiedad.html'):
     no_dueno = saca_porcentajes(count_no,familias,False)
 
     dic2 = {}
-    for x in Situacion.objects.all():
+    for x in Situacion.objects.exclude(nombre='Sin documento'):
         objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
         dic2[x] = saca_porcentajes(objeto1,count_no,False)
+    print dic2
     
     dic = {}
     for e in PROPIEDAD_CHOICE:
@@ -474,7 +484,7 @@ def propiedad(request,template='monitoreo/propiedad.html'):
 
 def uso_tierra(request,template='monitoreo/uso_tierra.html'):
     filtro = _queryset_filtrado(request)
-
+    hectarea = 0.7050
     ##############################################################
     familias = filtro.count()
     try:
@@ -488,33 +498,39 @@ def uso_tierra(request,template='monitoreo/uso_tierra.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
     
-    total = filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']
+    total = (filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']) * hectarea
 
     #grafico numero de manzanas
-    bosque = filtro.aggregate(bosque=Sum('uso_tierra__bosque'))['bosque']
-    tacotal = filtro.aggregate(tacotal=Sum('uso_tierra__tacotal'))['tacotal']
-    cultivo_anual = filtro.aggregate(cultivo_anual=Sum('uso_tierra__cultivo_anual'))['cultivo_anual']
-    plantacion_forestal = filtro.aggregate(plantacion_forestal=Sum('uso_tierra__plantacion_forestal'))['plantacion_forestal']
-    area_pasto_abierto = filtro.aggregate(area_pasto_abierto=Sum('uso_tierra__area_pasto_abierto'))['area_pasto_abierto']
-    area_pasto_arboles = filtro.aggregate(area_pasto_arboles=Sum('uso_tierra__area_pasto_arboles'))['area_pasto_arboles']
-    cultivo_perenne = filtro.aggregate(cultivo_perenne=Sum('uso_tierra__cultivo_perenne'))['cultivo_perenne']
-    cultivo_semi_perenne = filtro.aggregate(cultivo_semi_perenne=Sum('uso_tierra__cultivo_semi_perenne'))['cultivo_semi_perenne']
-    cacao =  filtro.aggregate(cacao=Sum('uso_tierra__cacao'))['cacao']
-    huerto_mixto_cacao = filtro.aggregate(huerto_mixto_cacao=Sum('uso_tierra__huerto_mixto_cacao'))['huerto_mixto_cacao']
-    otros = filtro.aggregate(otros=Sum('uso_tierra__otros'))['otros']
+    bosque = (filtro.aggregate(bosque=Sum('uso_tierra__bosque'))['bosque']) * hectarea
+    tacotal = (filtro.aggregate(tacotal=Sum('uso_tierra__tacotal'))['tacotal']) * hectarea
+    cultivo_anual = (filtro.aggregate(cultivo_anual=Sum('uso_tierra__cultivo_anual'))['cultivo_anual']) * hectarea
+    plantacion_forestal = (filtro.aggregate(plantacion_forestal=Sum('uso_tierra__plantacion_forestal'))['plantacion_forestal']) * hectarea
+    area_pasto_abierto = (filtro.aggregate(area_pasto_abierto=Sum('uso_tierra__area_pasto_abierto'))['area_pasto_abierto']) * hectarea
+    area_pasto_arboles = (filtro.aggregate(area_pasto_arboles=Sum('uso_tierra__area_pasto_arboles'))['area_pasto_arboles']) * hectarea
+    cultivo_semi_perenne = (filtro.aggregate(cultivo_semi_perenne=Sum('uso_tierra__cultivo_semi_perenne'))['cultivo_semi_perenne']) * hectarea
+    cacao =  (filtro.aggregate(cacao=Sum('uso_tierra__cacao'))['cacao']) * hectarea
+    huerto_mixto_cacao = (filtro.aggregate(huerto_mixto_cacao=Sum('uso_tierra__huerto_mixto_cacao'))['huerto_mixto_cacao']) * hectarea
+    cafe = (filtro.aggregate(cafe=Sum('uso_tierra__cafe'))['cafe']) * hectarea
+
+    cultivo_perenne = (filtro.aggregate(cultivo_perenne=Sum('uso_tierra__cultivo_perenne'))['cultivo_perenne']) * hectarea
+    otros_sub = (filtro.aggregate(otros=Sum('uso_tierra__otros'))['otros']) * hectarea
+
+    otros = otros_sub + cultivo_perenne
 
     #tabla distribucion de la tierra
-    t_bosque = (bosque/total) * 100
-    t_tacotal = (tacotal/total) * 100
-    t_cultivo_anual = (cultivo_anual/total) * 100
-    t_plantacion_forestal = (plantacion_forestal/total) * 100
-    t_area_pasto_abierto = (area_pasto_abierto/total) * 100
-    t_area_pasto_arboles = (area_pasto_arboles/total) * 100
-    t_cultivo_perenne = (cultivo_perenne/total) * 100
-    t_cultivo_semi_perenne = (cultivo_semi_perenne/total) * 100
-    t_cacao = (cacao/total) * 100
-    t_huerto_mixto_cacao = (huerto_mixto_cacao/total) * 100
-    t_otros = (otros/total) * 100
+    t_bosque = saca_porcentajes(bosque,total,False)
+    t_tacotal = saca_porcentajes(tacotal,total,False)
+    t_cultivo_anual = saca_porcentajes(cultivo_anual,total,False)
+    t_plantacion_forestal = saca_porcentajes(plantacion_forestal,total,False)
+    t_area_pasto_abierto = saca_porcentajes(area_pasto_abierto,total,False)
+    t_area_pasto_arboles = saca_porcentajes(area_pasto_arboles,total,False)
+    t_cultivo_perenne = float(saca_porcentajes(cultivo_perenne,total,False))
+    t_cultivo_semi_perenne = saca_porcentajes(cultivo_semi_perenne,total,False)
+    t_cacao = saca_porcentajes(cacao,total,False)
+    t_huerto_mixto_cacao = saca_porcentajes(huerto_mixto_cacao,total,False)
+    t_cafe = saca_porcentajes(cafe,total,False)
+    t_otros_sub = float(saca_porcentajes(otros,total,False))
+    t_otros = t_cultivo_perenne + t_otros_sub
 
     return render(request, template, locals())
 
@@ -570,8 +586,8 @@ def riesgos(request,template='monitoreo/riesgos.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
-    riesgos = {}
-    riesgos_tabla = {}
+    riesgos = collections.OrderedDict()
+    riesgos_tabla = collections.OrderedDict()
     for obj in RIESGOS_CHOICES:
         sequia = filtro.filter(fenomenos_naturales__sequia=obj[0]).count()
         innundacion = filtro.filter(fenomenos_naturales__innundacion=obj[0]).count()
@@ -587,7 +603,8 @@ def riesgos(request,template='monitoreo/riesgos.html'):
 
         riesgos_tabla[obj[1]] = (sequia,innundacion,lluvia,viento,deslizamiento)
 
-    plantas = {}
+
+    plantas = collections.OrderedDict()
     for obj in P_IMPRODUCTIVAS_CHOICES:
         p_improduct = filtro.filter(razones_agricolas__plantas_improductivas=obj[0]).count()
         plantas[obj[1]] = saca_porcentajes(p_improduct,familias,False)
@@ -974,12 +991,26 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
 
     #caracteristicas del terrenos
     tabla_textura = {}
+    suma1 = filtro.filter(caracterizacion_terreno__textura_suelo=5).aggregate(
+                    textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
+    suma2 = filtro.filter(caracterizacion_terreno__textura_suelo=4).aggregate(
+                    textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
+    total = suma1 + suma2
+
     for k in TEXTURA_CHOICES:
         query = filtro.filter(caracterizacion_terreno__textura_suelo = k[0])
         frecuencia = query.count()
-        textura = filtro.filter(caracterizacion_terreno__textura_suelo=k[0]).aggregate(textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
-        por_textura = saca_porcentajes(textura, familias)
-        tabla_textura[k[1]] = {'textura':textura,'por_textura':por_textura}
+        if k[0] == 5:
+            textura = total
+            por_textura = saca_porcentajes(textura, familias)
+            tabla_textura['Franco'] = {'textura':textura,'por_textura':por_textura}
+
+        elif k[0] != 4 and k[0] != 5:
+            textura = filtro.filter(caracterizacion_terreno__textura_suelo=k[0]).aggregate(
+                        textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
+
+            por_textura = saca_porcentajes(textura, familias)
+            tabla_textura[k[1]] = {'textura':textura,'por_textura':por_textura}
 
     #pendientes
     tabla_pendiente = {}

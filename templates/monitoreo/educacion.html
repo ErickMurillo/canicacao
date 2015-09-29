@@ -16,12 +16,7 @@
         title: {
             text: 'Nivel educativo por sexo y edad en unidades productivas cacaoteras'
         },
-        yAxis: {
-            title: {
-                text: 'Valores'
-            }
 
-        },
         credits: {
             enabled: false
         },
@@ -53,7 +48,7 @@
             }
         },
         series: [
-                {% for value in grafo_hombres %}
+                {% for value in grafo %}
                 {
                     name: '{{value.0}}',
                     data: [{{value.1}}],
@@ -63,6 +58,52 @@
                 ]
     });
 });
+// $(function () {
+//     $('#container').highcharts({
+
+//                 chart: {
+//             type: 'column'
+//         },
+//         title: {
+//             text: 'Nivel educativo por sexo y edad en unidades productivas cacaoteras'
+//         },
+
+//         credits: {
+//             enabled: false
+//         },
+
+//         xAxis: {
+//             categories: ['Primaria incompleta','Primaria completa','Secundaria incompleta','Bachiller','Universitario']
+//         },
+//         plotOptions: {
+//             series: {
+//                 borderWidth: 0,
+//                 dataLabels: {
+//                     enabled: true,
+//                     format: '{point.y:.1f}%',
+//                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+//                     style: {
+//                         textShadow: '0 0 3px white'
+//                     }
+//                 }
+//             }
+//         },
+//         series: [
+//         {% for value in grafo_hombres %}
+//             {
+//                 name: '{{value.0}}',
+//                 data: [{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}}],    
+//             },
+//         {% endfor %}
+//         {% for value in grafo_mujeres %}
+//             {
+//                 name: '{{value.0}}',
+//                 data: [{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}}],      
+//             },
+//         {% endfor %}
+//         ]
+//     });
+// });
 </script>
 
 {% endblock extra_js %}
@@ -85,9 +126,11 @@
         </div>
     </div>
 </div>
-
+<div class="col-md-12">
+    
 	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
-
+    
+</div>
     <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
 	<div class="col-md-12" id="modalidad">
 		<table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">

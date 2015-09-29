@@ -13,7 +13,7 @@
             type: 'column'
         },
         title: {
-            text: 'Fenomenos naturales'
+            text: 'Efectos de fenómenos naturales'
         },
         xAxis: {
             categories: ['Sequia','Innundación','Lluvia','Viento','Desplazamiento']
@@ -114,7 +114,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Otras Razones Agricolas'
+            text: 'Problemas en el cultivos de cacao'
         },
         xAxis: {
             categories: ['Plagas y enfermedades','Quemas']
@@ -165,10 +165,10 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Razones de mercado'
+            text: 'Problemas en la comercialización'
         },
         xAxis: {
-            categories: ['Bajo precio','Falta de venta','Estafa de contrato','Calidad del producto']
+            categories: ['Bajo precio','Bajo volumen','Estafa','Mala calidad']
         },
         yAxis: {
             title: {
@@ -186,14 +186,13 @@ $(function () {
             enabled: false
         },
         plotOptions: {
-            column: {
-                stacking: 'normal',
-                dataLabels: {
+            column: { 
+                    dataLabels: {
                     enabled: true,
-                    format: '{point.y:.2f}',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    format: 'point.y:.2f',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
-                        textShadow: '0 0 3px black'
+                        textShadow: '0 0 3px white'
                     }
                 }
             }
@@ -216,10 +215,61 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Inversiones'
+            text: 'Porcentaje de productores que invierten o piensan invertir en sus plantaciones de cacao'
         },
         xAxis: {
-            categories: ['Invierte en cacao','Interés de invertir','Falta de crédito','Altos intereses','Robo de producto']
+            categories: ['Invierte en cacao','Interés de invertir']
+        },
+        //'Falta de crédito','Altos intereses','Robo de producto'
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        	{% for key,value in inversion.items %}
+        		{
+            		name: '{{key}}',
+            		data: [{{value.0}},{{value.1}}]
+        		},
+        	{% endfor %}
+        
+        ]
+    });
+});
+
+$(function () {
+    $('#inversion2').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Razones para no invertir'
+        },
+        xAxis: {
+            categories: ['Falta de crédito','Altos intereses','Robo de producto']
         },
         yAxis: {
             title: {
@@ -238,24 +288,23 @@ $(function () {
         },
         plotOptions: {
             column: {
-                stacking: 'normal',
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    format: '{point.y:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
-                        textShadow: '0 0 3px black'
+                        textShadow: '0 0 3px white'
                     }
                 }
             }
         },
         series: [
-        	{% for key,value in inversion.items %}
-        		{
-            		name: '{{key}}',
-            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
-        		},
-        	{% endfor %}
+            {% for key,value in inversion.items %}
+                {
+                    name: '{{key}}',
+                    data: [{{value.2}},{{value.3}},{{value.4}}]
+                },
+            {% endfor %}
         
         ]
     });
@@ -366,7 +415,6 @@ $(function () {
         </div>
         
         <div class="col-md-12 col-lg-12">
-        <h3 align="center">Razones Agricolas</h3>
             <div class="col-md-12 col-lg-6">
                 <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
             </div>
@@ -385,6 +433,9 @@ $(function () {
         </div>
         <div class="col-md-12 col-lg-12">
             <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+        </div>
+        <div class="col-md-12 col-lg-12">
+            <div id="inversion2" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
         </div>
     </div>   
     </div>

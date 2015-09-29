@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'smart_selects',
     'multiselectfield',
     'ckeditor',
+    #'import_export',
 )
 
 MIDDLEWARE_CLASSES = (
