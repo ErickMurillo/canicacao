@@ -15,7 +15,7 @@
             type: 'column'
         },
         title: {
-            text: 'Servicios que reciben los Productores'
+            text: 'Servicios que reciben productoras y productores de las organizaciones'
         },
         yAxis: {
             title: {
@@ -51,6 +51,19 @@
                         this.series.name +': '+ this.y;
                 }
             },
+            xAxis: {
+            categories: [
+                'Servicios',
+                
+            ],
+            crosshair: true
+        },
+            legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
         series: [
                 {% for key,value in servicio_dic.items %}
                 {
@@ -86,7 +99,13 @@
                     text: 'Frecuencia'
                 }
             },
-
+            xAxis: {
+            categories: [
+                'Beneficios',
+                
+            ],
+            crosshair: true
+        },
             tooltip: {
                 formatter: function() {
                     return ''+
@@ -105,6 +124,12 @@
                     }
                 }
             }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
         series: [
                 {% for key,value in beneficio_dic.items %}

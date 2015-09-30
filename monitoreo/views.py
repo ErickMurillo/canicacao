@@ -568,6 +568,38 @@ def produccion(request,template='monitoreo/produccion.html'):
         p2 = lista.count(mes[0])
         produccion[mes[1]] = p2
 
+    #tabla nueva-------------------------------------
+    EDAD_PLANTA_CHOICES = (
+        # (1,'Menor de un año'),
+        # (2,'De 1 a 3 años'),
+        (3,'De 4 a 10 años'),
+        (4,'De 10 a 20 años'),
+        (5,'Mayores de 20 años'),
+    )
+    edades = {}
+    hectarea = 0.7050
+    for obj in EDAD_PLANTA_CHOICES:
+        area_total = (filtro.filter(plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']) * hectarea
+        #----------------------------------------------------------------------------------------------------
+        numero_plantas = filtro.filter(plantacion__edad=obj[0]).aggregate(plantas =
+                                            Sum('plantacion__numero_plantas'))['plantas'] 
+        numero_plantas_ha = numero_plantas / area_total
+        #----------------------------------------------------------------------------------------------------
+        improductivas = filtro.filter(plantacion__edad=obj[0]).aggregate(improductivas =
+                                            Sum('plantacion__numero_p_improductivas'))['improductivas']
+        plant_improd = saca_porcentajes(improductivas,numero_plantas,False)
+        #----------------------------------------------------------------------------------------------------
+        semillas = filtro.filter(plantacion__edad=obj[0]).aggregate(semillas =
+                                            Sum('plantacion__numero_p_semilla'))['semillas']
+        plantas_semillas = saca_porcentajes(semillas,numero_plantas,False)
+        #----------------------------------------------------------------------------------------------------
+        injerto = filtro.filter(plantacion__edad=obj[0]).aggregate(injerto =
+                                            Sum('plantacion__numero_p_injerto'))['injerto']
+        plantas_injerto = saca_porcentajes(injerto,numero_plantas,False)
+        #----------------------------------------------------------------------------------------------------
+
+        edades[obj[1]] = (area_total, numero_plantas_ha, plant_improd, plantas_semillas, plantas_injerto)
+
     return render(request, template, locals())
 
 def riesgos(request,template='monitoreo/riesgos.html'):
@@ -664,7 +696,7 @@ def riesgos(request,template='monitoreo/riesgos.html'):
                                 saca_porcentajes(manejo_cultivo,familias,False),
                                 saca_porcentajes(manejo_recursos,familias,False),
                                 saca_porcentajes(almacenamiento_agua,familias,False),
-                                saca_porcentajes(distribucion_cacao,familias,False),
+                                # saca_porcentajes(distribucion_cacao,familias,False),
                                 saca_porcentajes(venta_cacao,familias,False),
                                 saca_porcentajes(d_tecnologia_secado,familias,False),
                             )
@@ -831,12 +863,12 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
     servicio_dic = {}
-    for obj in Tipos_Servicio.objects.all():
+    for obj in Tipos_Servicio.objects.exclude(servicio='Empleo'):
         servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
         servicio_dic[obj] = servicio
 
     beneficio_dic = {}
-    for x in Beneficios.objects.all():
+    for x in Beneficios.objects.exclude(id=6):
         beneficio = filtro.filter(organizacion_asociada__beneficios=x).count()
         beneficio_dic[x] = beneficio
 

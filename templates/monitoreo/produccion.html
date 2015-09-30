@@ -14,24 +14,25 @@
 				type: 'column'
 			},
 			title: {
-				text: 'Producción de Cacao (Toneladas)'
+				text: 'Producción de cacao'
 			},
 			yAxis: {
 				title: {
-					text: 'Valores'
+					text: 'Toneladas'
 				}
 			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: 'Valores'
-				}
-			},
+            xAxis: {
+            categories: [
+                'Toneladas',
+                
+            ],
+            crosshair: true
+        },
 
 			tooltip: {
 				formatter: function() {
 					return ''+
-					this.series.name +': '+ this.y;
+					this.series.name +': '+ this.y +' t';
 				}
 			},
 			plotOptions: {
@@ -48,9 +49,9 @@
             }
         },
 			series: [
-			{name: 'Seco', data: [{{seco|floatformat}}]},
-			{name: 'Fermentado', data: [{{fermentado|floatformat}}]},
-			{name: 'Organico', data: [{{organico|floatformat}}]},
+			{name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
+			{name: 'Fermentado convencional', data: [{{fermentado|floatformat}}]},
+			{name: 'Fermentado orgónico', data: [{{organico|floatformat}}]},
 			]
 		});
 	});
@@ -58,7 +59,7 @@
 $(function () {
     $('#container1').highcharts({
         title: {
-            text: 'Meses de mayor producción de Cacao',
+            text: 'Meses de mayor producción de cacao',
             x: -20 //center
         },
         
@@ -115,9 +116,62 @@ $(function () {
         </div>
     </div>
 </div>
+    
+    <div class="col-md-12">
+        <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+    <div class="col-md-12" id="modalidad">
+        <table id="example" class="table table-bordered table-hover" cellspacing="0" width="100%">
+                        <!--<caption>Educación</caption>-->
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>4-10</th>
+                                <th>10-20</th>
+                                <th>Mayor 20</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Área total en ha</td>
+                           {% for values in edades.values %}
+                               <td>{{values.0|floatformat:2}}</td>
+                           {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>No. de plantas por ha</td>
+                            {% for values in edades.values %}
+                               <td>{{values.1|floatformat:2}}</td>
+                           {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas improductivas</td>
+                            {% for values in edades.values %}
+                               <td>{{values.2|floatformat:2}}</td>
+                           {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas establecidas con semilla</td>
+                            {% for values in edades.values %}
+                               <td>{{values.3|floatformat:2}}</td>
+                           {% endfor %}
+                        </tr>
+                         <tr>
+                            <td>% de plantas establecidas por injerto</td>
+                            {% for values in edades.values %}
+                               <td>{{values.4|floatformat:2}}</td>
+                           {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+    </div>
+    </div>
 
-	<div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-	<br><br>
-	 <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div class="col-md-6">
+        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-6">
+         <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+	
 	{% include "monitoreo/indicadores.html" %}
 {% endblock content %}
