@@ -3,85 +3,46 @@
 {% block extra_js %}
 <script type="text/javascript">
 
-$(function () {
-
-    $(document).ready(function () {
-
-        // Build the chart
+   $(function () {
         $('#container0').highcharts({
             chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
+                type: 'column'
             },
             title: {
-                text: 'Viveros'
+                text: 'Técnicas aplicadas'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Técnicas',
+                    
+                ],
+                crosshair: true
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                        style: {
-                            textShadow: '0 0 3px white'
-                        }
-                    },
-                    showInLegend: true
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
                 }
-               
             },
-            series: [{
-                name: "Procentajes",
-                colorByPoint: true,
-                data: [
-                {% for k,v in viveros.items %}
-            {
-                name: "{{k}}",
-                y: {{v}} {% if forloop.counter == 1 %},
-                sliced: true,
-                selected: true
-                {% endif %}
-            },
-            {% endfor %}
-                
-                ]
-            }]
-        });
-    });
-}); 
-
-$(function () {
-    // Create the chart
-    $('#container1').highcharts({
-        chart: {
-            type: 'column'
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        title: {
-            text: 'Prácticas de fertilización'
-        },
-        // subtitle: {
-        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
-        // },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
-            title: {
-                text: 'Frecuencia'
-            }
-
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
@@ -94,103 +55,173 @@ $(function () {
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            //pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg por mz<br/>'
-        },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
-            {% for k,v in fertilizacion.items %}
-            {
-                name: "{{k}}",
-                y: {{v}},
-            },
+            series: [
+            {% for k,v in viveros.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
             ]
-        }],
+        });
     });
-});
 
+    $(function () {
+        $('#container1').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Tipos de fertilizantes usados'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
-$(function () {
-
-    $(document).ready(function () {
-
-        // Build the chart
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Tipos',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+            series: [
+            {% for k,v in fertilizacion.items %}
+                {name: '{{k}}', data: [{{v}}]},
+            {% endfor %}
+            ]
+        });
+    });
+    $(function () {
         $('#container2').highcharts({
             chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
+                type: 'column'
             },
             title: {
-                text: 'Prácticas de manejo fitosanitario'
+                text: 'Prácticas de manejo'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Prácticas',
+                    
+                ],
+                crosshair: true
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                        style: {
-                            textShadow: '0 0 3px white'
-                        }
-                    },
-                    showInLegend: true
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
                 }
-               
             },
-            series: [{
-            name: "Porcentaje",
-            colorByPoint: true,
-            data: [
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+            series: [
             {% for k,v in pract_manejo_fis.items %}
-            {
-                name: "{{k}}",
-                y: {{v}} {% if forloop.counter == 1 %},
-                sliced: true,
-                selected: true
-                {% endif %}
-            },
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
-             ]
-        }]
+            ]
         });
     });
-}); 
-$(function () {
-    // Create the chart
-    $('#container3').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Prácticas de manejo productivo'
-        },
 
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+   $(function () {
+        $('#container3').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Frecuencia'
-            }
+                text: 'Prácticas de manejo de tejido'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Prácticas',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
@@ -202,100 +233,56 @@ $(function () {
                     }
                 }
             }
-        },  
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
         },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
+            series: [
             {% for k,v in pract_manejo_prod.items %}
-            {
-                name: "{{k}}",
-                y: {{v}},
-            },
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
             ]
-        }],
+        });
     });
-});
 
-$(function () {
-    $('#container4').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Prácticas de mejoramiento de la plantación'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.1f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                        style: {
-                            textShadow: '0 0 3px white'
-                        }
-                    },
-                    showInLegend: true
-                }
-               
-            },
-        series: [{
-            name: "Porcentaje",
-            colorByPoint: true,
-            data: [
-            {% for k,v in pract_mejora_plat.items %}
-            {
-                name: "{{k}}",
-                y: {{v}} {% if forloop.counter == 1 %},
-                sliced: true,
-                selected: true
-                {% endif %}
-            },
-            {% endfor %}
-             ]
-        }]
-    });
-});
 
-$(function () {
-    // Create the chart
-    $('#container5').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Prácticas de manejo postcosecha y beneficiado'
-        },
-        // subtitle: {
-        //     text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
-        // },
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+  $(function () {
+        $('#container4').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Frecuencia'
-            }
+                text: 'Prácticas de mejoramiento productivo'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Prácticas',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
@@ -307,26 +294,74 @@ $(function () {
                     }
                 }
             }
-        }, 
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
         },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
-            {% for k,v in pract_manejo_post_c.items %}
-            {
-                name: "{{k}}",
-                y: {{v}},
-            },
+            series: [
+            {% for k,v in pract_mejora_plat.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
             ]
-        }],
+        });
     });
-});
+
+ $(function () {
+        $('#container5').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Prácticas de manejo post cosecha'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Prácticas',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+            series: [
+            {% for k,v in pract_manejo_post_c.items %}
+                {name: '{{k}}', data: [{{v}}]},
+            {% endfor %}
+            ]
+        });
+    });
 </script>
 {% endblock extra_js %}
 
@@ -351,37 +386,31 @@ $(function () {
 </div>
 
 <div class="row">
-    <div class="col-md-12 col-lg-12">
+    <div class="col-md-6 col-lg-6">
         <div id="container0" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
-<br>
-<div class="row">
-    <div class="col-md-12 col-lg-12">
+
+    <div class="col-md-6 col-lg-6">
         <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 <br>
 <div class="row">
-    <div class="col-md-12 col-lg-12">
+    <div class="col-md-6 col-lg-6">
         <div id="container2" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
-<br>
-<div class="row">
-    <div class="col-md-12 col-lg-12">
+
+    <div class="col-md-6 col-lg-6">
         <div id="container3" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 <br>
 <div class="row">
-    <div class="col-md-12 col-lg-12">
+    <div class="col-md-6 col-lg-6">
         <div id="container4" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
-<br>
-<div class="row">
-    <div class="col-md-12 col-lg-12">
+
+    <div class="col-md-6 col-lg-6">
         <div id="container5" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>

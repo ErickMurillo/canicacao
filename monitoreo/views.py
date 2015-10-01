@@ -704,7 +704,8 @@ def riesgos(request,template='monitoreo/riesgos.html'):
 
 def comercializacion(request,template='monitoreo/comercializacion.html'):
     filtro = _queryset_filtrado(request)
-
+    tonelada = 0.1
+    kg = 0.453592
     ##############################################################
     familias = filtro.count()
     try:
@@ -718,28 +719,62 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
+    PRODUCTO_CHOICES = (
+        (1,'Mazorca de cacao (unidad)'),
+        (2,'Semilla para siembra (unidad)'),
+        (3,'Cacao en baba (t)'),
+        (4,'Cacao rojo sin fermentar (t)'),
+        (5,'Cacao fermentado (kg)'),
+        (6,'Chocolate artesanal (kg)'),
+        (7,'Cacao en polvo (kg)'),
+        (8,'Cacao procesado/ pinolillo (kg)'),
+        (9,'Cajeta de cacao (kg)'),
+        (10,'Pasta de cacao (kg)'),
+        (11,'Vino de cacao (lt)'),
+    )
+
     tabla_productos = []
+    lista_toneladas = [3,4]
+    lista_kg = [5,6,7,8,9,10]
     for obj in PRODUCTO_CHOICES:
         producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
-                    auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
-                    venta=Avg('comercializacion_cacao__venta'),
-                    precio_venta=Avg('comercializacion_cacao__precio_venta'))
+                auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
+                venta=Avg('comercializacion_cacao__venta'),
+                precio_venta=Avg('comercializacion_cacao__precio_venta'))
+        
 
         #validacion y formato float
         if producto['auto_consumo'] != None:
-           auto_consumo = float("{0:.2f}".format(producto['auto_consumo']))
+            if obj[0] in lista_toneladas:
+                auto_consumo = (float(str(round(producto['auto_consumo'],2)))) * float(str(round(tonelada,2)))
+            elif obj[0] in lista_kg:
+                auto_consumo = (float(str(round(producto['auto_consumo'],2)))) * float(str(round(kg,2)))
+            else:
+                auto_consumo = float(str(round(producto['auto_consumo'],2)))
         else:
-            auto_consumo = 0
+            auto_consumo = 0.0
 
         if producto['venta'] != None:
-           venta = float("{0:.2f}".format(producto['venta']))
-        else:
-            venta = 0
+            if obj[0] in lista_toneladas:
+                venta = (float(str(round(producto['venta'],2)))) * float(str(round(tonelada,2)))
+            elif obj[0] in lista_kg:
+                venta = (float(str(round(producto['venta'],2)))) * float(str(round(kg,2)))
+            else:
+                venta = float(str(round(producto['venta'],2)))
 
-        if producto['precio_venta'] != None:
-           precio_venta = float("{0:.2f}".format(producto['precio_venta']))
         else:
-            precio_venta = 0
+            venta = 0.0
+
+        #1 tonelada = 10 quintales
+        if producto['precio_venta'] != None:
+            if obj[0] in lista_toneladas:
+                precio_venta = (float(str(round(producto['precio_venta'],2)))) * 10
+            elif obj[0] in lista_kg:
+                precio_venta = (float(str(round(producto['precio_venta'],2)))) * 2.2
+            else:
+                precio_venta = float(str(round(producto['precio_venta'],2)))
+        else:
+            precio_venta = 0.0
         #-----------------------------------------------------------
         fila = [obj[1],auto_consumo,venta,precio_venta]
 
@@ -897,8 +932,7 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
         for cap in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro,capacitaciones=obj[0]):
             for x in cap.opciones:
                 lista.append(int(x))
-
-        conteo = 0 
+                conteo = 0 
         for xz in OPCIONES_CAPACITACIONES_CHOICES: 
             p2 = lista.count(xz[0])
             conteo += p2
@@ -911,9 +945,11 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
         for x in obj.opciones:
             lista.append(int(x))
 
+    total = len(lista)
+
     for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
         p2 = lista.count(obj_1[0])
-        capacitaciones_2[obj_1[1]] = p2
+        capacitaciones_2[obj_1[1]] = saca_porcentajes(p2,total,False)
 
     #socioeconomicas------------------------------------------------------------------------------
     dic_socio = {}
@@ -1141,8 +1177,8 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     ##############################################################
 
     #productores certificados y no certificados
-    certificados = Lista_Certificaciones.objects.exclude(nombre='Convencional').count()
-    no_certificados = Lista_Certificaciones.objects.filter(nombre='Convencional').count()
+    certificados = filtro.filter(certificacion__cacao_certificado=1).count()
+    no_certificados = filtro.filter(certificacion__cacao_certificado=2).count()
 
     #No de productores con uno o más sellos
 
@@ -1152,6 +1188,7 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
         tipos = filtro.filter(certificacion__tipo = k).count()
 
         tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
+    print certificados
 
     return render(request, template, locals())
 
@@ -1172,72 +1209,126 @@ def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
     ##############################################################
 
     #VVEROS
-    viveros = {}
+    viveros = collections.OrderedDict()
     lista_viveros = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.viveros != None:
             for x in obj.viveros:
                 lista_viveros.append(int(x))
- 
+
+    VIVEROS_CHOICES = (
+        (4,'Selección de semilla'),
+        (5,'Siembra de semilla'),
+        (2,'Preparación del sustrato'),
+        (7,'Control de malas hierba'),
+        (8,'Fertilización orgánica'),
+        (6,'Uso de riego'),
+    )
+    print VIVEROS_CHOICES
     for op in VIVEROS_CHOICES:
         p2 = lista_viveros.count(op[0])
         viveros[op[1]] = p2
-    
+
     #FERTILIZACION_CHOICES
-    fertilizacion = {}
+    fertilizacion = collections.OrderedDict()
     lista_fertilizacion = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.fertilizacion != None :
             for x in obj.fertilizacion:
                 lista_fertilizacion.append(int(x))
 
+    FERTILIZACION_CHOICES = (
+        (7,'Urea'),
+        (6,'Lombrihumus'),
+        (5,'Triple cal'),
+        (4,'Abono foliar'),
+        (3,'Bocashi'),
+        (2,'Gallinaza'),
+        (1,'Estiércol'),
+        (8,'Fertilizante completo'),
+    )
+
     for op in FERTILIZACION_CHOICES:
         p2 = lista_fertilizacion.count(op[0])
         fertilizacion[op[1]] = p2
 
     #pract_manejo_fis
-    pract_manejo_fis = {}
+    pract_manejo_fis = collections.OrderedDict()
     lista_pract_manejo_fis = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.pract_manejo_fis != None:
             for x in obj.pract_manejo_fis:
                 lista_pract_manejo_fis.append(int(x))
 
+    P_MANEJO_FIS_CHOICES = (
+        (3,'Uso de productos naturales contra plagas'),
+        (5,'Fungicidas'),
+        (6,'Eliminación fruto enfermo'),
+        (1,'Control de malas hierbas con machete'),
+        (4,'Uso de productos naturales contra hongos'), 
+        (2,'Herbicidas'),
+    )
+
     for op in P_MANEJO_FIS_CHOICES:
         p2 = lista_pract_manejo_fis.count(op[0])
         pract_manejo_fis[op[1]] = p2
 
     #pract_manejo_prod
-    pract_manejo_prod = {}
+    pract_manejo_prod = collections.OrderedDict()
     lista_pract_manejo_prod = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.pract_manejo_prod != None:
             for x in obj.pract_manejo_prod:
                 lista_pract_manejo_prod.append(int(x))
 
+    P_MANEJO_PROD_CHOICES = (
+        (1,'Poda de formación'),
+        (2,'Poda de mantenimiento'),
+        (3,'Poda de renovación'),
+        (4,'Regulación de sombra'),
+    )
+
     for op in P_MANEJO_PROD_CHOICES:
         p2 = lista_pract_manejo_prod.count(op[0])
         pract_manejo_prod[op[1]] = p2
 
     #pract_mejora_plat
-    pract_mejora_plat = {}
+    pract_mejora_plat = collections.OrderedDict()
     lista_pract_mejora_plat = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.pract_mejora_plat != None:
             for x in obj.pract_mejora_plat:
                 lista_pract_mejora_plat.append(int(x))
 
+    P_MEJORA_PLANT_CHOICES = (
+        (2,'Injertación'),
+        (3,'Renovación con plantas injertas'),
+        (1,'Selección de árboles superiores'),
+        (4,'Enriquecimiento de áreas con plantas injertadas'),
+    )
+
     for op in P_MEJORA_PLANT_CHOICES:
         p2 = lista_pract_mejora_plat.count(op[0])
         pract_mejora_plat[op[1]] = p2
 
     #pract_manejo_post_c
-    pract_manejo_post_c = {}
+    pract_manejo_post_c = collections.OrderedDict()
     lista_pract_manejo_post_c = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
         if obj.pract_manejo_post_c != None:
             for x in obj.pract_manejo_post_c:
                 lista_pract_manejo_post_c.append(int(x))
+
+    P_MANEJO_POST_C_CHOICES = (
+        (8,'Lavado y secado'),
+        (7,'Secado'),
+        (1,'Selección por variedades'),
+        (6,'Venta en baba a centro de acopio'),
+        (2,'Selección de cacao en baba'),
+        (3,'Fermentación en sacos'),
+        (5,'Fermentación en cajillas'),
+        (4,'Fermentación en cajones'),  
+    )
 
     for op in P_MANEJO_POST_C_CHOICES:
         p2 = lista_pract_manejo_post_c.count(op[0])
