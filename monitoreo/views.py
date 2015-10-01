@@ -293,28 +293,30 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             # (10,'Pasta de cacao'),
             )
  
-        
-        auto_consumo1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+        try:
+            auto_consumo1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
                     'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
-        if auto_consumo1 == None:
+        except:
             auto_consumo1 = 0
 
-        auto_consumo2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
+        try:
+            auto_consumo2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
                     'comercializacion_cacao__auto_consumo'))['total'] ) * libra_tonelada
-        if auto_consumo2 == None:
+        except:
             auto_consumo2 = 0
 
         auto_consumo = auto_consumo1 + auto_consumo2
 
-       
-        venta1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
+        try:
+            venta1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
                     'comercializacion_cacao__venta'))['total']) * tonelada
-        if venta1 == None:
+        except:
             venta1 = 0
 
-        venta2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
+        try:
+            venta2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
                     'comercializacion_cacao__venta'))['total']) * libra_tonelada
-        if venta2 == None:
+        except:
             venta2 = 0
 
         venta = venta1 + venta2
