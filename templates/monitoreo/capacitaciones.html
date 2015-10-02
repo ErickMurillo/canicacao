@@ -7,117 +7,126 @@
         $('li.item-consulta').addClass('active');
     
     })
-
-$(function () {
-    // Create the chart
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Capacitaciones técnicas recibidas'
-        },
-
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Frecuencia'
-            }
+                text: '¿Quién recibe la capacitación técnica?'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Capacitaciones',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%';
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y} %'
+                    format: '{point.y} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-        },
-
-        series: [{
-            name: "Capacitaciones",
-            colorByPoint: true,
-            data: [
-
-            {% for key,value in capacitaciones_2.items %}
-                {
-                name: "{{key}}",
-                y: {{value}},
-            },
+            series: [
+            {% for k,v in capacitaciones_2.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
             ]
-        }],
-
+        });
     });
-});
 
 
-
-
-$(function () {
-    // Create the chart
-    $('#cap_socio').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Capacitaciones socioeconómicas recibidas'
-        },
-
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+    $(function () {
+        $('#cap_socio').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Frecuencia'
-            }
+                text: '¿Quién recibe la capacitación socio-económica?'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Capacitaciones',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%';
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}'
+                    format: '{point.y} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-        },
-
-        series: [{
-            name: "Capacitaciones",
-            colorByPoint: true,
-            data: [
-
-            {% for key,value in capacitaciones_socio.items %}
-                {
-                name: "{{key}}",
-                y: {{value}},
-            },
+            series: [
+            {% for k,v in capacitaciones_socio.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
             ]
-        }],
-
+        });
     });
-});
 	</script>
 {% endblock extra_js %}
 

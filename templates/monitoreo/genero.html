@@ -8,34 +8,51 @@
         $('li.item-consulta').addClass('active');
     
     })
-		$(function () {
-    // Create the chart
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Actividades en las que participa la mujer'
-        },
-       
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
+$(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Total'
-            }
+                text: 'Actividades en las que participa la mujer'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
 
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Actividades',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%' ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
+                    format: '{point.y:1f} %',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -43,27 +60,15 @@
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
-        },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
-            {% for key,value in genero.items %}
-            	{
-                name: "{{key}}",
-                y: {{value}},
-            	},
+            series: [
+            {% for k,v in genero.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
-            
             ]
-        }],
+        });
     });
-});
+
+
 $(function () {
 
     $(document).ready(function () {
@@ -113,34 +118,52 @@ $(function () {
         });
     });
 });
-    $(function () {
-    // Create the chart
-    $('#container3').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Toma de decisiones sobre destino de la producción'
-        },
-       
-        xAxis: {
-            type: 'category'
-        },
-        yAxis: {
-            title: {
-                text: 'Total'
-            }
 
+$(function () {
+        $('#container3').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Toma de decisión en la que participa la mujer'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentaje (%)'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Decisiones',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%' ;
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
+            plotOptions: {
             series: {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
+                    format: '{point.y:1f} %',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -148,27 +171,13 @@ $(function () {
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
-        },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
-            {% for key,value in decisiones.items %}
-                {
-                name: "{{key}}",
-                y: {{value}},
-                },
+            series: [
+            {% for k,v in decisiones.items %}
+                {name: '{{k}}', data: [{{v}}]},
             {% endfor %}
-            
             ]
-        }],
+        });
     });
-});
 
 $(function () {
 

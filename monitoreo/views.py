@@ -802,10 +802,13 @@ def genero(request,template='monitoreo/genero.html'):
     ##############################################################
 
     genero = {}
-    suma = 0
+    suma_total = 0
+    for obj in Actividades_Produccion.objects.all():
+        suma_total += filtro.filter(genero__actividades=obj).count()
+       
     for obj in Actividades_Produccion.objects.all():
         mujer = filtro.filter(genero__actividades=obj).count()
-        genero[obj] = mujer
+        genero[obj] = saca_porcentajes(mujer,suma_total,False)
 
     #recibe ingrsos x actividades
     count_genero = Genero.objects.filter(encuesta=filtro).count()
@@ -827,20 +830,23 @@ def genero(request,template='monitoreo/genero.html'):
     for obj in Genero.objects.filter(encuesta=filtro):
         if obj.decisiones != None:
             for x in obj.decisiones:
-                lista.append(int(x))
+                if x != '2':
+                    lista.append(int(x))
 
     DECISIONES_CHOICES = (
-	(1,'Siembra de cacao'),
-	(2,'Cosecha de cacao'),
-	(3,'Venta de cacao'),
-	(4,'Ingresos de cacao'),
+	(1,'Siembra'),
+	#(2,'Cosecha de cacao'),
+	(3,'Venta'),
+	(4,'Uso de ingresos'),
 	)
 
+    total_dec = len(lista)
     for dec in DECISIONES_CHOICES:
         p2 = lista.count(dec[0])
-        decisiones[dec[1]] = p2
+        decisiones[dec[1]] = saca_porcentajes(p2,total_dec,False)
 
     return render(request, template, locals())
+
 
 def reforestacion(request,template='monitoreo/reforestacion.html'):
     filtro = _queryset_filtrado(request)
@@ -978,9 +984,11 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             for x in obj_socio.opciones_socio:
                 lista_1.append(int(x))
 
+    total_1 = len(lista_1)
+
     for obj_1_socio in OPCIONES_CAPACITACIONES_CHOICES:
         p = lista_1.count(obj_1_socio[0])
-        capacitaciones_socio[obj_1_socio[1]] = p
+        capacitaciones_socio[obj_1_socio[1]] = saca_porcentajes(p,total_1,False)
 
     return render(request, template, locals())
 
