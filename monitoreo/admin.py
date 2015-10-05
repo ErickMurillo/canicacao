@@ -169,7 +169,6 @@ class Adicional_Inline(admin.TabularInline):
 	max_num = 1
 	can_delete = False
 
-
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:

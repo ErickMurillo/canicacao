@@ -14,7 +14,7 @@
             type: 'column'
         },
         title: {
-            text: 'Nivel educativo por sexo y edad en unidades productivas cacaoteras'
+            text: 'Nivel educativo de los hombres en unidades productivas cacaoteras'
         },
 
         credits: {
@@ -33,7 +33,19 @@
                         this.series.name +': '+ this.y +'%';
                 }
             },
-
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            'Hombres',
+            
+            ],
+            crosshair: true
+        },
         plotOptions: {
             series: {
                 borderWidth: 0,
@@ -48,7 +60,7 @@
             }
         },
         series: [
-                {% for value in grafo %}
+                {% for value in grafo_hombres %}
                 {
                     name: '{{value.0}}',
                     data: [{{value.1}}],
@@ -58,52 +70,69 @@
                 ]
     });
 });
-// $(function () {
-//     $('#container').highcharts({
 
-//                 chart: {
-//             type: 'column'
-//         },
-//         title: {
-//             text: 'Nivel educativo por sexo y edad en unidades productivas cacaoteras'
-//         },
+    $(function () {
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Nivel educativo de las mujeres en unidades productivas cacaoteras'
+        },
 
-//         credits: {
-//             enabled: false
-//         },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentajes (%)'
+                }
+            },
 
-//         xAxis: {
-//             categories: ['Primaria incompleta','Primaria completa','Secundaria incompleta','Bachiller','Universitario']
-//         },
-//         plotOptions: {
-//             series: {
-//                 borderWidth: 0,
-//                 dataLabels: {
-//                     enabled: true,
-//                     format: '{point.y:.1f}%',
-//                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-//                     style: {
-//                         textShadow: '0 0 3px white'
-//                     }
-//                 }
-//             }
-//         },
-//         series: [
-//         {% for value in grafo_hombres %}
-//             {
-//                 name: '{{value.0}}',
-//                 data: [{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}}],    
-//             },
-//         {% endfor %}
-//         {% for value in grafo_mujeres %}
-//             {
-//                 name: '{{value.0}}',
-//                 data: [{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}}],      
-//             },
-//         {% endfor %}
-//         ]
-//     });
-// });
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            'Mujeres',
+            
+            ],
+            crosshair: true
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+                {% for value in grafo_mujeres %}
+                {
+                    name: '{{value.0}}',
+                    data: [{{value.1}}],
+                   
+                },
+                {% endfor %}
+                ]
+    });
+});
 </script>
 
 {% endblock extra_js %}
@@ -127,9 +156,8 @@
     </div>
 </div>
 <div class="col-md-12">
-    
-	<div class="col-md-12" id="container" style="margin: 0 auto"></div>
-    
+	<div class="col-md-6" id="container" style="margin: 0 auto"></div>
+    <div class="col-md-6" id="container1" style="margin: 0 auto"></div>
 </div>
     <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
 	<div class="col-md-12" id="modalidad">

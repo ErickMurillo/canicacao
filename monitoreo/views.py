@@ -407,6 +407,17 @@ def educacion(request,template='monitoreo/educacion.html'):
     suma = 0
     lista_hombres = [1,3,5,7,9]
     lista_mujeres = [2,4,6,8]
+    RANGOS_CHOICE = (
+        (7,'Niños 0 a 12 años'),
+        (8,'Niñas 0 a 12 años'),
+        (5,'Hombre adoles. 13 a 18 años'),
+        (6,'Mujer adoles. 13 a 18 años'),
+        (3,'Hombre joven 19 a 30 años'),
+        (4,'Mujer joven 19 a 30 años'),
+        (1,'Hombres mayores 31 años'),
+        (2,'Mujeres mayores 31 años'),
+        (9,'Ancianos (> 64 años)'),
+        )
 
     for e in RANGOS_CHOICE:
         objeto = filtro.filter(educacion__rango = e[0]).aggregate(num_total = Sum('educacion__numero_total'),
@@ -423,17 +434,11 @@ def educacion(request,template='monitoreo/educacion.html'):
             pass
         variables = round(saca_porcentajes(suma,objeto['num_total']))
 
-        # p_incompleta = round(saca_porcentajes(objeto['p_incompleta'],objeto['num_total']))
-        # p_completa = round(saca_porcentajes(objeto['p_completa'],objeto['num_total']))
-        # s_incompleta = round(saca_porcentajes(objeto['s_incompleta'],objeto['num_total']))
-        # bachiller = round(saca_porcentajes(objeto['bachiller'],objeto['num_total']))
-        # universitario = round(saca_porcentajes(objeto['universitario'],objeto['num_total']))
-
-        # if e[0] in lista_hombres:
-        #     grafo_hombres.append([e[1],p_incompleta,p_completa,s_incompleta,bachiller,universitario])
-        # elif e[0] in lista_mujeres:
-        #     grafo_mujeres.append([e[1],p_incompleta,p_completa,s_incompleta,bachiller,universitario])
-        grafo.append([e[1],variables])
+        if e[0] in lista_hombres:
+            grafo_hombres.append([e[1],variables])
+        elif e[0] in lista_mujeres: 
+            grafo_mujeres.append([e[1],variables])
+        #grafo.append([e[1],variables])
 
         fila = [e[1], objeto['num_total'],
                 saca_porcentajes(objeto['no_leer'], objeto['num_total'], False),
@@ -810,7 +815,7 @@ def genero(request,template='monitoreo/genero.html'):
         mujer = filtro.filter(genero__actividades=obj).count()
         genero[obj] = saca_porcentajes(mujer,suma_total,False)
 
-    #recibe ingrsos x actividades
+    #recibe ingresos x actividades
     count_genero = Genero.objects.filter(encuesta=filtro).count()
     dic = {}
     for obj in SI_NO_CHOICES:
@@ -819,10 +824,16 @@ def genero(request,template='monitoreo/genero.html'):
 
     avg_ingresos = filtro.aggregate(avg=Avg('genero__ingreso_mesual'))['avg'] 
 
-    destino_dic = {}
+    agricola = {}
+    domestico = {}
     for x in Destino_Ingresos.objects.all():
-    	destino = filtro.filter(genero__destino_ingresos_2=x).count()
-    	destino_dic[x] = destino
+        if x.id in [1,2,4,6,5,7,8,9]:
+        	destino = filtro.filter(genero__destino_ingresos_2=x).count()
+        	domestico[x] = destino
+        else:
+            destino = filtro.filter(genero__destino_ingresos_2=x).count()
+            agricola[x] = destino
+
     	
     #---------------------------------------------------------------------
     decisiones = {}
