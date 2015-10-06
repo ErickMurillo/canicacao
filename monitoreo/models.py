@@ -320,7 +320,7 @@ PROFUNDIDAD_CHOICES = (
 DRENAJE_CHOICES = (
 	(1,'Bueno (no se encharca)'),
 	(2,'Regular (poco se encharca)'),
-	(3,'Malo (se encharca con lluvia o después de una lluvia)'),
+	(3,'Malo (se encharca con lluvia)'),
 	)
 
 class Caracterizacion_Terreno(models.Model):

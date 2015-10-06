@@ -1,61 +1,61 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script>
-        $(document).ready(function() {
-        
-        $('li.item-consulta').addClass('active');
-    
-    })
-		$(function () {
-    $('#grafico').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Efectos de fenómenos naturales'
-        },
-        xAxis: {
-            categories: ['Sequia','Innundación','Lluvia','Viento','Desplazamiento']
-        },
-        yAxis: {
-            title: {
-                text: 'Porcentajes(%)'
-            }
+<script>
+    $(document).ready(function() {
 
-        },
-        tooltip: {
+        $('li.item-consulta').addClass('active');
+
+    })
+    $(function () {
+        $('#grafico').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Efectos de fenómenos naturales'
+            },
+            xAxis: {
+                categories: ['Sequia','Innundación','Lluvia','Viento','Desplazamiento']
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes(%)'
+                }
+
+            },
+            tooltip: {
                 formatter: function() {
                     return ''+
-                        this.series.name +': '+ this.y +'%';
+                    this.series.name +': '+ this.y +'%';
                 }
             },
             plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.1f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                    style: {
-                        textShadow: '0 0 3px white'
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
                     }
                 }
-            }
-        },
-        credits: {
-            enabled: false
-        },
-        series: [
-        	{% for key,value in riesgos.items %}
-        		{
-            		name: '{{key}}',
-            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
-        		},
-        	{% endfor %}
-        
-        ]
-    });
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+            {% for key,value in riesgos.items %}
+            {
+              name: '{{key}}',
+              data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
+          },
+          {% endfor %}
+
+          ]
+      });
 });
 
 $(function () {
@@ -81,31 +81,31 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.1f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
             series: [{
                 name: "Porcentajes",
                 colorByPoint: true,
                 data: [
                 {% for key,value in plantas.items %}
-                	{
-	                    name: "{{key}}",
-	                    y: {{value}}
-                	},
-                {% endfor %}
-                ]
-            }]
-        });
-    });
+                {
+                   name: "{{key}}",
+                   y: {{value}}
+               },
+               {% endfor %}
+               ]
+           }]
+       });
+});
 });
 
 $(function () {
@@ -126,11 +126,11 @@ $(function () {
 
         },
         tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y +'%';
-                }
-            },
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
         credits: {
             enabled: false
         },
@@ -148,15 +148,15 @@ $(function () {
             }
         },
         series: [
-        	{% for key,value in plagas.items %}
-        		{
-            		name: '{{key}}',
-            		data: [{{value.0}},{{value.1}}]
-        		},
-        	{% endfor %}
-        
-        ]
-    });
+        {% for key,value in plagas.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}}]
+      },
+      {% endfor %}
+
+      ]
+  });
 });
 
 $(function () {
@@ -177,19 +177,19 @@ $(function () {
 
         },
         tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y +'%';
-                }
-            },
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
         credits: {
             enabled: false
         },
         plotOptions: {
             column: { 
-                    dataLabels: {
+                dataLabels: {
                     enabled: true,
-                    format: 'point.y:.2f',
+                    format: '{point.y:.2f} %',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -198,15 +198,15 @@ $(function () {
             }
         },
         series: [
-        	{% for key,value in mercados.items %}
-        		{
-            		name: '{{key}}',
-            		data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}}]
-        		},
-        	{% endfor %}
-        
-        ]
-    });
+        {% for key,value in mercados.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}}]
+      },
+      {% endfor %}
+
+      ]
+  });
 });
 
 $(function () {
@@ -228,11 +228,11 @@ $(function () {
 
         },
         tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y +'%';
-                }
-            },
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
         credits: {
             enabled: false
         },
@@ -249,15 +249,15 @@ $(function () {
             }
         },
         series: [
-        	{% for key,value in inversion.items %}
-        		{
-            		name: '{{key}}',
-            		data: [{{value.0}},{{value.1}}]
-        		},
-        	{% endfor %}
-        
-        ]
-    });
+        {% for key,value in inversion.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}}]
+      },
+      {% endfor %}
+
+      ]
+  });
 });
 
 $(function () {
@@ -278,11 +278,11 @@ $(function () {
 
         },
         tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y +'%';
-                }
-            },
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
         credits: {
             enabled: false
         },
@@ -299,12 +299,12 @@ $(function () {
             }
         },
         series: [
-            {% for key,value in inversion.items %}
-                {
-                    name: '{{key}}',
-                    data: [{{value.2}},{{value.3}},{{value.4}}]
-                },
-            {% endfor %}
+        {% for key,value in inversion.items %}
+        {
+            name: '{{key}}',
+            data: [{{value.2}},{{value.3}},{{value.4}}]
+        },
+        {% endfor %}
         
         ]
     });
@@ -313,137 +313,119 @@ $(function () {
 
 <script type="text/javascript">
     $(function () {
-    $('#mitigacion').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Mitigración de riesgos'
-        },
-        xAxis: {
-            categories: ['Monitoreo de plagas','Plan de manejo de cultivo','Recurso financiero','Obras de almacenamiento de agua', 'Contrato de venta', 'Infraestructura de secado y almacenamiento']
-        },
-        yAxis: {
+        $('#mitigacion').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Porcentajes(%)'
-            }
+                text: 'Mitigración de riesgos'
+            },
+            xAxis: {
+                categories: ['Monitoreo de plagas','Plan de manejo de cultivo','Recurso financiero','Obras de almacenamiento de agua', 'Contrato de venta', 'Infraestructura de secado y almacenamiento']
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes(%)'
+                }
 
-        },
-        tooltip: {
+            },
+            tooltip: {
                 formatter: function() {
                     return ''+
-                        this.series.name +': '+ this.y +'%';
+                    this.series.name +': '+ this.y +'%';
                 }
             },
-        credits: {
-            enabled: false
-        },
-        plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.1f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                    style: {
-                        textShadow: '0 0 3px white'
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
                     }
                 }
-            }
-        },
-        series: [
+            },
+            series: [
             {% for key,value in tabla_mitigacion.items %}
-                {
-                    name: '{{key}}',
-                    data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}},{{value.6}}]
-                },
+            {
+                name: '{{key}}',
+                data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}},{{value.6}}]
+            },
             {% endfor %}
 
-        ]
-    });
+            ]
+        });
 });
 </script>
 {% endblock extra_js %}
 
 {% block tablero %}
-    {% include "monitoreo/datostablero.html" %}
+{% include "monitoreo/datostablero.html" %}
 {% endblock tablero %}
 
 {% block content %}
-    
+
 <style>
     .nav-tabs>li {
         width: 30% !important
-    }
-
-    .div-graf{
-        width: 50% !important;
-        left: 0 !important;
-    }
-    hr{
-         border: 0;
-        height: 1px;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
     }
 </style>
 {% include "monitoreo/filtros.html" %}
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio">Indicador >> Riesgos en la finca</h4>  
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-        </div>
-    </div>
+      </div>
+  </div>
 </div>
 
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
     <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mitigación de Riesgos</a></li>
-  </ul>
-  <!-- Tab panes -->
-  <div class="tab-content">
+</ul>
+<!-- Tab panes -->
+<div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-    <div class="row">
-        <div class="col-md-12 col-lg-12">
-            <div id="grafico" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-            <hr>
-            <br>
-        </div>
-        
-        <div class="col-md-12 col-lg-12">
-            <div class="col-md-12 col-lg-6">
-                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
+        <div class="row">
+            <div class="col-md-12 col-lg-12">
+                <div id="grafico" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
             </div>
-            <div class="col-md-12 col-lg-6">
-                <div id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+            <div class="col-md-12 col-lg-12">
+                <div class="col-md-12 col-lg-6">
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <div id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
             </div>
             <div class="col-md-12 col-lg-12">
-                <hr>
-                <br>
+                <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
             </div>
-        </div>
-        <div class="col-md-12 col-lg-12">
-            <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-            <hr> 
-            <br>
-        </div>
-        <div class="col-md-12 col-lg-12">
-            <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
-        </div>
-        <div class="col-md-12 col-lg-12">
-            <div id="inversion2" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
-        </div>
-    </div>   
+            <div class="col-md-12 col-lg-6">
+                <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div id="inversion2" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
+            </div>
+        </div>   
     </div>
     <div role="tabpanel" class="tab-pane" id="profile">
         <div id="mitigacion" style="min-width: 310px; height: 400px; width: 900px; margin: 0 auto"></div>
     </div>
-  </div>
+</div>
 
 
-	{% include "monitoreo/indicadores.html" %}
+{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

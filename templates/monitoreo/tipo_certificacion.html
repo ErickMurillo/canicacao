@@ -10,51 +10,59 @@ $(function () {
         title: {
             text: 'Número de productores certificados'
         },
-        
-        xAxis: {
-            type: 'category'
-        },
         yAxis: {
             title: {
-                text: 'Frecuencia'
+                text: 'Valores'
             }
 
         },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Productores'
+            }
+        },
+        xAxis: {
+            categories: [
+            'Productores',
+
+            ],
+            crosshair: true
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y ;
+            }
+        },
         legend: {
-            enabled: false
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
         },
         plotOptions: {
-            column: {
-                stacking: 'normal',
+            series: {
+                borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    format: '{point.y:1f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
-                        textShadow: '0 0 3px black'
+                        textShadow: '0 0 3px white'
                     }
                 }
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
-        },
-
-        series: [{
-            name: "Frecuencia",
-            colorByPoint: true,
-            data: [
-            {
-                name: "Certificado",
-                y: {{certificados}},
-            }, {
-                name: "No certificado",
-                y: {{no_certificados}},
-            }
-            ]
-        }],
+        series: [
+        {
+            name: "Certificado",
+            data: [{{certificados}}],
+        }, {
+            name: "No certificado",
+            data: [{{no_certificados}}],
+        }
+        ]
     });
 });
 
@@ -81,23 +89,17 @@ $(function () {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                    enabled: true,
-                    format: '{point.percentage:.2f}%',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
                         }
                     },
                     showInLegend: true
                 }
-               
+
             },
-            // legend: {
-            //     layout: 'vertical',
-            //     align: 'right',
-            //     verticalAlign: 'middle',
-            //     borderWidth: 0
-            // },
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -110,18 +112,97 @@ $(function () {
                     selected: true
                     {% endif %}
                 },
-            {% endfor %}
+                {% endfor %}
                 
                 ]
             }]
         });
-    });
+});
 });  
+
+$(function () {
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Número de productores con uno o más sellos'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Productores'
+            }
+        },
+        xAxis: {
+            categories: [
+            'Productores',
+
+            ],
+            crosshair: true
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y ;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:1f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for list in lista  %}
+            {% for x in list %}
+                {% if forloop.counter == 1 %}
+                {
+                    name: "Con un sello",
+                    data: [{{x}}],
+                },
+                {% elif forloop.counter == 2 %}
+                {
+                    name: "Con dos sellos",
+                    data: [{{x}}],
+                },
+                {% else %}
+                {
+                    name: "Más de dos sellos",
+                    data: [{{x}}],
+                },
+                {% endif %}
+
+            {% endfor %}
+
+        {% endfor %}
+        ]
+    });
+});
 </script>
 {% endblock extra_js %}
 
 {% block tablero %}
-    {% include "monitoreo/datostablero.html" %}
+{% include "monitoreo/datostablero.html" %}
 {% endblock tablero %}
 
 {% block content %}
@@ -135,22 +216,28 @@ $(function () {
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio">Indicador >> Certificaciones</h4>
 
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-        </div>
+      </div>
+  </div>
+</div>
+
+<div class="row space">
+    <div class="col-md-6 col-lg-6">
+        <div id="certificados" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+    <div class="col-md-6 col-lg-6">
+        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-6 col-lg-6 space">
-        <div id="certificados" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-    <div class="col-md-6 col-lg-6 space">
-        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div class="col-md-6 col-lg-6">
+        <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 {% include "monitoreo/indicadores.html" %}

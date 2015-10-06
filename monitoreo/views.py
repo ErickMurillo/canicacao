@@ -1003,27 +1003,27 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
 
     return render(request, template, locals())
 
-def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html'):
+def capacitaciones_socio(request,template = 'monitoreo/capacitaciones_socio.html'):
     filtro = _queryset_filtrado(request)
 
     ##############################################################
     familias = filtro.count()
     try:
-        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
     except:
         hombres = 0
     try:
-        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
     except:
         mujeres = 0
-    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
     dic_socio = {}
     for obj in CAPACITACIONES_SOCIO_CHOICES:
         lista = []
         capacitaciones = {}
-        for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro,capacitaciones_socio=obj[0]):
+        for cap in Capacitaciones_Socioeconomicas.objects.filter(encuesta = filtro,capacitaciones_socio = obj[0]):
             if cap.opciones_socio != None:
                 for x in cap.opciones_socio:
                     lista.append(int(x))
@@ -1036,7 +1036,7 @@ def capacitaciones_socio(request,template='monitoreo/capacitaciones_socio.html')
 
     capacitaciones_socio = {}
     lista_1 = []
-    for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
+    for obj in Capacitaciones_Socioeconomicas.objects.filter(encuesta = filtro):
         if obj.opciones_socio != None:
             for x in obj.opciones_socio:
                 lista_1.append(int(x))
@@ -1058,31 +1058,31 @@ def obtener_lista(request):
             lista.append(dicc)
 
         serializado = simplejson.dumps(lista)
-        return HttpResponse(serializado, content_type='application/json')
+        return HttpResponse(serializado, content_type = 'application/json')
 
 
 #SALIDAS CARLOS
-def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.html'):
+def caracterizacion_terreno(request,template = 'monitoreo/caracterizacion_terreno.html'):
     filtro = _queryset_filtrado(request)
 
     ##############################################################
     familias = filtro.count()
     try:
-        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
     except:
         hombres = 0
     try:
-        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
     except:
         mujeres = 0
-    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
     #caracteristicas del terrenos
     tabla_textura = {}
-    suma1 = filtro.filter(caracterizacion_terreno__textura_suelo=5).aggregate(
+    suma1 = filtro.filter(caracterizacion_terreno__textura_suelo = 5).aggregate(
                     textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
-    suma2 = filtro.filter(caracterizacion_terreno__textura_suelo=4).aggregate(
+    suma2 = filtro.filter(caracterizacion_terreno__textura_suelo = 4).aggregate(
                     textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
     total = suma1 + suma2
 
@@ -1095,7 +1095,7 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
             tabla_textura['Franco'] = {'textura':textura,'por_textura':por_textura}
 
         elif k[0] != 4 and k[0] != 5:
-            textura = filtro.filter(caracterizacion_terreno__textura_suelo=k[0]).aggregate(
+            textura = filtro.filter(caracterizacion_terreno__textura_suelo = k[0]).aggregate(
                         textura=Count('caracterizacion_terreno__textura_suelo'))['textura']
 
             por_textura = saca_porcentajes(textura, familias)
@@ -1106,7 +1106,7 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
     for k in PENDIENTE_CHOICES:
         query = filtro.filter(caracterizacion_terreno__pendiente_terreno = k[0])
         frecuencia = query.count()
-        pendiente = filtro.filter(caracterizacion_terreno__pendiente_terreno=k[0]).aggregate(pendiente=Count('caracterizacion_terreno__pendiente_terreno'))['pendiente']
+        pendiente = filtro.filter(caracterizacion_terreno__pendiente_terreno = k[0]).aggregate(pendiente = Count('caracterizacion_terreno__pendiente_terreno'))['pendiente']
         por_pendiente = saca_porcentajes(pendiente, familias)
         tabla_pendiente[k[1]] = {'pendiente':pendiente,'por_pendiente':por_pendiente}
 
@@ -1115,7 +1115,7 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
     for k in HOJARASCA_CHOICES:
         query = filtro.filter(caracterizacion_terreno__contenido_hojarasca = k[0])
         frecuencia = query.count()
-        horajasca = filtro.filter(caracterizacion_terreno__contenido_hojarasca=k[0]).aggregate(horajasca=Count('caracterizacion_terreno__contenido_hojarasca'))['horajasca']
+        horajasca = filtro.filter(caracterizacion_terreno__contenido_hojarasca = k[0]).aggregate(horajasca=Count('caracterizacion_terreno__contenido_hojarasca'))['horajasca']
         por_horajasca = saca_porcentajes(horajasca, familias)
         tabla_hojarasca[k[1]] = {'horajasca':horajasca,'por_horajasca':por_horajasca}
 
@@ -1124,7 +1124,7 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
     for k in PROFUNDIDAD_CHOICES:
         query = filtro.filter(caracterizacion_terreno__porfundidad_suelo = k[0])
         frecuencia = query.count()
-        profundidad = filtro.filter(caracterizacion_terreno__porfundidad_suelo=k[0]).aggregate(profundidad=Count('caracterizacion_terreno__porfundidad_suelo'))['profundidad']
+        profundidad = filtro.filter(caracterizacion_terreno__porfundidad_suelo = k[0]).aggregate(profundidad=Count('caracterizacion_terreno__porfundidad_suelo'))['profundidad']
         por_profundidad = saca_porcentajes(profundidad, familias)
         tabla_profundidad[k[1]] = {'profundidad':profundidad,'por_profundidad':por_profundidad}
 
@@ -1132,26 +1132,26 @@ def caracterizacion_terreno(request,template='monitoreo/caracterizacion_terreno.
     for k in DRENAJE_CHOICES:
         query = filtro.filter(caracterizacion_terreno__drenaje_suelo = k[0])
         frecuencia = query.count()
-        drenaje = filtro.filter(caracterizacion_terreno__drenaje_suelo=k[0]).aggregate(drenaje=Count('caracterizacion_terreno__drenaje_suelo'))['drenaje']
+        drenaje = filtro.filter(caracterizacion_terreno__drenaje_suelo = k[0]).aggregate(drenaje = Count('caracterizacion_terreno__drenaje_suelo'))['drenaje']
         por_drenaje = saca_porcentajes(drenaje, familias)
         tabla_drenaje[k[1]] = {'drenaje':drenaje,'por_drenaje':por_drenaje}
 
     return render(request, template, locals())
 
-def mitigacion_riesgos(request,template='monitoreo/mitigacion_riesgos.html'):
+def mitigacion_riesgos(request,template = 'monitoreo/mitigacion_riesgos.html'):
     filtro = _queryset_filtrado(request)
 
     ##############################################################
     familias = filtro.count()
     try:
-        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
     except:
         hombres = 0
     try:
-        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
     except:
         mujeres = 0
-    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
     #caracteristicas del terrenos
@@ -1187,46 +1187,60 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     ##############################################################
     familias = filtro.count()
     try:
-        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
-    except:
-        hombres = 0
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
+    except: 
+         hombres = 0
     try:
-        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
     except:
         mujeres = 0
-    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
     #productores certificados y no certificados
-    certificados = filtro.filter(certificacion__cacao_certificado=1).count()
-    no_certificados = filtro.filter(certificacion__cacao_certificado=2).count()
+    certificados = filtro.filter(certificacion__cacao_certificado = 1).count()
+    no_certificados = filtro.filter(certificacion__cacao_certificado = 2).count()
 
     #No de productores con uno o más sellos
+    conteo_1 = 0
+    conteo_2 = 0
+    conteo_3 = 0
+    lista = []
+    for obj in filtro:
+        certificaciones = 0
+        for x in Certificacion.objects.filter(encuesta = obj):
+            for z in x.tipo.all():
+                certificaciones += 1
+        if certificaciones == 1:
+            conteo_1 += 1
+        elif certificaciones == 2:
+            conteo_2 += 1
+        elif certificaciones > 2:
+            conteo_3 += 1
+    lista.append([conteo_1, conteo_2, conteo_3]) 
 
     #tipo de certificacion
     tabla_certificacion = {}
-    for k in Lista_Certificaciones.objects.all().exclude(nombre='Convencional'):
-        tipos = filtro.filter(certificacion__tipo = k).count()
-
+    for k in Lista_Certificaciones.objects.all().exclude(nombre = 'Convencional'):
+        tipos = filtro.filter(certificacion__tipo = k).count() 
         tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
-    print certificados
 
     return render(request, template, locals())
 
-def tecnicas_aplicadas(request,template='monitoreo/tecnicas_aplicadas.html'):
+def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
     filtro = _queryset_filtrado(request)
    
    ##############################################################
     familias = filtro.count()
     try:
-        hombres = (filtro.filter(persona__sexo='1').count()/float(familias))*100
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
     except:
         hombres = 0
     try:
-        mujeres = (filtro.filter(persona__sexo='2').count()/float(familias))*100
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
     except:
         mujeres = 0
-    organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
     #VVEROS

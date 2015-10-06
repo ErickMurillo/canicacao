@@ -1,60 +1,66 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	<script>
-	    $(document).ready(function() {
-        
-        $('li.item-consulta').addClass('active');
+<script>
+   $(document).ready(function() {
     
-    })
-	    
-	$(function () {
-		$('#container').highcharts({
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: 'Producción de cacao'
-			},
-			yAxis: {
-				title: {
-					text: 'Toneladas'
-				}
-			},
-            xAxis: {
-            categories: [
-                'Toneladas',
-                
-            ],
-            crosshair: true
+    $('li.item-consulta').addClass('active');
+    
+})
+   
+   $(function () {
+      $('#container').highcharts({
+         chart: {
+            type: 'column'
         },
+        title: {
+            text: 'Producción de cacao'
+        },
+        yAxis: {
+            title: {
+               text: 'Toneladas'
+           }
+       },
+       xAxis: {
+        categories: [
+        'Toneladas',
+        
+        ],
+        crosshair: true
+    },
 
-			tooltip: {
-				formatter: function() {
-					return ''+
-					this.series.name +': '+ this.y +' t';
-				}
-			},
-			plotOptions: {
-            series: {
-                borderWidth: 0,
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.y:.1f}',
-                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                    style: {
-                        textShadow: '0 0 3px white'
-                    }
-                }
+    tooltip: {
+        formatter: function() {
+           return ''+
+           this.series.name +': '+ this.y +' t';
+       }
+   },
+   legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle',
+    borderWidth: 0
+},
+plotOptions: {
+    series: {
+        borderWidth: 0,
+        dataLabels: {
+            enabled: true,
+            format: '{point.y:.1f}',
+            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+            style: {
+                textShadow: '0 0 3px white'
             }
-        },
-			series: [
-			{name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
-			{name: 'Fermentado convencional', data: [{{fermentado|floatformat}}]},
-			{name: 'Fermentado orgónico', data: [{{organico|floatformat}}]},
-			]
-		});
-	});
+        }
+    }
+},
+series: [
+{name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
+{name: 'Fermentado convencional', data: [{{fermentado|floatformat}}]},
+{name: 'Fermentado orgánico', data: [{{organico|floatformat}}]},
+]
+});
+});
 
 $(function () {
     $('#container1').highcharts({
@@ -65,7 +71,7 @@ $(function () {
         
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
         },
         yAxis: {
             title: {
@@ -85,20 +91,20 @@ $(function () {
         },
         series: [
 
-        	{
-	            name: 'Valores',
-	            data: [{% for value in produccion.values %}{{value}},{% endfor %}]
-        	},
-        
-        
-        ]
-    });
+        {
+           name: 'Valores',
+           data: [{% for value in produccion.values %}{{value}},{% endfor %}]
+       },
+       
+       
+       ]
+   });
 });
 </script>
 {% endblock extra_js %}
 
 {% block tablero %}
-    {% include "monitoreo/datostablero.html" %}
+{% include "monitoreo/datostablero.html" %}
 {% endblock tablero %}
 
 {% block content %}
@@ -113,71 +119,73 @@ $(function () {
 </style>
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio">Indicador >> Producción</h4>
 
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
           <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-        </div>
+      </div>
+  </div>
+</div>
+
+<div class="col-md-12">
+    <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+    <div class="col-md-12" id="modalidad">
+    <table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th rowspan="2"></th>
+            <th colspan="4" style="text-align:center;">Edad de plantación</th>
+        </tr>
+        <tr>
+            <th>4 -10 años</th>
+            <th>10 - 20 años</th>
+            <th>Mayor a 20 años</th>
+        </tr>
+    </thead>
+     <tbody>
+                <tr>
+                    <td>Área total en ha</td>
+                    {% for values in edades.values %}
+                    <td>{{values.0|floatformat:2}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>No. de plantas por ha</td>
+                    {% for values in edades.values %}
+                    <td>{{values.1|floatformat:2}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>% de plantas improductivas</td>
+                    {% for values in edades.values %}
+                    <td>{{values.2|floatformat:2}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>% de plantas establecidas con semilla</td>
+                    {% for values in edades.values %}
+                    <td>{{values.3|floatformat:2}}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>% de plantas establecidas por injerto</td>
+                    {% for values in edades.values %}
+                    <td>{{values.4|floatformat:2}}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+</table>
     </div>
 </div>
-    
-    <div class="col-md-12">
-        <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
-    <div class="col-md-12" id="modalidad">
-        <table id="example" class="table table-bordered table-hover" cellspacing="0" width="50%">
-                        <!--<caption>Educación</caption>-->
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>4 -10 años</th>
-                                <th>10 - 20 años</th>
-                                <th>Mayor a 20 años</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>Área total en ha</td>
-                           {% for values in edades.values %}
-                               <td>{{values.0|floatformat:2}}</td>
-                           {% endfor %}
-                        </tr>
-                        <tr>
-                            <td>No. de plantas por ha</td>
-                            {% for values in edades.values %}
-                               <td>{{values.1|floatformat:2}}</td>
-                           {% endfor %}
-                        </tr>
-                        <tr>
-                            <td>% de plantas improductivas</td>
-                            {% for values in edades.values %}
-                               <td>{{values.2|floatformat:2}}</td>
-                           {% endfor %}
-                        </tr>
-                        <tr>
-                            <td>% de plantas establecidas con semilla</td>
-                            {% for values in edades.values %}
-                               <td>{{values.3|floatformat:2}}</td>
-                           {% endfor %}
-                        </tr>
-                         <tr>
-                            <td>% de plantas establecidas por injerto</td>
-                            {% for values in edades.values %}
-                               <td>{{values.4|floatformat:2}}</td>
-                           {% endfor %}
-                        </tr>
-                        </tbody>
-                    </table>
-    </div>
-    </div>
 
-    <div class="col-md-6">
-        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-    <div class="col-md-6">
-         <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-	
-	{% include "monitoreo/indicadores.html" %}
+<div class="col-md-6">
+    <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+</div>
+<div class="col-md-6">
+   <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+</div>
+
+{% include "monitoreo/indicadores.html" %}
 {% endblock content %}

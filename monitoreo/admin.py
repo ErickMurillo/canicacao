@@ -2,7 +2,6 @@
 from django.contrib import admin
 from .models import *
 from .forms import *
-
 from django.contrib.flatpages.models import FlatPage
 # Note: we are renaming the original Admin and Form as we import them!
 from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
@@ -11,13 +10,13 @@ from django.contrib.flatpages.forms import FlatpageForm as FlatpageFormOld
 from ckeditor.widgets import CKEditorWidget
  
 class FlatpageForm(FlatpageFormOld):
-    content = forms.CharField(widget=CKEditorWidget())
-    class Meta:
-        model = FlatPage # this is not automatically inherited from FlatpageFormOld
-        fields = '__all__'
+	content = forms.CharField(widget=CKEditorWidget())
+	class Meta:
+		model = FlatPage # this is not automatically inherited from FlatpageFormOld
+		fields = '__all__'
  
 class FlatPageAdmin(FlatPageAdminOld):
-    form = FlatpageForm
+	form = FlatpageForm
 
 class Familia_Inline(admin.TabularInline):
 	model = Familia
@@ -111,13 +110,13 @@ class Certificacion_Inline(admin.StackedInline):
 	max_num = 1
 	can_delete = False
 	fieldsets = (
-        (None, {
-            'fields': (('cacao_certificado', 'tipo', 'quien_certifica', 'paga_certificacion','costo_certificacion'),)
-        }),
-        ('Costo de producción', {
-            'fields': ('mant_area_cacao', 'mant_area_finca')
-        }),
-    )
+		(None, {
+			'fields': (('cacao_certificado', 'tipo', 'quien_certifica', 'paga_certificacion','costo_certificacion'),)
+		}),
+		('Costo de producción', {
+			'fields': ('mant_area_cacao', 'mant_area_finca')
+		}),
+	)
 
 class Tecnicas_Aplicadas_Inline(admin.StackedInline):
 	model = Tecnicas_Aplicadas
@@ -176,13 +175,29 @@ class EncuestaAdmin(admin.ModelAdmin):
 		return Encuesta.objects.filter(usuario=request.user)
 
 	def save_model(self, request, obj, form, change):
-		obj.usuario = request.user
-		obj.save()
+		if not request.user.is_superuser:
+			obj.usuario = request.user
+			obj.save()
 
-	exclude = ('usuario','anno')
-	fieldsets = [
-		(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona',))}),
-	]
+	def get_form(self, request, obj=None, **kwargs):
+		if request.user.is_superuser:
+			self.exclude = ('anno',)
+			self.fieldsets = [(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona','usuario'))}),]
+		else:
+			self.exclude = ('usuario','anno')
+			self.fieldsets = [(('Informacion Básica'), {'fields' : (('fecha',),('organizacion','recolector'),('persona',))}),]
+		return super(EncuestaAdmin, self).get_form(request, obj=None, **kwargs)
+
+	def get_list_filter(self, request):
+		if request.user.is_superuser:
+			return ('organizacion',)
+		else:
+			return ()
+
+	list_display = ('persona','organizacion','recolector')
+	list_display_links = ('organizacion','persona')
+	search_fields = ['persona__nombre','recolector__nombre']
+
 	inlines = [Familia_Inline,Educacion_Inline,Tenencia_Propiedad_Inline,Uso_Tierra_Inline,Reforestacion_Inline,
 				Caracterizacion_Terreno_Inline,Fenomenos_Naturales_Inline,Razones_Agricolas_Inline,Razones_Mercado_Inline,
 				Inversion_Inline,Mitigacion_Riesgos_Inline,Organizacion_Asociada_Inline,Area_Cacao_Inline,Plantacion_Inline,
@@ -191,16 +206,12 @@ class EncuestaAdmin(admin.ModelAdmin):
 				Problemas_Cacao_Inline,Genero_Inline,Genero_2_Inline,Adicional_Inline
 				]
 
-	list_display = ('persona','organizacion','recolector')
-	list_display_links = ('organizacion','persona')
-	#list_filter = ('organizacion__siglas','recolector__nombre')
-	search_fields = ['persona__nombre','recolector__nombre']
 	class Media:
 		js = ('js/admin.js',)
 		css = {
-            'all': ('css/admin.css',)
-        }
-      
+			'all': ('css/admin.css',)
+		}
+	  
 admin.site.register(Encuesta,EncuestaAdmin)
 admin.site.register(Recolector)
 admin.site.register(Situacion)
