@@ -558,8 +558,8 @@ def produccion(request,template='monitoreo/produccion.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
-    baba = (filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba'] ) / 3
-    seco = (filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco'] + baba ) * tonelada
+    #baba = (filtro.aggregate(baba=Sum('produccion_cacao__produccion_c_baba'))['baba'] ) / 3
+    seco = (filtro.aggregate(seco=Sum('produccion_cacao__produccion_c_seco'))['seco']) * tonelada
     fermentado = (filtro.aggregate(fermentado=Sum('produccion_cacao__produccion_c_fermentado'))['fermentado'] ) * tonelada
     organico = (filtro.aggregate(organico=Sum('produccion_cacao__produccion_c_organico'))['organico'] ) * tonelada
 
@@ -606,6 +606,12 @@ def produccion(request,template='monitoreo/produccion.html'):
         #----------------------------------------------------------------------------------------------------
 
         edades[obj[1]] = (area_total, numero_plantas_ha, plant_improd, plantas_semillas, plantas_injerto)
+
+    #promedio de inversion
+    inversion_finca = filtro.aggregate(finca = Avg('certificacion__mant_area_finca'))['finca']
+    inversion_cacao = filtro.aggregate(cacao = Avg('certificacion__mant_area_cacao'))['cacao']
+
+    print inversion_cacao, inversion_finca
 
     return render(request, template, locals())
 
@@ -667,7 +673,7 @@ def riesgos(request,template='monitoreo/riesgos.html'):
                             saca_porcentajes(falta_venta,familias,False),
                             saca_porcentajes(estafa_contrato,familias,False),
                             saca_porcentajes(calidad_producto,familias,False))
-    print mercados
+
     inversion = {}
     for obj in SI_NO_CHOICES:
         invierte_cacao = filtro.filter(inversion__invierte_cacao=obj[0]).count()
@@ -1224,6 +1230,22 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     for k in Lista_Certificaciones.objects.all().exclude(nombre = 'Convencional'):
         tipos = filtro.filter(certificacion__tipo = k).count() 
         tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
+
+    #quien certifica
+    quien_certifica = {}
+    for obj in Quien_Certifica.objects.all():
+        conteo = filtro.filter(certificacion__quien_certifica = obj).count()
+        quien_certifica[obj] = conteo
+
+    #quien paga la certificacion
+    paga_certificacion = {}
+    for obj in Paga_Certifica.objects.all():
+        conteo = filtro.filter(certificacion__paga_certificacion = obj).count()
+        paga_certificacion[obj] = conteo
+
+    #costo certificacion
+    costo_certificacion = filtro.aggregate(costo = Avg('certificacion__costo_certificacion'))['costo']
+    print costo_certificacion
 
     return render(request, template, locals())
 

@@ -375,6 +375,9 @@ $(function () {
     .nav-tabs>li {
         width: 30% !important
     }
+    #space div{
+        margin-bottom: 3em;
+    }
 </style>
 {% include "monitoreo/filtros.html" %}
 
@@ -397,7 +400,7 @@ $(function () {
 <!-- Tab panes -->
 <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-        <div class="row">
+        <div id="space" class="row">
             <div class="col-md-12 col-lg-12">
                 <div id="grafico" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
             </div>

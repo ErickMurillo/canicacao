@@ -82,7 +82,7 @@ $(function () {
                 text: 'Tipos de certificación'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
             },
             plotOptions: {
                 pie: {
@@ -198,6 +198,108 @@ $(function () {
         ]
     });
 });
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container2').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Quién certifica?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in quien_certifica.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}},
+                },
+                {% endfor %}
+                
+                ]
+            }]
+        });
+});
+});  
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container3').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Quién paga la certificación?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in paga_certificacion.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}},
+                },
+                {% endfor %}
+                
+                ]
+            }]
+        });
+});
+});  
 </script>
 {% endblock extra_js %}
 
@@ -209,7 +311,7 @@ $(function () {
 
 {% include "monitoreo/filtros.html" %}
 <style>
-    .space{
+    #space div{
         margin-bottom: 3em;
     }
 </style>
@@ -226,19 +328,25 @@ $(function () {
   </div>
 </div>
 
-<div class="row space">
+<div id="space" class="row">
     <div class="col-md-6 col-lg-6">
         <div id="certificados" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
     <div class="col-md-6 col-lg-6">
         <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
 
-<div class="row">
     <div class="col-md-6 col-lg-6">
         <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
+    <div class="col-md-6 col-lg-6">
+        <div id="container2" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div id="container3" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
 </div>
+
 {% include "monitoreo/indicadores.html" %}
 {% endblock content %}
