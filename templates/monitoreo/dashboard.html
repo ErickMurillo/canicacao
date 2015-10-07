@@ -32,8 +32,8 @@
 
         {% for x,y in value.14.items %}
         var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
-         position: new google.maps.LatLng({{y.0}}, {{y.1}}),
-         map: map_{{year}},
+           position: new google.maps.LatLng({{y.0}}, {{y.1}}),
+           map: map_{{year}},
            //draggable: true,
            raiseOnDrag: true,
            labelContent: "{{y.2|floatformat:2}}",
@@ -51,11 +51,11 @@
     initialize();
     $('.update').on('shown.bs.tab', function(e) {
         {% for year,value in anno.items %}
-           google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
-           map_{{year}}.setCenter(latlng);
-       {% endfor %}
+        google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
+        map_{{year}}.setCenter(latlng);
+        {% endfor %}
     });
-   
+    
 </script>
 
 
@@ -208,7 +208,7 @@ $(function () {
                 }
 
             },
-           
+            
             series: [{
                 name: "Procentajes",
                 colorByPoint: true,
@@ -312,7 +312,7 @@ $(function () {
                 }
             }
         },
-         tooltip: {
+        tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
             pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
         },
@@ -360,13 +360,13 @@ $(function () {
                 }
             }
         },
-         tooltip: {
+        tooltip: {
             headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
             pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
         },
         series: [
         {% for key,values in value.13.items %}
-            {
+        {
             name: '{{key}}',
             data: [{{values|floatformat:2}}]
         }, 
@@ -494,17 +494,17 @@ $(function () {
 }
 
 .labels {
-   color: white;
-   background-color: #ff2b00;
-   font-family: "Roboto", sans-serif;
-   font-size: 14px;
-   text-align: center;
-   width: auto;
-   white-space: nowrap;
-   margin-left: -15px !important;
-   margin-top: -39px !important;
-   padding: 2px;
-   border-radius: 15px
+ color: white;
+ background-color: #ff2b00;
+ font-family: "Roboto", sans-serif;
+ font-size: 14px;
+ text-align: center;
+ width: auto;
+ white-space: nowrap;
+ margin-left: -15px !important;
+ margin-top: -39px !important;
+ padding: 2px;
+ border-radius: 15px
 }
 .nav-tabs>li.active {
     width: 22% !important;
@@ -584,59 +584,59 @@ table{
 
 
               <div class="col-md-12 col-lg-6 indicadores-t2">
-                 <div class="promedio-cacao">
-                     <div class="row">
-                         <div class="col-md-8 col-lg-8 texto-indicador">
-                             <h1>{{value.1|floatformat:2}} </h1>
-                             <h2>Producción total en toneladas</h2>
-                         </div>
-                         <div class="col-md-4 col-lg-4">
-                             <img src="/static/img/arbol-01.png" alt="">
-                         </div>
-                     </div>
-                 </div>
-                 <div class="promedio-cultivo">
-                    <div class="row">
-                     <div class="col-md-8 col-lg-8 texto-indicador">
-                         <h1>{{value.8|floatformat:2}} ha</h1>
-                         <h2>Promedio áreas de cacao por productor</h2>
-                     </div>
-                     <div class="col-md-4 col-lg-4">
-                         <img src="/static/img/arbolito-01.png" alt="">
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
+               <div class="promedio-cacao">
+                   <div class="row">
+                       <div class="col-md-8 col-lg-8 texto-indicador">
+                           <h1>{{value.1|floatformat:2}} </h1>
+                           <h2>Producción total en toneladas</h2>
+                       </div>
+                       <div class="col-md-4 col-lg-4">
+                           <img src="/static/img/arbol-01.png" alt="">
+                       </div>
+                   </div>
+               </div>
+               <div class="promedio-cultivo">
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>{{value.8|floatformat:2}} ha</h1>
+                       <h2>Promedio áreas de cacao por productor</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="/static/img/arbolito-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
 
-     <!--fila 3-->
-     <div class="row fila3">
-        <div class="col-md-12 col-lg-6 grafico1">
-            <div id="tipo{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        <div class="col-md-12 col-lg-6 grafico3">
-            <div id="socio{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-    </div>
-
-    <!--fila 4-->
-    <div class="row fila4">
-        <div class="col-md-12 col-lg-6 grafico1">
-            <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        <div class="col-md-12 col-lg-6 grafico3">
-            <div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px"></div>
-        </div>
-        
-    </div>
-
-    <div class="row fila5">
-       <div class="col-md-12 col-lg-6 grafico1">
-        <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+   <!--fila 3-->
+   <div class="row fila3">
+    <div class="col-md-12 col-lg-6 grafico1">
+        <div id="tipo{{year}}" style="min-width: 310px; width: 540px"></div>
     </div>
     <div class="col-md-12 col-lg-6 grafico3">
-        <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
+        <div id="socio{{year}}" style="min-width: 310px; width: 540px"></div>
     </div>
+</div>
+
+<!--fila 4-->
+<div class="row fila4">
+    <div class="col-md-12 col-lg-6 grafico1">
+        <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
+    </div>
+    <div class="col-md-12 col-lg-6 grafico3">
+        <div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px"></div>
+    </div>
+    
+</div>
+
+<div class="row fila5">
+ <div class="col-md-12 col-lg-6 grafico1">
+    <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+</div>
+<div class="col-md-12 col-lg-6 grafico3">
+    <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
+</div>
 
 </div>
 </div>

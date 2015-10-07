@@ -611,7 +611,7 @@ def produccion(request,template='monitoreo/produccion.html'):
     inversion_finca = filtro.aggregate(finca = Avg('certificacion__mant_area_finca'))['finca']
     inversion_cacao = filtro.aggregate(cacao = Avg('certificacion__mant_area_cacao'))['cacao']
 
-    print inversion_cacao, inversion_finca
+    print inversion_cacao, inversion_fincaf
 
     return render(request, template, locals())
 
@@ -1391,6 +1391,18 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
         p2 = lista_pract_manejo_post_c.count(op[0])
         pract_manejo_post_c[op[1]] = p2
     
+    #dispone de centro de acopio de cacao
+    centro_acopio = {}
+    for obj in SI_NO_CHOICES:
+        conteo = filtro.filter(tecnicas_aplicadas__acopio_cacao = obj[0]).count()
+        centro_acopio[obj[1]] = conteo
+
+    #socio de alguna org q acopia cacao
+    socio_acopio = {}
+    for obj in SI_NO_CHOICES:
+        conteo = filtro.filter(tecnicas_aplicadas__acopio_org = obj[0]).count()
+        socio_acopio[obj[1]] = conteo
+
     return render(request, template, locals())
 
 #ajax filtros
