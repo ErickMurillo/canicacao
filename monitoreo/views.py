@@ -611,8 +611,6 @@ def produccion(request,template='monitoreo/produccion.html'):
     inversion_finca = filtro.aggregate(finca = Avg('certificacion__mant_area_finca'))['finca']
     inversion_cacao = filtro.aggregate(cacao = Avg('certificacion__mant_area_cacao'))['cacao']
 
-    print inversion_cacao, inversion_fincaf
-
     return render(request, template, locals())
 
 def riesgos(request,template='monitoreo/riesgos.html'):
