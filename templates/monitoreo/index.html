@@ -26,7 +26,7 @@
 		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
 		var bounds = new google.maps.LatLngBounds();
 		var infowindow = new google.maps.InfoWindow();
-		var image = new google.maps.MarkerImage('/static/img/m2.png');
+		var image = new google.maps.MarkerImage('/static/img/m.png');
 		
 		
 		$.getJSON("{% url 'obtener-lista' %}", function(data){
@@ -76,66 +76,73 @@
 	.map{
 		margin-bottom: 50px
 	}
+	@media (min-width: 768px){
+		#map-canvas {
+		
+		width: 100%;
+		
+	}
+	}
 </style>
 
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 consulta">
 	<div class=" row indicadores-inicio">
 
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
 			<div class="row ind-mujer">
-				<div class="col-lg-4"><span class="fa fa-female fa-4x"></span></div>
-				<div class="col-lg-8 text-center">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"><span class="fa fa-female fa-4x"></span></div>
+				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 text-center">
 					<p>{{mujeres|intcomma}}</p>
 					<p>Mujeres</p>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">
 			<div class="row ind-hombre">
-				<div class="col-lg-4"><span class="fa fa-male fa-4x"></span></div>
-				<div class="col-lg-8 text-center">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"><span class="fa fa-male fa-4x"></span></div>
+				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 text-center">
 					<p>{{hombres|intcomma}}</p>
 					<p>Hombres</p>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">
 			<div class="row ind-cacao">
-				<div class="col-lg-4"><img src="/static/img/cacao-01.png" alt=""></div>
-				<div class="col-lg-8 text-center">
+				<div class="col-xs-12 col-sm-6 col-md-5 col-lg-4"><img src="/static/img/cacao-01.png" alt=""></div>
+				<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 text-center">
 					<p>{{area_cacao|floatformat:2|intcomma}} ha</p>
 					<p class="text-cacao">Cacao establecidas</p>
 				</div>
 			</div>	
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">
 			<div class="row ind-produccion">
-				<div class="col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
-				<div class="col-lg-8 text-center">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"><img src="/static/img/bolsa.png" alt=""></div>
+				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 text-center">
 					<p>{{produccion|floatformat:2|intcomma}} t</p>
 					<p>Producción</p>
 				</div>
 			</div>
 
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 ">
 			<div class="row ind-otro">
-				<div class="col-lg-4"><img src="/static/img/organizacion2.png" alt=""></div>
-				<div class="col-lg-8 text-center">
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"><img src="/static/img/organizacion2.png" alt=""></div>
+				<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 text-center">
 					<p>{{organizaciones|intcomma}}</p>
-					<p style="font-size:20px">Organizaciones</p>
+					<p class="text-orgind">Organizaciones</p>
 				</div>
 			</div>
 		</div>
-		<a href="/consulta/">
-			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+		<a class="col-xs-12 col-sm-6 col-md-6 col-lg-4 " href="/consulta/">
+			
 				<div class="row ind-consulta">
-					<div class="col-lg-4"><span class="fa fa-search fa-4x"></span></div>
-					<div class="col-lg-8 text-center">
+					<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4"><span class="fa fa-search fa-4x"></span></div>
+					<div class="col-xs-12 col-sm-6 col-md-8 col-lg-8 text-center">
 						<p>Explorar datos</p>
 					</div>
 				</div>
-			</div>
+			
 		</a>
 
 	</div>
@@ -170,16 +177,16 @@
 	</div>
 
 	<div class="row logos">
-		<div class="col-md-6 col-lg-4">
+		<div class="col-xs-offset-1 col-xs-5 col-sm-offset-1 col-sm-4 col-md-6 col-lg-4">
 			<img src="/static/img/logo1.png" alt="">
 		</div>
-		<div class="col-md-6 col-lg-4">
+		<div class="col-xs-3 col-sm-3 col-md-6 col-lg-4">
 
 			<img src="/static/img/images.png" alt="">
 		</div>
-		<div class="col-md-6 col-lg-4 heiferimg">
+		<div class="col-xs-3 col-sm-3 col-md-12 col-lg-4 heiferimg ">
 
-			<img src="/static/img/logo3.png" alt="">
+			<img class="pull-left" src="/static/img/logo3.png" alt="">
 		</div>
 	</div>
 </div>

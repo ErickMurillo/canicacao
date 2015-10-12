@@ -166,6 +166,7 @@ a.sesion
 	padding-bottom 10px
 	margin-right 20px
 	text-align center
+	margin-top 0px
 
 .ind-cacao p
 	font-size 1.5em
@@ -204,7 +205,7 @@ a.sesion
 	text-align center
 
 .ind-otro p
-	font-size 1.5em
+	font-size 1.3em
 	margin 0px 0px 0px !important
 
 
@@ -274,10 +275,6 @@ a.sesion
 
 .seleccion .row
 	margin-right 0px
-
-
-.borde-filtro
-	border-right 2px solid blanco
 
 
 .datos-filtro p
@@ -380,22 +377,15 @@ span.select2.select2-container.select2-container--default
 .tablero-titulo, .indicadores-titulo
 	background cafeclaro
 	color blanco
-	margin-top 60px
-	margin-bottom 40px
+	margin-bottom 20px
+	border-left 20px solid cafe
 
 
 .titulo-inicio, .titulo-indicadores
 	margin-left 50px
-	span
-		margin-left 20px	
-	&:before
-		content ""
-		position absolute
-		left 0px
-		top 0px
-		height 39px
-		width 20px
-		background-color cafe
+	
+	
+
 .promedio-cacao, .promedio-cultivo, .socio, .no-socio
 	background-color blanco
 	border 3px solid #e7e6e4
@@ -610,3 +600,101 @@ div[role=tabpanel]
   font-family 'Roboto',Tahoma,Verdana,Arial,sans-serif !important
   font-size 1em !important
 */
+/************************nuevo css**************************/
+.seleccion
+	color white
+.datos-filtro
+	border-left 2px solid #fff
+.nav-annos
+	margin-top 20px
+	>li	
+		background-color #cb6830
+		padding-left 0px
+		padding-right 0px
+		a
+			font-weight bold
+			color #fff
+				&:hover
+					background-color rgba( 0, 0, 0, 0.2 )
+.nav-annos>li.active>a
+	background-color rgba( 0, 0, 0, 0.2 )
+	color #fff
+/**************************MD-Device************************************/
+ 
+@media (min-width: 992px)
+	.ind-mujer p
+		font-size 1.5em
+	.ind-hombre p
+		font-size 1.5em
+
+	.ind-cacao p
+		font-size 1.1em
+	.text-cacao
+		font-size 0.8em !important
+	.ind-produccion p
+		font-size 1.2em
+	.ind-otro .text-orgind
+		font-size 1em
+	.logos img
+		width 100%
+	.logos .heiferimg img
+		width 30% !important
+		margin-top 30px
+		
+@media (min-width: 768px)
+	.ind-cacao
+		  padding-bottom 6px
+		  margin-top 15px
+	.ind-consulta
+		padding-bottom 14px
+	.informacion
+		margin-top 20px
+	.ind-hombre
+	.ind-produccion
+	.ind-consulta
+		margin-right 5px
+		margin-left 15px
+	.ind-cacao p
+		font-size 1.5em
+	.text-cacao
+		font-size 1em !important
+@media (max-width: 767px)
+	.ind-cacao
+	.ind-hombre
+	.ind-mujer
+	.informacion
+		margin-top 15px
+	.navbar, .navbar-header
+		min-height 60px
+	.navbar-default .navbar-nav>li>a
+		margin-right 0px
+	.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover
+		background-color white
+	.navbar-nav
+		margin 0px -15px
+		
+
+@media (min-width: 1200px)
+	.ind-cacao
+	.ind-hombre
+	.ind-mujer
+	.informacion
+		margin-top 0px
+	.ind-hombre
+	.ind-produccion
+	.ind-consulta
+	.ind-mujer
+	.ind-cacao
+	.ind-otro
+		margin-right 0px
+		margin-left 0px
+	.ind-cacao
+		margin-top 0px
+	.ind-consulta
+		padding-bottom: 10px;
+	.col-xs-offset-1
+	.col-sm-offset-1
+		margin-left 0px
+	.logos .heiferimg img
+		  width: 60% !important;
+		  margin-top 0px

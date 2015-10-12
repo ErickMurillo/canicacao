@@ -488,7 +488,7 @@ $(function () {
 
 {% block content %}
 <style>
-  .map{
+/*  .map{
     margin-bottom: 10px;
     margin-top: 10px;
 }
@@ -515,7 +515,7 @@ $(function () {
 table{
     margin-top: 60px;
     margin-bottom: 40px;
-}
+}*/
 </style>
 <div class="row">
     {% include "monitoreo/filtros.html" %}
@@ -523,10 +523,8 @@ table{
 
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio">Tablero de indicadores</h4>  
-      </div>
-      <div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
+        
+      <!--<div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
           <table class="table table-condensed">
               <caption>Conversiones</caption>
               <tr>
@@ -543,7 +541,7 @@ table{
               </tr>
           </table>
 
-      </div>
+      </div>-->
   </div>
 </div>
 
@@ -551,10 +549,10 @@ table{
 <div id="tabs">
 
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-annos" role="navegacion">
 
     {% for year in anno.keys %}
-    <li role="presentation" class="{% if forloop.counter == 1 %}active{% endif %}" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab" class="update">{{year}}</a></li>
+    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-2" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
     {% endfor %}
 </ul>
 
@@ -563,6 +561,9 @@ table{
 
     {% for year,value in anno.items %}
     <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+            <h4 class="titulo-inicio">Tablero de indicadores</h4>  
+        </div>
         <div class="contenido-graficos">
 
             <div class="row fila1">
