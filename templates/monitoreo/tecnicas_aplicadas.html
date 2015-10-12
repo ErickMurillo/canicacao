@@ -362,6 +362,110 @@
             ]
         });
     });
+
+$(function () {
+
+        $(document).ready(function () {
+
+        // Build the chart
+        $('#container6').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Dispone de un centro de acopio de cacao en la comunidad o municipio donde vende su cacao?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in centro_acopio.items %}
+                {
+                    name: "{{x}}",
+                    y: {{y}}
+                },
+                {% endfor %}
+                
+
+                ]
+            }]
+        });
+});
+});
+
+$(function () {
+
+        $(document).ready(function () {
+
+        // Build the chart
+        $('#container7').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Es socio o está asociado a alguna organización que acopia cacao en la zona?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for x,y in socio_acopio.items %}
+                {
+                    name: "{{x}}",
+                    y: {{y}}
+                },
+                {% endfor %}
+                
+
+                ]
+            }]
+        });
+});
+});
 </script>
 {% endblock extra_js %}
 
@@ -370,9 +474,13 @@
 {% endblock tablero %}
 
 {% block content %}
-
+<style>
+    #space div{
+        margin-bottom: 3em;
+    }
+</style>
 {% include "monitoreo/filtros.html" %}
-
+    
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
@@ -385,7 +493,7 @@
     </div>
 </div>
 
-<div class="row">
+<div id="space" class="row">
     <div class="col-md-6 col-lg-6">
         <div id="container0" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
@@ -393,9 +501,7 @@
     <div class="col-md-6 col-lg-6">
         <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
-<br>
-<div class="row">
+
     <div class="col-md-6 col-lg-6">
         <div id="container2" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
@@ -403,15 +509,21 @@
     <div class="col-md-6 col-lg-6">
         <div id="container3" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
-</div>
-<br>
-<div class="row">
+
     <div class="col-md-6 col-lg-6">
         <div id="container4" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 
     <div class="col-md-6 col-lg-6">
         <div id="container5" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div id="container6" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    </div>
+
+    <div class="col-md-6 col-lg-6">
+        <div id="container7" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
     </div>
 </div>
 {% include "monitoreo/indicadores.html" %}
