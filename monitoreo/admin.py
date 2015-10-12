@@ -175,7 +175,9 @@ class EncuestaAdmin(admin.ModelAdmin):
 		return Encuesta.objects.filter(usuario=request.user)
 
 	def save_model(self, request, obj, form, change):
-		if not request.user.is_superuser:
+		if request.user.is_superuser:
+			obj.save()
+		else:
 			obj.usuario = request.user
 			obj.save()
 
