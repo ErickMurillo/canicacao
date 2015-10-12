@@ -292,7 +292,7 @@ span.select2.select2-container.select2-container--default {
 }
 /******************dashboard*********************/
 .contenido-graficos {
-  margin: 0 auto;
+  padding-top: 20px;
 }
 .datos-dashboard {
   background-color: #413a35;
@@ -333,13 +333,10 @@ span.select2.select2-container.select2-container--default {
 .tablero-hombre p,
 .tablero-mujer p,
 .ind-org p {
-  margin: 15px 0px 0px 30px;
+  padding-top: 15px;
 }
 .tablero-hombre {
   border-right: 2px solid #6d4b35;
-}
-.ind-org p {
-  margin: 15px 0px 0px 0px !important;
 }
 /* inicio de contenido tablero*/
 .tablero-titulo,
@@ -354,47 +351,31 @@ span.select2.select2-container.select2-container--default {
   margin-left: 50px;
 }
 .promedio-cacao,
-.promedio-cultivo,
-.socio,
-.no-socio {
+.promedio-cultivo {
   background-color: #fff;
   border: 3px solid #e7e6e4;
   padding: 20px 20px 20px 60px;
 }
 .promedio-cacao h1,
 .promedio-cultivo h1,
-.socio h1,
-.no-socio h1,
 .promedio-cacao h2,
-.promedio-cultivo h2,
-.socio h2,
-.no-socio h2 {
+.promedio-cultivo h2 {
   color: #cb6830;
   font-weight: bold;
   margin-bottom: 5px;
   margin-top: 5px;
 }
-.promedio-cultivo,
-.no-socio {
-  margin-top: 33px;
-}
-.no-socio,
-.socio {
-  padding-top: 24px;
-  padding-bottom: 24px;
+.promedio-cultivo {
+  margin-top: 52px;
 }
 .texto-indicador {
   margin-top: 20px;
 }
-#grafico3,
-#grafico4,
-#grafico5,
-#grafico1 {
+.grafico-left,
+.grafico-right {
   background-color: #fff;
   border: 3px solid #e7e6e4;
-}
-#grafico5 {
-  margin-top: 20px;
+  margin-top: 0px;
 /*mayor a 760*/
 }
 .indicadores-t1 {
@@ -402,19 +383,13 @@ span.select2.select2-container.select2-container--default {
 }
 .indicadores-t2 {
   padding-left: 0px;
+  padding-right: 0px;
+  margin-top: 0px;
 }
-.grafico-4 {
-  width: 49%;
-  margin-left: 1%;
-}
-.grafico-3,
-#grafico1 {
-  width: 49%;
-  margin-right: 1%;
-}
-.fila1,
 .fila2,
-.fila3 {
+.fila3,
+.fila4,
+.fila5 {
   margin-top: 20px;
 }
 .botonera {
@@ -432,9 +407,6 @@ span.select2.select2-container.select2-container--default {
   -o-border-radius: 0px;
   border-radius: 0px;
   padding: 10px;
-  width: 23%;
-  margin-right: 1%;
-  margin-left: 1%;
   margin-top: 10px;
   margin-bottom: 10px;
   -webkit-box-shadow: 5px 5px 0px -2px #88b84f;
@@ -475,15 +447,14 @@ span.select2.select2-container.select2-container--default {
 .mapa-titulo,
 .consulta-org-titulo {
   background-color: #fff;
-  border: 3px solid #e7e6e4;
+  border-bottom: 3px solid #e7e6e4;
   text-align: center;
 }
 .mapa-organizaciones,
-.filtro-org-consulta {
+.consulta-org {
   background-color: #fff;
-  border-right: 3px solid #e7e6e4;
-  border-left: 3px solid #e7e6e4;
-  border-bottom: 3px solid #e7e6e4;
+  border: 3px solid #e7e6e4;
+  margin-bottom: 0px;
 }
 .btn-org-consulta a {
   -webkit-border-radius: 0px;
@@ -572,12 +543,15 @@ li[role=presentation] a {
   color: #cb6830 !important;
   border: 0px;
 }
-div[role=tabpanel] {
+div[role=tabs-organi] {
   background-color: #fff;
   border-right: 3px solid #e7e6e4;
   border-bottom: 3px solid #e7e6e4;
   width: 100%;
   padding: 30px 20px;
+}
+div[role=tabpanel] {
+  background-color: #fff;
 }
 .conten-org {
   padding-right: 0;
@@ -610,9 +584,7 @@ div[role=tabpanel] {
 }
 @media (min-width: 1200px) {
   .formulario-consulta,
-  .contenido-graficos {
-    width: 90%;
-  }
+  width 90%,
   .org-detail {
     width: 95%;
   }
@@ -638,13 +610,131 @@ div[role=tabpanel] {
 }
 .nav-annos >li a {
   font-weight: bold;
+  color: #fff;
 }
-.nav-annos >li a color #fff:hover {
+.nav-annos >li a:hover {
   background-color: rgba(0,0,0,0.2);
+}
+li[role='titulo']>a {
+  font-weight: bold;
+  color: #fff;
+}
+li[role='titulo']>a:hover {
+  background-color: transparent;
 }
 .nav-annos>li.active>a {
   background-color: rgba(0,0,0,0.2);
   color: #fff;
+}
+.contenido-graficos {
+  padding-top: 20px;
+}
+/**************************XS-Device************************************/
+@media (max-width: 767px) {
+  .ind-cacao,
+  .ind-hombre,
+  .ind-mujer,
+  .informacion {
+    margin-top: 15px;
+  }
+  .navbar,
+  .navbar-header {
+    min-height: 60px;
+  }
+  .navbar-default .navbar-nav>li>a {
+    margin-right: 0px;
+  }
+  .navbar-default .navbar-toggle:focus,
+  .navbar-default .navbar-toggle:hover {
+    background-color: #fff;
+  }
+  .navbar-nav {
+    margin: 0px -15px;
+  }
+  .indicadores-t2,
+  .grafico-right {
+    margin-top: 20px;
+  }
+  .botonera a {
+    width: 46%;
+    margin-right: 1%;
+    margin-left: 1%;
+  }
+  .ind-familia p,
+  .tablero-hombre p,
+  .tablero-mujer p,
+  .ind-org p {
+    padding-top: 5px;
+    font-size: 14px;
+  }
+  .ind-familia h2,
+  .tablero-hombre h2,
+  .tablero-mujer h2,
+  .ind-org h2,
+  .ind-familia h1,
+  .tablero-hombre h1,
+  .tablero-mujer h1,
+  .ind-org h1 {
+    font-size: 23px;
+  }
+  .tablero-familia,
+  .tablero-genero {
+    padding-right: 25px;
+  }
+  .titulo-inicio,
+  .titulo-indicadores {
+    margin-left: 5px;
+  }
+  .consulta-org {
+    margin-bottom: 20px;
+  }
+  span.select2.select2-container.select2-container--default {
+    width: 95% !important;
+  }
+}
+/**************************SM-Device************************************/
+@media (min-width: 768px) {
+  .ind-cacao {
+    padding-bottom: 6px;
+    margin-top: 15px;
+  }
+  .ind-consulta {
+    padding-bottom: 14px;
+  }
+  .informacion {
+    margin-top: 20px;
+  }
+  .ind-hombre,
+  .ind-produccion,
+  .ind-consulta {
+    margin-right: 5px;
+    margin-left: 15px;
+  }
+  .ind-cacao p {
+    font-size: 1.5em;
+  }
+  .text-cacao {
+    font-size: 1em !important;
+  }
+  .promedio-cacao h2,
+  .promedio-cultivo h2 {
+    font-size: 20px;
+  }
+  .indicadores-t2,
+  .grafico-right {
+    margin-top: 20px;
+  }
+  .botonera a {
+    width: 48%;
+    margin-right: 1%;
+    margin-left: 1%;
+  }
+  .consulta-org {
+    margin-bottom: 20px;
+  }
+  span.select2.select2-container.select2-container--default {
+    width: 95% !important;
+  }
 }
 /**************************MD-Device************************************/
 @media (min-width: 992px) {
@@ -673,53 +763,25 @@ div[role=tabpanel] {
     width: 30% !important;
     margin-top: 30px;
   }
-}
-@media (min-width: 768px) {
-  .ind-cacao {
-    padding-bottom: 6px;
-    margin-top: 15px;
+  .grafico-right,
+  .indicadores-t2 {
+    width: 49.5%;
+    margin-left: 1%;
+    margin-top: 0px;
   }
-  .ind-consulta {
-    padding-bottom: 14px;
+  .grafico-left {
+    width: 49.5%;
   }
-  .informacion {
-    margin-top: 20px;
+  .botonera a {
+    width: 23%;
+    margin-right: 1%;
+    margin-left: 1%;
   }
-  .ind-hombre,
-  .ind-produccion,
-  .ind-consulta {
-    margin-right: 5px;
-    margin-left: 15px;
-  }
-  .ind-cacao p {
-    font-size: 1.5em;
-  }
-  .text-cacao {
-    font-size: 1em !important;
+  .grafic {
+    margin: 0 auto;
   }
 }
-@media (max-width: 767px) {
-  .ind-cacao,
-  .ind-hombre,
-  .ind-mujer,
-  .informacion {
-    margin-top: 15px;
-  }
-  .navbar,
-  .navbar-header {
-    min-height: 60px;
-  }
-  .navbar-default .navbar-nav>li>a {
-    margin-right: 0px;
-  }
-  .navbar-default .navbar-toggle:focus,
-  .navbar-default .navbar-toggle:hover {
-    background-color: #fff;
-  }
-  .navbar-nav {
-    margin: 0px -15px;
-  }
-}
+/**************************LG-Device************************************/
 @media (min-width: 1200px) {
   .ind-cacao,
   .ind-hombre,
@@ -749,5 +811,18 @@ div[role=tabpanel] {
   .logos .heiferimg img {
     width: 60% !important;
     margin-top: 0px;
+  }
+  .grafico-right,
+  .indicadores-t2 {
+    width: 49%;
+    margin-left: 2%;
+    margin-top: 0px;
+  }
+  .grafico-left {
+    width: 49%;
+  }
+  .botonera a {
+    width: 23%;
+    margin-right: 1%;
   }
 }

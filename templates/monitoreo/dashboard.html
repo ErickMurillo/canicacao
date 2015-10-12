@@ -541,7 +541,13 @@ table{
               </tr>
           </table>
 
-      </div>-->
+      </div>
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+            <h4 class="titulo-inicio">Tablero de indicadores</h4>  
+        </div>
+
+      -->
+      {% include "monitoreo/indicadores.html" %}
   </div>
 </div>
 
@@ -550,9 +556,12 @@ table{
 
   <!-- Nav tabs -->
 <ul class="nav nav-annos" role="navegacion">
-
+    <li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+        <a >Años:</a>
+    </li>
+  
     {% for year in anno.keys %}
-    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-2" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
     {% endfor %}
 </ul>
 
@@ -561,48 +570,46 @@ table{
 
     {% for year,value in anno.items %}
     <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-            <h4 class="titulo-inicio">Tablero de indicadores</h4>  
-        </div>
-        <div class="contenido-graficos">
+       
+        <div class="container-fluid contenido-graficos">
 
             <div class="row fila1">
-                <div class="col-md-12 col-lg-6 grafico1">
-                    <div id="hectarea{{year}}" style="min-width: 310px; width: 540px"></div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                    <div class="grafic" id="hectarea{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
                 </div>
-                <div class="col-md-12 col-lg-6 grafico3">
-                    <div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px"></div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+                    <div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px; margin: 0 auto;"></div>
                 </div>
             </div>
 
             <!--fila 2-->
             <div class="row fila2">
 
-              <div class="col-md-12 col-lg-6 grafico1">
+              <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
                   <h4 align="center">Producción de cacao en toneladas por departamento</h4>
-                  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:380px"></div>
+                  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:363px"></div>
               </div>
 
 
-              <div class="col-md-12 col-lg-6 indicadores-t2">
+              <div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2 ">
                <div class="promedio-cacao">
                    <div class="row">
-                       <div class="col-md-8 col-lg-8 texto-indicador">
+                       <div class="col-sm-8 col-md-8 col-lg-8 texto-indicador">
                            <h1>{{value.1|floatformat:2}} </h1>
                            <h2>Producción total en toneladas</h2>
                        </div>
-                       <div class="col-md-4 col-lg-4">
+                       <div class="col-sm-4 col-md-4 col-lg-4">
                            <img src="/static/img/arbol-01.png" alt="">
                        </div>
                    </div>
                </div>
                <div class="promedio-cultivo">
                 <div class="row">
-                   <div class="col-md-8 col-lg-8 texto-indicador">
+                   <div class="col-sm-8 col-md-8 col-lg-8 texto-indicador">
                        <h1>{{value.8|floatformat:2}} ha</h1>
                        <h2>Promedio áreas de cacao por productor</h2>
                    </div>
-                   <div class="col-md-4 col-lg-4">
+                   <div class="col-sm-4 col-md-4 col-lg-4">
                        <img src="/static/img/arbolito-01.png" alt="">
                    </div>
                </div>
@@ -612,31 +619,31 @@ table{
 
    <!--fila 3-->
    <div class="row fila3">
-    <div class="col-md-12 col-lg-6 grafico1">
-        <div id="tipo{{year}}" style="min-width: 310px; width: 540px"></div>
+    <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+        <div id="tipo{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
     </div>
-    <div class="col-md-12 col-lg-6 grafico3">
-        <div id="socio{{year}}" style="min-width: 310px; width: 540px"></div>
+    <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+        <div id="socio{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
     </div>
 </div>
 
 <!--fila 4-->
 <div class="row fila4">
-    <div class="col-md-12 col-lg-6 grafico1">
-        <div id="venta{{year}}" style="min-width: 310px; width: 540px"></div>
+    <div class="col-md-6 col-lg-6 grafico-left">
+        <div id="venta{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
     </div>
-    <div class="col-md-12 col-lg-6 grafico3">
-        <div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px"></div>
+    <div class="col-md-6 col-lg-6 grafico-right">
+        <div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
     </div>
     
 </div>
 
 <div class="row fila5">
- <div class="col-md-12 col-lg-6 grafico1">
-    <div id="destino{{year}}" style="min-width: 310px; width: 540px"></div>
+ <div class="col-md-12 col-lg-6 grafico-left">
+    <div id="destino{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 </div>
-<div class="col-md-12 col-lg-6 grafico3">
-    <div id="destino_org{{year}}" style="min-width: 310px; width: 540px"></div>
+<div class="col-md-12 col-lg-6 grafico-right">
+    <div id="destino_org{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 </div>
 
 </div>
@@ -649,7 +656,7 @@ table{
 
 </div>
 
-{% include "monitoreo/indicadores.html" %}
+
 
 
 <!--{% for year,value in anno.items %}

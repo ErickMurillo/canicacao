@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://127.0.0.1:8000/dashboard/ -->
+<html lang="es" hola_ext_inject="disabled"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<title>Canicacao</title>
+	<link rel="shortcut icon" type="image/x-icon" href="http://127.0.0.1:8000/static/img/icon-cocoa.png">
+	<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/main.css">
+	<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/responsive.css">
+	<!--<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>-->
+	<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/font-awesome.min.css">
+	<link rel="stylesheet" href="http://127.0.0.1:8000/static/css/select2.css">
+<style type="text/css"></style></head>
+<body cz-shortcut-listen="true">
+<style>
+    .btn-export {
+        float: right;
+        margin-top: 30px
+    }
+</style>
+		<header>
+			<div class="encabezado">
+			<div class="row">
+				<div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+					<h4>SISTEMA DE MONITOREO DE CACAO</h4>
+				</div>
+				<div class="col-xs-6 col-sm-6 col-md-8 col-lg-8 text-right btn-sesion">
+					<a class="sesion" href="http://127.0.0.1:8000/admin/">
+						<img src="./Canicacao_files/cacao.png" alt="">
+						Administración
+					</a>
+
+				</div>
+			</div>	
+			</div>
+			<nav class="navbar navbar-default" role="navigation">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="http://127.0.0.1:8000/">
+					<img src="./Canicacao_files/cacao2.png" alt="">
+					</a>
+				</div>
+			
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+					
+
+					<ul class="nav navbar-nav navbar-right">
+						<li class="item-inicio activate"><a href="http://127.0.0.1:8000/">Inicio</a></li>
+						<li class="item-consulta"><a href="http://127.0.0.1:8000/consulta/">Consulta</a></li>
+						<li class="item-org"><a href="http://127.0.0.1:8000/organizacion/">Organizaciones</a></li>
+						<li class="item-acerca"><a href="http://127.0.0.1:8000/acerca-de/">Acerca de</a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</nav>
+		</header>
+
+		
+
+    <div class="datos-dashboard">
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 tablero-familia">
+                <div class="ind-familia row">
+                    <div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="./Canicacao_files/familia.png" alt=""></div>
+                    <div class=" col-lg-3"><h1>260</h1></div>
+                    <div class=" col-lg-4" style="margin-left: -25px"><p>Productores</p></div>
+                </div>
+            </div>
+
+             <div class="col-xs-3 col-sm-3 col-md-6 col-lg-6 tablero-genero">
+                <div class="ind-genero row">
+                    <div class=" col-lg-6">
+                        <div class="row tablero-hombre">
+                            <div class=" col-lg-3 col-lg-offset-1 img-genero"><img src="./Canicacao_files/hombre.png" alt=""></div>
+                            <div class=" col-lg-3"><h2>80.38%</h2></div>
+                            <div class=" col-lg-4"><p>Hombres</p></div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-6 tablero-mujer">
+                        <div class="row">
+                            <div class=" col-lg-3 col-lg-offset-1 img-genero"><img src="./Canicacao_files/mujer.png" alt=""></div>
+                            <div class=" col-lg-3"><h2>19.62%</h2></div>
+                            <div class=" col-lg-4"><p>Mujeres</p></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 tablero-org">
+                <div class="ind-org row">
+                    <div class=" col-lg-3 col-lg-offset-1 img-org"><img src="./Canicacao_files/organizacion.png" alt=""></div>
+                    <div class=" col-lg-3"><h1>15</h1></div>
+                    <div class=" col-lg-4"><p>Organizaciones</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+		<div class="container-fluid">
+		
+<style>
+/*  .map{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.labels {
+ color: white;
+ background-color: #ff2b00;
+ font-family: "Roboto", sans-serif;
+ font-size: 14px;
+ text-align: center;
+ width: auto;
+ white-space: nowrap;
+ margin-left: -15px !important;
+ margin-top: -39px !important;
+ padding: 2px;
+ border-radius: 15px
+}
+.nav-tabs>li.active {
+    width: 22% !important;
+}
+.nav-tabs>li {
+    width: 20% !important;
+}
+table{
+    margin-top: 60px;
+    margin-bottom: 40px;
+}*/
+</style>
+<div class="row">
+    <div class="seleccion">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 borde-filtro">
+                            <p>Filtros seleccionados</p>
+                        </div>
+                        <div class="col-xs-7 col-sm-7 col-md-10 col-lg-10 datos-filtro">
+                            <div class="row">
+                            
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Año</h5>
+                                    <p>
+                                        
+                                            2015,
+                                        
+                                    </p>
+                                </div>
+                            
+                                
+                            
+                            
+                             
+                            
+                            
+
+                            
+
+                            
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        
+      <!--<div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
+          <table class="table table-condensed">
+              <caption>Conversiones</caption>
+              <tr>
+                  <th>1 tonelada = 1000 kg = 2,204.62 lb</th>
+              </tr>
+              <tr>
+                  <th>1 libra = 0.453592 kg</th> 
+              </tr>
+              <tr>
+                  <th>1 qq = 100 lb = 45.35 kg</th> 
+              </tr>
+              <tr>
+                  <th>1 tonelada = 22.05 qq</th> 
+              </tr>
+          </table>
+
+      </div>
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+            <h4 class="titulo-inicio">Tablero de indicadores</h4>  
+        </div>
+
+      -->
+  </div>
+</div>
+
+
+<div id="tabs">
+
+  <!-- Nav tabs -->
+<ul class="nav nav-annos" role="navegacion">
+    <li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+        <a>Indicadores:</a>
+    </li>
+  
+    
+    <li role="annos" class="active col-xs-3 col-sm-3 col-md-2 col-lg-2" id="1"><a href="http://127.0.0.1:8000/dashboard/#2015" aria-controls="2015" role="tab" data-toggle="tab">2015</a></li>
+    
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+    
+    <div role="tabpanel" class="tab-pane active" id="2015">
+       
+        <div class="container-fluid contenido-graficos">
+
+            <div class="row fila1">
+                <div class="col-md-12 col-lg-6 grafico-left">
+                    <div id="hectarea2015" style="min-width: 310px; width: 540px" data-highcharts-chart="3"><div class="highcharts-container" id="highcharts-6" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-7"><rect x="0" y="0" width="520" height="289"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-series-group" zIndex="3"><path fill="rgba(67,67,72,0.25)" d="M 0 0"></path><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)" style="cursor:pointer;"><path fill="#7cb5ec" d="M 259.9784106404083 40.00000219858704 A 106 106 0 0 1 286.5119127262867 43.36901791567149 L 260 146 A 0 0 0 0 0 260 146 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#434348" d="M 286.6145304353106 43.39558113946589 A 106 106 0 0 1 363.20863787056976 121.83438250527003 L 260 146 A 0 0 0 0 0 260 146 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#90ed7d" d="M 363.23275187972223 121.9376032087469 A 106 106 0 0 1 157.2846092337648 172.18298110872033 L 260 146 A 0 0 0 0 0 260 146 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#f7a35c" d="M 157.258477614711 172.08025264358386 A 106 106 0 0 1 189.83555404879988 66.54592191484998 L 260 146 A 0 0 0 0 0 260 146 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#8085e9" d="M 189.91504319586272 66.47579720762859 A 106 106 0 0 1 259.8527681265644 40.00010225110853 L 260 146 A 0 0 0 0 0 260 146 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Porcentaje de áreas de cacao por edad de plantación</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(10,45) scale(1 1)" opacity="1" style="cursor:pointer;"><path fill="none" d="M 282.214861283667 11.09392693068223 C 277.214861283667 11.09392693068223 276.2022223846277 19.02957828770092 274.8098438984488 29.941098903601624 L 273.41746541226985 40.852619519502326" stroke="#7cb5ec" stroke-width="1"></path><path fill="none" d="M 362.36736169096906 51.049503016887726 C 357.36736169096906 51.049503016887726 351.6398698267944 56.634826368835505 343.76456851355425 64.3146459777637 L 335.8892672003141 71.9944655866919" stroke="#434348" stroke-width="1"></path><path fill="none" d="M 297.1223484015343 278.15201373104554 C 292.1223484015343 278.15201373104554 290.2327984955616 270.37836586451346 287.6346673748493 259.6896000480318 L 285.036536254137 249.0008342315502" stroke="#90ed7d" stroke-width="1"></path><path fill="none" d="M 125.08775927180935 105.76556563115811 C 130.08775927180935 105.76556563115811 137.72965578523235 108.1322970646194 148.23726349118894 111.38655278562867 L 158.74487119714553 114.64080850663794" stroke="#f7a35c" stroke-width="1"></path><path fill="none" d="M 206.96739108134378 18.764515639435604 C 211.96739108134378 18.764515639435604 214.79283866479415 26.24895589593939 218.6778290920384 36.5400612486321 L 222.56281951928264 46.83116660132481" stroke="#8085e9" stroke-width="1"></path><g zIndex="1" style="cursor:pointer;" transform="translate(287,1)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>4.04%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(367,41)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>17.32%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(302,268)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>49.69%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(79,96)"><text x="0" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>17.46%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(161,9)"><text x="0" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>11.49%</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(19,346)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15"><tspan>Menor de un año</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(143,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>De 1 a 3 años</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(260,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>De 4 a 10 años</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#90ed7d"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(384,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>De 10 a 20 años</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#f7a35c"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,17)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Mayores de 20 años</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#8085e9"></rect></g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(323,-9999)" opacity="0" visibility="visible"><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)" width="121" height="43"></path><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)" width="121" height="43"></path><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)" width="121" height="43"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="#434348" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"><tspan style="font-size: 10px">De 1 a 3 años</tspan><tspan x="8" dy="15">Porcentajes: </tspan><tspan style="font-weight:bold" dx="0">17.3%</tspan></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+                </div>
+                <div class="col-md-12 col-lg-6 grafico-right">
+                    <div id="rendimiento2015" style="min-width: 310px;  width: 540px" data-highcharts-chart="0"><div class="highcharts-container" id="highcharts-0" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-1"><rect x="0" y="0" width="463" height="320"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-grid" zIndex="1"></g><g class="highcharts-grid" zIndex="1"><path fill="none" d="M 67 365.5 L 530 365.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 67 285.5 L 530 285.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 67 205.5 L 530 205.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 67 125.5 L 530 125.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 67 44.5 L 530 44.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path></g><g class="highcharts-axis" zIndex="2"><path fill="none" d="M 298.5 365 L 298.5 375" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 530.5 365 L 530.5 375" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 66.5 365 L 66.5 375" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 67 365.5 L 530 365.5" stroke="#C0D0E0" stroke-width="1" zIndex="7" visibility="visible"></path></g><g class="highcharts-axis" zIndex="2"><text x="24" zIndex="7" text-anchor="middle" transform="translate(0,0) rotate(270 24 205)" class=" highcharts-yaxis-title" style="color:#707070;fill:#707070;" visibility="visible" y="205">Rendimiento</text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(67,45) scale(1 1)" style="" clip-path="url(#highcharts-1)"><rect x="59.5" y="316.5" width="112" height="4" stroke="#FFFFFF" stroke-width="1" fill="#7cb5ec" rx="0" ry="0"></rect><rect x="291.5" y="28.5" width="112" height="292" stroke="#FFFFFF" stroke-width="1" fill="#434348" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(67,45) scale(1 1)" clip-path="none"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Rendimiento expresado en kg por hectárea (Kg/ha)</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(67,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(100,303)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:white;text-shadow:0 0 3px black;fill:white;text-rendering:geometricPrecision;" y="16"><tspan>2.71</tspan></text></g><g zIndex="1" style="" transform="translate(326,164)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:white;text-shadow:0 0 3px black;fill:white;text-rendering:geometricPrecision;" y="16"><tspan>182.71</tspan></text></g></g><g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7"><text x="182.75" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:222px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)" y="384" opacity="1"><tspan>Fermentado convencional</tspan></text><text x="414.25" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:222px;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)" y="384" opacity="1"><tspan>Fermentado Orgánico</tspan></text></g><g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7"><text x="52" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="370" opacity="1">0</text><text x="52" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="290" opacity="1">50</text><text x="52" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="210" opacity="1">100</text><text x="52" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="130" opacity="1">150</text><text x="52" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="50" opacity="1">200</text></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+                </div>
+            </div>
+
+            <!--fila 2-->
+            <div class="row fila2">
+
+              <div class="col-md-12 col-lg-6 grafico-left">
+                  <h4 align="center">Producción de cacao en toneladas por departamento</h4>
+                  <div id="map_canvas_1" class="map" style="width:100%; height:380px"></div>
+              </div>
+
+
+              <div class="col-md-12 col-lg-6 indicadores-t2 ">
+               <div class="promedio-cacao">
+                   <div class="row">
+                       <div class="col-md-8 col-lg-8 texto-indicador">
+                           <h1>115.08 </h1>
+                           <h2>Producción total en toneladas</h2>
+                       </div>
+                       <div class="col-md-4 col-lg-4">
+                           <img src="./Canicacao_files/arbol-01.png" alt="">
+                       </div>
+                   </div>
+               </div>
+               <div class="promedio-cultivo">
+                <div class="row">
+                   <div class="col-md-8 col-lg-8 texto-indicador">
+                       <h1>2.23 ha</h1>
+                       <h2>Promedio áreas de cacao por productor</h2>
+                   </div>
+                   <div class="col-md-4 col-lg-4">
+                       <img src="./Canicacao_files/arbolito-01.png" alt="">
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   <!--fila 3-->
+   <div class="row fila3">
+    <div class="col-md-12 col-lg-6 grafico1">
+        <div id="tipo2015" style="min-width: 310px; width: 540px" data-highcharts-chart="4"><div class="highcharts-container" id="highcharts-8" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-9"><rect x="0" y="0" width="520" height="303"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-series-group" zIndex="3"><path fill="rgba(67,67,72,0.25)" d="M 0 0"></path><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)" style="cursor:pointer;"><path fill="#7cb5ec" d="M 259.97118024167713 10.000002934906291 A 141.5 141.5 0 0 1 398.02745395923534 120.34439129897845 L 260 151.5 A 0 0 0 0 0 260 151.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#434348" d="M 398.0585405490225 120.48243430773617 A 141.5 141.5 0 0 1 399.9321830646228 130.49442591194213 L 260 151.5 A 0 0 0 0 0 260 151.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#90ed7d" d="M 399.95311866912425 130.6343685744709 A 141.5 141.5 0 1 1 259.8034593387629 10.000136495583575 L 260 151.5 A 0 0 0 1 0 260 151.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Producción de cacao</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(10,45) scale(1 1)" opacity="1" style="cursor:pointer;"><path fill="none" d="M 372.17802420764286 17.615269253936525 C 367.17802420764286 17.615269253936525 362.17846622711147 23.860621125473017 355.3040740038807 32.44797994883569 L 348.42968178064996 41.03533877219836" stroke="#7cb5ec" stroke-width="1"></path><path fill="none" d="M 433.58774241985543 120.0290116809707 C 428.58774241985543 120.0290116809707 420.72359116994966 121.49704612150852 409.9103832013292 123.515593477248 L 399.0971752327087 125.53414083298749" stroke="#434348" stroke-width="1"></path><path fill="none" d="M 143.05640727070744 281.4264486040401 C 148.05640727070744 281.4264486040401 153.27826582367732 275.3657396312568 160.45832133401095 267.03226479367993 L 167.63837684434458 258.69878995610304" stroke="#90ed7d" stroke-width="1"></path><g zIndex="1" style="cursor:pointer;" transform="translate(377,8)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>21.49%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(439,110)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>1.15%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(97,271)"><text x="0" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>77.37%</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(22,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15"><tspan>Seco sin fermentar</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(158,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Fermentado convencional</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(346,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Fermentado orgánico</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#90ed7d"></rect></g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(389,-9999)" opacity="0" visibility="visible"><path fill="none" d="M 3.5 0.5 L 138.5 0.5 C 141.5 0.5 141.5 0.5 141.5 3.5 L 141.5 40.5 C 141.5 43.5 141.5 43.5 138.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)" width="141" height="43"></path><path fill="none" d="M 3.5 0.5 L 138.5 0.5 C 141.5 0.5 141.5 0.5 141.5 3.5 L 141.5 40.5 C 141.5 43.5 141.5 43.5 138.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)" width="141" height="43"></path><path fill="none" d="M 3.5 0.5 L 138.5 0.5 C 141.5 0.5 141.5 0.5 141.5 3.5 L 141.5 40.5 C 141.5 43.5 141.5 43.5 138.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)" width="141" height="43"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 138.5 0.5 C 141.5 0.5 141.5 0.5 141.5 3.5 L 141.5 40.5 C 141.5 43.5 141.5 43.5 138.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="#434348" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"><tspan style="font-size: 10px">Fermentado convencional</tspan><tspan x="8" dy="15">Procentajes: </tspan><tspan style="font-weight:bold" dx="0">1.1%</tspan></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+    </div>
+    <div class="col-md-12 col-lg-6 grafico3">
+        <div id="socio2015" style="min-width: 310px; width: 540px" data-highcharts-chart="5"><div class="highcharts-container" id="highcharts-10" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-11"><rect x="0" y="0" width="520" height="303"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-series-group" zIndex="3"><path fill="rgba(124,181,236,0.25)" d="M 0 0"></path><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)" style="cursor:pointer;"><path fill="#7cb5ec" d="M 259.97545737895473 31.000002499337157 A 120.5 120.5 0 1 1 179.78697231389822 61.577143120179585 L 260 151.5 A 0 0 0 1 0 260 151.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#434348" d="M 179.87693526230137 61.49697506728704 A 120.5 120.5 0 0 1 259.8326279174624 31.000116238288484 L 260 151.5 A 0 0 0 0 0 260 151.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Productores Organizados y no Organizados</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(10,45) scale(1 1)" opacity="1" style="cursor:pointer;"><path fill="none" d="M 318.56493211677645 292.14511384091924 C 313.56493211677645 292.14511384091924 310.7176267550874 284.66896161017274 306.80258188276485 274.38925229289623 L 302.8875370104423 264.1095429756197" stroke="#7cb5ec" stroke-width="1"></path><path fill="none" d="M 201.4350678832235 10.854886159080802 C 206.4350678832235 10.854886159080802 209.2823732449126 18.33103838982734 213.19741811723515 28.610747707103826 L 217.11246298955768 38.89045702438031" stroke="#434348" stroke-width="1"></path><g zIndex="1" style="cursor:pointer;" transform="translate(324,282)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>88.08%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(155,1)"><text x="0" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>11.54%</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(157,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15">Organizado</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(114,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>No Organizado</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(145,-9999)" opacity="0" visibility="visible"><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)" width="121" height="43"></path><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)" width="121" height="43"></path><path fill="none" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)" width="121" height="43"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 118.5 0.5 C 121.5 0.5 121.5 0.5 121.5 3.5 L 121.5 40.5 C 121.5 43.5 121.5 43.5 118.5 43.5 L 3.5 43.5 C 0.5 43.5 0.5 43.5 0.5 40.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="#7cb5ec" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"><tspan style="font-size: 10px">Organizado</tspan><tspan x="8" dy="15">Procentajes: </tspan><tspan style="font-weight:bold" dx="0">88.4%</tspan></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+    </div>
+</div>
+
+<!--fila 4-->
+<div class="row fila4">
+    <div class="col-md-12 col-lg-6 grafico1">
+        <div id="venta2015" style="min-width: 310px; width: 540px" data-highcharts-chart="1"><div class="highcharts-container" id="highcharts-2" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-3"><rect x="0" y="0" width="469" height="283"></rect></clippath><lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-27"><stop offset="0" stop-color="#FFF" stop-opacity="1"></stop><stop offset="1" stop-color="#ACF" stop-opacity="1"></stop></lineargradient></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-grid" zIndex="1"></g><g class="highcharts-grid" zIndex="1"><path fill="none" d="M 61 328.5 L 530 328.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 281.5 L 530 281.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 234.5 L 530 234.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 187.5 L 530 187.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 139.5 L 530 139.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 92.5 L 530 92.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 44.5 L 530 44.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path></g><g class="highcharts-axis" zIndex="2"><path fill="none" d="M 295.5 328 L 295.5 338" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 61 328.5 L 530 328.5" stroke="#C0D0E0" stroke-width="1" zIndex="7" visibility="visible"></path></g><g class="highcharts-axis" zIndex="2"><text x="24" zIndex="7" text-anchor="middle" transform="translate(0,0) rotate(270 24 186.5)" class=" highcharts-yaxis-title" style="color:#707070;fill:#707070;" visibility="visible" y="186.5">Toneladas</text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" style="" clip-path="url(#highcharts-3)"><rect x="108" y="281" width="113" height="3" fill="#7cb5ec" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" clip-path="none"></g><g class="highcharts-series highcharts-series-1 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" style="" clip-path="url(#highcharts-3)"><rect x="249" y="36" width="113" height="248" fill="#434348" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-1" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" clip-path="none"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Auto-consumo vs Venta de cacao</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(61,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(149,259)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>0.36</tspan></text></g></g><g class="highcharts-data-labels highcharts-series-1 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(61,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(287,14)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>26.29</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(170,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15">Auto-consumo</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(132,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2">Ventas</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g></g></g></g><g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7"><text x="295.5" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:Infinitypx;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)" y="347" opacity="1">0</text></g><g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7"><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="333" opacity="1">0</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="286" opacity="1">5</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="239" opacity="1">10</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="192" opacity="1">15</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="144" opacity="1">20</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="97" opacity="1">25</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="50" opacity="1">30</text></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"></text></g></svg></div></div>
+    </div>
+    <div class="col-md-12 col-lg-6 grafico3">
+        <div id="venta_cacao2015" style="min-width: 310px; width: 540px" data-highcharts-chart="2"><div class="highcharts-container" id="highcharts-4" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-5"><rect x="0" y="0" width="469" height="283"></rect></clippath><lineargradient x1="0" y1="0" x2="0" y2="1" id="highcharts-28"><stop offset="0" stop-color="#FFF" stop-opacity="1"></stop><stop offset="1" stop-color="#ACF" stop-opacity="1"></stop></lineargradient></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-grid" zIndex="1"></g><g class="highcharts-grid" zIndex="1"><path fill="none" d="M 61 328.5 L 530 328.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 271.5 L 530 271.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 215.5 L 530 215.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 158.5 L 530 158.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 102.5 L 530 102.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path><path fill="none" d="M 61 44.5 L 530 44.5" stroke="#D8D8D8" stroke-width="1" zIndex="1" opacity="1"></path></g><g class="highcharts-axis" zIndex="2"><path fill="none" d="M 295.5 328 L 295.5 338" stroke="#C0D0E0" stroke-width="1" opacity="1"></path><path fill="none" d="M 61 328.5 L 530 328.5" stroke="#C0D0E0" stroke-width="1" zIndex="7" visibility="visible"></path></g><g class="highcharts-axis" zIndex="2"><text x="24" zIndex="7" text-anchor="middle" transform="translate(0,0) rotate(270 24 186.5)" class=" highcharts-yaxis-title" style="color:#707070;fill:#707070;" visibility="visible" y="186.5">Toneladas</text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" style="" clip-path="url(#highcharts-5)"><rect x="103" y="239" width="76" height="45" fill="#7cb5ec" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" clip-path="none"></g><g class="highcharts-series highcharts-series-1 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" style="" clip-path="url(#highcharts-5)"><rect x="197" y="31" width="76" height="253" fill="#434348" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-1" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" clip-path="none"></g><g class="highcharts-series highcharts-series-2 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" style="" clip-path="url(#highcharts-5)"><rect x="291" y="284" width="76" height="0" fill="#90ed7d" rx="0" ry="0"></rect></g><g class="highcharts-markers highcharts-series-2" visibility="visible" zIndex="0.1" transform="translate(61,45) scale(1 1)" clip-path="none"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Venta por calidad de cacao en Tn</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(61,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(126,217)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>3.94</tspan></text></g></g><g class="highcharts-data-labels highcharts-series-1 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(61,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(217,9)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>22.34</tspan></text></g></g><g class="highcharts-data-labels highcharts-series-2 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(61,45) scale(1 1)" opacity="1" style=""><g zIndex="1" style="" transform="translate(314,262)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>0.00</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(46,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15"><tspan>Cacao en baba</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(133,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Cacao rojo sin fermentar</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(315,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Cacao fermentado</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#90ed7d"></rect></g></g></g></g><g class="highcharts-axis-labels highcharts-xaxis-labels" zIndex="7"><text x="295.5" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:Infinitypx;text-overflow:clip;" text-anchor="middle" transform="translate(0,0)" y="347" opacity="1">0</text></g><g class="highcharts-axis-labels highcharts-yaxis-labels" zIndex="7"><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="333" opacity="1">0</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="276" opacity="1">5</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="220" opacity="1">10</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="163" opacity="1">15</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="107" opacity="1">20</text><text x="46" style="color:#606060;cursor:default;font-size:11px;fill:#606060;width:168px;text-overflow:clip;" text-anchor="end" transform="translate(0,0)" y="50" opacity="1">25</text></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(229,-9999)" opacity="0" visibility="visible"><path fill="none" d="M 3.5 0.5 L 132.5 0.5 C 135.5 0.5 135.5 0.5 135.5 3.5 L 135.5 41.5 C 135.5 44.5 135.5 44.5 132.5 44.5 L 72.5 44.5 66.5 50.5 60.5 44.5 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)" width="135" height="44"></path><path fill="none" d="M 3.5 0.5 L 132.5 0.5 C 135.5 0.5 135.5 0.5 135.5 3.5 L 135.5 41.5 C 135.5 44.5 135.5 44.5 132.5 44.5 L 72.5 44.5 66.5 50.5 60.5 44.5 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)" width="135" height="44"></path><path fill="none" d="M 3.5 0.5 L 132.5 0.5 C 135.5 0.5 135.5 0.5 135.5 3.5 L 135.5 41.5 C 135.5 44.5 135.5 44.5 132.5 44.5 L 72.5 44.5 66.5 50.5 60.5 44.5 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)" width="135" height="44"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 132.5 0.5 C 135.5 0.5 135.5 0.5 135.5 3.5 L 135.5 41.5 C 135.5 44.5 135.5 44.5 132.5 44.5 L 72.5 44.5 66.5 50.5 60.5 44.5 3.5 44.5 C 0.5 44.5 0.5 44.5 0.5 41.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" stroke="#434348" stroke-width="1"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"><tspan style="font-size:11px">Cacao rojo sin fermentar</tspan><tspan style="font-weight:bold" x="8" dy="15">22.34</tspan></text></g></svg></div></div>
+    </div>
+    
+</div>
+
+<div class="row fila5">
+ <div class="col-md-12 col-lg-6 grafico1">
+    <div id="destino2015" style="min-width: 310px; width: 540px" data-highcharts-chart="6"><div class="highcharts-container" id="highcharts-12" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-13"><rect x="0" y="0" width="520" height="282"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(10,66) scale(1 1)" style="cursor:pointer;"><path fill="#7cb5ec" d="M 259.97769778419536 35.0000022711819 A 109.5 109.5 0 0 1 320.81196808011856 53.43873195357622 L 260 144.5 A 0 0 0 0 0 260 144.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#434348" d="M 320.9029989270066 53.49958944215123 A 109.5 109.5 0 0 1 342.682709912665 72.70989287166314 L 260 144.5 A 0 0 0 0 0 260 144.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#90ed7d" d="M 342.75445866647686 72.79261146284593 A 109.5 109.5 0 1 1 259.84790669678114 35.00010562732439 L 260 144.5 A 0 0 0 1 0 260 144.5 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(10,66) scale(1 1)"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>¿A quién (es) venden los productores su producción de</tspan><tspan dy="21" x="270">cacao?</tspan><title>¿A quién (es) venden los productores su producción de cacao?</title></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(10,66) scale(1 1)" opacity="1" style="cursor:pointer;"><path fill="none" d="M 305.5615529580425 11.027117279831277 C 300.5615529580425 11.027117279831277 298.23544239414036 18.681476145504035 295.037040368775 29.206219585804078 L 291.8386383434097 39.73096302610412" stroke="#7cb5ec" stroke-width="1"></path><path fill="none" d="M 357.3262984257251 39.924168093177684 C 352.3262984257251 39.924168093177684 347.0316003081208 45.92134841758326 339.7513903964149 54.167471363640935 L 332.47118048470895 62.41359430969861" stroke="#434348" stroke-width="1"></path><path fill="none" d="M 197.0695408047012 271.40276552314305 C 202.0695408047012 271.40276552314305 205.3917176761162 264.12518757199507 209.9597108743118 254.11851788916658 L 214.52770407250742 244.1118482063381" stroke="#90ed7d" stroke-width="1"></path><g zIndex="1" style="cursor:pointer;" transform="translate(311,1)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>9.39%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(362,30)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>4.24%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(151,261)"><text x="0" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>86.36%</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(125,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15">Comunidad</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(113,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2">Intermediario</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(230,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2">Otros</text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#90ed7d"></rect></g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+</div>
+<div class="col-md-12 col-lg-6 grafico3">
+    <div id="destino_org2015" style="min-width: 310px; width: 540px" data-highcharts-chart="7"><div class="highcharts-container" id="highcharts-14" style="position: relative; overflow: hidden; width: 540px; height: 400px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"><svg version="1.1" style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Arial, Helvetica, sans-serif;font-size:12px;" xmlns="http://www.w3.org/2000/svg" width="540" height="400"><desc>Created with Highcharts 4.1.9</desc><defs><clippath id="highcharts-15"><rect x="0" y="0" width="520" height="303"></rect></clippath></defs><rect x="0" y="0" width="540" height="400" strokeWidth="0" fill="#FFFFFF" class=" highcharts-background"></rect><g class="highcharts-button" style="cursor:default;" stroke-linecap="round" transform="translate(506,10)"><title>Chart context menu</title><rect x="0.5" y="0.5" width="24" height="22" strokeWidth="1" fill="white" stroke="none" stroke-width="1" rx="2" ry="2"></rect><path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5" stroke="#666" stroke-width="3" zIndex="1"></path><text x="0" zIndex="1" style="color:black;fill:black;" y="12"></text></g><g class="highcharts-series-group" zIndex="3"><g class="highcharts-series highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)" style="cursor:pointer;"><path fill="#7cb5ec" d="M 259.9743371763344 41.00000261341478 A 126 126 0 0 1 259.84833721277926 41.00009127622761 L 260 167 A 0 0 0 0 0 260 167 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#434348" d="M 259.9743371763344 41.00000261341478 A 126 126 0 0 1 259.84833721277926 41.00009127622761 L 260 167 A 0 0 0 0 0 260 167 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path><path fill="#90ed7d" d="M 259.9743371763344 41.00000261341478 A 126 126 0 0 1 259.84833721277926 41.00009127622761 L 260 167 A 0 0 0 0 0 260 167 Z" stroke="#FFFFFF" stroke-width="1" stroke-linejoin="round" transform="translate(0,0)"></path></g><g class="highcharts-markers highcharts-series-0" visibility="visible" zIndex="0.1" transform="translate(10,45) scale(1 1)"></g></g><text x="270" text-anchor="middle" class="highcharts-title" zIndex="4" style="color:#333333;font-size:18px;fill:#333333;width:476px;" y="24"><tspan>Mercado destino de la Producción</tspan></text><g class="highcharts-data-labels highcharts-series-0 highcharts-tracker" visibility="visible" zIndex="6" transform="translate(10,45) scale(1 1)" opacity="1" style="cursor:pointer;"><path fill="none" d="M 265 11 C 260 11 260 19 260 30 L 260 41" stroke="#7cb5ec" stroke-width="1"></path><path fill="none" d="M 344.87490219086345 33 C 339.87490219086345 33 260 19 260 30 L 260 41" stroke="#434348" stroke-width="1"></path><path fill="none" d="M 373.5909756839858 55 C 368.5909756839858 55 260 19 260 30 L 260 41" stroke="#90ed7d" stroke-width="1"></path><g zIndex="1" style="cursor:pointer;" transform="translate(270,1)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>0.00%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(350,23)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>0.00%</tspan></text></g><g zIndex="1" style="cursor:pointer;" transform="translate(379,45)"><text x="5" zIndex="1" style="font-size:11px;font-weight:bold;color:black;text-shadow:0 0 3px white;fill:black;text-rendering:geometricPrecision;" y="16"><tspan>0.00%</tspan></text></g></g><g class="highcharts-legend" zIndex="7" transform="translate(54,360)"><g zIndex="1"><g><g class="highcharts-legend-item" zIndex="1" transform="translate(8,3)"><text x="21" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2" y="15"><tspan>Mercado Nacional</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#7cb5ec"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(151,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Mercado Internacional</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#434348"></rect></g><g class="highcharts-legend-item" zIndex="1" transform="translate(319,3)"><text x="21" y="15" style="color:#333333;font-size:12px;font-weight:bold;cursor:pointer;fill:#333333;" text-anchor="start" zIndex="2"><tspan>Mercado Local</tspan></text><rect x="0" y="4" width="16" height="12" zIndex="3" fill="#90ed7d"></rect></g></g></g></g><g class="highcharts-tooltip" zIndex="8" style="cursor:default;padding:0;pointer-events:none;white-space:nowrap;" transform="translate(0,-9999)"><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.049999999999999996" stroke-width="5" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.09999999999999999" stroke-width="3" transform="translate(1, 1)"></path><path fill="none" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5" isShadow="true" stroke="black" stroke-opacity="0.15" stroke-width="1" transform="translate(1, 1)"></path><path fill="rgba(249, 249, 249, .85)" d="M 3.5 0.5 L 13.5 0.5 C 16.5 0.5 16.5 0.5 16.5 3.5 L 16.5 13.5 C 16.5 16.5 16.5 16.5 13.5 16.5 L 3.5 16.5 C 0.5 16.5 0.5 16.5 0.5 13.5 L 0.5 3.5 C 0.5 0.5 0.5 0.5 3.5 0.5"></path><text x="8" zIndex="1" style="font-size:12px;color:#333333;fill:#333333;" y="20"></text></g><text x="530" text-anchor="end" zIndex="8" style="cursor:pointer;color:#909090;font-size:9px;fill:#909090;" y="395">Highcharts.com</text></svg></div></div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+
+</div>
+
+</div>
+
+<div class="indocadores-monitore">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn" id="mas">
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 indicadores-titulo">
+              <h4 class=" titulo-indicadores">Ver más indicadores 
+                <span id="estado"><span class="fa fa-arrow-down"></span></span>   
+              </h4> 
+              
+            </div>  
+        </div>
+    </div>
+</div>
+<div class="botonera">
+    <div class="row">
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/educacion/">Nivel educativo</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/propiedad/">Tenencia de propiedad</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/uso-tierra/">Uso de tierra</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/reforestacion/">Reforestación</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/caracterizacion/">Caracterización terreno</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/riesgos/">Riesgos</a>
+        <!--<a class="btn col-lg-3" href="/mitigacion/">Mitigacion de riesgos</a> -->
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/organizacion-productiva/">Organización Productiva</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/produccion/">Producción</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/certificacion/">Certificación</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/tecnicas/">Técnicas aplicadas</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/comercializacion/">Comercialización</a>
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/capacitaciones/">Capacitaciones</a>
+        <!--<a class="btn col-lg-3" href="/capacitaciones-socio/">Capacitaciones socioenonómicas</a>-->
+        <a class="btn col-lg-3" href="http://127.0.0.1:8000/genero/">Género</a>
+    </div>
+</div>
+
+
+
+<!--
+  <div id="map_canvas_1" class="map" style="width:auto; height:400px"></div>
+  -->
+
+<!--<div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div>
+        
+        <div class="col-lg-3">
+            <a class="btn" href="">Miembros del hogar</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">Producción</a>
+        </div>
+        <div class="col-lg-3">
+           <a class="btn col-lg-3" href="">practicas</a>
+        </div> 
+<br>
+<br>
+ <div class="seleccion">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 borde-filtro">
+                            <p>Filtros seleccionados</p>
+                        </div>
+                        <div class="col-xs-7 col-sm-7 col-md-10 col-lg-10 datos-filtro">
+                            <div class="row">
+                            
+                                <div class="col-md-2 ind-filtro">
+                                    <h5>Año</h5>
+                                    <p>
+                                        
+                                            2015,
+                                        
+                                    </p>
+                                </div>
+                            
+                                
+                            
+                            
+                             
+                            
+                            
+
+                            
+
+                            
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ 
+
+	Familias : 260<br>
+	Hombres : 80.3846153846%<br>
+	Mujeres : 19.6153846154%<br>
+	Organizaciones : 15<br>
+	Socio : 88.0769230769<br>
+	No Socio : 11.5384615385<br>
+	Promedio mz cacao : 2.23059805447<br>
+	Promedio área en mz por productor : <br>
+
+	
+	
+	<div class="col-md-12 indicadores">
+		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
+        <a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
+	</div>
+-->
+
+		</div>
+		<footer class="footer">
+			<p class="Copyright">© Copyright 2015. Desarrollado por 
+				<a href="http://127.0.0.1:8000/dashboard/www.simas.org.ni">SIMAS</a>
+			</p>
+		</footer>
+
+	<script src="./Canicacao_files/jquery-2.1.4.min.js"></script>
+	<script src="./Canicacao_files/bootstrap.min.js"></script>
+    <script src="./Canicacao_files/jquery.cookie.js"></script>
+    <script src="./Canicacao_files/table.exporting.js"></script>
+    <script src="./Canicacao_files/highcharts.js"></script>
+	<script src="./Canicacao_files/exporting.js"></script>
+	<script src="./Canicacao_files/data.js"></script>
+	<script src="./Canicacao_files/drilldown.js"></script>
+	
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" src="./Canicacao_files/markerclusterer.js"></script>
+<script type="text/javascript" src="./Canicacao_files/infobox.js"></script>
+<script src="./Canicacao_files/markerwithlabel.js"></script>
+
+<script type="text/javascript">
+
+    
+    var map_2015;
+    
+
+    var latlng = new google.maps.LatLng(13,-85);
+
+    function initialize() {
+        var myOptions = {
+            zoom: 7,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            panControl: false,
+            zoomControl: false,
+            scaleControl: false,
+        };
+        var image = new google.maps.MarkerImage('/static/img/m2.png');
+
+        
+
+        map_2015 = new google.maps.Map(document.getElementById("map_canvas_1"),myOptions);
+
+        
+        var marker_1_2015  = new MarkerWithLabel({
+           position: new google.maps.LatLng(12.8836146, -85.9260257),
+           map: map_2015,
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "86.69",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+       });
+        
+        var marker_2_2015  = new MarkerWithLabel({
+           position: new google.maps.LatLng(14.0272539, -84.0378807),
+           map: map_2015,
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "25.77",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+       });
+        
+        var marker_3_2015  = new MarkerWithLabel({
+           position: new google.maps.LatLng(12.1529106, -84.3529871),
+           map: map_2015,
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "2.12",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+       });
+        
+        var marker_4_2015  = new MarkerWithLabel({
+           position: new google.maps.LatLng(11.2828716, -84.4247359),
+           map: map_2015,
+           //draggable: true,
+           raiseOnDrag: true,
+           labelContent: "0.50",
+           labelAnchor: new google.maps.Point(3, 30),
+           labelClass: "labels", // the CSS class for the label
+           labelInBackground: false,
+           icon: image,
+       });
+        
+
+        
+
+    }
+
+    initialize();
+    $('.update').on('shown.bs.tab', function(e) {
+        
+        google.maps.event.trigger(map_canvas_1, 'resize');
+        map_2015.setCenter(latlng);
+        
+    });
+    
+</script>
+
+
+
+<script>
+    $(function () {
+
+        $(document).ready(function () {
+
+        // Build the chart
+        $('#hectarea2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Porcentaje de áreas de cacao por edad de plantación'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                
+                {
+                    name: "Menor de un año",
+                    y: 4.04
+                },
+                
+                {
+                    name: "De 1 a 3 años",
+                    y: 17.32
+                },
+                
+                {
+                    name: "De 4 a 10 años",
+                    y: 49.69
+                },
+                
+                {
+                    name: "De 10 a 20 años",
+                    y: 17.46
+                },
+                
+                {
+                    name: "Mayores de 20 años",
+                    y: 11.49
+                },
+                
+                
+
+                ]
+            }]
+        });
+});
+});
+
+
+$(function () {
+    $('#rendimiento2015').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Rendimiento expresado en kg por hectárea (Kg/ha)'
+        },
+        
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Rendimiento'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg/ha<br/>'
+        },
+
+        series: [{
+            name: "Rendimientos",
+            colorByPoint: true,
+            data: [
+            // {
+            //     name: "Seco",
+            //     y: 661.486362903,
+            // }, 
+            {
+                name: "Fermentado convencional",
+                y: 2.70892382614,
+            }, {
+                name: "Fermentado Orgánico",
+                y: 182.714859858,
+            }
+            ]
+        }],
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#tipo2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Producción de cacao'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Seco sin fermentar",
+                    y: 21.49
+                },  {
+                    name: "Fermentado convencional",
+                    y: 1.15
+                }, {
+                    name: "Fermentado orgánico",
+                    y: 77.37
+                }
+                ]
+            }]
+        });
+});
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#socio2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Productores Organizados y no Organizados'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Organizado",
+                    y: 88.0769230769
+                },  {
+                    name: "No Organizado",
+                    y: 11.5384615385
+                }
+                ]
+            }]
+        });
+});
+});
+
+
+$(function () {
+    $('#venta2015').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Auto-consumo vs Venta de cacao'
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'Toneladas'
+            }
+        },
+
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+        },
+        series: [
+        {
+            name: 'Auto-consumo',
+            data: [0.361]
+        }, {
+            name: 'Ventas',
+            data: [26.286]
+        },
+
+        ]
+
+    });
+});
+
+$(function () {
+    $('#venta_cacao2015').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Venta por calidad de cacao en Tn'
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+            title: {
+                text: 'Toneladas'
+            }
+        },
+
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+        },
+        series: [
+        
+        {
+            name: 'Cacao en baba',
+            data: [3.94]
+        }, 
+        
+        {
+            name: 'Cacao rojo sin fermentar',
+            data: [22.34]
+        }, 
+        
+        {
+            name: 'Cacao fermentado',
+            data: [0.00]
+        }, 
+        
+        
+        ]
+
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿A quién (es) venden los productores su producción de cacao?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Procentaje",
+                colorByPoint: true,
+                data: [
+                
+                {
+                    name: "Comunidad",
+                    y: 9.39
+                }, 
+                
+                {
+                    name: "Intermediario",
+                    y: 4.24
+                }, 
+                
+                {
+                    name: "Otros",
+                    y: 86.36
+                }, 
+                
+                
+                ]
+            }]
+        });
+});
+});  
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#destino_org2015').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Mercado destino de la Producción'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Procentaje",
+                colorByPoint: true,
+                data: [
+                
+                {
+                    name: "Mercado Nacional",
+                    y: 0
+                }, 
+                
+                {
+                    name: "Mercado Internacional",
+                    y: 0
+                }, 
+                
+                {
+                    name: "Mercado Local",
+                    y: 0
+                }, 
+                
+                
+                ]
+            }]
+        });
+});
+});  
+</script>
+
+
+	<script>
+	    var flag = true;
+    $(document).ready(function(){
+        $('#mas').click(function(){
+            if(flag==true){
+                $('.botonera').slideDown('slow');
+                $('#estado').html('<span class="fa fa-arrow-up"></span>');
+                flag = false;
+            }else if (flag==false){
+                $('.botonera').slideUp('slow');
+                $('#estado').html('<span class="fa fa-arrow-down"></span>');
+                flag = true;
+            }
+            return false;
+            });
+        });
+    </script>
+
+<div id="csscan-wrapper" style="display: none;"><h2 id="csscan-header">element</h2><table id="csscan-table"><tbody><tr><th colspan="2" id="csscan-header-font" class="csscan-header">Font</th></tr><tr id="csscan-row-font-family"><td id="csscan-property-font-family" class="csscan-property">font-family</td><td id="csscan-value-font-family" class="csscan-value"></td></tr><tr id="csscan-row-font-size"><td id="csscan-property-font-size" class="csscan-property">font-size</td><td id="csscan-value-font-size" class="csscan-value"></td></tr><tr id="csscan-row-font-style"><td id="csscan-property-font-style" class="csscan-property">font-style</td><td id="csscan-value-font-style" class="csscan-value"></td></tr><tr id="csscan-row-font-variant"><td id="csscan-property-font-variant" class="csscan-property">font-variant</td><td id="csscan-value-font-variant" class="csscan-value"></td></tr><tr id="csscan-row-font-weight"><td id="csscan-property-font-weight" class="csscan-property">font-weight</td><td id="csscan-value-font-weight" class="csscan-value"></td></tr><tr id="csscan-row-letter-spacing"><td id="csscan-property-letter-spacing" class="csscan-property">letter-spacing</td><td id="csscan-value-letter-spacing" class="csscan-value"></td></tr><tr id="csscan-row-line-height"><td id="csscan-property-line-height" class="csscan-property">line-height</td><td id="csscan-value-line-height" class="csscan-value"></td></tr><tr id="csscan-row-text-decoration"><td id="csscan-property-text-decoration" class="csscan-property">text-decoration</td><td id="csscan-value-text-decoration" class="csscan-value"></td></tr><tr id="csscan-row-text-align"><td id="csscan-property-text-align" class="csscan-property">text-align</td><td id="csscan-value-text-align" class="csscan-value"></td></tr><tr id="csscan-row-text-indent"><td id="csscan-property-text-indent" class="csscan-property">text-indent</td><td id="csscan-value-text-indent" class="csscan-value"></td></tr><tr id="csscan-row-text-transform"><td id="csscan-property-text-transform" class="csscan-property">text-transform</td><td id="csscan-value-text-transform" class="csscan-value"></td></tr><tr id="csscan-row-white-space"><td id="csscan-property-white-space" class="csscan-property">white-space</td><td id="csscan-value-white-space" class="csscan-value"></td></tr><tr id="csscan-row-word-spacing"><td id="csscan-property-word-spacing" class="csscan-property">word-spacing</td><td id="csscan-value-word-spacing" class="csscan-value"></td></tr><tr id="csscan-row-color"><td id="csscan-property-color" class="csscan-property">color</td><td id="csscan-value-color" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-background" class="csscan-header">Background</th></tr><tr id="csscan-row-background-attachment"><td id="csscan-property-background-attachment" class="csscan-property">bg-attachment</td><td id="csscan-value-background-attachment" class="csscan-value"></td></tr><tr id="csscan-row-background-color"><td id="csscan-property-background-color" class="csscan-property">bg-color</td><td id="csscan-value-background-color" class="csscan-value"></td></tr><tr id="csscan-row-background-image"><td id="csscan-property-background-image" class="csscan-property">bg-image</td><td id="csscan-value-background-image" class="csscan-value"></td></tr><tr id="csscan-row-background-position"><td id="csscan-property-background-position" class="csscan-property">bg-position</td><td id="csscan-value-background-position" class="csscan-value"></td></tr><tr id="csscan-row-background-repeat"><td id="csscan-property-background-repeat" class="csscan-property">bg-repeat</td><td id="csscan-value-background-repeat" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-size" class="csscan-header">Box</th></tr><tr id="csscan-row-width"><td id="csscan-property-width" class="csscan-property">width</td><td id="csscan-value-width" class="csscan-value"></td></tr><tr id="csscan-row-height"><td id="csscan-property-height" class="csscan-property">height</td><td id="csscan-value-height" class="csscan-value"></td></tr><tr id="csscan-row-border-top"><td id="csscan-property-border-top" class="csscan-property">border-top</td><td id="csscan-value-border-top" class="csscan-value"></td></tr><tr id="csscan-row-border-right"><td id="csscan-property-border-right" class="csscan-property">border-right</td><td id="csscan-value-border-right" class="csscan-value"></td></tr><tr id="csscan-row-border-bottom"><td id="csscan-property-border-bottom" class="csscan-property">border-bottom</td><td id="csscan-value-border-bottom" class="csscan-value"></td></tr><tr id="csscan-row-border-left"><td id="csscan-property-border-left" class="csscan-property">border-left</td><td id="csscan-value-border-left" class="csscan-value"></td></tr><tr id="csscan-row-margin"><td id="csscan-property-margin" class="csscan-property">margin</td><td id="csscan-value-margin" class="csscan-value"></td></tr><tr id="csscan-row-padding"><td id="csscan-property-padding" class="csscan-property">padding</td><td id="csscan-value-padding" class="csscan-value"></td></tr><tr id="csscan-row-max-height"><td id="csscan-property-max-height" class="csscan-property">max-height</td><td id="csscan-value-max-height" class="csscan-value"></td></tr><tr id="csscan-row-min-height"><td id="csscan-property-min-height" class="csscan-property">min-height</td><td id="csscan-value-min-height" class="csscan-value"></td></tr><tr id="csscan-row-max-width"><td id="csscan-property-max-width" class="csscan-property">max-width</td><td id="csscan-value-max-width" class="csscan-value"></td></tr><tr id="csscan-row-min-width"><td id="csscan-property-min-width" class="csscan-property">min-width</td><td id="csscan-value-min-width" class="csscan-value"></td></tr><tr id="csscan-row-outline-color"><td id="csscan-property-outline-color" class="csscan-property">outline-color</td><td id="csscan-value-outline-color" class="csscan-value"></td></tr><tr id="csscan-row-outline-style"><td id="csscan-property-outline-style" class="csscan-property">outline-style</td><td id="csscan-value-outline-style" class="csscan-value"></td></tr><tr id="csscan-row-outline-width"><td id="csscan-property-outline-width" class="csscan-property">outline-width</td><td id="csscan-value-outline-width" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-position" class="csscan-header">Positioning</th></tr><tr id="csscan-row-position"><td id="csscan-property-position" class="csscan-property">position</td><td id="csscan-value-position" class="csscan-value"></td></tr><tr id="csscan-row-top"><td id="csscan-property-top" class="csscan-property">top</td><td id="csscan-value-top" class="csscan-value"></td></tr><tr id="csscan-row-bottom"><td id="csscan-property-bottom" class="csscan-property">bottom</td><td id="csscan-value-bottom" class="csscan-value"></td></tr><tr id="csscan-row-right"><td id="csscan-property-right" class="csscan-property">right</td><td id="csscan-value-right" class="csscan-value"></td></tr><tr id="csscan-row-left"><td id="csscan-property-left" class="csscan-property">left</td><td id="csscan-value-left" class="csscan-value"></td></tr><tr id="csscan-row-float"><td id="csscan-property-float" class="csscan-property">float</td><td id="csscan-value-float" class="csscan-value"></td></tr><tr id="csscan-row-display"><td id="csscan-property-display" class="csscan-property">display</td><td id="csscan-value-display" class="csscan-value"></td></tr><tr id="csscan-row-clear"><td id="csscan-property-clear" class="csscan-property">clear</td><td id="csscan-value-clear" class="csscan-value"></td></tr><tr id="csscan-row-z-index"><td id="csscan-property-z-index" class="csscan-property">z-index</td><td id="csscan-value-z-index" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-list" class="csscan-header">List</th></tr><tr id="csscan-row-list-style-image"><td id="csscan-property-list-style-image" class="csscan-property">list-style-image</td><td id="csscan-value-list-style-image" class="csscan-value"></td></tr><tr id="csscan-row-list-style-type"><td id="csscan-property-list-style-type" class="csscan-property">list-style-type</td><td id="csscan-value-list-style-type" class="csscan-value"></td></tr><tr id="csscan-row-list-style-position"><td id="csscan-property-list-style-position" class="csscan-property">list-style-position</td><td id="csscan-value-list-style-position" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-table" class="csscan-header">Table</th></tr><tr id="csscan-row-vertical-align"><td id="csscan-property-vertical-align" class="csscan-property">vertical-align</td><td id="csscan-value-vertical-align" class="csscan-value"></td></tr><tr id="csscan-row-border-collapse"><td id="csscan-property-border-collapse" class="csscan-property">border-collapse</td><td id="csscan-value-border-collapse" class="csscan-value"></td></tr><tr id="csscan-row-border-spacing"><td id="csscan-property-border-spacing" class="csscan-property">border-spacing</td><td id="csscan-value-border-spacing" class="csscan-value"></td></tr><tr id="csscan-row-caption-side"><td id="csscan-property-caption-side" class="csscan-property">caption-side</td><td id="csscan-value-caption-side" class="csscan-value"></td></tr><tr id="csscan-row-empty-cells"><td id="csscan-property-empty-cells" class="csscan-property">empty-cells</td><td id="csscan-value-empty-cells" class="csscan-value"></td></tr><tr id="csscan-row-table-layout"><td id="csscan-property-table-layout" class="csscan-property">table-layout</td><td id="csscan-value-table-layout" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-effects" class="csscan-header">Effects</th></tr><tr id="csscan-row-text-shadow"><td id="csscan-property-text-shadow" class="csscan-property">text-shadow</td><td id="csscan-value-text-shadow" class="csscan-value"></td></tr><tr id="csscan-row--webkit-box-shadow"><td id="csscan-property--webkit-box-shadow" class="csscan-property">-webkit-box-shadow</td><td id="csscan-value--webkit-box-shadow" class="csscan-value"></td></tr><tr id="csscan-row-border-radius"><td id="csscan-property-border-radius" class="csscan-property">border-radius</td><td id="csscan-value-border-radius" class="csscan-value"></td></tr><tr><th colspan="2" id="csscan-header-other" class="csscan-header">Other</th></tr><tr id="csscan-row-overflow"><td id="csscan-property-overflow" class="csscan-property">overflow</td><td id="csscan-value-overflow" class="csscan-value"></td></tr><tr id="csscan-row-cursor"><td id="csscan-property-cursor" class="csscan-property">cursor</td><td id="csscan-value-cursor" class="csscan-value"></td></tr><tr id="csscan-row-visibility"><td id="csscan-property-visibility" class="csscan-property">visibility</td><td id="csscan-value-visibility" class="csscan-value"></td></tr></tbody></table></div></body></html>
