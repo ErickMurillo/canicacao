@@ -474,57 +474,56 @@ $(function () {
 {% endblock tablero %}
 
 {% block content %}
-<style>
-    #space div{
-        margin-bottom: 3em;
-    }
-</style>
-{% include "monitoreo/filtros.html" %}
-    
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio">Indicador >> Técnicas aplicadas</h4>
-
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-        </div>
-    </div>
-</div>
-
-<div id="space" class="row">
-    <div class="col-md-6 col-lg-6">
-        <div id="container0" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container2" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container3" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container4" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container5" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container6" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-
-    <div class="col-md-6 col-lg-6">
-        <div id="container7" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
+{% include "monitoreo/filtros.html" %}
 </div>
 {% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Técnicas aplicadas</li>
+        </ol>  
+    </div>
+    
+
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container0" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container2" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container3" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+    <div class="row fila3">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container4" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container5" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+    <div class="row fila4">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container6" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container7" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+</div>   
+
+
 {% endblock content %}

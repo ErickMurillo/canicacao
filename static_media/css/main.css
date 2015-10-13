@@ -444,9 +444,18 @@ span.select2.select2-container.select2-container--default {
 .org-detail {
   margin: 0 auto;
 }
-.mapa-titulo,
 .consulta-org-titulo {
   background-color: #fff;
+  border-top: 3px solid #e7e6e4;
+  border-left: 3px solid #e7e6e4;
+  border-right: 3px solid #e7e6e4;
+  text-align: center;
+}
+.consulta-org-titulo h4 {
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+}
+.mapa-titulo {
   border-bottom: 3px solid #e7e6e4;
   text-align: center;
 }
@@ -455,6 +464,9 @@ span.select2.select2-container.select2-container--default {
   background-color: #fff;
   border: 3px solid #e7e6e4;
   margin-bottom: 0px;
+}
+.consulta-org form {
+  padding: 10px;
 }
 .btn-org-consulta a {
   -webkit-border-radius: 0px;
@@ -475,8 +487,8 @@ span.select2.select2-container.select2-container--default {
   margin-top: 36px;
 }
 .filtro-org-consulta .btn-org-consulta {
-  margin-bottom: 35px;
-  margin-top: 35px;
+  margin-bottom: 15px;
+  margin-top: 15px;
   margin-left: 10px;
 }
 /**organizacion detail***/
@@ -600,19 +612,23 @@ div[role=tabpanel] {
 .datos-filtro {
   border-left: 2px solid #fff;
 }
-.nav-annos {
+.nav-annos,
+.nav-indicador {
   margin-top: 20px;
 }
-.nav-annos >li {
+.nav-annos >li,
+.nav-indicador >li {
   background-color: #cb6830;
   padding-left: 0px;
   padding-right: 0px;
 }
-.nav-annos >li a {
+.nav-annos >li a,
+.nav-indicador >li a {
   font-weight: bold;
   color: #fff;
 }
-.nav-annos >li a:hover {
+.nav-annos >li a:hover,
+.nav-indicador >li a:hover {
   background-color: rgba(0,0,0,0.2);
 }
 li[role='titulo']>a {
@@ -622,11 +638,81 @@ li[role='titulo']>a {
 li[role='titulo']>a:hover {
   background-color: transparent;
 }
+.nav-indicador>li.active>a,
 .nav-annos>li.active>a {
   background-color: rgba(0,0,0,0.2);
   color: #fff;
 }
 .contenido-graficos {
+  padding-top: 20px;
+}
+.contenido-indicador {
+  padding-top: 10px;
+  margin-top: 10px;
+  background-color: #fff;
+}
+.contenido-indicador table {
+  margin-top: 7px;
+}
+.contenido-indicador table caption {
+  text-align: center;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  font-size: 15px;
+  font-weight: bold;
+}
+.contenido-indicador table td {
+  font-size: 14px;
+  text-align: center;
+}
+.contenido-indicador table td:first-child {
+  text-align: left;
+  font-weight: bold;
+  font-size: 15px;
+}
+.contenido-indicador table th {
+  font-size: 15px;
+}
+.btn-export {
+  color: #fff;
+  background-color: #453021;
+  padding: 10px;
+  font-weight: bold;
+}
+.btn-export:hover,
+.btn-export:focus {
+  color: #fff;
+  background-color: #6d4b35;
+  text-decoration: none;
+}
+.bread-indicador {
+  background-color: #6d4b35;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -o-border-radius: 0px;
+  border-radius: 0px;
+}
+.bread-indicador .active {
+  color: #c8c8c8;
+  font-weight: bold;
+  font-size: 14px;
+}
+.bread-indicador li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+.bread-indicador>li+li:before {
+  content: ">>";
+  color: #fff;
+  font-weight: bold;
+}
+.grafico-full {
+  border: 3px solid #e7e6e4;
+}
+.tab-indicador {
   padding-top: 20px;
 }
 /**************************XS-Device************************************/

@@ -445,19 +445,27 @@ span.select2.select2-container.select2-container--default
 /*! organizaciones*/ 
 .org-detail
 	margin 0 auto
-.mapa-titulo
+
 .consulta-org-titulo
 	background-color blanco
-	border-bottom 3px solid #e7e6e4
-
+	border-top  3px solid #e7e6e4
+	border-left  3px solid #e7e6e4
+	border-right  3px solid #e7e6e4
 	text-align center
-
+	h4
+		margin-bottom 0px
+		padding-bottom 10px
+.mapa-titulo
+	border-bottom 3px solid #e7e6e4
+	text-align center
 .mapa-organizaciones
 .consulta-org
 	background-color blanco
 	border 3px solid #e7e6e4
 	margin-bottom 0px
-
+	
+.consulta-org form
+	padding 10px
 .btn-org-consulta a
 	redondeado 0px
 	padding 15px
@@ -472,8 +480,8 @@ span.select2.select2-container.select2-container--default
 		margin-left 20px
 		margin-top 36px
 	.btn-org-consulta
-		margin-bottom 35px
-		margin-top 35px
+		margin-bottom 15px
+		margin-top 15px
 		margin-left 10px
 	
 /**organizacion detail***/
@@ -591,6 +599,7 @@ div[role=tabpanel]
 .datos-filtro
 	border-left 2px solid #fff
 .nav-annos
+.nav-indicador
 	margin-top 20px
 	>li	
 		background-color #cb6830
@@ -606,15 +615,65 @@ li[role='titulo']>a
 	color white
 	&:hover
 		background-color transparent
-		
+.nav-indicador>li.active>a		
 .nav-annos>li.active>a
 	background-color rgba( 0, 0, 0, 0.2 )
 	color #fff
 .contenido-graficos
 	padding-top 20px
+.contenido-indicador
+	padding-top 10px
+	margin-top 10px
+	background-color white
+	table
+		margin-top 7px
+		caption
+			text-align center
+			border-top 1px solid #ddd
+			border-left 1px solid #ddd
+			border-right 1px solid #ddd
+			font-size 15px
+			font-weight bold
 
-	
-		
+		td
+			font-size 14px
+			text-align center
+			&:first-child
+				text-align left
+				font-weight bold
+				font-size 15px
+		th
+			font-size 15px
+.btn-export
+	color white
+	background-color cafe
+	padding 10px
+	font-weight bold
+	&:hover
+	&:focus
+		color white
+		background-color cafeclaro
+		text-decoration none
+.bread-indicador
+	background-color cafeclaro
+	redondeado 0px
+	.active
+		color #C8C8C8
+		font-weight bold
+		font-size 14px
+	li a
+		color white
+		text-decoration none
+		font-weight bold
+		font-size 14px
+.bread-indicador>li+li:before
+	content ">>"
+	color white
+	font-weight bold
+.grafico-full
+	border 3px solid #e7e6e4
+.tab-indicador
+	padding-top 20px
 /**************************XS-Device************************************/
 @media (max-width: 767px)
 	.ind-cacao

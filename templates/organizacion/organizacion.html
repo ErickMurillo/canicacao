@@ -128,7 +128,7 @@ $(document).on('change','#id_municipio',function(){
         bottom: -50px !important;
     }
 	#map-canvas{
-		height: 400px;
+		height: 385px;
 		width: 95%;
   		margin: 20px auto;
 
@@ -143,12 +143,12 @@ $(document).on('change','#id_municipio',function(){
 	
 </style>
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-	<div class="row consulta-org">
+	<div class="consulta-org-titulo">
+		<h4>Filtrar datos de las organizaciones</h4>
+	</div>
+	<div class="consulta-org">
+	<div class="row ">
 		
-
-		<div class="consulta-org-titulo">
-			<h4>Filtrar datos de las organizaciones</h4>
-		</div>
 		<form action="." method="POST">{% csrf_token %}
 			<div class="filtro-org-consulta">
 				<div class="form-group">
@@ -174,7 +174,7 @@ $(document).on('change','#id_municipio',function(){
 				</div>	
 			</div>	
 		</form>
-
+	</div>
 
 	</div>
 

@@ -3,40 +3,40 @@
 
 {% block extra_js %}
 <script>
- $(document).ready(function() {
+   $(document).ready(function() {
 
     $('li.item-consulta').addClass('active');
     
 })
 
- $(function () {
-  $('#container').highcharts({
-   chart: {
-    type: 'column'
-},
-title: {
-    text: 'Producción de cacao'
-},
-yAxis: {
-    title: {
-     text: 'Toneladas'
- }
-},
-xAxis: {
-    categories: [
-    'Toneladas',
+   $(function () {
+      $('#container').highcharts({
+         chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Producción de cacao'
+        },
+        yAxis: {
+            title: {
+               text: 'Toneladas'
+           }
+       },
+       xAxis: {
+        categories: [
+        'Toneladas',
 
-    ],
-    crosshair: true
-},
+        ],
+        crosshair: true
+    },
 
-tooltip: {
-    formatter: function() {
-     return ''+
-     this.series.name +': '+ this.y +' t';
- }
-},
-legend: {
+    tooltip: {
+        formatter: function() {
+           return ''+
+           this.series.name +': '+ this.y +' t';
+       }
+   },
+   legend: {
     layout: 'vertical',
     align: 'right',
     verticalAlign: 'middle',
@@ -93,13 +93,13 @@ $(function () {
         series: [
 
         {
-         name: 'Valores',
-         data: [{% for value in produccion.values %}{{value}},{% endfor %}]
-     },
+           name: 'Valores',
+           data: [{% for value in produccion.values %}{{value}},{% endfor %}]
+       },
 
 
-     ]
- });
+       ]
+   });
 });
 </script>
 {% endblock extra_js %}
@@ -109,94 +109,91 @@ $(function () {
 {% endblock tablero %}
 
 {% block content %}
-
-{% include "monitoreo/filtros.html" %}
-<style>
-    .table{
-        width: 100% !important;
-        margin: 0 auto !important;
-        margin-bottom: 3em !important
-    }
-</style>
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio">Indicador >> Producción</h4>
-
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-      </div>
-  </div>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h4>Promedio de inversión en el mantenimieto:</h4>
-        <h5>Finca: C$ {{inversion_finca|floatformat:2|intcomma}}</h5>
-        <h5>Áreas de cacao: C$ {{inversion_cacao|floatformat:2|intcomma}}</h5>
-    </div>
-
-    <div class="col-md-8">
-        <div class="col-md-10" id="modalidad">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th rowspan="2"></th>
-                        <th colspan="4" style="text-align:center;">Edad de plantación</th>
-                    </tr>
-                    <tr>
-                        <th>4 -10 años</th>
-                        <th>10 - 20 años</th>
-                        <th>Mayor a 20 años</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Área total en ha</td>
-                        {% for values in edades.values %}
-                        <td>{{values.0|floatformat:2}}</td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>No. de plantas por ha</td>
-                        {% for values in edades.values %}
-                        <td>{{values.1|floatformat:2}}</td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>% de plantas improductivas</td>
-                        {% for values in edades.values %}
-                        <td>{{values.2|floatformat:2}}</td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>% de plantas establecidas con semilla</td>
-                        {% for values in edades.values %}
-                        <td>{{values.3|floatformat:2}}</td>
-                        {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>% de plantas establecidas por injerto</td>
-                        {% for values in edades.values %}
-                        <td>{{values.4|floatformat:2}}</td>
-                        {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-2">
-            <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar</a>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div id="container" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-    </div>
-    <div class="col-md-6">
-     <div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
- </div>
+    {% include "monitoreo/filtros.html" %}
 </div>
 
 {% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Producción</li>
+        </ol>  
+    </div>
+    
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="">
+                <h4>Promedio de inversión en el mantenimieto:</h4>
+                <h5>Finca: C$ {{inversion_finca|floatformat:2|intcomma}}</h5>
+                <h5>Áreas de cacao: C$ {{inversion_cacao|floatformat:2|intcomma}}</h5>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2"></th>
+                            <th colspan="4" style="text-align:center;">Edad de plantación</th>
+                        </tr>
+                        <tr>
+                            <th>4 -10 años</th>
+                            <th>10 - 20 años</th>
+                            <th>Mayor a 20 años</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Área total en ha</td>
+                            {% for values in edades.values %}
+                            <td>{{values.0|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>No. de plantas por ha</td>
+                            {% for values in edades.values %}
+                            <td>{{values.1|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas improductivas</td>
+                            {% for values in edades.values %}
+                            <td>{{values.2|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas establecidas con semilla</td>
+                            {% for values in edades.values %}
+                            <td>{{values.3|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas establecidas por injerto</td>
+                            {% for values in edades.values %}
+                            <td>{{values.4|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}

@@ -371,64 +371,75 @@ $(function () {
 
 {% block content %}
 
-<style>
-    .nav-tabs>li {
-        width: 30% !important
-    }
-    #space div{
-        margin-bottom: 3em;
-    }
-</style>
-{% include "monitoreo/filtros.html" %}
 
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio">Indicador >> Riesgos en la finca</h4>  
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
-          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
-      </div>
-  </div>
+   {% include "monitoreo/filtros.html" %} 
 </div>
-
-<!-- Nav tabs -->
-<ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Mitigación de Riesgos</a></li>
-</ul>
-<!-- Tab panes -->
-<div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="home">
-        <div id="space" class="row">
-            <div class="col-md-12 col-lg-12">
-                <div id="grafico" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
-            </div>
-
-            <div class="col-md-12 col-lg-12">
-                <div class="col-md-12 col-lg-6">
-                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div> 
-                </div>
-                <div class="col-md-12 col-lg-6">
-                    <div id="plagas" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                </div>
-            </div>
-            <div class="col-md-12 col-lg-12">
-                <div id="mercado" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div>
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div id="inversion" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <div id="inversion2" style="min-width: 310px; height: 400px;max-width: 900px; margin: 0 auto"></div> 
-            </div>
-        </div>   
-    </div>
-    <div role="tabpanel" class="tab-pane" id="profile">
-        <div id="mitigacion" style="min-width: 310px; height: 400px; width: 900px; margin: 0 auto"></div>
-    </div>
-</div>
-
 
 {% include "monitoreo/indicadores.html" %}
+<!-- Nav tabs -->
+<ul class="nav nav-indicador" role="tablist">
+    <li role="indicador" class="active col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#vulnerabilidad" aria-controls="vulnerabilidad" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
+    <li role="indicador" class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#riesgo" aria-controls="riesgo" role="tab" data-toggle="tab">Riesgos en la finca</a></li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content ">
+    <div role="tabpanel" class="tab-pane active" id="vulnerabilidad">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Reforestación</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="grafico" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila2">
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                    <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+                    <div class="col-md-6" id="plagas" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila3">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="mercado" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila4">
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                    <div class="col-md-6" id="inversion" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+                    <div class="col-md-6" id="inversion2" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+
+
+  
+    </div>
+    <div role="tabpanel" class="tab-pane" id="riesgo">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Riesgos en la finca</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="mitigacion" style="min-width: 450px;  width: 90%; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+</div>
+
+
 {% endblock content %}
