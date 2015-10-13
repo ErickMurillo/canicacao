@@ -1,213 +1,331 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<script src="/static/js/highcharts.js"></script>
-<script src="/static/js/exporting.js"></script>
 <script>
-$(document).ready(function() {
-        
-        $('li.item-org').addClass('active');
+  $(document).ready(function() {
+
+    $('li.item-org').addClass('active');
     
-    })
+  });
 
-	$(function () {
-		$('#aspectos_juridicos').highcharts({
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
-			},
-			xAxis: {
-				categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
-			},
-			yAxis: {
-	            title: {
-	                text: 'Valores'
-	            }
+  {% for year,value in anno.items %}
 
-	        },
-			credits: {
-				enabled: false
-			},
-			plotOptions: {
-				series: {
-					borderWidth: 0,
-					dataLabels: {
-						enabled: true,
-						format: '{point.y}'
-					}
-				}
-			},
+  $(function () {
 
-			tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-			},
-			series: [
-			{% for key,value in dic.items %}
-			{
-				name: '{{key}}',
-				data: {{value}}
-			},
-			{% endfor %}
+    $(document).ready(function () {
 
-			]
-		});
-	})
-
-	$(function () {
-		$('#documentacion').highcharts({
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
-			},
-			xAxis: {
-				categories: ['Si', 'No']
-			},
-			credits: {
-				enabled: false
-			},
-			yAxis: {
-	            title: {
-	                text: 'Valores'
-	            }
-
-	        },
-			plotOptions: {
-				series: {
-					borderWidth: 0,
-					dataLabels: {
-						enabled: true,
-						format: '{point.y}'
-					}
-				}
-			},
-
-			tooltip: {
-				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-			},
-			series: [
-			{% for key,value in documentacion.items %}
-			{
-				name: '{{key}}',
-				data: [{% for x,y in value.items %}{{y}},{% endfor %}]
-			},
-			{% endfor %}
-
-			]
-		});
-	});
-
-$(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Promedios número de socias/os y pre-socias/os'
-        },
-        yAxis: {
-            title: {
-                text: 'Valores'
+        // Build the chart
+        $('#status{{year}}').highcharts({
+          chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+          },
+          title: {
+            text: 'Estatus legal de la organización'
+          },
+          tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '{point.percentage:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                style: {
+                  textShadow: '0 0 3px white'
+                }
+              },
+              showInLegend: true
             }
 
-        },
-        credits: {
-            enabled: false
-        },
-        yAxis: {
-                min: 0,
-                title: {
-                    text: 'Promedio'
-                }
+          },
+          series: [{
+            name: "Porcentajes",
+            colorByPoint: true,
+            data: [
+            {% for x,y in value.0.items %}
+            {
+              name: "{{x}}",
+              y: {{y}}
             },
+            {% endfor %}
 
-            tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.series.name +': '+ this.y;
+
+            ]
+          }]
+        });
+});
+});
+
+$(function () {
+    $('#miembros{{year}}').highcharts({
+        title: {
+            text: 'Número de miembros de JD por organización'
+        },
+        xAxis: {
+            categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+        },
+        labels: {
+            items: [{
+                html: 'Total de hombres y mujeres',
+                style: {
+                    left: '50px',
+                    top: '18px',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
                 }
-            },
-        series: [
-                {
-                    name: 'Socias',
-                    data: [{{socias}}],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#632D00',
-                        align: 'center',
-                        x: -3,
-                        y: 0,
-                            formatter: function() {
-                                return this.y;
-                                                  },
-                        style: {
-                            font: 'normal 13px Verdana, sans-serif'
-                                }
-                                }
-                },
-                {
-                    name: 'Socios',
-                    data: [{{socios}}],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#632D00',
-                        align: 'center',
-                        x: -3,
-                        y: 0,
-                            formatter: function() {
-                                return this.y;
-                                                  },
-                        style: {
-                            font: 'normal 13px Verdana, sans-serif'
-                                }
-                                }
-                },
-                {
-                    name: 'Pre Socias',
-                    data: [{{pre_socias}}],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#632D00',
-                        align: 'center',
-                        x: -3,
-                        y: 0,
-                            formatter: function() {
-                                return this.y;
-                                                  },
-                        style: {
-                            font: 'normal 13px Verdana, sans-serif'
-                                }
-                                }
-                },
-                {
-                    name: 'Pre Socios',
-                    data: [{{pre_socios}}],
-                    dataLabels: {
-                        enabled: true,
-                        rotation: 0,
-                        color: '#632D00',
-                        align: 'center',
-                        x: -3,
-                        y: 0,
-                            formatter: function() {
-                                return this.y;
-                                                  },
-                        style: {
-                            font: 'normal 13px Verdana, sans-serif'
-                                }
-                                }
-                },
-                ]
+            }]
+        },
+        series: [{
+            type: 'column',
+            name: 'Jane',
+            data: [3, 2, 1, 3, 4]
+        }, {
+            type: 'column',
+            name: 'John',
+            data: [2, 3, 5, 7, 6]
+        }, {
+            type: 'column',
+            name: 'Joe',
+            data: [4, 3, 3, 9, 0]
+        }, {
+            type: 'spline',
+            name: 'Average',
+            data: [3, 2.67, 3, 6.33, 3.33],
+            marker: {
+                lineWidth: 2,
+                lineColor: Highcharts.getOptions().colors[3],
+                fillColor: 'white'
+            }
+        }, {
+            type: 'pie',
+            name: 'Total consumption',
+            data: [{
+                name: 'Jane',
+                y: 13,
+                color: Highcharts.getOptions().colors[0] // Jane's color
+            }, {
+                name: 'John',
+                y: 23,
+                color: Highcharts.getOptions().colors[1] // John's color
+            }, {
+                name: 'Joe',
+                y: 19,
+                color: Highcharts.getOptions().colors[2] // Joe's color
+            }],
+            center: [100, 80],
+            size: 100,
+            showInLegend: false,
+            dataLabels: {
+                enabled: false
+            }
+        }]
     });
 });
+
+$(function () {
+  $('#aspectos_juridicos{{year}}').highcharts({
+   chart: {
+    type: 'column'
+  },
+  title: {
+    text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
+  },
+  xAxis: {
+    categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
+  },
+  yAxis: {
+   title: {
+     text: 'Valores'
+   }
+
+ },
+ credits: {
+  enabled: false
+},
+plotOptions: {
+  series: {
+   borderWidth: 0,
+   dataLabels: {
+    enabled: true,
+    format: '{point.y:.1f}%'
+  }
+}
+},
+
+tooltip: {
+  headerFormat: '<span style="font-size:11px">{series.name}</span>',
+  pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%'
+},
+series: [
+{% for key,value in value.1.items %}
+{
+  name: '{{key}}',
+  data: [{% for x in value %}{{x}},{% endfor %}]
+},
+{% endfor %}
+
+]
+});
+})
+
+$(function () {
+  $('#documentacion{{year}}').highcharts({
+   chart: {
+    type: 'column'
+  },
+  title: {
+    text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
+  },
+  xAxis: {
+    categories: ['Si', 'No']
+  },
+  credits: {
+    enabled: false
+  },
+  yAxis: {
+   title: {
+     text: 'Valores'
+   }
+
+ },
+ plotOptions: {
+  series: {
+   borderWidth: 0,
+   dataLabels: {
+    enabled: true,
+    format: '{point.y}'
+  }
+}
+},
+
+tooltip: {
+  headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+  pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+},
+series: [
+{% for key,value in value.2.items %}
+{
+  name: '{{key}}',
+  data: [{% for x,y in value.items %}{{y}},{% endfor %}]
+},
+{% endfor %}
+
+]
+});
+});
+
+$(function () {
+  $('#container').highcharts({
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Promedios número de socias/os y pre-socias/os'
+    },
+    yAxis: {
+      title: {
+        text: 'Valores'
+      }
+
+    },
+    credits: {
+      enabled: false
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Promedio'
+      }
+    },
+
+    tooltip: {
+      formatter: function() {
+        return ''+
+        this.series.name +': '+ this.y;
+      }
+    },
+    series: [
+    {
+      name: 'Socias',
+      data: [{{socias}}],
+      dataLabels: {
+        enabled: true,
+        rotation: 0,
+        color: '#632D00',
+        align: 'center',
+        x: -3,
+        y: 0,
+        formatter: function() {
+          return this.y;
+        },
+        style: {
+          font: 'normal 13px Verdana, sans-serif'
+        }
+      }
+    },
+    {
+      name: 'Socios',
+      data: [{{socios}}],
+      dataLabels: {
+        enabled: true,
+        rotation: 0,
+        color: '#632D00',
+        align: 'center',
+        x: -3,
+        y: 0,
+        formatter: function() {
+          return this.y;
+        },
+        style: {
+          font: 'normal 13px Verdana, sans-serif'
+        }
+      }
+    },
+    {
+      name: 'Pre Socias',
+      data: [{{pre_socias}}],
+      dataLabels: {
+        enabled: true,
+        rotation: 0,
+        color: '#632D00',
+        align: 'center',
+        x: -3,
+        y: 0,
+        formatter: function() {
+          return this.y;
+        },
+        style: {
+          font: 'normal 13px Verdana, sans-serif'
+        }
+      }
+    },
+    {
+      name: 'Pre Socios',
+      data: [{{pre_socios}}],
+      dataLabels: {
+        enabled: true,
+        rotation: 0,
+        color: '#632D00',
+        align: 'center',
+        x: -3,
+        y: 0,
+        formatter: function() {
+          return this.y;
+        },
+        style: {
+          font: 'normal 13px Verdana, sans-serif'
+        }
+      }
+    },
+    ]
+  });
+});
+{% endfor %}
 </script>
 {% endblock extra_js %}
 
@@ -227,57 +345,92 @@ $(function () {
 
 {% block content %}
 <style>
-.row {
-	margin-right: 0px !important;
-	margin-left: 0px !important; 
-}
+  .row {
+   margin-right: 0px !important;
+   margin-left: 0px !important; 
+ }
 
-h3 {
+ h3 {
   color: #cb6830;
   font-weight: bold;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 </style>
+<div id="tabs">
+  <!-- Nav tabs -->
+  <ul class="nav nav-annos" role="navegacion">
+    <li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+      <a >Años:</a>
+    </li>
 
-<div class="row fila1">
-	<div class="col-md-12 col-lg-6 grafico1">
-		<div id="aspectos_juridicos" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
-	</div>
+    {% for year in anno.keys %}
+    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+    {% endfor %}
+  </ul>
 
-	<div class="col-md-12 col-lg-6 grafico3">
-		<div id="documentacion" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
-	</div>
-</div>
+  <div class="tab-content">
 
-<div class="row fila2">
-	<div class="col-md-12 col-lg-6 grafico1">
-		<div id="container" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
-	</div>
+    {% for year,value in anno.items %}
+    <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 
-	<div class="col-md-12 col-lg-6 indicadores-t2">
+      <div class="container-fluid contenido-graficos">
+
+        <div class="row fila1">
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="status{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          </div>
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="miembros{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          </div>
+        </div>
+
+        <div class="row fila2">
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          </div>
+
+          <div class="col-md-12 col-lg-6 grafico3">
+            <div id="documentacion{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          </div>
+        </div>
+
+        <div class="row fila3">
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="container{{year}}" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+          </div>
+
+          <div class="col-md-12 col-lg-6 indicadores-t2">
            <div class="promedio-cacao">
-               <div class="row">
-                   <div class="col-md-8 col-lg-8 texto-indicador">
-                       <h2>{{areas_establecidas}}</h2>
-                       <h3>Promedio de Áreas establecidas de cacao por socias y socios</h3>
-                   </div>
-                   <div class="col-md-4 col-lg-4">
-                       <img src="/static/img/arbol-01.png" alt="">
-                   </div>
+             <div class="row">
+               <div class="col-md-8 col-lg-8 texto-indicador">
+                 <h2>{{areas_establecidas}}</h2>
+                 <h3>Promedio de Áreas establecidas de cacao por socias y socios</h3>
                </div>
+               <div class="col-md-4 col-lg-4">
+                 <img src="/static/img/arbol-01.png" alt="">
+               </div>
+             </div>
            </div>
            <div class="promedio-cultivo">
-                <div class="row">
-                   <div class="col-md-8 col-lg-8 texto-indicador">
-                       <h2>{{area_organico}}</h2>
-                       <h3>Promedio áreas con certificado orgánico</h3>
-                   </div>
-                   <div class="col-md-4 col-lg-4">
-                       <img src="/static/img/arbolito-01.png" alt="">
-                   </div>
-               </div>
+            <div class="row">
+             <div class="col-md-8 col-lg-8 texto-indicador">
+               <h2>{{area_organico}}</h2>
+               <h3>Promedio áreas con certificado orgánico</h3>
+             </div>
+             <div class="col-md-4 col-lg-4">
+               <img src="/static/img/arbolito-01.png" alt="">
+             </div>
            </div>
-        </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ {% endfor %}
+
+
 </div>
+</div>
+
 {% endblock content %}

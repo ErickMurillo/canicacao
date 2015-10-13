@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import *
@@ -5,6 +6,7 @@ from .forms import *
 import json as simplejson
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db.models import Sum, Count, Avg
+import collections
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -82,24 +84,49 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 
     #detalle_org = filtro.distinct('organizacion__nombre')
 
-    dic = {}
-    for obj in SI_NO_CHOICES:
-        personeria_juridica = filtro.filter(aspectos_juridicos__tiene_p_juridica=obj[0]).count()
-        act_perso_juridica = filtro.filter(aspectos_juridicos__act_p_juridica=obj[0]).count()
-        solvencia_tributaria = filtro.filter(aspectos_juridicos__solvencia_tributaria=obj[0]).count()
-        junta_directiva = filtro.filter(aspectos_juridicos__junta_directiva=obj[0]).count()
-        socios = filtro.filter(aspectos_juridicos__lista_socios=obj[0]).count()
+    anno = collections.OrderedDict()
 
-        lista = [personeria_juridica,act_perso_juridica,solvencia_tributaria,junta_directiva,socios]
-        dic[obj[1]] = lista
+    anios_list = filtro.order_by('anno').values_list('anno', flat=True)
 
-    documentacion = {}
-    for x in DOCUMENTOS_CHOICES:
-        dic_result = {}
+    for year in anios_list:
+        #status legal de las organizaciones -----------------------------------------
+        status = {}
+        for obj in Status.objects.all():
+            conteo = filtro.filter(organizacion__status=obj,anno=year).count()
+            status[obj] = conteo
+
+        #aspectos juridicos ---------------------------------------------------------
+        aspectos_juridicos = {}
+        count_org = filtro.filter(anno=year).distinct('organizacion__nombre').count()
         for obj in SI_NO_CHOICES:
-            result = filtro.filter(documentacion__documentos=x[0],documentacion__si_no=obj[0]).count()
-            dic_result[obj[1]] = result
-        documentacion[x[1]] = dic_result
+            personeria_juridica = filtro.filter(aspectos_juridicos__tiene_p_juridica=obj[0],anno=year).count()
+            act_perso_juridica = filtro.filter(aspectos_juridicos__act_p_juridica=obj[0],anno=year).count()
+            solvencia_tributaria = filtro.filter(aspectos_juridicos__solvencia_tributaria=obj[0],anno=year).count()
+            junta_directiva = filtro.filter(aspectos_juridicos__junta_directiva=obj[0],anno=year).count()
+            socios = filtro.filter(aspectos_juridicos__lista_socios=obj[0],anno=year).count()
+            print saca_porcentajes(personeria_juridica,count_org,False)
+
+            lista = [saca_porcentajes(personeria_juridica,count_org,False),
+                    saca_porcentajes(act_perso_juridica,count_org,False),
+                    saca_porcentajes(solvencia_tributaria,count_org,False),
+                    saca_porcentajes(junta_directiva,count_org,False),
+                    saca_porcentajes(socios,count_org,False)]
+
+            aspectos_juridicos[obj[1]] = lista
+
+        #documentacion-----------------------------------------------------------------
+        documentacion = {}
+        for x in DOCUMENTOS_CHOICES:
+            dic_result = {}
+            for obj in SI_NO_CHOICES:
+                result = filtro.filter(documentacion__documentos=x[0],documentacion__si_no=obj[0],anno=year).count()
+                dic_result[obj[1]] = result
+            documentacion[x[1]] = dic_result
+
+        #diccionario de los años
+        anno[year] = (status,aspectos_juridicos,documentacion)
+        #-------------------------------------------------------------------------------
+        
 
     try:
         socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
@@ -185,3 +212,17 @@ def get_comunies(request):
     comunies = Comunidad.objects.filter(municipio__pk__in=lista).order_by('nombre').values('id', 'nombre')
 
     return HttpResponse(simplejson.dumps(list(comunies)), content_type='application/json')
+
+#utils
+def saca_porcentajes(dato, total, formato=True):
+    if dato != None:
+        try:
+            porcentaje = (dato/float(total)) * 100 if total != None or total != 0 else 0
+        except:
+            return 0
+        if formato:
+            return porcentaje
+        else:
+            return '%.2f' % porcentaje
+    else:
+        return 0
