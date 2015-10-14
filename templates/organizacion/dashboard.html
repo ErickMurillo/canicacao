@@ -25,6 +25,7 @@
           title: {
             text: 'Estatus legal de la organización'
           },
+
           tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
           },
@@ -68,7 +69,7 @@ $(function () {
             text: 'Número de miembros de JD por organización'
         },
         xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+            categories: [{% for item in lista_status %} '{{item}}', {% endfor %}]
         },
         labels: {
             items: [{
@@ -80,50 +81,40 @@ $(function () {
                 }
             }]
         },
-        series: [{
+        series: [
+        {% for key,values in value.1.items %}
+          {
             type: 'column',
-            name: 'Jane',
-            data: [3, 2, 1, 3, 4]
-        }, {
-            type: 'column',
-            name: 'John',
-            data: [2, 3, 5, 7, 6]
-        }, {
-            type: 'column',
-            name: 'Joe',
-            data: [4, 3, 3, 9, 0]
-        }, {
-            type: 'spline',
-            name: 'Average',
-            data: [3, 2.67, 3, 6.33, 3.33],
-            marker: {
-                lineWidth: 2,
-                lineColor: Highcharts.getOptions().colors[3],
-                fillColor: 'white'
-            }
-        }, {
+            name: '{{key}}',
+            data: [{% for x,y in values %}{{y}},{% endfor %}]
+        },
+        {% endfor %}  
+
+        {
             type: 'pie',
-            name: 'Total consumption',
-            data: [{
-                name: 'Jane',
-                y: 13,
-                color: Highcharts.getOptions().colors[0] // Jane's color
-            }, {
-                name: 'John',
-                y: 23,
-                color: Highcharts.getOptions().colors[1] // John's color
-            }, {
-                name: 'Joe',
-                y: 19,
-                color: Highcharts.getOptions().colors[2] // Joe's color
-            }],
+            name: 'Total',
+            data: [
+            {% for key, values in value.2.items %}
+            {
+                name: '{{key}}',
+                y: {{values}},
+                {% if forloop.counter == 1 %}
+                color: Highcharts.getOptions().colors[0]
+                {% else %}
+                  color: Highcharts.getOptions().colors[{{forloop.counter}} - 1]
+                {% endif %}
+                
+            },
+            {% endfor %}
+            ],
             center: [100, 80],
             size: 100,
             showInLegend: false,
             dataLabels: {
                 enabled: false
             }
-        }]
+        }
+        ]
     });
 });
 
@@ -133,7 +124,7 @@ $(function () {
     type: 'column'
   },
   title: {
-    text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
+    text: 'Situación legal de las Organizaciones/Instituciones'
   },
   xAxis: {
     categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
@@ -162,7 +153,7 @@ tooltip: {
   pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%'
 },
 series: [
-{% for key,value in value.1.items %}
+{% for key,value in value.3.items %}
 {
   name: '{{key}}',
   data: [{% for x in value %}{{x}},{% endfor %}]
@@ -208,7 +199,7 @@ tooltip: {
   pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
 },
 series: [
-{% for key,value in value.2.items %}
+{% for key,value in value.4.items %}
 {
   name: '{{key}}',
   data: [{% for x,y in value.items %}{{y}},{% endfor %}]
@@ -341,6 +332,7 @@ $(function () {
 		</div>
 	</div>
 </div>
+
 {% endblock tablero %}
 
 {% block content %}
@@ -357,6 +349,7 @@ $(function () {
   margin-top: 5px;
 }
 </style>
+
 <div id="tabs">
   <!-- Nav tabs -->
   <ul class="nav nav-annos" role="navegacion">

@@ -104,7 +104,6 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             solvencia_tributaria = filtro.filter(aspectos_juridicos__solvencia_tributaria=obj[0],anno=year).count()
             junta_directiva = filtro.filter(aspectos_juridicos__junta_directiva=obj[0],anno=year).count()
             socios = filtro.filter(aspectos_juridicos__lista_socios=obj[0],anno=year).count()
-            print saca_porcentajes(personeria_juridica,count_org,False)
 
             lista = [saca_porcentajes(personeria_juridica,count_org,False),
                     saca_porcentajes(act_perso_juridica,count_org,False),
@@ -113,6 +112,47 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                     saca_porcentajes(socios,count_org,False)]
 
             aspectos_juridicos[obj[1]] = lista
+
+        #conteo hombre y mujeres por status
+        lista_status = Status.objects.all()
+        lista_hombres = []
+        lista_mujeres = []
+        graf_bar_status = {}
+        graf_pie_status = {}
+        mujeres_pie = 0
+        hombres_pie = 0
+        for obj in Status.objects.all():
+            #grafico de barras ---------------------------------------------------------
+            mujeres_bar = filtro.filter(organizacion__status=obj,anno=year).aggregate(total = Sum('aspectos_juridicos__mujeres'))['total']
+            if mujeres_bar == None:
+                 mujeres_bar = 0
+
+            hombres_bar = filtro.filter(organizacion__status=obj,anno=year).aggregate(total = Sum('aspectos_juridicos__hombres'))['total']  
+            if hombres_bar == None:
+                 hombres_bar = 0
+
+            lista_hombres.append([obj,hombres_bar])
+            lista_mujeres.append([obj,mujeres_bar])
+            #grafico de pastel #-----------------------------------------------------------
+            mujeres = filtro.filter(organizacion__status=obj,anno=year).aggregate(total = Sum('aspectos_juridicos__mujeres'))['total']
+            if mujeres == None:
+                mujeres = 0
+                mujeres_pie += mujeres
+            else:
+                mujeres_pie += mujeres
+
+            hombres = filtro.filter(organizacion__status=obj,anno=year).aggregate(total = Sum('aspectos_juridicos__hombres'))['total']
+            if hombres == None:
+                hombres = 0
+                hombres_pie += hombres
+            else:
+                hombres_pie += hombres
+
+        graf_bar_status['Hombres'] = lista_hombres
+        graf_bar_status['Mujeres'] = lista_mujeres
+
+        graf_pie_status['Hombres'] = hombres_pie
+        graf_pie_status['Mujeres'] = mujeres_pie
 
         #documentacion-----------------------------------------------------------------
         documentacion = {}
@@ -124,7 +164,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             documentacion[x[1]] = dic_result
 
         #diccionario de los años
-        anno[year] = (status,aspectos_juridicos,documentacion)
+        anno[year] = (status,graf_bar_status,graf_pie_status,aspectos_juridicos,documentacion)
         #-------------------------------------------------------------------------------
         
 
