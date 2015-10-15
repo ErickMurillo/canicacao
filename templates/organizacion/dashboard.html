@@ -81,6 +81,16 @@ $(function () {
                 }
             }]
         },
+        plotOptions: {
+          series: {
+           borderWidth: 0,
+           dataLabels: {
+            enabled: true,
+            format: '{point.y}'
+          }
+        }
+        },
+
         series: [
         {% for key,values in value.1.items %}
           {
@@ -170,7 +180,7 @@ $(function () {
     type: 'column'
   },
   title: {
-    text: 'Aspectos Jurídicos de las Organizaciones/Instituciones'
+    text: 'Documentación legal y estratégica'
   },
   xAxis: {
     categories: ['Si', 'No']

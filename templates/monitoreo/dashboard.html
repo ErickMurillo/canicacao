@@ -561,7 +561,7 @@ table{
     </li>
   
     {% for year in anno.keys %}
-    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" class="update" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
     {% endfor %}
 </ul>
 

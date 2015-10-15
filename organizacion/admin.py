@@ -94,6 +94,8 @@ class Encuesta_OrgAdmin(admin.ModelAdmin):
 	#list_filter = ('organizacion__municipio',)
 	search_fields = ['organizacion__nombre','organizacion__siglas']
 
+	class Media:
+		js = ('js/admin_org.js',)
 	
 admin.site.register(Organizacion,OrganizacionAdmin)
 admin.site.register(Status)

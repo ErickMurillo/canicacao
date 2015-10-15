@@ -17,12 +17,12 @@
         $('li.item-consulta').addClass('active');
     
     })
-  $('#id_anno').select2({tags: true});
-  $('#id_departamento').select2({tags: true});
-  $('#id_municipio').select2({tags: true});
-  $('#id_comunidad').select2({tags: true});
+  $('#id_anno').select2({tags: true,closeOnSelect: false,allowClear: true});
+  $('#id_departamento').select2({tags: true,closeOnSelect: false,allowClear: true});
+  $('#id_municipio').select2({tags: true,closeOnSelect: false,allowClear: true});
+  $('#id_comunidad').select2({tags: true,closeOnSelect: false,allowClear: true});
   $('#id_socio').select2({minimumResultsForSearch: Infinity});
-  $('#id_organizacion').select2({tags: true});
+  $('#id_organizacion').select2({tags: true,closeOnSelect: false,allowClear: true});
 
   $("#id_municipio").prop("disabled", true);
   $("#id_comunidad").prop("disabled", true);
@@ -97,6 +97,9 @@ $(document).on('change','#id_municipio',function(){
 }
     .select2-container--default .select2-selection--multiple .select2-selection__choice {
         background-color: #CB6830 !important;
+    }
+    .select2-selection__clear {
+        color: #CB6830 !important;
     }
 </style>
 

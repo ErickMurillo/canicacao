@@ -6,7 +6,6 @@
 {% block title %}{{ title }} | {% trans 'Administración Canicacao' %}{% endblock %}
 
 {% block branding %}
-
 <h1 id="site-name">Administración Canicacao</h1>
 	<style>
 		div.breadcrumbs {
@@ -44,6 +43,10 @@
 		input[type=submit].default:hover, .submit-row input.default:hover {
 		  background: #685642;
 		}
+
+		#id_persona, #id_recolector {
+			width: 20em !important
+		}
 	</style>
 
 {% endblock %}
@@ -51,6 +54,7 @@
 {% block nav-global %}{% endblock %}
 
 {% block extrahead %}
-
-
+<script src="/static/js/jquery-2.1.4.min.js"></script>
+<link href="/static/css/select2.min.css" rel="stylesheet" />
+<script src="/static/js/select2.min.js"></script>
 {% endblock %}
