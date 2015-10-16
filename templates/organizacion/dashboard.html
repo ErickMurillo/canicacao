@@ -76,7 +76,7 @@ $(function () {
                 html: 'Total de hombres y mujeres',
                 style: {
                     left: '50px',
-                    top: '18px',
+                    top: '0px',
                     color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
                 }
             }]
@@ -117,11 +117,14 @@ $(function () {
             },
             {% endfor %}
             ],
-            center: [100, 80],
-            size: 100,
+            center: [100, 50],
+            size: 90,
             showInLegend: false,
+            tooltip: {
+              pointFormat: '{point.y:.1f}%'
+            },
             dataLabels: {
-                enabled: false
+                enabled: false,
             }
         }
         ]
@@ -174,51 +177,57 @@ series: [
 });
 })
 
-$(function () {
-  $('#documentacion{{year}}').highcharts({
-   chart: {
-    type: 'column'
-  },
-  title: {
-    text: 'Documentación legal y estratégica'
-  },
-  xAxis: {
-    categories: ['Si', 'No']
-  },
-  credits: {
-    enabled: false
-  },
-  yAxis: {
-   title: {
-     text: 'Valores'
-   }
+  $(function () {
+    $('#documentacion{{year}}').highcharts({
+     chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Documentación legal y estratégica'
+    },
+    xAxis: {
+      categories: [{% for key,value in documentacion.items %}
+        {% for k,v in value.items %}
+          
+            '{{k}}',
+          
+        {% endfor %}
+      {% endfor %}]
+    },
+    credits: {
+      enabled: false
+    },
+    yAxis: {
+     title: {
+       text: 'Valores'
+     }
 
- },
- plotOptions: {
-  series: {
-   borderWidth: 0,
-   dataLabels: {
-    enabled: true,
-    format: '{point.y}'
+   },
+   plotOptions: {
+    series: {
+     borderWidth: 0,
+     dataLabels: {
+      enabled: true,
+      format: '{point.y}'
+    }
   }
-}
-},
+  },
 
-tooltip: {
-  headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-  pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-},
-series: [
-{% for key,value in value.4.items %}
-{
-  name: '{{key}}',
-  data: [{% for x,y in value.items %}{{y}},{% endfor %}]
-},
-{% endfor %}
+  tooltip: {
+    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+  },
+  series: [
+  {% for key,value in value.4.items %}
+  {
+    name: '{{key}}',
+    data: [{% for x,y in value.items %}{{y}},{% endfor %}]
+  },
+  {% endfor %}
 
-]
-});
-});
+  ]
+  });
+  });
 
 $(function () {
   $('#container').highcharts({
@@ -383,8 +392,8 @@ $(function () {
           <div class="col-md-12 col-lg-6 grafico1">
             <div id="status{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
           </div>
-          <div class="col-md-12 col-lg-6 grafico1">
-            <div id="miembros{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          <div class="col-md-12 col-lg-12 grafico1">
+            <div id="miembros{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
           </div>
         </div>
 
@@ -393,8 +402,8 @@ $(function () {
             <div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
           </div>
 
-          <div class="col-md-12 col-lg-6 grafico3">
-            <div id="documentacion{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          <div class="col-md-12 col-lg-12 grafico3">
+            <div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
           </div>
         </div>
 

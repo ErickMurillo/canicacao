@@ -148,25 +148,26 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             else:
                 hombres_pie += hombres
 
+        total = hombres_pie + mujeres_pie
         graf_bar_status['Hombres'] = lista_hombres
         graf_bar_status['Mujeres'] = lista_mujeres
 
-        graf_pie_status['Hombres'] = hombres_pie
-        graf_pie_status['Mujeres'] = mujeres_pie
+        graf_pie_status['Hombres'] = saca_porcentajes(hombres_pie,total,False)
+        graf_pie_status['Mujeres'] = saca_porcentajes(mujeres_pie,total,False)
 
         #documentacion-----------------------------------------------------------------
         documentacion = {}
-        for x in DOCUMENTOS_CHOICES:
+        for x in SI_NO_CHOICES:
             dic_result = {}
-            for obj in SI_NO_CHOICES:
-                result = filtro.filter(documentacion__documentos=x[0],documentacion__si_no=obj[0],anno=year).count()
+            for obj in DOCUMENTOS_CHOICES:
+                result = filtro.filter(documentacion__documentos=obj[0],documentacion__si_no=x[0],anno=year).count()
                 dic_result[obj[1]] = result
+            
             documentacion[x[1]] = dic_result
 
         #diccionario de los años
         anno[year] = (status,graf_bar_status,graf_pie_status,aspectos_juridicos,documentacion)
-        #-------------------------------------------------------------------------------
-        
+        #------------------------------------------------------------------------------- 
 
     try:
         socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
