@@ -86,7 +86,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 
     anno = collections.OrderedDict()
 
-    anios_list = filtro.order_by('anno').values_list('anno', flat=True)
+    anios_list = filtro.order_by('anno').values_list('anno', flat=True).distinct('anno')
 
     for year in anios_list:
         #status legal de las organizaciones -----------------------------------------
@@ -121,7 +121,12 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         graf_pie_status = {}
         mujeres_pie = 0
         hombres_pie = 0
+        org_by_status = {}
         for obj in Status.objects.all():
+            #organizaciones por status 
+            name = filtro.filter(organizacion__status=obj,anno=year)
+            org_by_status[obj] = name
+
             #grafico de barras ---------------------------------------------------------
             mujeres_bar = filtro.filter(organizacion__status=obj,anno=year).aggregate(total = Sum('aspectos_juridicos__mujeres'))['total']
             if mujeres_bar == None:
@@ -165,30 +170,58 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             
             documentacion[x[1]] = dic_result
 
+        #socios y socias de cacao
+        try:
+            socias = int(filtro.filter(anno=year).aggregate(socias=Avg('datos_productivos__socias'))['socias'])
+        except:
+            socias = 0
+
+        try:
+            socios = int(filtro.filter(anno=year).aggregate(socios=Avg('datos_productivos__socios'))['socios'])
+        except:
+            socios = 0
+
+        #pre-socios y pre-socias
+        try:
+            pre_socias = int(filtro.filter(anno=year).aggregate(pre_socias=Avg('datos_productivos__pre_socias'))['pre_socias'])
+        except:
+            pre_socias = 0
+
+        try:
+            pre_socios = int(filtro.filter(anno=year).aggregate(pre_socios=Avg('datos_productivos__pre_socios'))['pre_socios'])
+        except:
+            pre_socios = 0
+
+        #pendiente revision de datos para establecer rangos
+        #************************************************************************
+        frec_1 = 0
+        frec_2 = 0
+        frec_3 = 0
+        frec_4 = 0
+        frec_5 = 0
+        rangos_area = {}
+
+        avg_area = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_total'))['area_total']
+
+        for obj in filtro.filter(anno=year).values_list('datos_productivos__area_total', flat=True):
+            if obj >= 1 and obj <= 5:
+                frec_1 += 1
+            if obj >= 6 and obj <= 10:
+                frec_2 += 1
+            if obj >= 11:
+                frec_3 += 1
+
+        #rangos area dic
+        rangos_area['1-5 mz'] = (frec_1,saca_porcentajes(frec_1,count_org,False))
+        rangos_area['6-10 mz'] = (frec_2,saca_porcentajes(frec_2,count_org,False))
+        rangos_area['> 11 mz'] = (frec_3,saca_porcentajes(frec_3,count_org,False))
+        print rangos_area
+        #************************************************************************
+
         #diccionario de los años
-        anno[year] = (status,graf_bar_status,graf_pie_status,aspectos_juridicos,documentacion)
+        anno[year] = (status,graf_bar_status,graf_pie_status,aspectos_juridicos,documentacion,socias,socios,
+                        pre_socias,pre_socios)
         #------------------------------------------------------------------------------- 
-
-    try:
-        socias = int(filtro.aggregate(socias=Avg('datos_productivos__socias'))['socias'])
-    except:
-        socias = 0
-
-    try:
-        socios = int(filtro.aggregate(socios=Avg('datos_productivos__socios'))['socios'])
-    except:
-        socios = 0
-
-    try:
-        pre_socias = int(filtro.aggregate(pre_socias=Avg('datos_productivos__pre_socias'))['pre_socias'])
-    except:
-        pre_socias = 0
-
-    try:
-        pre_socios = int(filtro.aggregate(pre_socios=Avg('datos_productivos__pre_socios'))['pre_socios'])
-    except:
-        pre_socios = 0
-
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
     if areas_establecidas == None:

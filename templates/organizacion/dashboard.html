@@ -230,110 +230,107 @@ series: [
   });
 
 $(function () {
-  $('#container').highcharts({
-    chart: {
-      type: 'column'
-    },
-    title: {
-      text: 'Promedios número de socias/os y pre-socias/os'
-    },
-    yAxis: {
-      title: {
-        text: 'Valores'
-      }
 
-    },
-    credits: {
-      enabled: false
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: 'Promedio'
-      }
-    },
+    $(document).ready(function () {
 
-    tooltip: {
-      formatter: function() {
-        return ''+
-        this.series.name +': '+ this.y;
-      }
-    },
-    series: [
-    {
-      name: 'Socias',
-      data: [{{socias}}],
-      dataLabels: {
-        enabled: true,
-        rotation: 0,
-        color: '#632D00',
-        align: 'center',
-        x: -3,
-        y: 0,
-        formatter: function() {
-          return this.y;
-        },
-        style: {
-          font: 'normal 13px Verdana, sans-serif'
-        }
-      }
-    },
-    {
-      name: 'Socios',
-      data: [{{socios}}],
-      dataLabels: {
-        enabled: true,
-        rotation: 0,
-        color: '#632D00',
-        align: 'center',
-        x: -3,
-        y: 0,
-        formatter: function() {
-          return this.y;
-        },
-        style: {
-          font: 'normal 13px Verdana, sans-serif'
-        }
-      }
-    },
-    {
-      name: 'Pre Socias',
-      data: [{{pre_socias}}],
-      dataLabels: {
-        enabled: true,
-        rotation: 0,
-        color: '#632D00',
-        align: 'center',
-        x: -3,
-        y: 0,
-        formatter: function() {
-          return this.y;
-        },
-        style: {
-          font: 'normal 13px Verdana, sans-serif'
-        }
-      }
-    },
-    {
-      name: 'Pre Socios',
-      data: [{{pre_socios}}],
-      dataLabels: {
-        enabled: true,
-        rotation: 0,
-        color: '#632D00',
-        align: 'center',
-        x: -3,
-        y: 0,
-        formatter: function() {
-          return this.y;
-        },
-        style: {
-          font: 'normal 13px Verdana, sans-serif'
-        }
-      }
-    },
-    ]
-  });
+        // Build the chart
+        $('#socios{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Número de socias y socios con cacao'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '{point.percentage:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                style: {
+                  textShadow: '0 0 3px white'
+                }
+              },
+              showInLegend: true
+            }
+
+          },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Mujeres",
+                    y: {{value.5}}
+                }, 
+                {
+                    name: "Hombres",
+                    y: {{value.6}}
+                },
+                ]
+            }]
+        });
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#presocios{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Número de pre-socias y pre-socios con cacao'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+            pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                enabled: true,
+                format: '{point.percentage:.2f}%',
+                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                style: {
+                  textShadow: '0 0 3px white'
+                }
+              },
+              showInLegend: true
+            }
+
+          },
+            series: [{
+                name: "Procentajes",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Mujeres",
+                    y: {{value.7}}
+                }, 
+                {
+                    name: "Hombres",
+                    y: {{value.8}}
+                },
+                ]
+            }]
+        });
+    });
 });
 {% endfor %}
 </script>
@@ -409,10 +406,14 @@ $(function () {
 
         <div class="row fila3">
           <div class="col-md-12 col-lg-6 grafico1">
-            <div id="container{{year}}" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+            <div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
           </div>
+          <div class="col-md-12 col-lg-6 grafico1">
+            <div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+          </div>
+        </div>
 
-          <div class="col-md-12 col-lg-6 indicadores-t2">
+          <!--<div class="col-md-12 col-lg-6 indicadores-t2">
            <div class="promedio-cacao">
              <div class="row">
                <div class="col-md-8 col-lg-8 texto-indicador">
@@ -435,8 +436,8 @@ $(function () {
              </div>
            </div>
          </div>
-       </div>
-     </div>
+       </div>-->
+     
    </div>
  </div>
  {% endfor %}
