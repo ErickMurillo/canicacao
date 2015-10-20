@@ -278,6 +278,70 @@ $(function () {
         });
 });
 });
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#otros_ingresos').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Otros ingresos de la mujer'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+                
+            },
+            series: [{
+                name: "Porcentaje",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Ganadería",
+                    y: {{ganaderia}}
+                },
+                {
+                    name: "Granos básicos",
+                    y: {{granos_basicos}}
+                },
+                {
+                    name: "Cacao",
+                    y: {{cacao}}
+                },
+                {
+                    name: "Café",
+                    y: {{cafe}}
+                },
+                {
+                    name: "Madera",
+                    y: {{madera}}
+                },
+                ]
+            }]
+        });
+});
+});
 </script>
 {% endblock extra_js %}
 
@@ -302,11 +366,16 @@ $(function () {
 
 
     <div class="row fila1">
-        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left" style="margin-bottom: 1em">
             <h4 id="ingreso">Promedio ingreso mensual C$ {{avg_ingresos|floatformat:2|intcomma}}</h4>
         </div>
-        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+    </div>
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
             <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container3" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
         </div>
     </div>
 
@@ -322,8 +391,8 @@ $(function () {
         <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
             <div class="col-md-6" id="container4" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
         </div>
-        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-            <div class="col-md-6" id="container3" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+         <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="otros_ingresos" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
         </div>
     </div>
 

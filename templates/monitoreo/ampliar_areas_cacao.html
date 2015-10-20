@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript">
+	$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Productores con interes de ampliar sus áreas de cacao'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+                
+            },
+            series: [{
+                name: "Porcentaje",
+                colorByPoint: true,
+                data: [
+                {% for key,value in ampliar_areas.items %}
+                {
+                    name: "{{key}}",
+                    y: {{value}}
+                },
+                {% endfor %}
+                ]
+            }]
+        });
+});
+});
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Ampliación áreas de cacao</li>
+        </ol>  
+    </div>
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-md-offset-3 col-lg-offset-3 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

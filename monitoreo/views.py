@@ -357,8 +357,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
                 destino_dic["Otros"] = saca_porcentajes(suma, list_count, False)
             elif obj[0] != 4 and obj[0] != 3:
                 destino_dic[obj[1]] = saca_porcentajes(p, list_count, False)
-        #print suma
-
 
         #destino de produccion de las organizaciones
         destino_org_dic = {}
@@ -860,6 +858,13 @@ def genero(request,template='monitoreo/genero.html'):
         p2 = lista.count(dec[0])
         decisiones[dec[1]] = saca_porcentajes(p2,total_dec,False)
 
+    #sobre otros ingresos de la mujer
+    ganaderia = filtro.aggregate(count=Count('genero_2__ganaderia'))['count']
+    granos_basicos = filtro.aggregate(count=Count('genero_2__granos_basicos'))['count']
+    cacao = filtro.aggregate(count=Count('genero_2__cacao'))['count']
+    cafe = filtro.aggregate(count=Count('genero_2__cafe'))['count']
+    madera = filtro.aggregate(count=Count('genero_2__madera'))['count']
+    
     return render(request, template, locals())
 
 
@@ -1400,6 +1405,29 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
     for obj in SI_NO_CHOICES:
         conteo = filtro.filter(tecnicas_aplicadas__acopio_org = obj[0]).count()
         socio_acopio[obj[1]] = conteo
+
+    return render(request, template, locals())
+
+def ampliar_areas_cacao(request,template='monitoreo/ampliar_areas_cacao.html'):
+    filtro = _queryset_filtrado(request)
+   
+   ##############################################################
+    familias = filtro.count()
+    try:
+        hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
+    except:
+        hombres = 0
+    try:
+        mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
+    except:
+        mujeres = 0
+    organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
+    ##############################################################
+
+    ampliar_areas = {}
+    for obj in SI_NO_CHOICES:
+        conteo = filtro.filter(adicional__interes = obj[0]).count()
+        ampliar_areas[obj[1]] = conteo
 
     return render(request, template, locals())
 

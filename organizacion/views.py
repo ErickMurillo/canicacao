@@ -85,6 +85,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
     #detalle_org = filtro.distinct('organizacion__nombre')
 
     anno = collections.OrderedDict()
+    anno_org_names = collections.OrderedDict()
 
     anios_list = filtro.order_by('anno').values_list('anno', flat=True).distinct('anno')
 
@@ -97,21 +98,34 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 
         #aspectos juridicos ---------------------------------------------------------
         aspectos_juridicos = {}
+        tabla_aspectos_juridicos = {}
         count_org = filtro.filter(anno=year).distinct('organizacion__nombre').count()
         for obj in SI_NO_CHOICES:
-            personeria_juridica = filtro.filter(aspectos_juridicos__tiene_p_juridica=obj[0],anno=year).count()
-            act_perso_juridica = filtro.filter(aspectos_juridicos__act_p_juridica=obj[0],anno=year).count()
-            solvencia_tributaria = filtro.filter(aspectos_juridicos__solvencia_tributaria=obj[0],anno=year).count()
-            junta_directiva = filtro.filter(aspectos_juridicos__junta_directiva=obj[0],anno=year).count()
-            socios = filtro.filter(aspectos_juridicos__lista_socios=obj[0],anno=year).count()
+            personeria_juridica = filtro.filter(aspectos_juridicos__tiene_p_juridica=obj[0],anno=year)
+            count_personeria = personeria_juridica.count()
 
-            lista = [saca_porcentajes(personeria_juridica,count_org,False),
-                    saca_porcentajes(act_perso_juridica,count_org,False),
-                    saca_porcentajes(solvencia_tributaria,count_org,False),
-                    saca_porcentajes(junta_directiva,count_org,False),
-                    saca_porcentajes(socios,count_org,False)]
+            act_perso_juridica = filtro.filter(aspectos_juridicos__act_p_juridica=obj[0],anno=year)
+            count_act_perso_juridica = act_perso_juridica.count()
+
+            solvencia_tributaria = filtro.filter(aspectos_juridicos__solvencia_tributaria=obj[0],anno=year)
+            count_solvencia = solvencia_tributaria.count()
+
+            junta_directiva = filtro.filter(aspectos_juridicos__junta_directiva=obj[0],anno=year)
+            count_junta_directiva = junta_directiva.count()
+
+            socios = filtro.filter(aspectos_juridicos__lista_socios=obj[0],anno=year)
+            count_socios = socios.count()
+
+            lista = [saca_porcentajes(count_personeria,count_org,False),
+                    saca_porcentajes(count_act_perso_juridica,count_org,False),
+                    saca_porcentajes(count_solvencia,count_org,False),
+                    saca_porcentajes(count_junta_directiva,count_org,False),
+                    saca_porcentajes(count_socios,count_org,False)]
+
+            lista_org = [personeria_juridica,act_perso_juridica,solvencia_tributaria,junta_directiva,socios]
 
             aspectos_juridicos[obj[1]] = lista
+            tabla_aspectos_juridicos[obj[1]] = lista_org
 
         #conteo hombre y mujeres por status
         lista_status = Status.objects.all()
@@ -162,13 +176,18 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 
         #documentacion-----------------------------------------------------------------
         documentacion = {}
+        tabla_documantacion = {}
         for x in SI_NO_CHOICES:
-            dic_result = {}
+            documentos = {}
+            tabla_documentos = {}
             for obj in DOCUMENTOS_CHOICES:
-                result = filtro.filter(documentacion__documentos=obj[0],documentacion__si_no=x[0],anno=year).count()
-                dic_result[obj[1]] = result
+                result = filtro.filter(documentacion__documentos=obj[0],documentacion__si_no=x[0],anno=year)
+                count_result = result.count()
+                documentos[obj[1]] = saca_porcentajes(count_result,count_org,False)
+                tabla_documentos[obj[1]] = result
             
-            documentacion[x[1]] = dic_result
+            documentacion[x[1]] = documentos
+            tabla_documantacion[x[1]] = tabla_documentos
 
         #socios y socias de cacao
         try:
@@ -215,12 +234,11 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         rangos_area['1-5 mz'] = (frec_1,saca_porcentajes(frec_1,count_org,False))
         rangos_area['6-10 mz'] = (frec_2,saca_porcentajes(frec_2,count_org,False))
         rangos_area['> 11 mz'] = (frec_3,saca_porcentajes(frec_3,count_org,False))
-        print rangos_area
         #************************************************************************
 
         #diccionario de los años
-        anno[year] = (status,graf_bar_status,graf_pie_status,aspectos_juridicos,documentacion,socias,socios,
-                        pre_socias,pre_socios)
+        anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
+                        documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
