@@ -778,6 +778,12 @@ li[role='titulo']>a:hover {
     width: 95% !important;
   }
 }
+.indicadores-btn {
+  margin-top: 10px;
+}
+#mas {
+  cursor: pointer;
+}
 /**************************SM-Device************************************/
 @media (min-width: 768px) {
   .ind-cacao {
