@@ -925,15 +925,16 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
         mujeres = 0
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
+    
     servicio_dic = {}
     for obj in Tipos_Servicio.objects.exclude(servicio='Empleo'):
         servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
-        servicio_dic[obj] = servicio
+        servicio_dic[obj] = saca_porcentajes(servicio,familias,False)
 
     beneficio_dic = {}
     for x in Beneficios.objects.exclude(id=6):
         beneficio = filtro.filter(organizacion_asociada__beneficios=x).count()
-        beneficio_dic[x] = beneficio
+        beneficio_dic[x] = saca_porcentajes(beneficio,familias,False)
 
     return render(request, template, locals())
 
@@ -1268,7 +1269,7 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
     organizaciones = Organizacion.objects.filter(encuesta = filtro).distinct('nombre').count()
     ##############################################################
 
-    #VVEROS
+    #VVEROS----------------------------------------------------------------------
     viveros = collections.OrderedDict()
     lista_viveros = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1284,12 +1285,13 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
         (8,'Fertilización orgánica'),
         (6,'Uso de riego'),
     )
-    print VIVEROS_CHOICES
+    total = len(lista_viveros) - (lista_viveros.count(1) + lista_viveros.count(3)) 
+
     for op in VIVEROS_CHOICES:
         p2 = lista_viveros.count(op[0])
-        viveros[op[1]] = p2
+        viveros[op[1]] = saca_porcentajes(p2,total,False)
 
-    #FERTILIZACION_CHOICES
+    #FERTILIZACION----------------------------------------------------------------------
     fertilizacion = collections.OrderedDict()
     lista_fertilizacion = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1307,12 +1309,12 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
         (1,'Estiércol'),
         (8,'Fertilizante completo'),
     )
-
+ 
     for op in FERTILIZACION_CHOICES:
         p2 = lista_fertilizacion.count(op[0])
-        fertilizacion[op[1]] = p2
+        fertilizacion[op[1]] = saca_porcentajes(p2,len(lista_fertilizacion),False)
 
-    #pract_manejo_fis
+    #pract_manejo_fis----------------------------------------------------------------------
     pract_manejo_fis = collections.OrderedDict()
     lista_pract_manejo_fis = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1331,9 +1333,9 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 
     for op in P_MANEJO_FIS_CHOICES:
         p2 = lista_pract_manejo_fis.count(op[0])
-        pract_manejo_fis[op[1]] = p2
+        pract_manejo_fis[op[1]] = saca_porcentajes(p2,len(lista_pract_manejo_fis),False)
 
-    #pract_manejo_prod
+    #pract_manejo_prod----------------------------------------------------------------------
     pract_manejo_prod = collections.OrderedDict()
     lista_pract_manejo_prod = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1350,9 +1352,9 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 
     for op in P_MANEJO_PROD_CHOICES:
         p2 = lista_pract_manejo_prod.count(op[0])
-        pract_manejo_prod[op[1]] = p2
+        pract_manejo_prod[op[1]] = saca_porcentajes(p2,len(lista_pract_manejo_prod),False)
 
-    #pract_mejora_plat
+    #pract_mejora_plat----------------------------------------------------------------------
     pract_mejora_plat = collections.OrderedDict()
     lista_pract_mejora_plat = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1369,9 +1371,9 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 
     for op in P_MEJORA_PLANT_CHOICES:
         p2 = lista_pract_mejora_plat.count(op[0])
-        pract_mejora_plat[op[1]] = p2
+        pract_mejora_plat[op[1]] = saca_porcentajes(p2,len(lista_pract_mejora_plat),False)
 
-    #pract_manejo_post_c
+    #pract_manejo_post_c----------------------------------------------------------------------
     pract_manejo_post_c = collections.OrderedDict()
     lista_pract_manejo_post_c = []
     for obj in Tecnicas_Aplicadas.objects.filter(encuesta=filtro):
@@ -1392,15 +1394,15 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 
     for op in P_MANEJO_POST_C_CHOICES:
         p2 = lista_pract_manejo_post_c.count(op[0])
-        pract_manejo_post_c[op[1]] = p2
+        pract_manejo_post_c[op[1]] = saca_porcentajes(p2,len(lista_pract_manejo_post_c),False)
     
-    #dispone de centro de acopio de cacao
+    #dispone de centro de acopio de cacao------------------------------------------------
     centro_acopio = {}
     for obj in SI_NO_CHOICES:
         conteo = filtro.filter(tecnicas_aplicadas__acopio_cacao = obj[0]).count()
         centro_acopio[obj[1]] = conteo
 
-    #socio de alguna org q acopia cacao
+    #socio de alguna org q acopia cacao--------------------------------------------------
     socio_acopio = {}
     for obj in SI_NO_CHOICES:
         conteo = filtro.filter(tecnicas_aplicadas__acopio_org = obj[0]).count()

@@ -37,7 +37,7 @@
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
+                    format: '{point.y}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -48,7 +48,7 @@
             tooltip: {
                 formatter: function() {
                     return ''+
-                        this.series.name +': '+ this.y;
+                        this.series.name +': '+ this.y + '%';
                 }
             },
             xAxis: {
@@ -109,7 +109,7 @@
             tooltip: {
                 formatter: function() {
                     return ''+
-                        this.series.name +': '+ this.y;
+                        this.series.name +': '+ this.y + '%';
                 }
             },
             plotOptions: {
@@ -117,7 +117,7 @@
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
+                    format: '{point.y}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'

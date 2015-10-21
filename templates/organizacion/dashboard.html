@@ -2,335 +2,475 @@
 
 {% block extra_js %}
 <script>
-  $(document).ready(function() {
+	$(document).ready(function() {
 
-    $('li.item-org').addClass('active');
-    
-  });
+		$('li.item-org').addClass('active');
 
-  {% for year,value in anno.items %}
+	});
 
-  $(function () {
+	{% for year,value in anno.items %}
 
-    $(document).ready(function () {
+	$(function () {
 
-        // Build the chart
-        $('#status{{year}}').highcharts({
-          chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-          },
-          title: {
-            text: 'Estatus legal de la organización'
-          },
+		$(document).ready(function () {
 
-          tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                enabled: true,
-                format: '{point.percentage:.2f}%',
-                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                style: {
-                  textShadow: '0 0 3px white'
-                }
-              },
-              showInLegend: true
-            }
+		// Build the chart
+		$('#status{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Estatus legal de la organización'
+			},
 
-          },
-          series: [{
-            name: "Porcentajes",
-            colorByPoint: true,
-            data: [
-            {% for x,y in value.0.items %}
-            {
-              name: "{{x}}",
-              y: {{y}}
-            },
-            {% endfor %}
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{% for x,y in value.0.items %}
+				{
+					name: "{{x}}",
+					y: {{y}}
+				},
+				{% endfor %}
 
 
-            ]
-          }]
-        });
-});
+				]
+			}]
+		});
+	});
+	});
+
+	$(function () {
+		$('#miembros{{year}}').highcharts({
+			title: {
+				text: 'Número de miembros de JD por organización'
+			},
+			xAxis: {
+				categories: [{% for item in lista_status %} '{{item}}', {% endfor %}]
+			},
+			yAxis: {
+				title: {
+					text: 'Valores'
+				}
+
+			},
+			labels: {
+				items: [{
+					html: 'Total de hombres y mujeres',
+					style: {
+						left: '50px',
+						top: '0px',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
+					}
+				}]
+			},
+			plotOptions: {
+				series: {
+					borderWidth: 0,
+					dataLabels: {
+						enabled: true,
+						format: '{point.y}'
+					}
+				}
+			},
+
+			series: [
+			{% for key,values in value.2.items %}
+			{
+				type: 'column',
+				name: '{{key}}',
+				data: [{% for x,y in values %}{{y}},{% endfor %}]
+			},
+			{% endfor %}  
+
+			{
+				type: 'pie',
+				name: 'Total',
+				data: [
+				{% for key, values in value.3.items %}
+				{
+					name: '{{key}}',
+					y: {{values}},
+					{% if forloop.counter == 1 %}
+					color: Highcharts.getOptions().colors[0]
+					{% else %}
+					color: Highcharts.getOptions().colors[{{forloop.counter}} - 1]
+					{% endif %}
+
+				},
+				{% endfor %}
+				],
+				center: [100, 50],
+				size: 90,
+				showInLegend: false,
+				tooltip: {
+					pointFormat: '{point.y:.1f}%'
+				},
+				dataLabels: {
+					enabled: false,
+				}
+			}
+			]
+		});
 });
 
 $(function () {
-  $('#miembros{{year}}').highcharts({
-    title: {
-      text: 'Número de miembros de JD por organización'
-    },
-    xAxis: {
-      categories: [{% for item in lista_status %} '{{item}}', {% endfor %}]
-    },
-    labels: {
-      items: [{
-        html: 'Total de hombres y mujeres',
-        style: {
-          left: '50px',
-          top: '0px',
-          color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-        }
-      }]
-    },
-    plotOptions: {
-      series: {
-       borderWidth: 0,
-       dataLabels: {
-        enabled: true,
-        format: '{point.y}'
-      }
-    }
-  },
+	$('#aspectos_juridicos{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Situación legal de las Organizaciones/Instituciones'
+		},
+		xAxis: {
+			categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
+		},
+		yAxis: {
+			title: {
+				text: 'Porcentajes'
+			}
 
-  series: [
-  {% for key,values in value.2.items %}
-  {
-    type: 'column',
-    name: '{{key}}',
-    data: [{% for x,y in values %}{{y}},{% endfor %}]
-  },
-  {% endfor %}  
+		},
+		credits: {
+			enabled: false
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.1f}%'
+				}
+			}
+		},
 
-  {
-    type: 'pie',
-    name: 'Total',
-    data: [
-    {% for key, values in value.3.items %}
-    {
-      name: '{{key}}',
-      y: {{values}},
-      {% if forloop.counter == 1 %}
-      color: Highcharts.getOptions().colors[0]
-      {% else %}
-      color: Highcharts.getOptions().colors[{{forloop.counter}} - 1]
-      {% endif %}
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%'
+		},
+		series: [
+		{% for key,value in value.4.items %}
+		{
+			name: '{{key}}',
+			data: [{% for x in value %}{{x}},{% endfor %}]
+		},
+		{% endfor %}
 
-    },
-    {% endfor %}
-    ],
-    center: [100, 50],
-    size: 90,
-    showInLegend: false,
-    tooltip: {
-      pointFormat: '{point.y:.1f}%'
-    },
-    dataLabels: {
-      enabled: false,
-    }
-  }
-  ]
-});
-});
-
-$(function () {
-  $('#aspectos_juridicos{{year}}').highcharts({
-   chart: {
-    type: 'column'
-  },
-  title: {
-    text: 'Situación legal de las Organizaciones/Instituciones'
-  },
-  xAxis: {
-    categories: ['Personería jurídica', 'Actualización person. jurídica', 'Solvencia tributaria', 'Junta directiva certificada', 'Lista socias y socias actualizada']
-  },
-  yAxis: {
-   title: {
-     text: 'Valores'
-   }
-
- },
- credits: {
-  enabled: false
-},
-plotOptions: {
-  series: {
-   borderWidth: 0,
-   dataLabels: {
-    enabled: true,
-    format: '{point.y:.1f}%'
-  }
-}
-},
-
-tooltip: {
-  headerFormat: '<span style="font-size:11px">{series.name}</span>',
-  pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%'
-},
-series: [
-{% for key,value in value.4.items %}
-{
-  name: '{{key}}',
-  data: [{% for x in value %}{{x}},{% endfor %}]
-},
-{% endfor %}
-
-]
-});
+		]
+	});
 })
 
 $(function () {
-  $('#documentacion{{year}}').highcharts({
-   chart: {
-    type: 'column'
-  },
-  title: {
-    text: 'Documentación legal y estratégica'
-  },
-  xAxis: {
-    categories: [{% for key,value in documentacion.items %}
-    {% for k,v in value.items %}
+	$('#documentacion{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Documentación legal y estratégica'
+		},
+		xAxis: {
+			categories: [{% for key,value in documentacion.items %}
+			{% for k,v in value.items %}
 
-    '{{k}}',
+			'{{k}}',
 
-    {% endfor %}
-    {% endfor %}]
-  },
-  credits: {
-    enabled: false
-  },
-  yAxis: {
-   title: {
-     text: 'Valores'
-   }
+			{% endfor %}
+			{% endfor %}]
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			title: {
+				text: 'Porcentajes'
+			}
 
- },
- plotOptions: {
-  series: {
-   borderWidth: 0,
-   dataLabels: {
-    enabled: true,
-    format: '{point.y}'
-  }
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y}%'
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+		},
+		series: [
+		{% for key,value in value.6.items %}
+		{
+			name: '{{key}}',
+			data: [{% for x,y in value.items %}{{y}},{% endfor %}]
+		},
+		{% endfor %}
+
+		]
+	});
+});
+
+function newRandomColor() {
+	var color = [];
+	color.push((Math.random() * 255).toFixed());
+	color.push((Math.random() * 255).toFixed());
+	color.push((Math.random() * 255).toFixed());
+	color.push((Math.random()).toFixed(2));
+	var text = 'rgba(' + color.join(',') + ')';
+	console.log(text);
+	return text;
 }
-},
 
-tooltip: {
-  headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-  pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
-},
-series: [
-{% for key,value in value.6.items %}
-{
-  name: '{{key}}',
-  data: [{% for x,y in value.items %}{{y}},{% endfor %}]
-},
-{% endfor %}
+$(function () {
 
-]
-});
+	// var new_color1 = newRandomColor();
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#socios{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Número de socias y socios con cacao'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Procentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Mujeres",
+					y: {{value.8}},
+
+				}, 
+				{
+					name: "Hombres",
+					y: {{value.9}},
+
+				},
+				]
+			}]
+		});
+	});
 });
 
 $(function () {
 
-  $(document).ready(function () {
+	$(document).ready(function () {
 
-        // Build the chart
-        $('#socios{{year}}').highcharts({
-          chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-          },
-          title: {
-            text: 'Número de socias y socios con cacao'
-          },
-          tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                enabled: true,
-                format: '{point.percentage:.2f}%',
-                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                style: {
-                  textShadow: '0 0 3px white'
-                }
-              },
-              showInLegend: true
-            }
+		// Build the chart
+		$('#presocios{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Número de pre-socias y pre-socios con cacao'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
 
-          },
-          series: [{
-            name: "Procentajes",
-            colorByPoint: true,
-            data: [
-            {
-              name: "Mujeres",
-              y: {{value.8}}
-            }, 
-            {
-              name: "Hombres",
-              y: {{value.9}}
-            },
-            ]
-          }]
-        });
-});
+			},
+			series: [{
+				name: "Procentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Mujeres",
+					y: {{value.10}}
+				}, 
+				{
+					name: "Hombres",
+					y: {{value.11}}
+				},
+				]
+			}]
+		});
+	});
 });
 
 $(function () {
+	$('#rangos{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Procentaje de áreas establecidas por socias y socios en cacao'
+		},
 
-  $(document).ready(function () {
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text: null
+			},
+			labels: {
+				formatter: function () {
+					return Math.abs(this.value) + '%';
+				}
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+					style: {
+						textShadow: '0 0 3px black'
+					}
+				}
+			}
+		},
 
-        // Build the chart
-        $('#presocios{{year}}').highcharts({
-          chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-          },
-          title: {
-            text: 'Número de pre-socias y pre-socios con cacao'
-          },
-          tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                enabled: true,
-                format: '{point.percentage:.2f}%',
-                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                style: {
-                  textShadow: '0 0 3px white'
-                }
-              },
-              showInLegend: true
-            }
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+		},
 
-          },
-          series: [{
-            name: "Procentajes",
-            colorByPoint: true,
-            data: [
-            {
-              name: "Mujeres",
-              y: {{value.10}}
-            }, 
-            {
-              name: "Hombres",
-              y: {{value.11}}
-            },
-            ]
-          }]
-        });
+		series: [{
+			name: "Porcentajes",
+			colorByPoint: true,
+			data: [
+			{% for k,v in value.12.items %}
+			{
+				name: "{{k}}",
+				y: {{v.1}},
+			},
+			{% endfor %}
+
+			]
+		}],
+	});
 });
+
+$(function () {
+	$('#rangos_organico{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Procentaje de áreas establecidas de cacao orgánico'
+		},
+
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text: null
+			},
+			labels: {
+				formatter: function () {
+					return Math.abs(this.value) + '%';
+				}
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+					style: {
+						textShadow: '0 0 3px black'
+					}
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+		},
+
+		series: [{
+			name: "Porcentajes",
+			colorByPoint: true,
+			data: [
+			{% for k,v in value.15.items %}
+			{
+				name: "{{k}}",
+				y: {{v.1}},
+			},
+			{% endfor %}
+
+			]
+		}],
+	});
 });
 {% endfor %}
 </script>
@@ -353,244 +493,308 @@ $(function () {
 
 {% block content %}
 <style>
-  .row {
-   margin-right: 0px !important;
-   margin-left: 0px !important; 
- }
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
 
- h3 {
-  color: #cb6830;
-  font-weight: bold;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
 </style>
 
 <div id="tabs">
-  <!-- Nav tabs -->
-  <ul class="nav nav-annos" role="navegacion">
-    <li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
-      <a >Años:</a>
-    </li>
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
 
-    {% for year in anno.keys %}
-    <li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
-    {% endfor %}
-  </ul>
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
 
-  <div class="tab-content">
+	<div class="tab-content">
 
-    {% for year,value in anno.items %}
-    <div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+		{% for year,value in anno.items %}
+		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 
-      <div class="container-fluid contenido-graficos">
+			<div class="container-fluid contenido-graficos">
 
-        <div class="row">
-          <div class="col-md-12 col-lg-9">
-            <div id="status{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
-          </div>
-          <div class="col-md-12 col-lg-3">
-           <table class="table table-bordered table-striped table-hover">
-            <caption>Organizaciones</caption>
-            <thead>
-              <tr>
-                <th>Estatus</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for k,v in value.1.items  %}
-              <tr>
-                <td><a href="" data-toggle="modal" data-target="#modal{{forloop.counter}}{{year}}">{{k}}</a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <!-- modal -->
-        {% for k,v in value.1.items %}
-        <div class="modal fade" id="modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-          <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">{{k}}</h4>
-              </div>
-              <div class="modal-body">
-                {% for org in v %}
-                <li><a href="">{{org}}</a></li>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        <!-- end modal -->
-      </div>
+				<div class="row">
+					<div class="col-md-12 col-lg-9">
+						<div id="status{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-3">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Organizaciones</caption>
+							<thead>
+								<tr>
+									<th>Estatus</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k,v in value.1.items  %}
+								<tr>
+									<td><a href="" data-toggle="modal" data-target="#modal{{forloop.counter}}{{year}}">{{k}}</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- modal -->
+					{% for k,v in value.1.items %}
+					<div class="modal fade" id="modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+						<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="myModalLabel">{{k}}</h4>
+								</div>
+								<div class="modal-body">
+									{% for org in v %}
+									<li><a href="">{{org}}</a></li>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<!-- end modal -->
+				</div>
 
-      <div class="row">
-        <div class="col-md-12 col-lg-12">
-          <div id="miembros{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
-        </div>
-      </div>
+				<div class="row">
+					<div class="col-md-12 col-lg-12">
+						<div id="miembros{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
+					</div>
+				</div>
 
-      <div class="row">
-        <div class="col-md-12 col-lg-9">
-          <div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
-        </div>
-        <div class="col-md-15 col-lg-3">
-          <table class="table table-bordered table-striped table-hover">
-            <caption>Organizaciones</caption>
-            <thead>
-              <tr>
-                <th>Situación legal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for k in value.5.keys %}
-              <tr>
-                <td><a href="" data-toggle="modal" data-target="#situacion_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        <!-- modal -->
-        {% for k,v in value.7.items %}
+				<div class="row">
+					<div class="col-md-12 col-lg-9">
+						<div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-15 col-lg-3">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Organizaciones</caption>
+							<thead>
+								<tr>
+									<th>Situación legal</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k in value.5.keys %}
+								<tr>
+									<td><a href="" data-toggle="modal" data-target="#situacion_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<!-- modal -->
+					{% for k,v in value.7.items %}
 
-        <div class="modal fade" id="doc_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-              <h4>Año {{year}}</h4>
-                <h4>Organizaciones que dijeron que '{{k}}':</h4>
-              </div>
-              <div class="modal-body">
-              <table class="table table-bordered table-striped table-hover">
-               <thead>
-                <tr>
-                    {% for x,y in v.items %}
-                      <th>{{x}}</th>
-                    {% endfor %}
+					<div class="modal fade" id="doc_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4>Año {{year}}</h4>
+									<h4>Organizaciones que dijeron que '{{k}}':</h4>
+								</div>
+								<div class="modal-body">
+									<table class="table table-bordered table-striped table-hover">
+										<thead>
+											<tr>
+												{% for x,y in v.items %}
+												<th>{{x}}</th>
+												{% endfor %}
 
-                </tr>
-              </thead>
-              <tbody>
-                
-                <tr>
-                {% for x in v.values %}
-                  <td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
-                {% endfor %}
-                </tr>
-                
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-    <!-- end modal -->
-  </div>
-  <div class="row">
-    <div class="col-md-12 col-lg-9">
-      <div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
-    </div>
-    <div class="col-md-12 col-lg-3">
-      <table class="table table-bordered table-striped table-hover">
-            <caption>Organizaciones</caption>
-            <thead>
-              <tr>
-                <th>Poseen documentación legal</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for k in value.7.keys %}
-              <tr>
-                <td><a href="" data-toggle="modal" data-target="#doc_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-    </div>
+											</tr>
+										</thead>
+										<tbody>
 
-    <!-- modal -->
-        {% for k,v in value.5.items %}
+											<tr>
+												{% for x in v.values %}
+												<td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
+												{% endfor %}
+											</tr>
 
-        <div class="modal fade" id="situacion_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-              <h4>Año {{year}}</h4>
-                <h4>Organizaciones que dijeron que '{{k}}' tienen:</h4>
-              </div>
-              <div class="modal-body">
-              <table class="table table-bordered table-striped table-hover">
-               <thead>
-                <tr>
-                  <th>Personería jurídica</th>
-                  <th>Actualización person. jurídica</th>
-                  <th>Solvencia tributaria</th>
-                  <th>Junta directiva certificada</th>
-                  <th>Lista socias y socias actualizada</th>
-                </tr>
-              </thead>
-              <tbody>
-                
-                <tr>
-                {% for x in v %}
-                  <td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
-                {% endfor %}
-                </tr>
-                
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-    <!-- end modal -->
-  </div>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<!-- end modal -->
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-lg-9">
+						<div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-3">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Organizaciones</caption>
+							<thead>
+								<tr>
+									<th>Poseen documentación legal</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k in value.7.keys %}
+								<tr>
+									<td><a href="" data-toggle="modal" data-target="#doc_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
 
-  <div class="row fila3">
-    <div class="col-md-12 col-lg-6 grafico1">
-      <div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-    </div>
-    <div class="col-md-12 col-lg-6 grafico1">
-      <div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-    </div>
-  </div>
+					<!-- modal -->
+					{% for k,v in value.5.items %}
 
-          <!--<div class="col-md-12 col-lg-6 indicadores-t2">
-           <div class="promedio-cacao">
-             <div class="row">
-               <div class="col-md-8 col-lg-8 texto-indicador">
-                 <h2>{{areas_establecidas}}</h2>
-                 <h3>Promedio de Áreas establecidas de cacao por socias y socios</h3>
-               </div>
-               <div class="col-md-4 col-lg-4">
-                 <img src="/static/img/arbol-01.png" alt="">
-               </div>
-             </div>
-           </div>
-           <div class="promedio-cultivo">
-            <div class="row">
-             <div class="col-md-8 col-lg-8 texto-indicador">
-               <h2>{{area_organico}}</h2>
-               <h3>Promedio áreas con certificado orgánico</h3>
-             </div>
-             <div class="col-md-4 col-lg-4">
-               <img src="/static/img/arbolito-01.png" alt="">
-             </div>
-           </div>
-         </div>
-       </div>-->
+					<div class="modal fade" id="situacion_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4>Año {{year}}</h4>
+									<h4>Organizaciones que dijeron que '{{k}}' tienen:</h4>
+								</div>
+								<div class="modal-body">
+									<table class="table table-bordered table-striped table-hover">
+										<thead>
+											<tr>
+												<th>Personería jurídica</th>
+												<th>Actualización person. jurídica</th>
+												<th>Solvencia tributaria</th>
+												<th>Junta directiva certificada</th>
+												<th>Lista socias y socias actualizada</th>
+											</tr>
+										</thead>
+										<tbody>
 
-     </div>
-   </div>
-   {% endfor %}
+											<tr>
+												{% for x in v %}
+												<td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
+												{% endfor %}
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+					<!-- end modal -->
+				</div>
+
+				<div class="row fila3">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14}} mz</caption>
+							<thead>
+								<tr>
+									<th>Rangos</th>
+									<th>Frecuencias</th>
+									<th>%</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k,v in value.12.items %}
+								<tr>
+									<td>{{k}}</td>
+									{% for valor in v %}
+									<td>{{valor}}</td>
+									{% endfor %}
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>Total</td>
+									<td>{{value.13}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico1">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17}} mz</caption>
+							<thead>
+								<tr>
+									<th>Rangos</th>
+									<th>Frecuencias</th>
+									<th>%</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k,v in value.15.items %}
+								<tr>
+									<td>{{k}}</td>
+									{% for valor in v %}
+									<td>{{valor}}</td>
+									{% endfor %}
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>Total</td>
+									<td>{{value.16}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+		  <!--<div class="col-md-12 col-lg-6 indicadores-t2">
+		   <div class="promedio-cacao">
+			 <div class="row">
+			   <div class="col-md-8 col-lg-8 texto-indicador">
+				 <h2>{{areas_establecidas}}</h2>
+				 <h3>Promedio de Áreas establecidas de cacao por socias y socios</h3>
+			   </div>
+			   <div class="col-md-4 col-lg-4">
+				 <img src="/static/img/arbol-01.png" alt="">
+			   </div>
+			 </div>
+		   </div>
+		   <div class="promedio-cultivo">
+			<div class="row">
+			 <div class="col-md-8 col-lg-8 texto-indicador">
+			   <h2>{{area_organico}}</h2>
+			   <h3>Promedio áreas con certificado orgánico</h3>
+			 </div>
+			 <div class="col-md-4 col-lg-4">
+			   <img src="/static/img/arbolito-01.png" alt="">
+			 </div>
+		   </div>
+		 </div>
+		</div>-->
+
+	</div>
+</div>
+{% endfor %}
 
 
- </div>
+</div>
 </div>
 
 {% endblock content %}

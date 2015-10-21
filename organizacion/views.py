@@ -213,32 +213,55 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 
         #pendiente revision de datos para establecer rangos
         #************************************************************************
-        frec_1 = 0
-        frec_2 = 0
-        frec_3 = 0
-        frec_4 = 0
-        frec_5 = 0
-        rangos_area = {}
+
+        #Área establecida por sus socias y socios en cacao-------------------------------------
+        frec1,frec2,frec3 = 0,0,0
+
+        rangos_area = collections.OrderedDict()
 
         avg_area = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_total'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('datos_productivos__area_total', flat=True):
             if obj >= 1 and obj <= 5:
-                frec_1 += 1
+                frec1 += 1
             if obj >= 6 and obj <= 10:
-                frec_2 += 1
+                frec2 += 1
             if obj >= 11:
-                frec_3 += 1
+                frec3 += 1
 
         #rangos area dic
-        rangos_area['1-5 mz'] = (frec_1,saca_porcentajes(frec_1,count_org,False))
-        rangos_area['6-10 mz'] = (frec_2,saca_porcentajes(frec_2,count_org,False))
-        rangos_area['> 11 mz'] = (frec_3,saca_porcentajes(frec_3,count_org,False))
+        rangos_area['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
+        rangos_area['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
+        rangos_area['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
+        total_frecuencia_rangos = frec1 + frec2 + frec3
+
+        #Área establecida de cacao orgánico ---------------------------------------------------
+        frec1,frec2,frec3 = 0,0,0
+
+        rangos_organico = collections.OrderedDict()
+
+        avg_area_organico = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_cert_organico'))['area_total']
+
+        for obj in filtro.filter(anno=year).values_list('datos_productivos__area_cert_organico', flat=True):
+            if obj >= 1 and obj <= 5:
+                frec1 += 1
+            if obj >= 6 and obj <= 10:
+                frec2 += 1
+            if obj >= 11:
+                frec3 += 1
+
+        #rangos area dic
+        rangos_organico['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
+        rangos_organico['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
+        rangos_organico['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
+        total_frecuencia_organico = frec1 + frec2 + frec3
+
         #************************************************************************
 
         #diccionario de los años
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
-                        documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios)
+                        documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios,rangos_area,
+                        total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
