@@ -101,6 +101,75 @@ $(function () {
        ]
    });
 });
+
+$(function () {
+        $('#problemas').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Problemas en las áreas de cacao'
+            },
+
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                        style: {
+                            textShadow: '0 0 3px black'
+                        }
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b>'
+            },
+
+            series: [{
+                name: "Problemas",
+                colorByPoint: true,
+                data: [ 
+            {
+                name: "Baja fertilidad del suelo",
+                y: {{fertilidad}},
+            }, {
+                name: "Árboles poco productivos",
+                y: {{arboles}},
+            }, {
+                name: "Plantaciones muy viejas",
+                y: {{plantaciones}},
+            }, {
+                name: "Plagas y enfermedades",
+                y: {{plagas}},
+            }, {
+                name: "Poca producción",
+                y: {{produccion_problemas}},
+            }, {
+                name: "Poca disponibilidad de mano de obra",
+                y: {{mano_obra}},
+            }
+
+            ]
+        }],
+    });
+});
 </script>
 {% endblock extra_js %}
 
@@ -132,7 +201,9 @@ $(function () {
                 <h5>Áreas de cacao: C$ {{inversion_cacao|floatformat:2|intcomma}}</h5>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6 col-lg-6">
+    </div>
+    <div class="row fila2" style="margin-top: 1.5em">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
             <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
             <div class="table-responsive" id="modalidad">
                 <table class="table table-bordered table-hover">
@@ -182,15 +253,18 @@ $(function () {
                 </table>
             </div>
         </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
     </div>
 
 
-    <div class="row fila2">
+    <div class="row fila3">
         <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+            <div class="col-md-6" id="problemas" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
         </div>
     </div>
 </div>

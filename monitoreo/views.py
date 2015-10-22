@@ -573,6 +573,14 @@ def produccion(request,template='monitoreo/produccion.html'):
         p2 = lista.count(mes[0])
         produccion[mes[1]] = p2
 
+    #problemas produccion
+    fertilidad = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__fertilidad'))['total'],familias,False)
+    arboles = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__arboles'))['total'],familias,False)
+    plantaciones = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__plantaciones'))['total'],familias,False)
+    plagas = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__plagas'))['total'],familias,False)
+    produccion_problemas = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__produccion'))['total'],familias,False)
+    mano_obra = saca_porcentajes(filtro.aggregate(total=Count('problemas_cacao__mano_obra'))['total'],familias,False)
+
     #tabla nueva-------------------------------------
     EDAD_PLANTA_CHOICES = (
         # (1,'Menor de un año'),
