@@ -279,69 +279,132 @@ $(function () {
 });
 });
 
-$(function () {
+// $(function () {
 
-    $(document).ready(function () {
+//     $(document).ready(function () {
 
-        // Build the chart
-        $('#otros_ingresos').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Otras fuentes de ingreso que percibe la familia'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.percentage:.1f}%',
-                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-                        style: {
-                            textShadow: '0 0 3px white'
-                        }
-                    },
-                    showInLegend: true
-                }
+//         // Build the chart
+//         $('#otros_ingresos').highcharts({
+//             chart: {
+//                 plotBackgroundColor: null,
+//                 plotBorderWidth: null,
+//                 plotShadow: false,
+//                 type: 'pie'
+//             },
+//             title: {
+//                 text: 'Otras fuentes de ingreso que percibe la familia'
+//             },
+//             tooltip: {
+//                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+//             },
+//             plotOptions: {
+//                 pie: {
+//                     allowPointSelect: true,
+//                     cursor: 'pointer',
+//                     dataLabels: {
+//                         enabled: true,
+//                         format: '{point.percentage:.1f}%',
+//                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+//                         style: {
+//                             textShadow: '0 0 3px white'
+//                         }
+//                     },
+//                     showInLegend: true
+//                 }
                 
-            },
-            series: [{
-                name: "Porcentaje",
-                colorByPoint: true,
-                data: [
-                {
-                    name: "Ganadería",
-                    y: {{ganaderia}}
-                },
-                {
-                    name: "Granos básicos",
-                    y: {{granos_basicos}}
-                },
-                {
-                    name: "Cacao",
-                    y: {{cacao}}
-                },
-                {
-                    name: "Café",
-                    y: {{cafe}}
-                },
-                {
-                    name: "Madera",
-                    y: {{madera}}
-                },
-                ]
-            }]
-        });
+//             },
+//             series: [{
+//                 name: "Porcentaje",
+//                 colorByPoint: true,
+//                 data: [
+//                 {
+//                     name: "Ganadería",
+//                     y: {{ganaderia}}
+//                 },
+//                 {
+//                     name: "Granos básicos",
+//                     y: {{granos_basicos}}
+//                 },
+//                 {
+//                     name: "Cacao",
+//                     y: {{cacao}}
+//                 },
+//                 {
+//                     name: "Café",
+//                     y: {{cafe}}
+//                 },
+//                 {
+//                     name: "Madera",
+//                     y: {{madera}}
+//                 },
+//                 ]
+//             }]
+//         });
+// });
+// });
+
+$(function () {
+    $('#otros_ingresos').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Otras fuentes de ingreso que percibe la familia'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentaje (%)'
+            }
+        },
+        xAxis: {
+            categories: [
+            'Fuentes de ingreso',
+            
+            ],
+            crosshair: true
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y + '%' ;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:1f} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {name: 'Ganadería', data: [{{ganaderia}}]},
+        {name: 'Granos básicos', data: [{{granos_basicos}}]},
+        {name: 'Cacao', data: [{{cacao}}]},
+        {name: 'Café', data: [{{cafe}}]},
+        {name: 'Madera', data: [{{madera}}]},
+        ]
+    });
 });
-});
+
 </script>
 {% endblock extra_js %}
 

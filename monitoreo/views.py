@@ -861,20 +861,18 @@ def genero(request,template='monitoreo/genero.html'):
 	(4,'Uso de ingresos'),
 	)
 
-    total_dec = len(lista)
     for dec in DECISIONES_CHOICES:
         p2 = lista.count(dec[0])
-        decisiones[dec[1]] = saca_porcentajes(p2,total_dec,False)
+        decisiones[dec[1]] = saca_porcentajes(p2,familias,False)
 
     #sobre otros ingresos de la mujer
-    ganaderia = filtro.aggregate(count=Count('genero_2__ganaderia'))['count']
-    granos_basicos = filtro.aggregate(count=Count('genero_2__granos_basicos'))['count']
-    cacao = filtro.aggregate(count=Count('genero_2__cacao'))['count']
-    cafe = filtro.aggregate(count=Count('genero_2__cafe'))['count']
-    madera = filtro.aggregate(count=Count('genero_2__madera'))['count']
-    
-    return render(request, template, locals())
+    ganaderia = saca_porcentajes(filtro.aggregate(count=Count('genero_2__ganaderia'))['count'],familias,False)
+    granos_basicos = saca_porcentajes(filtro.aggregate(count=Count('genero_2__granos_basicos'))['count'],familias,False)
+    cacao = saca_porcentajes(filtro.aggregate(count=Count('genero_2__cacao'))['count'],familias,False)
+    cafe = saca_porcentajes(filtro.aggregate(count=Count('genero_2__cafe'))['count'],familias,False)
+    madera = saca_porcentajes(filtro.aggregate(count=Count('genero_2__madera'))['count'],familias,False)
 
+    return render(request, template, locals())
 
 def reforestacion(request,template='monitoreo/reforestacion.html'):
     filtro = _queryset_filtrado(request)
