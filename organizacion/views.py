@@ -256,12 +256,33 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         rangos_organico['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
         total_frecuencia_organico = frec1 + frec2 + frec3
 
+        #Área establecida de cacao convencional ---------------------------------------------------
+        frec1,frec2,frec3 = 0,0,0
+
+        rangos_convencional = collections.OrderedDict()
+
+        avg_area_convencional = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_convencional'))['area_total']
+
+        for obj in filtro.filter(anno=year).values_list('datos_productivos__area_convencional', flat=True):
+            if obj >= 1 and obj <= 5:
+                frec1 += 1
+            if obj >= 6 and obj <= 10:
+                frec2 += 1
+            if obj >= 11:
+                frec3 += 1
+
+        #rangos area dic
+        rangos_convencional['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
+        rangos_convencional['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
+        rangos_convencional['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
+        total_frecuencia_convecional = frec1 + frec2 + frec3
         #************************************************************************
 
         #diccionario de los años
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
                         documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios,rangos_area,
-                        total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico)
+                        total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico,
+                        rangos_convencional,total_frecuencia_convecional,avg_area_convencional)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
