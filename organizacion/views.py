@@ -278,11 +278,37 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         total_frecuencia_convecional = frec1 + frec2 + frec3
         #************************************************************************
 
+        #Infraestructura y maquinaria
+        infraestructura = {}
+        tabla_infraestructura = []
+        for obj in INFRAESTRUCTURA_CHOICES:
+            #tabla capacidad de las instalaciones -------------------------------------
+            instalaciones = filtro.filter(infraestructura__tipo=obj[0],anno=year).aggregate(total=Sum('infraestructura__cantidad'))['total']
+            if instalaciones == None:
+                instalaciones = 0
+
+            if obj[0] == 7 or obj[0] == 8:
+                avg_capacidad = "---"
+            else:
+                avg_capacidad = filtro.filter(infraestructura__tipo=obj[0],anno=year).aggregate(total=Avg('infraestructura__capacidad'))['total']
+                if avg_capacidad == None:
+                    avg_capacidad = 0
+
+            tabla_infraestructura.append([obj[1],int(instalaciones),avg_capacidad])
+
+            #grafico estado de las intalaciones -----------------------------------------
+            estado = {}
+            for x in ESTADO_CHOICES:
+                conteo = filtro.filter(infraestructura__tipo=obj[0],infraestructura__estado=x[0],anno=year).count()
+                estado[x[1]] = saca_porcentajes(conteo,count_org,False)
+            infraestructura[obj[1]] = estado
+
         #diccionario de los años
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
                         documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios,rangos_area,
                         total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico,
-                        rangos_convencional,total_frecuencia_convecional,avg_area_convencional)
+                        rangos_convencional,total_frecuencia_convecional,avg_area_convencional,tabla_infraestructura,
+                        infraestructura)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
