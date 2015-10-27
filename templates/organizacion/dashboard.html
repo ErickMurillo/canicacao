@@ -354,6 +354,70 @@
 					</div>
 				</div>
 
+				<div class="row">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23}} qq</caption>
+							<thead>
+								<tr>
+									<th>Rangos</th>
+									<th>Frecuencias</th>
+									<th>%</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k,v in value.24.items %}
+								<tr>
+									<td>{{k}}</td>
+									{% for valor in v %}
+									<td>{{valor}}</td>
+									{% endfor %}
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>Total</td>
+									<td>{{value.25}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="area_baba{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="area_seco{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico1">
+						<table class="table table-bordered table-striped table-hover">
+							<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26}} qq</caption>
+							<thead>
+								<tr>
+									<th>Rangos</th>
+									<th>Frecuencias</th>
+									<th>%</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for k,v in value.27.items %}
+								<tr>
+									<td>{{k}}</td>
+									{% for valor in v %}
+									<td>{{valor}}</td>
+									{% endfor %}
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>Total</td>
+									<td>{{value.28}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 		  <!--<div class="col-md-12 col-lg-6 indicadores-t2">
 		   <div class="promedio-cacao">
 			 <div class="row">

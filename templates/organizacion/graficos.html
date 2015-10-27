@@ -609,5 +609,125 @@ $(function () {
         }, ]
     });
 });
+
+$(function () {
+	$('#area_baba{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Procentaje de cacao en baba acopiado en el último año'
+		},
+
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text: null
+			},
+			labels: {
+				formatter: function () {
+					return Math.abs(this.value) + '%';
+				}
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+					style: {
+						textShadow: '0 0 3px black'
+					}
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+		},
+
+		series: [{
+			name: "Porcentajes",
+			colorByPoint: true,
+			data: [
+			{% for k,v in value.24.items %}
+			{
+				name: "{{k}}",
+				y: {{v.1}},
+			},
+			{% endfor %}
+
+			]
+		}],
+	});
+});
+
+$(function () {
+	$('#area_seco{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Procentaje de cacao en seco comercializado el último año'
+		},
+
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text: null
+			},
+			labels: {
+				formatter: function () {
+					return Math.abs(this.value) + '%';
+				}
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+					style: {
+						textShadow: '0 0 3px black'
+					}
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+		},
+
+		series: [{
+			name: "Porcentajes",
+			colorByPoint: true,
+			data: [
+			{% for k,v in value.27.items %}
+			{
+				name: "{{k}}",
+				y: {{v.1}},
+			},
+			{% endfor %}
+
+			]
+		}],
+	});
+});
 {% endfor %}
 </script>

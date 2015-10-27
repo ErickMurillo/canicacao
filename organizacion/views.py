@@ -303,12 +303,60 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                 estado[x[1]] = saca_porcentajes(conteo,count_org,False)
             infraestructura[obj[1]] = estado
 
-        #diccionario de los años
+        #Cacao en baba acopiado en el último año-------------------------------------
+        frec1,frec2,frec3 = 0,0,0
+
+        cacao_baba = collections.OrderedDict()
+
+        sum_cacao_baba = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__cacao_baba_acopiado'))['area_total']
+        avg_cacao_baba = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_baba_acopiado'))['area_total']
+
+        for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_baba_acopiado', flat=True):
+            if obj >= 1 and obj <= 5:
+                frec1 += 1
+            if obj >= 6 and obj <= 10:
+                frec2 += 1
+            if obj >= 11:
+                frec3 += 1
+
+        #cacao baba dic
+        cacao_baba['1-5 qq'] = (frec1,saca_porcentajes(frec1,count_org,False))
+        cacao_baba['6-10 qq'] = (frec2,saca_porcentajes(frec2,count_org,False))
+        cacao_baba['> 11 qq'] = (frec3,saca_porcentajes(frec3,count_org,False))
+        total_frecuencia_baba = frec1 + frec2 + frec3
+
+        #Cacao en seco comercializado el último año------------------------------------
+        frec1,frec2,frec3 = 0,0,0
+
+        cacao_seco = collections.OrderedDict()
+
+        sum_cacao_seco = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__cacao_seco_comercializado'))['area_total']
+        avg_cacao_seco = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_seco_comercializado'))['area_total']
+
+        for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_seco_comercializado', flat=True):
+            if obj >= 1 and obj <= 5:
+                frec1 += 1
+            if obj >= 6 and obj <= 10:
+                frec2 += 1
+            if obj >= 11:
+                frec3 += 1
+
+        #cacao baba dic
+        cacao_seco['1-5 qq'] = (frec1,saca_porcentajes(frec1,count_org,False))
+        cacao_seco['6-10 qq'] = (frec2,saca_porcentajes(frec2,count_org,False))
+        cacao_seco['> 11 qq'] = (frec3,saca_porcentajes(frec3,count_org,False))
+        total_frecuencia_seco = frec1 + frec2 + frec3
+
+        #Socios que entregan cacao al acopio el último año-----------------------------
+        
+
+        #diccionario de los años ------------------------------------------------------
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
                         documentacion,tabla_documantacion,socias,socios,pre_socias,pre_socios,rangos_area,
                         total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico,
                         rangos_convencional,total_frecuencia_convecional,avg_area_convencional,tabla_infraestructura,
-                        infraestructura)
+                        infraestructura,avg_cacao_baba,cacao_baba,total_frecuencia_baba,avg_cacao_seco,cacao_seco,
+                        total_frecuencia_seco)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
