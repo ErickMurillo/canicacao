@@ -134,6 +134,8 @@ INFRAESTRUCTURA_CHOICES = (
 	(6,'Cuartos fríos'),
 	(7,'Oficina'),
 	(8,'Medios de Transporte'),
+	(9,'Área de fermentado'),
+	(10,'Túneles de secado'),
 	)
 
 ESTADO_CHOICES = (

@@ -4,6 +4,7 @@ from .models import *
 from .forms import *
 from django.contrib.flatpages.models import FlatPage
 # Note: we are renaming the original Admin and Form as we import them!
+#flatpages admin ckeditor start ----------------------------------------------
 from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
 from django.contrib.flatpages.forms import FlatpageForm as FlatpageFormOld
 
@@ -17,6 +18,7 @@ class FlatpageForm(FlatpageFormOld):
  
 class FlatPageAdmin(FlatPageAdminOld):
 	form = FlatpageForm
+#flatpages admin ckeditor end-----------------------------------------------------
 
 class Familia_Inline(admin.TabularInline):
 	model = Familia

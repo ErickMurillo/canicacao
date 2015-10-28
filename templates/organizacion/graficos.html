@@ -729,5 +729,58 @@ $(function () {
 		}],
 	});
 });
+
+$(function () {
+
+		$(document).ready(function () {
+
+		// Build the chart
+		$('#tipos_producto{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Tipo de producto comercializado'
+			},
+
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{% for x,y in value.28.items %}
+				{
+					name: "{{x}}",
+					y: {{y}}
+				},
+				{% endfor %}
+
+
+				]
+			}]
+		});
+	});
+	});
 {% endfor %}
 </script>

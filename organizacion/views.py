@@ -348,7 +348,21 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         total_frecuencia_seco = frec1 + frec2 + frec3
 
         #Socios que entregan cacao al acopio el último año-----------------------------
+
+        #Pre-Socios que entregan cacao al acopio el último año-------------------------
         
+        #Tipo de producto comercializado-----------------------------------------------
+        tipo_producto = {}
+        for obj in TIPO_PROD_CHOICES:
+            if obj[0] != 3:
+                count = filtro.filter(anno=year,comercializacion_org__tipo_producto=obj[0]).count()
+                tipo_producto[obj[1]] = count 
+
+        #Certificación utilizada para comercializar cacao -----------------------------
+
+        #Destino de la producción de cacao---------------------------------------------
+
+        #Acceso a financiamiento para el acopio y comercialización---------------------
 
         #diccionario de los años ------------------------------------------------------
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
@@ -356,7 +370,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                         total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico,
                         rangos_convencional,total_frecuencia_convecional,avg_area_convencional,tabla_infraestructura,
                         infraestructura,avg_cacao_baba,cacao_baba,total_frecuencia_baba,avg_cacao_seco,cacao_seco,
-                        total_frecuencia_seco)
+                        total_frecuencia_seco,tipo_producto)
         #------------------------------------------------------------------------------- 
 
     areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']

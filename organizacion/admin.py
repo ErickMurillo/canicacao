@@ -33,7 +33,7 @@ class Datos_ProductivosInline(admin.StackedInline):
 
 class InfraestructuraInline(admin.TabularInline):
 	model = Infraestructura
-	max_num = 8
+	max_num = 10
 	extra = 1
 	can_delete = True
 
