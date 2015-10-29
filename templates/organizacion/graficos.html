@@ -518,7 +518,7 @@ $(function () {
 			name: "Porcentajes",
 			colorByPoint: true,
 			data: [
-			{% for k,v in value.15.items %}
+			{% for k,v in value.18.items %}
 			{
 				name: "{{k}}",
 				y: {{v.1}},
@@ -533,7 +533,7 @@ $(function () {
 $(function () {
     $('#infraestructura{{year}}').highcharts({
         chart: {
-            type: 'bar'
+            type: 'column'
         },
         title: {
             text: 'Infraestructura y maquinaria'
@@ -550,8 +550,7 @@ $(function () {
         tooltip: {
             formatter: function () {
                 return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '%' + '<br/>' +
-                    'Total: ' + this.point.stackTotal + '%';
+                    this.series.name + ': ' + this.y + '%' + '<br/>'
             }
         },
         legend: {
@@ -769,7 +768,7 @@ $(function () {
 				name: "Porcentajes",
 				colorByPoint: true,
 				data: [
-				{% for x,y in value.28.items %}
+				{% for x,y in value.29.items %}
 				{
 					name: "{{x}}",
 					y: {{y}}

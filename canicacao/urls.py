@@ -47,6 +47,6 @@ urlpatterns += patterns('',
 urlpatterns += patterns('organizacion.views',
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
     url(r'^organizacion', 'get_organizacion', name='organizacion'),
-    url(r'^orgdetail', 'get_org_detail', name='orgdetail'),
     url(r'^org-dashboard', 'orgdashboard', name='orgdashboard'),
+    url(r'^detalle-org/(?P<id>[0-9]+)/$', 'get_org_detail', name='detail-org'),
 )

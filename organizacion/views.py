@@ -60,9 +60,9 @@ def get_organizacion(request,template="organizacion/organizacion.html"):
 
     return render(request, template, locals())
 
-def get_org_detail(request):
-    
-    return render(request, "organizacion/orgdetail.html")
+def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
+    org = Organizacion.objects.get(id=id)
+    return render(request,template,locals())
 
 def obtener_lista_org(request):
     if request.is_ajax():
@@ -215,67 +215,87 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         #************************************************************************
 
         #Área establecida por sus socias y socios en cacao-------------------------------------
-        frec1,frec2,frec3 = 0,0,0
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
         rangos_area = collections.OrderedDict()
 
         avg_area = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_total'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('datos_productivos__area_total', flat=True):
-            if obj >= 1 and obj <= 5:
+            if obj >= 1 and obj <= 250:
                 frec1 += 1
-            if obj >= 6 and obj <= 10:
+            if obj > 250 and obj <= 500:
                 frec2 += 1
-            if obj >= 11:
+            if obj > 500 and obj <= 750:
                 frec3 += 1
+            if obj > 750 and obj <= 1000:
+                frec4 += 1
+            if obj > 1000:
+                frec5 += 1
 
+        total_frecuencia_rangos = frec1 + frec2 + frec3 + frec4 + frec5
         #rangos area dic
-        rangos_area['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
-        rangos_area['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
-        rangos_area['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
-        total_frecuencia_rangos = frec1 + frec2 + frec3
+        rangos_area['1-250 mz'] = (frec1,saca_porcentajes(frec1,total_frecuencia_rangos,False))
+        rangos_area['251-500 mz'] = (frec2,saca_porcentajes(frec2,total_frecuencia_rangos,False))
+        rangos_area['501-750 mz'] = (frec3,saca_porcentajes(frec3,total_frecuencia_rangos,False))
+        rangos_area['751-1000 mz'] = (frec4,saca_porcentajes(frec4,total_frecuencia_rangos,False))
+        rangos_area['> 1000 mz'] = (frec5,saca_porcentajes(frec5,total_frecuencia_rangos,False))
 
         #Área establecida de cacao orgánico ---------------------------------------------------
-        frec1,frec2,frec3 = 0,0,0
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
         rangos_organico = collections.OrderedDict()
 
         avg_area_organico = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_cert_organico'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('datos_productivos__area_cert_organico', flat=True):
-            if obj >= 1 and obj <= 5:
+            if obj >= 1 and obj <= 150:
                 frec1 += 1
-            if obj >= 6 and obj <= 10:
+            if obj > 150 and obj <= 300:
                 frec2 += 1
-            if obj >= 11:
+            if obj > 300 and obj <= 450:
                 frec3 += 1
+            if obj > 450 and obj <= 600:
+                frec4 += 1
+            if obj > 600:
+                frec5 += 1
 
+        total_frecuencia_organico = frec1 + frec2 + frec3 + frec4 + frec5
         #rangos area dic
-        rangos_organico['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
-        rangos_organico['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
-        rangos_organico['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
-        total_frecuencia_organico = frec1 + frec2 + frec3
+        rangos_organico['1-150 mz'] = (frec1,saca_porcentajes(frec1,total_frecuencia_organico,False))
+        rangos_organico['151-300 mz'] = (frec2,saca_porcentajes(frec2,total_frecuencia_organico,False))
+        rangos_organico['301-450 mz'] = (frec3,saca_porcentajes(frec3,total_frecuencia_organico,False))
+        rangos_organico['451-600 mz'] = (frec4,saca_porcentajes(frec4,total_frecuencia_organico,False))
+        rangos_organico['> 600 mz'] = (frec5,saca_porcentajes(frec5,total_frecuencia_organico,False))
+        
 
         #Área establecida de cacao convencional ---------------------------------------------------
-        frec1,frec2,frec3 = 0,0,0
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
         rangos_convencional = collections.OrderedDict()
 
         avg_area_convencional = filtro.filter(anno=year).aggregate(area_total=Avg('datos_productivos__area_convencional'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('datos_productivos__area_convencional', flat=True):
-            if obj >= 1 and obj <= 5:
+            if obj >= 1 and obj <= 150:
                 frec1 += 1
-            if obj >= 6 and obj <= 10:
+            if obj > 150 and obj <= 300:
                 frec2 += 1
-            if obj >= 11:
+            if obj > 300 and obj <= 450:
                 frec3 += 1
+            if obj > 450 and obj <= 600:
+                frec4 += 1
+            if obj > 600:
+                frec5 += 1
+
+        total_frecuencia_convecional = frec1 + frec2 + frec3 + frec4 + frec5
 
         #rangos area dic
-        rangos_convencional['1-5 mz'] = (frec1,saca_porcentajes(frec1,count_org,False))
-        rangos_convencional['6-10 mz'] = (frec2,saca_porcentajes(frec2,count_org,False))
-        rangos_convencional['> 11 mz'] = (frec3,saca_porcentajes(frec3,count_org,False))
-        total_frecuencia_convecional = frec1 + frec2 + frec3
+        rangos_convencional['1-150 mz'] = (frec1,saca_porcentajes(frec1,total_frecuencia_convecional,False))
+        rangos_convencional['151-300 mz'] = (frec2,saca_porcentajes(frec2,total_frecuencia_convecional,False))
+        rangos_convencional['301-450 mz'] = (frec3,saca_porcentajes(frec3,total_frecuencia_convecional,False))
+        rangos_convencional['451-600 mz'] = (frec4,saca_porcentajes(frec4,total_frecuencia_convecional,False))
+        rangos_convencional['> 600 mz'] = (frec5,saca_porcentajes(frec5,total_frecuencia_convecional,False))
         #************************************************************************
 
         #Infraestructura y maquinaria
@@ -304,7 +324,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             infraestructura[obj[1]] = estado
 
         #Cacao en baba acopiado en el último año-------------------------------------
-        frec1,frec2,frec3 = 0,0,0
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
         cacao_baba = collections.OrderedDict()
 
@@ -312,21 +332,28 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         avg_cacao_baba = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_baba_acopiado'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_baba_acopiado', flat=True):
-            if obj >= 1 and obj <= 5:
+            if obj >= 1 and obj <= 1000:
                 frec1 += 1
-            if obj >= 6 and obj <= 10:
+            if obj > 1000 and obj <= 2000:
                 frec2 += 1
-            if obj >= 11:
+            if obj > 2000 and obj <= 3000:
                 frec3 += 1
+            if obj > 3000 and obj <= 4000:
+                frec4 += 1
+            if obj > 4000:
+                frec5 += 1
+
+        total_frecuencia_baba = frec1 + frec2 + frec3 + frec4 + frec5
 
         #cacao baba dic
-        cacao_baba['1-5 qq'] = (frec1,saca_porcentajes(frec1,count_org,False))
-        cacao_baba['6-10 qq'] = (frec2,saca_porcentajes(frec2,count_org,False))
-        cacao_baba['> 11 qq'] = (frec3,saca_porcentajes(frec3,count_org,False))
-        total_frecuencia_baba = frec1 + frec2 + frec3
+        cacao_baba['1-1000 qq'] = (frec1,saca_porcentajes(frec1,total_frecuencia_baba,False))
+        cacao_baba['1001-2000 qq'] = (frec2,saca_porcentajes(frec2,total_frecuencia_baba,False))
+        cacao_baba['2001-3000 qq'] = (frec3,saca_porcentajes(frec3,total_frecuencia_baba,False))
+        cacao_baba['3001-4000 qq'] = (frec4,saca_porcentajes(frec4,total_frecuencia_baba,False))
+        cacao_baba['> 4000 qq'] = (frec5,saca_porcentajes(frec5,total_frecuencia_baba,False))
 
         #Cacao en seco comercializado el último año------------------------------------
-        frec1,frec2,frec3 = 0,0,0
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
         cacao_seco = collections.OrderedDict()
 
@@ -334,18 +361,25 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         avg_cacao_seco = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_seco_comercializado'))['area_total']
 
         for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_seco_comercializado', flat=True):
-            if obj >= 1 and obj <= 5:
+            if obj >= 1 and obj <= 1000:
                 frec1 += 1
-            if obj >= 6 and obj <= 10:
+            if obj > 1000 and obj <= 2000:
                 frec2 += 1
-            if obj >= 11:
+            if obj > 2000 and obj <= 3000:
                 frec3 += 1
+            if obj > 3000 and obj <= 4000:
+                frec4 += 1
+            if obj > 4000:
+                frec5 += 1
+
+        total_frecuencia_seco = frec1 + frec2 + frec3 + frec4 + frec5
 
         #cacao baba dic
-        cacao_seco['1-5 qq'] = (frec1,saca_porcentajes(frec1,count_org,False))
-        cacao_seco['6-10 qq'] = (frec2,saca_porcentajes(frec2,count_org,False))
-        cacao_seco['> 11 qq'] = (frec3,saca_porcentajes(frec3,count_org,False))
-        total_frecuencia_seco = frec1 + frec2 + frec3
+        cacao_seco['1-1000 qq'] = (frec1,saca_porcentajes(frec1,total_frecuencia_seco,False))
+        cacao_seco['1001-2000 qq'] = (frec2,saca_porcentajes(frec2,total_frecuencia_seco,False))
+        cacao_seco['2001-3000 qq'] = (frec3,saca_porcentajes(frec3,total_frecuencia_seco,False))
+        cacao_seco['3001-4000 qq'] = (frec4,saca_porcentajes(frec4,total_frecuencia_seco,False))
+        cacao_seco['> 4000 qq'] = (frec5,saca_porcentajes(frec5,total_frecuencia_seco,False))
 
         #Socios que entregan cacao al acopio el último año-----------------------------
 
@@ -372,20 +406,10 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                         infraestructura,avg_cacao_baba,cacao_baba,total_frecuencia_baba,avg_cacao_seco,cacao_seco,
                         total_frecuencia_seco,tipo_producto)
         #------------------------------------------------------------------------------- 
-
-    areas_establecidas = filtro.aggregate(areas=Avg('datos_productivos__area_total'))['areas']
-    if areas_establecidas == None:
-        areas_establecidas = 0
-
-    area_organico = filtro.aggregate(organico=Avg('datos_productivos__area_cert_organico'))['organico']
-    if area_organico == None:
-        area_organico = 0
-
-    area_convencional = filtro.aggregate(convencional=Avg('datos_productivos__area_convencional'))['convencional']
-    if area_convencional == None:
-        area_convencional = 0
         
     return render(request, template, locals())
+
+
 
 #ajax filtros
 def get_munis(request):

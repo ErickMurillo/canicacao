@@ -39,7 +39,7 @@ class Organizacion(models.Model):
 		return self.siglas
 
 	def save(self, *args, **kwargs):
-		if not  self.id:
+		if not self.id:
 			self.slug = slugify(self.siglas)
 		super(Organizacion, self).save(*args, **kwargs)
 

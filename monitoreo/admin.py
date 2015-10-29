@@ -170,6 +170,9 @@ class Adicional_Inline(admin.TabularInline):
 	max_num = 1
 	can_delete = False
 
+class PersonaAdmin(admin.ModelAdmin):
+	search_fields = ['nombre',]
+		
 class EncuestaAdmin(admin.ModelAdmin):
 	def get_queryset(self, request):
 		if request.user.is_superuser:
@@ -223,7 +226,7 @@ admin.site.register(Tipos_Servicio)
 admin.site.register(Beneficios)
 admin.site.register(Lista_Certificaciones)
 admin.site.register(Actividades_Produccion)
-admin.site.register(Persona)
+admin.site.register(Persona,PersonaAdmin)
 admin.site.register(Quien_Certifica)
 admin.site.register(Paga_Certifica)
 admin.site.register(Profesion)

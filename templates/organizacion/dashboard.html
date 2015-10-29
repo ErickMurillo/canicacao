@@ -47,7 +47,6 @@
 	</ul>
 
 	<div class="tab-content">
-
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 
@@ -84,7 +83,7 @@
 								</div>
 								<div class="modal-body">
 									{% for org in v %}
-									<li><a href="">{{org}}</a></li>
+									<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
 									{% endfor %}
 								</div>
 							</div>
@@ -104,7 +103,7 @@
 					<div class="col-md-12 col-lg-9">
 						<div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
 					</div>
-					<div class="col-md-15 col-lg-3">
+					<div class="col-md-15 col-lg-3 table-responsive">
 						<table class="table table-bordered table-striped table-hover">
 							<caption>Organizaciones</caption>
 							<thead>
@@ -145,8 +144,11 @@
 
 											<tr>
 												{% for x in v.values %}
-												<td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
-												{% endfor %}
+												<td>
+													{% for org in x  %}
+													<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
+													{% endfor %}</td>
+													{% endfor %}
 											</tr>
 
 										</tbody>
@@ -202,10 +204,13 @@
 											</tr>
 										</thead>
 										<tbody>
-
 											<tr>
 												{% for x in v %}
-												<td>{% for org in x  %}<a href="">{{org}}</a>,{% endfor %}</td>
+												<td>
+													{% for org in x  %}
+													<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
+													{% endfor %}
+												</td>
 												{% endfor %}
 											</tr>
 
@@ -231,7 +236,7 @@
 				<div class="row">
 					<div class="col-md-12 col-lg-6 grafico1">
 						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14}} mz</caption>
+							<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14|floatformat:"2"}} mz</caption>
 							<thead>
 								<tr>
 									<th>Rangos</th>
@@ -266,7 +271,7 @@
 					</div>
 					<div class="col-md-12 col-lg-6 grafico1">
 						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17}} mz</caption>
+							<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17|floatformat:"2"}} mz</caption>
 							<thead>
 								<tr>
 									<th>Rangos</th>
@@ -295,7 +300,7 @@
 				<div class="row">
 					<div class="col-md-12 col-lg-6 grafico1">
 						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.20}} mz</caption>
+							<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.20|floatformat:"2"}} mz</caption>
 							<thead>
 								<tr>
 									<th>Rangos</th>
@@ -346,7 +351,12 @@
 									<tr>
 										<td>{{k.0}}</td>
 										<td>{{k.1}}</td>
-										<td>{{k.2}}</td>
+										{% if k.2 == '---' %}
+											<td>{{k.2}}</td>
+										{% else %}
+											<td>{{k.2|floatformat:"2"}}</td>
+										{% endif %}
+										
 									</tr>
 								{% endfor %}
 							</tbody>
@@ -357,7 +367,7 @@
 				<div class="row">
 					<div class="col-md-12 col-lg-6 grafico1">
 						<table class="table table-bordered table-striped table-hover">
-							<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23}} qq</caption>
+							<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23|floatformat:"2"}} qq</caption>
 							<thead>
 								<tr>
 									<th>Rangos</th>
@@ -392,7 +402,7 @@
 					</div>
 					<div class="col-md-12 col-lg-6 grafico1">
 						<table class="table table-bordered table-striped table-hover">
-							<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26}} qq</caption>
+							<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26|floatformat:"2"}} qq</caption>
 							<thead>
 								<tr>
 									<th>Rangos</th>
@@ -418,30 +428,11 @@
 					</div>
 				</div>
 
-		  <!--<div class="col-md-12 col-lg-6 indicadores-t2">
-		   <div class="promedio-cacao">
-			 <div class="row">
-			   <div class="col-md-8 col-lg-8 texto-indicador">
-				 <h2>{{areas_establecidas}}</h2>
-				 <h3>Promedio de Áreas establecidas de cacao por socias y socios</h3>
-			   </div>
-			   <div class="col-md-4 col-lg-4">
-				 <img src="/static/img/arbol-01.png" alt="">
-			   </div>
-			 </div>
-		   </div>
-		   <div class="promedio-cultivo">
-			<div class="row">
-			 <div class="col-md-8 col-lg-8 texto-indicador">
-			   <h2>{{area_organico}}</h2>
-			   <h3>Promedio áreas con certificado orgánico</h3>
-			 </div>
-			 <div class="col-md-4 col-lg-4">
-			   <img src="/static/img/arbolito-01.png" alt="">
-			 </div>
-		   </div>
-		 </div>
-		</div>-->
+				<div class="row">
+					<div class="col-md-12 col-lg-6 grafico1">
+						<div id="tipos_producto{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
 
 	</div>
 </div>
