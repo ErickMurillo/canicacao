@@ -393,6 +393,19 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                 tipo_producto[obj[1]] = count 
 
         #Certificación utilizada para comercializar cacao -----------------------------
+        certificacion_cacao = {}
+        lista = []
+        for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
+            for x in obj.tipo_mercado:
+                lista.append(int(x))
+
+        list_count = len(lista)
+
+        for obj in TIPO_MERCADO_CHOICES:
+            p2 = lista.count(obj[0])
+            certificacion_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
+        print certificacion_cacao
+        
 
         #Destino de la producción de cacao---------------------------------------------
 
