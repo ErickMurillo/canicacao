@@ -768,7 +768,7 @@ $(function () {
 				name: "Porcentajes",
 				colorByPoint: true,
 				data: [
-				{% for x,y in value.29.items %}
+				{% for x,y in value.32.items %}
 				{
 					name: "{{x}}",
 					y: {{y}}
@@ -781,5 +781,129 @@ $(function () {
 		});
 	});
 	});
+
+	$(function () {
+    $('#certificacion{{year}}').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Certificación utilizada para comercializar cacao'
+        },
+
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentajes (%)'
+                }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            'Certificaciones',
+            
+            ],
+            crosshair: true
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+                {% for k,v in value.33.items %}
+                {
+                    name: '{{k}}',
+                    data: [{{v}}],
+                   
+                },
+                {% endfor %}
+                ]
+    });
+});
+
+$(function () {
+	$('#socios_cacao{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Procentaje de socios que entregan cacao al acopio el último año'
+		},
+
+		xAxis: {
+			type: 'category'
+		},
+		yAxis: {
+			title: {
+				text: null
+			},
+			labels: {
+				formatter: function () {
+					return Math.abs(this.value) + '%';
+				}
+			}
+		},
+		legend: {
+			enabled: false
+		},
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+					style: {
+						textShadow: '0 0 3px black'
+					}
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+		},
+
+		series: [{
+			name: "Porcentajes",
+			colorByPoint: true,
+			data: [
+			{% for k,v in value.30.items %}
+			{
+				name: "{{k}}",
+				y: {{v.1}},
+			},
+			{% endfor %}
+
+			]
+		}],
+	});
+});
+
 {% endfor %}
 </script>

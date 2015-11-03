@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-	{% include "organizacion/graficos.html" %}
+{% include "organizacion/graficos.html" %}
 {% endblock extra_js %}
 
 {% block tablero %}
@@ -149,297 +149,331 @@
 													<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
 													{% endfor %}</td>
 													{% endfor %}
-											</tr>
+												</tr>
 
-										</tbody>
-									</table>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>
+						{% endfor %}
+						<!-- end modal -->
 					</div>
-					{% endfor %}
-					<!-- end modal -->
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-lg-9">
-						<div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
-					</div>
-					<div class="col-md-12 col-lg-3">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Organizaciones</caption>
-							<thead>
-								<tr>
-									<th>Poseen documentación legal</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k in value.7.keys %}
-								<tr>
-									<td><a href="" data-toggle="modal" data-target="#doc_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
+					<div class="row">
+						<div class="col-md-12 col-lg-9">
+							<div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-md-12 col-lg-3">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Organizaciones</caption>
+								<thead>
+									<tr>
+										<th>Poseen documentación legal</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k in value.7.keys %}
+									<tr>
+										<td><a href="" data-toggle="modal" data-target="#doc_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
 
-					<!-- modal -->
-					{% for k,v in value.5.items %}
+						<!-- modal -->
+						{% for k,v in value.5.items %}
 
-					<div class="modal fade" id="situacion_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4>Año {{year}}</h4>
-									<h4>Organizaciones que dijeron que '{{k}}' tienen:</h4>
-								</div>
-								<div class="modal-body">
-									<table class="table table-bordered table-striped table-hover">
-										<thead>
-											<tr>
-												<th>Personería jurídica</th>
-												<th>Actualización person. jurídica</th>
-												<th>Solvencia tributaria</th>
-												<th>Junta directiva certificada</th>
-												<th>Lista socias y socias actualizada</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												{% for x in v %}
-												<td>
-													{% for org in x  %}
-													<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
+						<div class="modal fade" id="situacion_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4>Año {{year}}</h4>
+										<h4>Organizaciones que dijeron que '{{k}}' tienen:</h4>
+									</div>
+									<div class="modal-body">
+										<table class="table table-bordered table-striped table-hover">
+											<thead>
+												<tr>
+													<th>Personería jurídica</th>
+													<th>Actualización person. jurídica</th>
+													<th>Solvencia tributaria</th>
+													<th>Junta directiva certificada</th>
+													<th>Lista socias y socias actualizada</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													{% for x in v %}
+													<td>
+														{% for org in x  %}
+														<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
+														{% endfor %}
+													</td>
 													{% endfor %}
-												</td>
-												{% endfor %}
-											</tr>
+												</tr>
 
-										</tbody>
-									</table>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>
+						{% endfor %}
+						<!-- end modal -->
 					</div>
-					{% endfor %}
-					<!-- end modal -->
-				</div>
 
-				<div class="row fila3">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					<div class="row fila3">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
 					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14|floatformat:"2"}} mz</caption>
-							<thead>
-								<tr>
-									<th>Rangos</th>
-									<th>Frecuencias</th>
-									<th>%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k,v in value.12.items %}
-								<tr>
-									<td>{{k}}</td>
-									{% for valor in v %}
-									<td>{{valor}}</td>
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14|floatformat:"2"}} mz</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.12.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
 									{% endfor %}
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total</td>
-									<td>{{value.13}}</td>
-								</tr>
-							</tbody>
-						</table>
+									<tr>
+										<td>Total</td>
+										<td>{{value.13}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
 					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17|floatformat:"2"}} mz</caption>
-							<thead>
-								<tr>
-									<th>Rangos</th>
-									<th>Frecuencias</th>
-									<th>%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k,v in value.15.items %}
-								<tr>
-									<td>{{k}}</td>
-									{% for valor in v %}
-									<td>{{valor}}</td>
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17|floatformat:"2"}} mz</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.15.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
 									{% endfor %}
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total</td>
-									<td>{{value.16}}</td>
-								</tr>
-							</tbody>
-						</table>
+									<tr>
+										<td>Total</td>
+										<td>{{value.16}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.20|floatformat:"2"}} mz</caption>
-							<thead>
-								<tr>
-									<th>Rangos</th>
-									<th>Frecuencias</th>
-									<th>%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k,v in value.18.items %}
-								<tr>
-									<td>{{k}}</td>
-									{% for valor in v %}
-									<td>{{valor}}</td>
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.20|floatformat:"2"}} mz</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.18.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
 									{% endfor %}
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total</td>
-									<td>{{value.19}}</td>
-								</tr>
-							</tbody>
-						</table>
+									<tr>
+										<td>Total</td>
+										<td>{{value.19}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
 					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-12 grafico1">
-						<div id="infraestructura{{year}}" style="min-width: 310px; width: 940px; height:500px; margin: 0 auto;"></div>
+					<div class="row">
+						<div class="col-md-12 col-lg-12 grafico1">
+							<div id="infraestructura{{year}}" style="min-width: 310px; width: 940px; height:500px; margin: 0 auto;"></div>
+						</div>
 					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Capacidad de instalaciones</caption>
-							<thead>
-								<tr>
-									<th>Tipo de infraestructura</th>
-									<th>Cantidad</th>
-									<th>Capacidad promedio(qq)</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k in value.21 %}
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Capacidad de instalaciones</caption>
+								<thead>
+									<tr>
+										<th>Tipo de infraestructura</th>
+										<th>Cantidad</th>
+										<th>Capacidad promedio(qq)</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k in value.21 %}
 									<tr>
 										<td>{{k.0}}</td>
 										<td>{{k.1}}</td>
 										{% if k.2 == '---' %}
-											<td>{{k.2}}</td>
+										<td>{{k.2}}</td>
 										{% else %}
-											<td>{{k.2|floatformat:"2"}}</td>
+										<td>{{k.2|floatformat:"2"}}</td>
 										{% endif %}
 										
 									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23|floatformat:"2"}} qq</caption>
-							<thead>
-								<tr>
-									<th>Rangos</th>
-									<th>Frecuencias</th>
-									<th>%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k,v in value.24.items %}
-								<tr>
-									<td>{{k}}</td>
-									{% for valor in v %}
-									<td>{{valor}}</td>
 									{% endfor %}
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total</td>
-									<td>{{value.25}}</td>
-								</tr>
-							</tbody>
-						</table>
+								</tbody>
+							</table>
+						</div>
 					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="area_baba{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="area_seco{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-					<div class="col-md-12 col-lg-6 grafico1">
-						<table class="table table-bordered table-striped table-hover">
-							<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26|floatformat:"2"}} qq</caption>
-							<thead>
-								<tr>
-									<th>Rangos</th>
-									<th>Frecuencias</th>
-									<th>%</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for k,v in value.27.items %}
-								<tr>
-									<td>{{k}}</td>
-									{% for valor in v %}
-									<td>{{valor}}</td>
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23|floatformat:"2"}} qq</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.24.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
 									{% endfor %}
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>Total</td>
-									<td>{{value.28}}</td>
-								</tr>
-							</tbody>
-						</table>
+									<tr>
+										<td>Total</td>
+										<td>{{value.25}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="area_baba{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="area_seco{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26|floatformat:"2"}} qq</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.27.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
+									{% endfor %}
+									<tr>
+										<td>Total</td>
+										<td>{{value.28}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Socios que entregan cacao al acopio el último año. Valor promedio de socios: {{value.29|floatformat:"2"}}</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.30.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
+									{% endfor %}
+									<tr>
+										<td>Total</td>
+										<td>{{value.31}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="socios_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="tipos_producto{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-md-12 col-lg-6 grafico1">
+							<div id="certificacion{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						</div>
 					</div>
 				</div>
+			</div>
+			{% endfor %}
 
-				<div class="row">
-					<div class="col-md-12 col-lg-6 grafico1">
-						<div id="tipos_producto{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
 
+		</div>
 	</div>
-</div>
-{% endfor %}
 
-
-</div>
-</div>
-
-{% endblock content %}
+	{% endblock content %}
