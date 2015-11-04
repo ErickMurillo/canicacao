@@ -62,7 +62,7 @@ def get_organizacion(request,template="organizacion/organizacion.html"):
 
 def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
     org = Organizacion.objects.get(id=id)
-    
+        
     return render(request,template,locals())
 
 def obtener_lista_org(request):
@@ -296,7 +296,60 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         rangos_convencional['> 600 mz'] = (frec5,saca_porcentajes(frec5,total_frecuencia_convecional,False))
         #************************************************************************
 
-        #Infraestructura y maquinaria
+        #Rendimiento promedio en baba y seco-------------------------------------------
+        frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
+        frec1_s,frec2_s,frec3_s,frec4_s,frec5_s = 0,0,0,0,0
+
+        rendimiento = collections.OrderedDict()
+
+        avg_rend_baba = filtro.filter(anno=year).aggregate(baba=Avg('datos_productivos__cacao_baba'))['baba']
+        avg_rend_seco = filtro.filter(anno=year).aggregate(seco=Avg('datos_productivos__cacao_seco'))['seco']
+
+        for obj in filtro.filter(anno=year).values_list('datos_productivos__cacao_baba', flat=True):
+            if obj >= 1 and obj <= 10:
+                frec1 += 1
+            if obj > 10 and obj <= 20:
+                frec2 += 1
+            if obj > 20 and obj <= 30:
+                frec3 += 1
+            if obj > 30 and obj <= 40:
+                frec4 += 1
+            if obj > 40:
+                frec5 += 1
+
+        total_frecue_rend_baba = frec1 + frec2 + frec3 + frec4 + frec5
+
+        for obj in filtro.filter(anno=year).values_list('datos_productivos__cacao_seco', flat=True):
+            if obj >= 1 and obj <= 10:
+                frec1_s += 1
+            if obj > 10 and obj <= 20:
+                frec2_s += 1
+            if obj > 20 and obj <= 30:
+                frec3_s += 1
+            if obj > 30 and obj <= 40:
+                frec4_s += 1
+            if obj > 40:
+                frec5_s += 1
+
+        total_frecue_rend_seco = frec1_s + frec2_s + frec3_s + frec4_s + frec5_s
+
+        #rangos area dic
+        rendimiento['1-10 qq'] = (frec1,saca_porcentajes(frec1,total_frecue_rend_baba,False),
+                                        frec1_s,saca_porcentajes(frec1_s,total_frecue_rend_seco,False))
+
+        rendimiento['11-20 qq'] = (frec2,saca_porcentajes(frec2,total_frecue_rend_baba,False),
+                                        frec2_s,saca_porcentajes(frec2_s,total_frecue_rend_seco,False))
+
+        rendimiento['21-30 qq'] = (frec3,saca_porcentajes(frec3,total_frecue_rend_baba,False),
+                                        frec3_s,saca_porcentajes(frec3_s,total_frecue_rend_seco,False))
+
+        rendimiento['31-40 qq'] = (frec4,saca_porcentajes(frec4,total_frecue_rend_baba,False),
+                                        frec4_s,saca_porcentajes(frec4_s,total_frecue_rend_seco,False))
+
+        rendimiento['> 40 qq'] = (frec5,saca_porcentajes(frec5,total_frecue_rend_baba,False),
+                                        frec5_s,saca_porcentajes(frec5_s,total_frecue_rend_seco,False))
+
+        #Infraestructura y maquinaria--------------------------------------------------
         infraestructura = {}
         tabla_infraestructura = []
         for obj in INFRAESTRUCTURA_CHOICES:
@@ -411,12 +464,12 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
         #Pre-Socios que entregan cacao al acopio el último año-------------------------
         frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
 
-        socios_cacao = collections.OrderedDict()
+        pre_socios_cacao = collections.OrderedDict()
 
-        sum_socios_cacao = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__socios_cacao'))['area_total']
-        avg_socios_cacao = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__socios_cacao'))['area_total']
+        avg_pre_socios_cacao = filtro.filter(anno=year).aggregate(total=Avg('comercializacion_org__productores_no_asociados'))['total']
+        avg_pre_socias_cacao = filtro.filter(anno=year).aggregate(total=Avg('comercializacion_org__productores_no_asociados'))['total']
 
-        for obj in filtro.filter(anno=year).values_list('comercializacion_org__socios_cacao', flat=True):
+        for obj in filtro.filter(anno=year).values_list('comercializacion_org__productores_no_asociados', flat=True):
             if obj >= 1 and obj <= 50:
                 frec1 += 1
             if obj > 50 and obj <= 100:
@@ -428,14 +481,13 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             if obj > 200:
                 frec5 += 1
 
-        total_frecuencia_socios_cacao = frec1 + frec2 + frec3 + frec4 + frec5
+        total_frecuencia_pre_socios_cacao = frec1 + frec2 + frec3 + frec4 + frec5
 
-        #cacao baba dic
-        socios_cacao['1 - 50'] = (frec1,saca_porcentajes(frec1,total_frecuencia_socios_cacao,False))
-        socios_cacao['51 - 100'] = (frec2,saca_porcentajes(frec2,total_frecuencia_socios_cacao,False))
-        socios_cacao['101 - 150'] = (frec3,saca_porcentajes(frec3,total_frecuencia_socios_cacao,False))
-        socios_cacao['151 - 200'] = (frec4,saca_porcentajes(frec4,total_frecuencia_socios_cacao,False))
-        socios_cacao['> 200'] = (frec5,saca_porcentajes(frec5,total_frecuencia_socios_cacao,False))
+        pre_socios_cacao['1 - 50'] = (frec1,saca_porcentajes(frec1,total_frecuencia_pre_socios_cacao,False))
+        pre_socios_cacao['51 - 100'] = (frec2,saca_porcentajes(frec2,total_frecuencia_pre_socios_cacao,False))
+        pre_socios_cacao['101 - 150'] = (frec3,saca_porcentajes(frec3,total_frecuencia_pre_socios_cacao,False))
+        pre_socios_cacao['151 - 200'] = (frec4,saca_porcentajes(frec4,total_frecuencia_pre_socios_cacao,False))
+        pre_socios_cacao['> 200'] = (frec5,saca_porcentajes(frec5,total_frecuencia_pre_socios_cacao,False))
 
         #Tipo de producto comercializado-----------------------------------------------
         tipo_producto = {}
@@ -458,8 +510,30 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
             certificacion_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
         
         #Destino de la producción de cacao---------------------------------------------
+        destino_produccion = {}
+        lista_produccion = []
+        for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
+            for x in obj.destino_produccion:
+                lista_produccion.append(int(x))
+
+        list_count_p = len(lista_produccion)
+
+        for obj in DESTINO_CHOICES:
+            p2 = lista_produccion.count(obj[0])
+            destino_produccion[obj[1]] = saca_porcentajes(p2, count_org, False)
 
         #Acceso a financiamiento para el acopio y comercialización---------------------
+        financiamiento_cacao = {}
+        lista_financ = []
+        for obj in Acopio_Comercio.objects.filter(encuesta__anno=year):
+            for x in obj.seleccion:
+                lista_financ.append(int(x))
+
+        list_count_p = len(lista_financ)
+
+        for obj in ACOPIO_COMERCIO_CHOICES:
+            p2 = lista_financ.count(obj[0])
+            financiamiento_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
 
         #diccionario de los años ------------------------------------------------------
         anno[year] = (status,org_by_status,graf_bar_status,graf_pie_status,aspectos_juridicos,tabla_aspectos_juridicos,
@@ -467,8 +541,10 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
                         total_frecuencia_rangos,avg_area,rangos_organico,total_frecuencia_organico,avg_area_organico,
                         rangos_convencional,total_frecuencia_convecional,avg_area_convencional,tabla_infraestructura,
                         infraestructura,avg_cacao_baba,cacao_baba,total_frecuencia_baba,avg_cacao_seco,cacao_seco,
-                        total_frecuencia_seco,avg_socios_cacao,socios_cacao,total_frecuencia_socios_cacao,tipo_producto,
-                        certificacion_cacao)
+                        total_frecuencia_seco,int(avg_socios_cacao),socios_cacao,total_frecuencia_socios_cacao,tipo_producto,
+                        certificacion_cacao,destino_produccion,financiamiento_cacao,avg_rend_baba,rendimiento,
+                        total_frecue_rend_baba,avg_rend_seco,total_frecue_rend_seco,int(avg_pre_socios_cacao),pre_socios_cacao,
+                        total_frecuencia_pre_socios_cacao)
         #------------------------------------------------------------------------------- 
         
     return render(request, template, locals())
