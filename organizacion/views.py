@@ -62,7 +62,43 @@ def get_organizacion(request,template="organizacion/organizacion.html"):
 
 def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
     org = Organizacion.objects.get(id=id)
+
+    anio = collections.OrderedDict()
+
+    anios_list = Encuesta_Org.objects.order_by('anno').values_list('anno', flat=True).distinct('anno')
+
+    for year in anios_list:
+        aspectos_juridicos = {}
+        for obj in Aspectos_Juridicos.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id):
+            aspectos_juridicos[year] = (obj.get_tiene_p_juridica_display(),obj.get_act_p_juridica_display(),
+                                        obj.get_solvencia_tributaria_display(),obj.get_junta_directiva_display(),
+                                        obj.hombres,obj.mujeres,obj.get_lista_socios_display(),obj.ruc)
+
+        documentacion = []
+        for obj in Documentacion.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id):
+            documentacion.append((obj.get_documentos_display(),obj.get_si_no_display(),obj.fecha))
+
+        datos_productivos = {}
+        for obj in Datos_Productivos.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id):
+            datos_productivos[year] = (obj.socias,obj.socios,obj.pre_socias,obj.pre_socios,obj.area_total,
+                                        obj.area_cert_organico,obj.area_convencional,obj.cacao_baba,
+                                        obj.area_cacao_baba,obj.cacao_seco,obj.area_cacao_seco)
         
+        infraestructura = []
+        for obj in Infraestructura.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id):
+            infraestructura.append((obj.get_tipo_display(),obj.cantidad,obj.capacidad,
+                                    obj.anno_construccion,obj.get_estado_display()))
+         
+        #pendiente---------------------------------------
+        comercializacion_org = Comercializacion_Org.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id)
+        comercializacion_importancia = Comercializacion_Importancia.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id)
+        acopio_comercio = Acopio_Comercio.objects.filter(encuesta__anno=year,encuesta__organizacion__id=id)
+        #pendiente---------------------------------------
+
+        anio[year] = (aspectos_juridicos,documentacion,datos_productivos,infraestructura,
+                        comercializacion_org,comercializacion_importancia,acopio_comercio)
+
+
     return render(request,template,locals())
 
 def obtener_lista_org(request):

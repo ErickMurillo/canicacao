@@ -589,7 +589,8 @@ div[role=tabpanel] {
   text-align: center;
 }
 #documentacion,
-#infra,
+#infraestructura,
+#datos_productivos,
 #comercializacion,
 #prodructividad {
   height: 500px;
