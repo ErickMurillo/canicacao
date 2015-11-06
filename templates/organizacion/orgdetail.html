@@ -27,8 +27,8 @@
 	function comercializacion(){
 		$('.tabs-org').height($('#comercializacion').height()+60);
 	}
-	function prodructividad(){
-		$('.tabs-org').height($('#prodructividad').height()+60);
+	function financiamiento(){
+		$('.tabs-org').height($('#financiamiento').height()+60);
 	}
 //mapa-----------------------------------------------------------
 function initialize()
@@ -133,7 +133,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 							<li role="presentation"><a href="#comercializacion" onclick="comercializacion()" aria-controls="comercializacion" role="tab" data-toggle="tab">Comerzialización</a></li>
 
-							<li role="presentation"><a href="#prodructividad" onclick="prodructividad()" aria-controls="prodructividad" role="tab" data-toggle="tab">Productividad</a></li>
+							<li role="presentation"><a href="#financiamiento" onclick="financiamiento()" aria-controls="financiamiento" role="tab" data-toggle="tab">Financiamiento</a></li>
 
 						</ul>
 					</div>
@@ -240,8 +240,74 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								</table>
 							</div>
 						</div>
-						<div role="tabs-organi" class="tab-pane fade" id="comercializacion">comercializacion</div>
-						<div role="tabs-organi" class="tab-pane fade" id="prodructividad">prodructividad</div>
+						<div role="tabs-organi" class="tab-pane fade" id="comercializacion">
+						{% for v in values.4.values %}
+								Cacao en baba acopiado (qq): {{v.0}} <br>
+								Cacao en seco comercializado (qq): {{v.1}} <br>
+								Socios que entregaron cacao al acopio: {{v.2}} <br>
+								Productores no asociados: {{v.3}} <br>
+								Tipo de producto comercializado: 
+								{% if v.4 == 'Ambos' %}
+									Cacao rojo y cacao fermentado
+								{% else %}
+									{{v.4}} 
+								{% endif %} <br>
+
+								Tipo de marcado:
+								<ul>
+								{% for x in v.5 %}
+									{% if x == '1' %}
+										<li>Convencional</li>
+									{% elif x == '2' %}
+										<li>Orgánico</li>
+									{% elif x == '3' %}
+										<li>Comercio Justo</li>
+									{% elif x == '4' %}
+										<li>UTZ</li>
+									{% endif %}
+								{% endfor %}
+								</ul><br>
+
+								Destino de la producción:
+								<ul>
+								{% for x in v.6 %}
+								 	{% if x == '1' %}
+										<li>Mercado Local</li>
+									{% elif x == '2' %}
+										<li>Mercado Nacional</li>
+									{% elif x == '3' %}
+										<li>Mercado Internacional</li>
+									{% endif %}
+								 {% endfor %}
+								</ul><br>
+							{% endfor %}
+							
+							Donde comercializa su cacao (por orden de importancia):
+								<ol>
+								{% for v in values.5 %}
+									<li>{{v}}</li>
+								{% endfor %}
+								</ol>
+							
+						</div>
+						<div role="tabs-organi" class="tab-pane fade" id="financiamiento">
+							Financiamiento de acopio y comercio
+							<ul>
+								{% for v in values.6 %}
+									{% for x in v %}
+										{% if x == '1' %}
+											<li>Propio</li>
+										{% elif x == '2' %}
+											<li>Crédito bancario</li>
+										{% elif x == '3' %}
+											<li> Cooperación Internacional</li>
+										{% elif x == '4' %}
+											<li>Financiamiento del comprador</li>
+										{% endif %}								
+									{% endfor %}
+								{% endfor %}
+							</ul>
+						</div>
 
 					</div>
 				</div>
