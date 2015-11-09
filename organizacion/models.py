@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from lugar.models import *
 from multiselectfield import MultiSelectField
+from sorl.thumbnail import ImageField
 
 # Create your models here.
 class Status(models.Model):
@@ -33,6 +34,7 @@ class Organizacion(models.Model):
 	email = models.EmailField(null=True,blank=True)
 	web = models.URLField(verbose_name='Página web',null=True,blank=True)
 	tipo = models.IntegerField(choices=TIPO_CHOICES,verbose_name='Tipo de Organización',null=True,blank=True)
+	logo = ImageField(upload_to='logo_org/',null=True,blank=True)
 	#usuario = models.ForeignKey(User)
 
 	def __unicode__(self):

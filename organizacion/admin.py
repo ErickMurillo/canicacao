@@ -63,7 +63,7 @@ class OrganizacionAdmin(admin.ModelAdmin):
 	# 	obj.save()
 
 	fieldsets = [
-		(('Información de la Organización'), {'fields' : (('nombre','siglas'),('gerente',),('status','fundacion'),
+		(('Información de la Organización'), {'fields' : (('nombre','siglas'),('logo',),('gerente',),('status','fundacion'),
 			('direccion','municipio','telefono'),('fax','email'),('web','tipo')
 			)}),
 	]

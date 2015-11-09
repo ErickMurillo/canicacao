@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'smart_selects',
     'multiselectfield',
     'ckeditor',
+    'sorl.thumbnail',
     #'import_export',
 )
 
@@ -67,6 +68,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+THUMBNAIL_DEBUG = True 
+
+DEBUG = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/

@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 #url monitoreo
 urlpatterns = patterns('monitoreo.views',
@@ -45,8 +47,9 @@ urlpatterns += patterns('',
 
 #url organizacion
 urlpatterns += patterns('organizacion.views',
+    
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
     url(r'^organizacion', 'get_organizacion', name='organizacion'),
     url(r'^org-dashboard', 'orgdashboard', name='orgdashboard'),
     url(r'^detalle-org/(?P<id>[0-9]+)/$', 'get_org_detail', name='detail-org'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

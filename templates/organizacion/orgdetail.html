@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 
 {% block extra_js %}
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
@@ -89,7 +90,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 mapa-org">
 			<div id="map-canvas"></div>
 		</div>
-		<div class="col-xs-12 col-sm-6 col-md-9 col-lg-9 informacion-org">
+		<div class="col-xs-12 col-sm-4 col-md-6 col-lg-6 informacion-org">
 			<h3>{{org.siglas}}</h3>
 			<h4>{{org.nombre}}</h4>
 			<span class="fa fa-map-marker">{{org.municipio}}</span><br>
@@ -103,7 +104,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
 			<span class="fa fa-envelope">{{org.email}}</span>
 			{% endif %}
 		</div>
+		<div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 informacion-org">
 
+			{% thumbnail org.logo "200x200" crop="center" as img %}
+			    <img src="/media/{{ img }}">
+		    {% empty %}
+    			<img src="http://placehold.it/200x200?text=No+Imagen">
+			{% endthumbnail %}
+		</div>
 		<div id="tabs">
 			<!-- Nav tabs -->
 			<ul class="nav nav-annos" role="navegacion">
