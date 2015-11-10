@@ -93,5 +93,22 @@
             });
         });
     </script>
+    <script>
+	    var flagorg = true;
+    $(document).ready(function(){
+        $('#mas-org').click(function(){
+            if(flagorg==true){
+                $('.botonera-org').slideDown('slow');
+                $('#estado-org').html('<span class="fa fa-arrow-up"></span>');
+                flagorg = false;
+            }else if (flagorg==false){
+                $('.botonera-org').slideUp('slow');
+                $('#estado-org').html('<span class="fa fa-arrow-down"></span>');
+                flagorg = true;
+            }
+            return false;
+            });
+        });
+    </script>
 </body>
 </html>

@@ -33,7 +33,7 @@
 		margin-top: 5px;
 	}
 </style>
-
+{% include "organizacion/indicadoresorg.html" %}
 <div id="tabs">
 	<!-- Nav tabs -->
 	<ul class="nav nav-annos" role="navegacion">
@@ -46,17 +46,19 @@
 		{% endfor %}
 	</ul>
 
+
+	<!-- Tab panes -->
 	<div class="tab-content">
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 
 			<div class="container-fluid contenido-graficos">
 
-				<div class="row">
-					<div class="col-md-12 col-lg-9">
-						<div id="status{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
+				<div class="row fila1">
+					<div class="col-sm-6 col-md-8 col-lg-8 grafico-9">
+						<div id="status{{year}}" style="min-width: 310px; width: 800px; margin: 0 auto;"></div>
 					</div>
-					<div class="col-md-12 col-lg-3">
+					<div class="ccol-sm-6 col-md-4 col-lg-4">
 						<table class="table table-bordered table-striped table-hover">
 							<caption>Organizaciones</caption>
 							<thead>
@@ -93,17 +95,17 @@
 					<!-- end modal -->
 				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-12">
+				<div class="row fila2">
+					<div class="col-md-12 col-lg-12 grafico-full">
 						<div id="miembros{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
 					</div>
 				</div>
 
-				<div class="row">
-					<div class="col-md-12 col-lg-9">
+				<div class="row fila3">
+					<div class="col-sm-6 col-md-8 col-lg-8 grafico-9">
 						<div id="aspectos_juridicos{{year}}" style="min-width: 310px; width: 840px; margin: 0 auto;"></div>
 					</div>
-					<div class="col-md-15 col-lg-3 table-responsive">
+					<div class="col-sm-6 col-md-4 col-lg-4 table-responsive">
 						<table class="table table-bordered table-striped table-hover">
 							<caption>Organizaciones</caption>
 							<thead>
@@ -159,12 +161,12 @@
 						</div>
 						{% endfor %}
 						<!-- end modal -->
-					</div>
-					<div class="row">
-						<div class="col-md-12 col-lg-9">
-							<div id="documentacion{{year}}" style="min-width: 310px; width: 940px; margin: 0 auto;"></div>
+				</div>
+				<div class="row fila4">
+						<div class="col-sm-6 col-md-8 col-lg-8 grafico-9">
+							<div id="documentacion{{year}}" style="min-width: 310px; width: 800px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-3">
+						<div class="col-sm-6 col-md-4 col-lg-4">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Organizaciones</caption>
 								<thead>
@@ -222,19 +224,19 @@
 						</div>
 						{% endfor %}
 						<!-- end modal -->
-					</div>
+				</div>
 
-					<div class="row fila3">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila5">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila6">
+						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.14|floatformat:"2"}} mz</caption>
 								<thead>
@@ -260,16 +262,16 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila7">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.17|floatformat:"2"}} mz</caption>
 								<thead>
@@ -295,10 +297,10 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila8">
+						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.20|floatformat:"2"}} mz</caption>
 								<thead>
@@ -324,16 +326,16 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 					
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila9">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Rendimiento promedio de cacao en baba y seco. Valor promedio Baba: {{value.36|floatformat:"2"}} qq/mz, Seco: {{value.39|floatformat:"2"}} qq/mz</caption>
 								<thead>
@@ -363,16 +365,16 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-12 grafico1">
+				<div class="row fila10">
+						<div class="col-md-12 col-lg-12 grafico-full">
 							<div id="infraestructura{{year}}" style="min-width: 310px; width: 100%; height:500px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-12 grafico1">
+				<div class="row fila11">
+						<div class="col-md-12 col-lg-12">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Capacidad de instalaciones</caption>
 								<thead>
@@ -398,10 +400,10 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila12">
+						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Cacao en baba acopiado en el último año. Valor promedio: {{value.23|floatformat:"2"}} qq</caption>
 								<thead>
@@ -427,16 +429,16 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="area_baba{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila13">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="area_seco{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Cacao en seco comercializado el último año. Valor promedio: {{value.26|floatformat:"2"}} qq</caption>
 								<thead>
@@ -462,45 +464,47 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
-							<table class="table table-bordered table-striped table-hover">
-								<caption>Socios que entregan cacao al acopio el último año. Valor promedio de socios: {{value.29}}</caption>
-								<thead>
-									<tr>
-										<th>Rangos</th>
-										<th>Frecuencias</th>
-										<th>%</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for k,v in value.30.items %}
-									<tr>
-										<td>{{k}}</td>
-										{% for valor in v %}
-										<td>{{valor}}</td>
+				<div class="row fila14">
+						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
+							<div class="table-responsive">
+								<table class="table table-bordered table-striped table-hover">
+									<caption>Socios que entregan cacao al acopio el último año. Valor promedio de socios: {{value.29}}</caption>
+									<thead>
+										<tr>
+											<th>Rangos</th>
+											<th>Frecuencias</th>
+											<th>%</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for k,v in value.30.items %}
+										<tr>
+											<td>{{k}}</td>
+											{% for valor in v %}
+											<td>{{valor}}</td>
+											{% endfor %}
+										</tr>
 										{% endfor %}
-									</tr>
-									{% endfor %}
-									<tr>
-										<td>Total</td>
-										<td>{{value.31}}</td>
-									</tr>
-								</tbody>
-							</table>
+										<tr>
+											<td>Total</td>
+											<td>{{value.31}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="socios_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila15">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="pre_socios_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Productores no asociados que entregan cacao al acopio el último año. Valor promedio: {{value.41}} productores</caption>
 								<thead>
@@ -526,31 +530,31 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila16">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="tipos_producto{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="certificacion{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
+				</div>
 
-					<div class="row">
-						<div class="col-md-12 col-lg-6 grafico1">
+				<div class="row fila17">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 							<div id="destino{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-						<div class="col-md-12 col-lg-6 grafico1">
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
 							<div id="financiamiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
-					</div>
 				</div>
 			</div>
+		</div>
 			{% endfor %}
 
 
-		</div>
 	</div>
+</div>
 
 	{% endblock content %}
