@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+	$(document).ready(function() {
+
+		$('li.item-org').addClass('active');
+
+	});
+
+{% for year,value in anno.items %}
+$(function () {
+	$('#documentacion{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Documentación legal y estratégica'
+		},
+		xAxis: {
+			categories: [{% for key,value in documentacion.items %}
+			{% for k,v in value.items %}
+
+			'{{k}}',
+
+			{% endfor %}
+			{% endfor %}]
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			title: {
+				text: 'Porcentajes'
+			}
+
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y}%'
+				}
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+		},
+		series: [
+		{% for key,value in value.0.items %}
+		{
+			name: '{{key}}',
+			data: [{% for x,y in value.items %}{{y}},{% endfor %}]
+		},
+		{% endfor %}
+
+		]
+	});
+});
+{% endfor %}
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+<div class="datos-dashboard">
+	<div class="row">
+		<div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+			<div class="ind-familia row">
+				<div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+				<div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+				<div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock tablero %}
+
+{% block content %}
+<style>
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
+
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+</style>
+{% include "organizacion/indicadoresorg.html" %}
+
+<div id="tabs">
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
+
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="tab-content">
+		{% for year,value in anno.items %}
+			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+				<div class="container-fluid contenido-graficos">
+					<div class="row fila4">
+						<div class="col-sm-6 col-md-8 col-lg-8 grafico-9">
+							<div id="documentacion{{year}}" style="min-width: 310px; width: 800px; margin: 0 auto;"></div>
+						</div>
+						<div class="col-sm-6 col-md-4 col-lg-4">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Organizaciones</caption>
+								<thead>
+									<tr>
+										<th>Poseen documentación legal</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k in value.1.keys %}
+									<tr>
+										<td><a href="" data-toggle="modal" data-target="#doc_modal{{forloop.counter}}{{year}}">{{k}}</a></td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+
+						<!-- modal -->
+					{% for k,v in value.1.items %}
+
+					<div class="modal fade" id="doc_modal{{forloop.counter}}{{year}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4>Año {{year}}</h4>
+									<h4>Organizaciones que dijeron que '{{k}}':</h4>
+								</div>
+								<div class="modal-body">
+									<table class="table table-bordered table-striped table-hover">
+										<thead>
+											<tr>
+												{% for x,y in v.items %}
+												<th>{{x}}</th>
+												{% endfor %}
+
+											</tr>
+										</thead>
+										<tbody>
+
+											<tr>
+												{% for x in v.values %}
+												<td>
+													{% for org in x  %}
+													<li><a href="{% url 'detail-org' org.organizacion.id %}">{{org}}</a></li>
+													{% endfor %}</td>
+													{% endfor %}
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						<!-- end modal -->
+				</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}

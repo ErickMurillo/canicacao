@@ -85,7 +85,7 @@ $.fn.select2.amd.require([
 		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
 		var bounds = new google.maps.LatLngBounds();
 		var infowindow = new google.maps.InfoWindow();
-		//var image = new google.maps.MarkerImage('/static/img/m2.png');
+		var image = new google.maps.MarkerImage('/static/img/m.png');
 		
 		
 		$.getJSON("{% url 'obtener-lista-org' %}", function(data){
@@ -96,7 +96,7 @@ $.fn.select2.amd.require([
 					position: latlng,
 					map: map,
 					title: elemento.nombre,
-					//icon: image,
+					icon: image,
 					item: '',
                     id: elemento.id
 				});

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+	$(document).ready(function() {
+
+		$('li.item-org').addClass('active');
+
+	});
+
+{% for year,value in anno.items %}
+$(function () {
+    $('#infraestructura{{year}}').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Infraestructura y maquinaria'
+        },
+        xAxis: {
+            categories: [{% for k,v in value.1.items %}'{{k}}',{% endfor %}]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Condiciones de todos los tipos de infraestructura'
+            }
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '%' + '<br/>'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.1,
+                borderWidth: 0,
+                dataLabels: {
+					enabled: true,
+					format: '{point.y:.1f}%',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+            }
+        },
+        series: [
+        {
+            name: 'Malo',
+            data: [
+            {% for k,v in value.1.items %}
+            	{% for x,y in v.items %}
+            		{% if x == 'Malo' %}
+            			{{y}},
+            		{% endif %}
+            	{% endfor %}
+            {% endfor %}
+            ]
+        },
+        {
+            name: 'Regular',
+            data: [
+            {% for k,v in value.1.items %}
+            	{% for x,y in v.items %}
+            		{% if x == 'Regular' %}
+            			{{y}},
+            		{% endif %}
+            	{% endfor %}
+            {% endfor %}
+            ]
+        },
+        {
+            name: 'Bueno',
+            data: [
+            {% for k,v in value.1.items %}
+            	{% for x,y in v.items %}
+            		{% if x == 'Bueno' %}
+            			{{y}},
+            		{% endif %}
+            	{% endfor %}
+            {% endfor %}
+            ]
+        }, ]
+    });
+});
+{% endfor %}
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+<div class="datos-dashboard">
+	<div class="row">
+		<div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+			<div class="ind-familia row">
+				<div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+				<div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+				<div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock tablero %}
+
+{% block content %}
+<style>
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
+
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+</style>
+{% include "organizacion/indicadoresorg.html" %}
+
+<div id="tabs">
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
+
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="tab-content">
+		{% for year,value in anno.items %}
+			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+				<div class="container-fluid contenido-graficos">
+					<div class="row fila10">
+						<div class="col-md-12 col-lg-12 grafico-full">
+							<div id="infraestructura{{year}}" style="min-width: 310px; width: 100%; height:500px; margin: 0 auto;"></div>
+						</div>
+				</div>
+
+				<div class="row fila11">
+						<div class="col-md-12 col-lg-12">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Capacidad de instalaciones</caption>
+								<thead>
+									<tr>
+										<th>Tipo de infraestructura</th>
+										<th>Cantidad</th>
+										<th>Capacidad promedio(qq)</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k in value.0 %}
+									<tr>
+										<td>{{k.0}}</td>
+										<td>{{k.1}}</td>
+										{% if k.2 == '---' %}
+										<td>{{k.2}}</td>
+										{% else %}
+										<td>{{k.2|floatformat:"2"}}</td>
+										{% endif %}
+										
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+				</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}
