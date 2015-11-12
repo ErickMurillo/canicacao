@@ -47,7 +47,6 @@ urlpatterns += patterns('',
 
 #url organizacion
 urlpatterns += patterns('organizacion.views',
-    
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
     url(r'^organizacion/', 'get_organizacion', name='organizacion'),
     url(r'^org-dashboard/', 'orgdashboard', name='orgdashboard'),
@@ -55,5 +54,8 @@ urlpatterns += patterns('organizacion.views',
     url(r'^documentacion/', 'documentacion', name='documentacion'),
     url(r'^datos-productivos/', 'datos_productivos', name='datos-productivos'),
     url(r'^infraestructura/', 'infraestructura', name='infraestructura'),
+    url(r'^comercio-organizaciones/', 'comercializacion_organizaciones', name='comercio-organizaciones'),
+    url(r'^financiamiento/', 'financiamiento', name='financiamiento'),
+    url(r'^lista-organizaciones/', 'lista_organizaciones', name='lista-organizaciones'),
     url(r'^detalle-org/(?P<id>[0-9]+)/$', 'get_org_detail', name='detail-org'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

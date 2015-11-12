@@ -246,7 +246,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         if organico == None:
             organico = 0
 
-        area_hectarea = area_prod * float(hectarea)
+        area_hectarea = area_prod * hectarea
 
         try:
             rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
@@ -741,8 +741,8 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
         (2,'Semilla para siembra (unidad)'),
         (3,'Cacao en baba (t)'),
         (4,'Cacao rojo sin fermentar (t)'),
-        (5,'Cacao fermentado (kg)'),
-        (6,'Chocolate artesanal (kg)'),
+        (5,'Cacao fermentado (t)'),
+        (6,'Chocolate artesanal (unidad)'),
         (7,'Cacao en polvo (kg)'),
         (8,'Cacao procesado/ pinolillo (kg)'),
         (9,'Cajeta de cacao (kg)'),
@@ -751,8 +751,8 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
     )
 
     tabla_productos = []
-    lista_toneladas = [3,4]
-    lista_kg = [5,6,7,8,9,10]
+    lista_toneladas = [3,4,5]
+    lista_kg = [7,8,9,10]
     for obj in PRODUCTO_CHOICES:
         producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
                 auto_consumo=Avg('comercializacion_cacao__auto_consumo'),

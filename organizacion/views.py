@@ -463,6 +463,205 @@ def infraestructura(request,template="organizacion/infraestructura.html"):
 
 	return render(request,template,locals())
 
+def comercializacion_organizaciones(request,template="organizacion/comercializacion.html"):
+	filtro = _queryset_filtrado(request)
+
+	organizaciones = filtro.distinct('organizacion__nombre').count()
+	anno = collections.OrderedDict()
+	anios_list = filtro.order_by('anno').values_list('anno', flat=True).distinct('anno')
+
+	for year in anios_list:
+		count_org = filtro.filter(anno=year).distinct('organizacion__nombre').count()
+		#Cacao en baba acopiado en el último año-------------------------------------
+		frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
+
+		cacao_baba = collections.OrderedDict()
+
+		sum_cacao_baba = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__cacao_baba_acopiado'))['area_total']
+		avg_cacao_baba = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_baba_acopiado'))['area_total']
+
+		for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_baba_acopiado', flat=True):
+			if obj >= 1 and obj <= 1000:
+				frec1 += 1
+			if obj > 1000 and obj <= 2000:
+				frec2 += 1
+			if obj > 2000 and obj <= 3000:
+				frec3 += 1
+			if obj > 3000 and obj <= 4000:
+				frec4 += 1
+			if obj > 4000:
+				frec5 += 1
+
+		total_frecuencia_baba = frec1 + frec2 + frec3 + frec4 + frec5
+
+		#cacao baba dic
+		cacao_baba['1-1000 qq'] = (frec1,saca_porcentajes(frec1,total_frecuencia_baba,False))
+		cacao_baba['1001-2000 qq'] = (frec2,saca_porcentajes(frec2,total_frecuencia_baba,False))
+		cacao_baba['2001-3000 qq'] = (frec3,saca_porcentajes(frec3,total_frecuencia_baba,False))
+		cacao_baba['3001-4000 qq'] = (frec4,saca_porcentajes(frec4,total_frecuencia_baba,False))
+		cacao_baba['> 4000 qq'] = (frec5,saca_porcentajes(frec5,total_frecuencia_baba,False))
+
+		#Cacao en seco comercializado el último año------------------------------------
+		frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
+
+		cacao_seco = collections.OrderedDict()
+
+		sum_cacao_seco = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__cacao_seco_comercializado'))['area_total']
+		avg_cacao_seco = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__cacao_seco_comercializado'))['area_total']
+
+		for obj in filtro.filter(anno=year).values_list('comercializacion_org__cacao_seco_comercializado', flat=True):
+			if obj >= 1 and obj <= 1000:
+				frec1 += 1
+			if obj > 1000 and obj <= 2000:
+				frec2 += 1
+			if obj > 2000 and obj <= 3000:
+				frec3 += 1
+			if obj > 3000 and obj <= 4000:
+				frec4 += 1
+			if obj > 4000:
+				frec5 += 1
+
+		total_frecuencia_seco = frec1 + frec2 + frec3 + frec4 + frec5
+
+		#cacao baba dic
+		cacao_seco['1-1000 qq'] = (frec1,saca_porcentajes(frec1,total_frecuencia_seco,False))
+		cacao_seco['1001-2000 qq'] = (frec2,saca_porcentajes(frec2,total_frecuencia_seco,False))
+		cacao_seco['2001-3000 qq'] = (frec3,saca_porcentajes(frec3,total_frecuencia_seco,False))
+		cacao_seco['3001-4000 qq'] = (frec4,saca_porcentajes(frec4,total_frecuencia_seco,False))
+		cacao_seco['> 4000 qq'] = (frec5,saca_porcentajes(frec5,total_frecuencia_seco,False))
+
+		#Socios que entregan cacao al acopio el último año-----------------------------
+		frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
+
+		socios_cacao = collections.OrderedDict()
+
+		sum_socios_cacao = filtro.filter(anno=year).aggregate(area_total=Sum('comercializacion_org__socios_cacao'))['area_total']
+		avg_socios_cacao = filtro.filter(anno=year).aggregate(area_total=Avg('comercializacion_org__socios_cacao'))['area_total']
+
+		for obj in filtro.filter(anno=year).values_list('comercializacion_org__socios_cacao', flat=True):
+			if obj >= 1 and obj <= 50:
+				frec1 += 1
+			if obj > 50 and obj <= 100:
+				frec2 += 1
+			if obj > 100 and obj <= 150:
+				frec3 += 1
+			if obj > 150 and obj <= 200:
+				frec4 += 1
+			if obj > 200:
+				frec5 += 1
+
+		total_frecuencia_socios_cacao = frec1 + frec2 + frec3 + frec4 + frec5
+
+		#cacao baba dic
+		socios_cacao['1 - 50'] = (frec1,saca_porcentajes(frec1,total_frecuencia_socios_cacao,False))
+		socios_cacao['51 - 100'] = (frec2,saca_porcentajes(frec2,total_frecuencia_socios_cacao,False))
+		socios_cacao['101 - 150'] = (frec3,saca_porcentajes(frec3,total_frecuencia_socios_cacao,False))
+		socios_cacao['151 - 200'] = (frec4,saca_porcentajes(frec4,total_frecuencia_socios_cacao,False))
+		socios_cacao['> 200'] = (frec5,saca_porcentajes(frec5,total_frecuencia_socios_cacao,False))
+
+		#Pre-Socios que entregan cacao al acopio el último año-------------------------
+		frec1,frec2,frec3,frec4,frec5 = 0,0,0,0,0
+
+		pre_socios_cacao = collections.OrderedDict()
+
+		avg_pre_socios_cacao = filtro.filter(anno=year).aggregate(total=Avg('comercializacion_org__productores_no_asociados'))['total']
+		avg_pre_socias_cacao = filtro.filter(anno=year).aggregate(total=Avg('comercializacion_org__productores_no_asociados'))['total']
+
+		for obj in filtro.filter(anno=year).values_list('comercializacion_org__productores_no_asociados', flat=True):
+			if obj >= 1 and obj <= 50:
+				frec1 += 1
+			if obj > 50 and obj <= 100:
+				frec2 += 1
+			if obj > 100 and obj <= 150:
+				frec3 += 1
+			if obj > 150 and obj <= 200:
+				frec4 += 1
+			if obj > 200:
+				frec5 += 1
+
+		total_frecuencia_pre_socios_cacao = frec1 + frec2 + frec3 + frec4 + frec5
+
+		pre_socios_cacao['1 - 50'] = (frec1,saca_porcentajes(frec1,total_frecuencia_pre_socios_cacao,False))
+		pre_socios_cacao['51 - 100'] = (frec2,saca_porcentajes(frec2,total_frecuencia_pre_socios_cacao,False))
+		pre_socios_cacao['101 - 150'] = (frec3,saca_porcentajes(frec3,total_frecuencia_pre_socios_cacao,False))
+		pre_socios_cacao['151 - 200'] = (frec4,saca_porcentajes(frec4,total_frecuencia_pre_socios_cacao,False))
+		pre_socios_cacao['> 200'] = (frec5,saca_porcentajes(frec5,total_frecuencia_pre_socios_cacao,False))
+
+		#Tipo de producto comercializado-----------------------------------------------
+		tipo_producto = {}
+		for obj in TIPO_PROD_CHOICES:
+			if obj[0] != 3:
+				count = filtro.filter(anno=year,comercializacion_org__tipo_producto=obj[0]).count()
+				tipo_producto[obj[1]] = count 
+
+		#Certificación utilizada para comercializar cacao -----------------------------
+		certificacion_cacao = {}
+		lista = []
+		for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
+			for x in obj.tipo_mercado:
+				lista.append(int(x))
+
+		list_count = len(lista)
+
+		for obj in TIPO_MERCADO_CHOICES:
+			p2 = lista.count(obj[0])
+			certificacion_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
+		
+		#Destino de la producción de cacao---------------------------------------------
+		destino_produccion = {}
+		lista_produccion = []
+		for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
+			for x in obj.destino_produccion:
+				lista_produccion.append(int(x))
+
+		list_count_p = len(lista_produccion)
+
+		for obj in DESTINO_CHOICES:
+			p2 = lista_produccion.count(obj[0])
+			destino_produccion[obj[1]] = saca_porcentajes(p2, count_org, False)
+
+	anno[year] = (avg_cacao_baba,cacao_baba,total_frecuencia_baba,avg_cacao_seco,cacao_seco,
+					total_frecuencia_seco,int(avg_socios_cacao),socios_cacao,total_frecuencia_socios_cacao,
+					tipo_producto,certificacion_cacao,destino_produccion,int(avg_pre_socios_cacao),
+					pre_socios_cacao,total_frecuencia_pre_socios_cacao)
+
+	return render(request,template,locals())
+
+def financiamiento(request,template="organizacion/financiamiento.html"):
+	filtro = _queryset_filtrado(request)
+
+	organizaciones = filtro.distinct('organizacion__nombre').count()
+	anno = collections.OrderedDict()
+	anios_list = filtro.order_by('anno').values_list('anno', flat=True).distinct('anno')
+
+	for year in anios_list:
+		count_org = filtro.filter(anno=year).distinct('organizacion__nombre').count()
+		#Acceso a financiamiento para el acopio y comercialización---------------------
+		financiamiento_cacao = {}
+		lista_financ = []
+		for obj in Acopio_Comercio.objects.filter(encuesta__anno=year):
+			for x in obj.seleccion:
+				lista_financ.append(int(x))
+
+		list_count_p = len(lista_financ)
+
+		for obj in ACOPIO_COMERCIO_CHOICES:
+			p2 = lista_financ.count(obj[0])
+			financiamiento_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
+
+		#diccionario de los años ------------------------------------------------------
+		anno[year] = financiamiento_cacao
+
+	return render(request,template,locals())
+
+def lista_organizaciones(request,template='organizacion/lista_organizaciones.html'):
+	filtro = _queryset_filtrado(request)
+	organizaciones = filtro.distinct('organizacion__nombre').count()
+
+	org = filtro.distinct('organizacion__nombre')
+
+	return render(request,template,locals())
+
 def orgdashboard(request,template="organizacion/dashboard.html"):
 	filtro = _queryset_filtrado(request)
 
