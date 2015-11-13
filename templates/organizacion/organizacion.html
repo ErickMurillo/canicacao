@@ -22,7 +22,7 @@ $.fn.select2.amd.require([
     var self = this;
 
     var $selectAll = $(
-      '<button type="button">Seleccionar todos</button>'
+      '<li class="s-all">Seleccionar todos</li>'
     );
 
     $rendered.find('.select2-dropdown').prepend($selectAll);
@@ -219,8 +219,8 @@ $(document).on('change','#id_municipio',function(){
 					{{form.comunidad}}                     
 				</div>-->
 
-				<div class="btn btn-org-consulta">
-					<input type="submit" value="Consultar" name="consulta"/>
+				<div>
+					<input class="btn btn-org-consulta" type="submit" value="Consultar" name="consulta"/>
 
 				</div>	
 			</div>	

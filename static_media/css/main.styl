@@ -469,13 +469,15 @@ span.select2.select2-container.select2-container--default
 	
 .consulta-org form
 	padding 10px
-.btn-org-consulta a
+.btn-org-consulta
 	redondeado 0px
-	padding 15px
+	padding 15px 40px
 	font-weight bold
 	color blanco
 	background-color naranja
 	text-decoration none
+	&:hover
+		color blanco
 	
 .filtro-org-consulta
 	padding-top 20px
@@ -485,7 +487,7 @@ span.select2.select2-container.select2-container--default
 	.btn-org-consulta
 		margin-bottom 15px
 		margin-top 15px
-		margin-left 10px
+		margin-left 20px
 	
 /**organizacion detail***/
 
@@ -586,7 +588,15 @@ div[role=tabpanel]
 	caption
 		font-weight bold
 		font-size 16px
-	
+.s-all
+	cursor pointer
+	width 95%
+	list-style none
+	padding 10px
+	&:hover
+		background-color #5897fb
+		color blanco
+		
 
 @media (min-width 1200px)
 	.formulario-consulta,
