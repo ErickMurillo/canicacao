@@ -65,7 +65,8 @@ def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
 
 	anio = collections.OrderedDict()
 
-	anios_list = Encuesta_Org.objects.order_by('anno').values_list('anno', flat=True).distinct('anno')
+	anios_list = Encuesta_Org.objects.filter(organizacion__id=id).order_by('anno').values_list('anno', flat=True).distinct('anno')
+	print anios_list
 
 	for year in anios_list:
 		aspectos_juridicos = {}
@@ -573,7 +574,7 @@ def comercializacion_organizaciones(request,template="organizacion/comercializac
 		avg_pre_socias_cacao = filtro.filter(anno=year).aggregate(total=Avg('comercializacion_org__productores_no_asociados'))['total']
 		if avg_pre_socias_cacao == None:
 			avg_pre_socias_cacao =0
-			
+
 		for obj in filtro.filter(anno=year).values_list('comercializacion_org__productores_no_asociados', flat=True):
 			if obj >= 1 and obj <= 50:
 				frec1 += 1
