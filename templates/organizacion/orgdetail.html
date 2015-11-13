@@ -10,26 +10,26 @@
 	$(document).ready(function() {
 
 		$('li.item-org').addClass('active');
-		$('.tabs-org').height($('#juridico').height()+60);
+		$('.tabs-org').height($('.juridico').height()+60);
 
 	})
 	function clickalto1(){
-		$('.tabs-org').height($('#juridico').height()+60);
+		$('.tabs-org').height($('.juridico').height()+60);
 	}
 	function documentacion(){
-		$('.tabs-org').height($('#documentacion').height()+60);
+		$('.tabs-org').height($('.documentacion').height()+60);
 	}
 	function datos_productivos(){
-		$('.tabs-org').height($('#datos_productivos').height()+60);
+		$('.tabs-org').height($('.datos_productivos').height()+60);
 	}
 	function infraestructura(){
-		$('.tabs-org').height($('#infraestructura').height()+60);
+		$('.tabs-org').height($('.infraestructura').height()+60);
 	}
 	function comercializacion(){
-		$('.tabs-org').height($('#comercializacion').height()+60);
+		$('.tabs-org').height($('.comercializacion').height()+60);
 	}
 	function financiamiento(){
-		$('.tabs-org').height($('#financiamiento').height()+60);
+		$('.tabs-org').height($('.financiamiento').height()+60);
 	}
 //mapa-----------------------------------------------------------
 function initialize()
@@ -68,7 +68,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	.map{
 		margin-bottom: 50px
 	}
-
+	
+	.tab-pane{
+		height: 500px !important
+	}
 	
 </style>
 
@@ -128,28 +131,28 @@ google.maps.event.addDomListener(window, 'load', initialize);
 			<!-- Tab panes -->
 			<div class="tab-content">
 				{% for year,values in anio.items %}
-					<div role="tabpanel" class="tab-pane active" id="{{year}}">
+					<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 						<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 tabs-org">
 							<!-- Nav tabs -->
 							<ul class="nav nav-tabs" role="organizacion">
 
-								<li role="presentation" class="active"><a href="#juridico" onclick="clickalto1()" aria-controls="juridico" role="tab" data-toggle="tab">Aspectos Jurídicos</a></li>
+								<li role="presentation" class="active"><a href="#juridico{{year}}" onclick="clickalto1()" aria-controls="juridico" role="tab" data-toggle="tab">Aspectos Jurídicos</a></li>
 
-								<li role="presentation"><a href="#documentacion" onclick="documentacion()" aria-controls="documentacion" role="tab" data-toggle="tab">Documentación</a></li>
+								<li role="presentation"><a href="#documentacion{{year}}" onclick="documentacion()" aria-controls="documentacion" role="tab" data-toggle="tab">Documentación</a></li>
 
-								<li role="presentation"><a href="#datos_productivos" onclick="datos_productivos()" aria-controls="datos_productivos" role="tab" data-toggle="tab">Datos productivos</a></li>
+								<li role="presentation"><a href="#datos_productivos{{year}}" onclick="datos_productivos()" aria-controls="datos_productivos" role="tab" data-toggle="tab">Datos productivos</a></li>
 
-								<li role="presentation"><a href="#infraestructura" onclick="infraestructura()" aria-controls="infraestructura" role="tab" data-toggle="tab">Infraestructura</a></li>
+								<li role="presentation"><a href="#infraestructura{{year}}" onclick="infraestructura()" aria-controls="infraestructura" role="tab" data-toggle="tab">Infraestructura</a></li>
 
-								<li role="presentation"><a href="#comercializacion" onclick="comercializacion()" aria-controls="comercializacion" role="tab" data-toggle="tab">Comerzialización</a></li>
+								<li role="presentation"><a href="#comercializacion{{year}}" onclick="comercializacion()" aria-controls="comercializacion" role="tab" data-toggle="tab">Comerzialización</a></li>
 
-								<li role="presentation"><a href="#financiamiento" onclick="financiamiento()" aria-controls="financiamiento" role="tab" data-toggle="tab">Financiamiento</a></li>
+								<li role="presentation"><a href="#financiamiento{{year}}" onclick="financiamiento()" aria-controls="financiamiento" role="tab" data-toggle="tab">Financiamiento</a></li>
 
 							</ul>
 						</div>
 						<div class="col-xs-12 col-sm-6 col-md-9 col-lg-9 conten-org tab-content">
 
-							<div role="tabs-organi" class="tab-pane fade in active" id="juridico">
+							<div role="tabs-organi" class="tab-pane fade in active" id="juridico{{year}}" class="juridico">
 								{% for dato in values.0.values %}
 									<div class="row datos-sueltos">
 										<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
@@ -203,7 +206,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								{% endfor %}
 							</div>
 
-							<div role="tabs-organi" class="tab-pane fade" id="documentacion">
+							<div role="tabs-organi" class="tab-pane fade" id="documentacion{{year}}" class="documentacion">
 							
 								<div class="table-responsive">
 									<table class="table">
@@ -220,7 +223,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 									</table>
 								</div>
 							</div>
-							<div role="tabs-organi" class="tab-pane fade" id="datos_productivos">
+							<div role="tabs-organi" class="tab-pane fade" id="datos_productivos{{year}}" class="datos_productivos">
 								{% for v in values.2.values %}
 									Socias {{v.0}} <br>
 									Socios {{v.1}} <br>
@@ -234,7 +237,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								{% endfor %}
 								
 							</div>
-							<div role="tabs-organi" class="tab-pane fade" id="infraestructura">
+							<div role="tabs-organi" class="tab-pane fade" id="infraestructura{{year}}" class="infraestructura">
 								<div class="table-responsive">
 									<table class="table">
 										<tbody>
@@ -250,7 +253,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 									</table>
 								</div>
 							</div>
-							<div role="tabs-organi" class="tab-pane fade" id="comercializacion">
+							<div role="tabs-organi" class="tab-pane fade" id="comercializacion{{year}}" class="comercializacion">
 								{% for v in values.4.values %}
 									Cacao en baba acopiado (qq): {{v.0}} <br>
 									Cacao en seco comercializado (qq): {{v.1}} <br>
@@ -300,7 +303,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 									</ol>
 								
 							</div>
-							<div role="tabs-organi" class="tab-pane fade" id="financiamiento">
+							<div role="tabs-organi" class="tab-pane fade" id="financiamiento{{year	}}" class="financiamiento">
 								Financiamiento de acopio y comercio
 								<ul>
 									{% for v in values.6 %}
