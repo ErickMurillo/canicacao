@@ -39,24 +39,31 @@
 	}
 </style>
 {% include "organizacion/indicadoresorg.html" %}
+<div class="container-fluid contenido-graficos t-full">
 
-<table class="table table-bordered table-striped table-hover">
-	<caption>Organizaciones</caption>
-	<thead>
-		<tr>
-			<th>Siglas</th>
-			<th>Municipio</th>
-			<th>Status Legal</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for encuesta in org %}
-		<tr>
-			<td><a href="{% url 'detail-org' encuesta.organizacion.id %}">{{encuesta.organizacion}}</a></td>
-			<td>{{encuesta.organizacion.municipio}}</td>
-			<td>{{encuesta.organizacion.status}}</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+		<div class="row fila1">
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped table-hover">
+					<caption class="text-center">Organizaciones</caption>
+					<thead>
+						<tr>
+							<th>Siglas</th>
+							<th>Municipio</th>
+							<th>Status Legal</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for encuesta in org %}
+						<tr>
+							<td><a href="{% url 'detail-org' encuesta.organizacion.id %}">{{encuesta.organizacion}}</a></td>
+							<td>{{encuesta.organizacion.municipio}}</td>
+							<td>{{encuesta.organizacion.status}}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+</div>
 {% endblock content %}
