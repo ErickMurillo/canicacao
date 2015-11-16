@@ -84,8 +84,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 informacion-org">
 
-			{% thumbnail org.logo "200x200" crop="center" as img %}
-			    <img class="center-block img-detail img-responsive" src="http://placehold.it/300x200?text=No+Imagen">
+			{% thumbnail org.logo "x200" as img %}
+			    <img class="center-block img-detail img-responsive" src="/media/{{img}}">
 		    {% empty %}
     			<img class="center-block img-detail img-responsive" src="http://placehold.it/300x200?text=No+Imagen">
 			{% endthumbnail %}
