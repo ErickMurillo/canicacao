@@ -66,7 +66,6 @@ def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
 	anio = collections.OrderedDict()
 
 	anios_list = Encuesta_Org.objects.filter(organizacion__id=id).order_by('anno').values_list('anno', flat=True).distinct('anno')
-	print anios_list
 
 	for year in anios_list:
 		aspectos_juridicos = {}
