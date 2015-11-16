@@ -48,9 +48,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		min-height: 500px !important
 	}
 	
-	.logo{
-		width: 210px !important
-	}
 </style>
 
 
@@ -87,16 +84,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 		</div>
 		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 informacion-org">
 
-			<!--{% thumbnail org.logo "x200" format="PNG" as img %}
+			{% thumbnail org.logo "x200" format="PNG" as img %}
 			    <img class="center-block img-detail img-responsive" src="/media/{{img}}">
 		    {% empty %}
     			<img class="center-block img-detail img-responsive" src="http://placehold.it/300x200?text=No+Imagen">
-			{% endthumbnail %}-->
-			{% if org.logo %}
-			    <img class="center-block img-detail img-responsive logo" src="/media/{{org.logo}}">
-		    {% else %}
-    			<img class="center-block img-detail img-responsive" src="http://placehold.it/300x200?text=No+Imagen">
-			{% endif %}
+			{% endthumbnail %}
 		</div>
 
 
