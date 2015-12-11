@@ -3,12 +3,9 @@
 {% block extra_js %}
 <link href="/static/css/select2.min.css" rel="stylesheet" />
 <script src="/static/js/select2.min.js"></script>
-<!--<link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css"/>
-<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
 
-<script src="/static/js/jquery.multiselect.min.js" type="text/javascript"></script>
-<script src="/static/js/jquery.multiselect.filter.js" type="text/javascript"></script>
-<link href="/static/css/jquery.multiselect.css" rel="stylesheet" type="text/css"/>-->
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
 
 <script type="text/javascript">
 
@@ -17,16 +14,109 @@
         $('li.item-consulta').addClass('active');
     
     })
-  $('#id_anno').select2({tags: true,closeOnSelect: false,allowClear: true});
-  $('#id_departamento').select2({tags: true,closeOnSelect: false,allowClear: true});
-  $('#id_municipio').select2({tags: true,closeOnSelect: false,allowClear: true});
-  $('#id_comunidad').select2({tags: true,closeOnSelect: false,allowClear: true});
-  $('#id_socio').select2({minimumResultsForSearch: Infinity});
-  $('#id_organizacion').select2({tags: true,closeOnSelect: false,allowClear: true});
+  $(document).ready(function() {
+    $('#id_anno').multiselect({
+        buttonWidth: '250px',
+        buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+    });
 
-  $("#id_municipio").prop("disabled", true);
-  $("#id_comunidad").prop("disabled", true);
-  //$("#id_organizacion").prop("disabled", true);
+    $('#id_socio').multiselect({
+        buttonWidth: '250px',
+    });
+    $('#id_organizacion').multiselect({
+        buttonWidth: '250px',
+        maxHeight: 250,
+        buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+    });
+        $('#id_departamento').multiselect({
+            buttonWidth: '250px',
+            maxHeight: 250,
+            buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+        });
+         $('#id_municipio').multiselect({
+            enableCollapsibleOptGroups: true,
+            buttonWidth: '250px',
+            maxHeight: 250,
+            buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+         });
+         $("#id_municipio").multiselect('disable');
+    });
   
 
 var foo = [];
@@ -37,7 +127,7 @@ $(document).on('change','#id_departamento',function(){
     });
     $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
         $('#id_municipio').html('');
-        $("#id_municipio").prop("disabled", false);
+        $("#id_municipio").multiselect('enable');
         var municipio = $('#id_municipio')
         if(data){
             
@@ -48,6 +138,7 @@ $(document).on('change','#id_departamento',function(){
                     group.append($('<option></option>').val(item3.id).html(item3.nombre));
                 });
                 group.appendTo(municipio);
+                $('#id_municipio').multiselect('rebuild');
             });
 
         });

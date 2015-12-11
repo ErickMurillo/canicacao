@@ -8,70 +8,67 @@
 <script src="/static/js/select2.js" type="text/javascript"></script>
 <link href="/static/css/select2.css" rel="stylesheet" type="text/css"/>
 
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
+
 <script>
 //select all begin --------------------------------------------------------------
-$.fn.select2.amd.require([
-  'select2/utils',
-  'select2/dropdown',
-  'select2/dropdown/attachBody'
-], function (Utils, Dropdown, AttachBody) {
-  function SelectAll() { }
+// $.fn.select2.amd.require([
+//   'select2/utils',
+//   'select2/dropdown',
+//   'select2/dropdown/attachBody'
+// ], function (Utils, Dropdown, AttachBody) {
+//   function SelectAll() { }
 
-  SelectAll.prototype.render = function (decorated) {
-    var $rendered = decorated.call(this);
-    var self = this;
+//   SelectAll.prototype.render = function (decorated) {
+//     var $rendered = decorated.call(this);
+//     var self = this;
 
-    var $selectAll = $(
-      '<li class="s-all">Seleccionar todos</li>'
-    );
+//     var $selectAll = $(
+//       '<li class="s-all">Seleccionar todos</li>'
+//     );
 
-    $rendered.find('.select2-dropdown').prepend($selectAll);
+//     $rendered.find('.select2-dropdown').prepend($selectAll);
 
-    $selectAll.on('click', function (e) {
-      var $results = $rendered.find('.select2-results__option[aria-selected=false]');
+//     $selectAll.on('click', function (e) {
+//       var $results = $rendered.find('.select2-results__option[aria-selected=false]');
       
-      // Get all results that aren't selected
-      $results.each(function () {
-        var $result = $(this);
+//       // Get all results that aren't selected
+//       $results.each(function () {
+//         var $result = $(this);
         
-        // Get the data object for it
-        var data = $result.data('data');
+//         // Get the data object for it
+//         var data = $result.data('data');
         
-        // Trigger the select event
-        self.trigger('select', {
-          data: data
-        });
-      });
+//         // Trigger the select event
+//         self.trigger('select', {
+//           data: data
+//         });
+//       });
       
-      self.trigger('close');
-    });
+//       self.trigger('close');
+//     });
     
-    return $rendered;
-  };
+//     return $rendered;
+//   };
 
-  $("#id_municipio").select2({
-    //placeholder: "Select Option(s)...",
-    dropdownAdapter: Utils.Decorate(
-      Utils.Decorate(
-        Dropdown,
-        AttachBody
-      ),
-      SelectAll
-    ),
-  });
-});
+//   $("#id_municipio").select2({
+//     //placeholder: "Select Option(s)...",
+//     dropdownAdapter: Utils.Decorate(
+//       Utils.Decorate(
+//         Dropdown,
+//         AttachBody
+//       ),
+//       SelectAll
+//     ),
+//   });
+// });
 
 //select all end ------------------------------------------------------------
     $(document).ready(function() {
         $('li.item-org').addClass('active');    
     });
 
-    $(document).ready(function() {
-			$("#id_departamento").select2({closeOnSelect: false,allowClear: true});
-		  	$("#id_municipio").select2({closeOnSelect: false,allowClear: true});
-		  	$("#id_comunidad").select2({closeOnSelect: false,allowClear: true});
-		});
-    
 	var markers = [];
 	function initialize()
 	{	
@@ -119,52 +116,107 @@ $.fn.select2.amd.require([
 
 	google.maps.event.addDomListener(window, 'load', initialize);
 
-$("#id_municipio").prop("disabled", true);
-$("#id_comunidad").prop("disabled", true);
+
+//new select
+
+ $(document).ready(function() {
+        $('#id_departamento').multiselect({
+        	buttonWidth: '250px',
+        	maxHeight: 250,
+        	buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+        });
+         $('#id_municipio').multiselect({
+         	enableCollapsibleOptGroups: true,
+         	buttonWidth: '250px',
+        	maxHeight: 250,
+         	buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+         });
+         $("#id_municipio").multiselect('disable');
+    });
 
 var foo = [];
 $(document).on('change','#id_departamento',function(){
          
     $('#id_departamento :selected').each(function(i, selected){ 
-        foo[i] = $(selected).val();      
+        foo[i] = $(selected).val();    
     });
     $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
-        $('#id_municipio').html('');
-        $("#id_municipio").prop("disabled", false);
+        $("#id_municipio").multiselect('enable');
+       	$('#id_municipio').html('');
         var municipio = $('#id_municipio')
         if(data){
            $.each(data, function(i, item){
             $.each(item, function(j, item2){
                 var group = $('<optgroup></optgroup>').attr('label', j);
-
                 $.each(item2, function(k, item3){
                     group.append($('<option></option>').val(item3.id).html(item3.nombre));
                 });
                 group.appendTo(municipio);
+                $('#id_municipio').multiselect('rebuild');
             });
 
         });
+
        }
    });
+    
+});
 
-    });
 
-var foo2 = [];
-$(document).on('change','#id_municipio',function(){
+// var foo2 = [];
+// $(document).on('change','#id_municipio',function(){
          
-    $('#id_municipio :selected').each(function(i, selected){ 
-        foo2[i] = $(selected).val();      
-    });
-    $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
-        $('#id_comunidad').html('');
-        $("#id_comunidad").prop("disabled", false);
-        if(data){
-            $.each(data, function(i, item){
-                $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
-                });
-       }
-   });
-    });
+//     $('#id_municipio :selected').each(function(i, selected){ 
+//         foo2[i] = $(selected).val();      
+//     });
+//     $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
+//         $('#id_comunidad').html('');
+//         $("#id_comunidad").prop("disabled", false);
+//         if(data){
+//             $.each(data, function(i, item){
+//                 $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
+//                 });
+//        }
+//    });
+//});
 </script>
 
 {% endblock extra_js %}
@@ -241,8 +293,4 @@ $(document).on('change','#id_municipio',function(){
 		</div>
 	</div>
 </div>
-
-			<!--<a href="/orgdetail/"> consulta</a>-->
-
-			
 {% endblock content %}
