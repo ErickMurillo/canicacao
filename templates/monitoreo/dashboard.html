@@ -8,6 +8,11 @@
 <script src="/static/js/markerwithlabel.js"></script>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    });
 	{% for year,value in anno.items %}
 	var map_{{year}};
 	{% endfor %}
@@ -503,6 +508,9 @@ $(function () {
 	margin-bottom: 10px;
 	margin-top: 10px;
 }*/
+.datos-filtro{
+	padding-bottom: 0.5em !important
+}
 
 .labels {
  /*color: white;
@@ -517,17 +525,7 @@ $(function () {
  padding: 2px;
  border-radius: 15px
 }
-/* 
-.nav-tabs>li.active {
-	width: 22% !important;
-}
-.nav-tabs>li {
-	width: 20% !important;
-}
-table{
-	margin-top: 60px;
-	margin-bottom: 40px;
-}*/
+
 </style>
 <div class="row">
 	{% include "monitoreo/filtros.html" %}
@@ -535,30 +533,6 @@ table{
 
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		
-	  <!--<div class="col-xs-12 col-sm-12 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3">
-		  <table class="table table-condensed">
-			  <caption>Conversiones</caption>
-			  <tr>
-				  <th>1 tonelada = 1000 kg = 2,204.62 lb</th>
-			  </tr>
-			  <tr>
-				  <th>1 libra = 0.453592 kg</th> 
-			  </tr>
-			  <tr>
-				  <th>1 qq = 100 lb = 45.35 kg</th> 
-			  </tr>
-			  <tr>
-				  <th>1 tonelada = 22.05 qq</th> 
-			  </tr>
-		  </table>
-
-	  </div>
-		<div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
-			<h4 class="titulo-inicio">Tablero de indicadores</h4>  
-		</div>
-
-	-->
 	{% include "monitoreo/indicadores.html" %}
 </div>
 </div>

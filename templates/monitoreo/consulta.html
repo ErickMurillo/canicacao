@@ -17,6 +17,8 @@
   $(document).ready(function() {
     $('#id_anno').multiselect({
         buttonWidth: '250px',
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
         buttonText: function(options, select) {
                 if (options.length === 0) {
                     return 'Sin selección ...';
@@ -45,6 +47,8 @@
     $('#id_organizacion').multiselect({
         buttonWidth: '250px',
         maxHeight: 250,
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
         buttonText: function(options, select) {
                 if (options.length === 0) {
                     return 'Sin selección ...';
@@ -69,6 +73,8 @@
         $('#id_departamento').multiselect({
             buttonWidth: '250px',
             maxHeight: 250,
+            includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
             buttonText: function(options, select) {
                 if (options.length === 0) {
                     return 'Sin selección ...';
@@ -94,6 +100,8 @@
             enableCollapsibleOptGroups: true,
             buttonWidth: '250px',
             maxHeight: 250,
+            includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
             buttonText: function(options, select) {
                 if (options.length === 0) {
                     return 'Sin selección ...';
