@@ -81,7 +81,7 @@
 				items: [{
 					html: 'Total de hombres y mujeres',
 					style: {
-						left: '50px',
+						left: '0px',
 						top: '0px',
 						color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
 					}
@@ -130,7 +130,8 @@
 					pointFormat: '{point.y:.1f}%'
 				},
 				dataLabels: {
-					enabled: false,
+					enabled: true,
+					format: '{point.y:.2f}%',
 				}
 			}
 			]
