@@ -8,8 +8,8 @@
 
 	});
 
-{% for year,value in anno.items %}
-$(function () {
+	{% for year,value in anno.items %}
+	$(function () {
 
 	// var new_color1 = newRandomColor();
 	$(document).ready(function () {
@@ -64,9 +64,9 @@ $(function () {
 	});
 });
 
-$(function () {
+	$(function () {
 
-	$(document).ready(function () {
+		$(document).ready(function () {
 
 		// Build the chart
 		$('#presocios{{year}}').highcharts({
@@ -114,66 +114,66 @@ $(function () {
 			}]
 		});
 	});
-});
+	});
 
-$(function () {
-	$('#rangos{{year}}').highcharts({
-		chart: {
-			type: 'column'
-		},
-		title: {
-			text: 'Porcentaje de áreas establecidas por socias y socios en cacao'
-		},
-
-		xAxis: {
-			type: 'category'
-		},
-		yAxis: {
-			title: {
-				text: null
+	$(function () {
+		$('#rangos{{year}}').highcharts({
+			chart: {
+				type: 'column'
 			},
-			labels: {
-				formatter: function () {
-					return Math.abs(this.value) + '%';
-				}
-			}
-		},
-		legend: {
-			enabled: false
-		},
-		plotOptions: {
-			column: {
-				stacking: 'normal',
-				dataLabels: {
-					enabled: true,
-					format: '{point.y:.2f}',
-					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
-					style: {
-						textShadow: '0 0 3px black'
+			title: {
+				text: 'Porcentaje de áreas establecidas por socias y socios en cacao'
+			},
+
+			xAxis: {
+				type: 'category'
+			},
+			yAxis: {
+				title: {
+					text: null
+				},
+				labels: {
+					formatter: function () {
+						return Math.abs(this.value) + '%';
 					}
 				}
-			}
-		},
-
-		tooltip: {
-			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
-		},
-
-		series: [{
-			name: "Porcentajes",
-			colorByPoint: true,
-			data: [
-			{% for k,v in value.4.items %}
-			{
-				name: "{{k}}",
-				y: {{v.1}},
 			},
-			{% endfor %}
+			legend: {
+				enabled: false
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+						style: {
+							textShadow: '0 0 3px black'
+						}
+					}
+				}
+			},
 
-			]
-		}],
-	});
+			tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> %<br/>'
+			},
+
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{% for k,v in value.4.items %}
+				{
+					name: "{{k}}",
+					y: {{v.1}},
+				},
+				{% endfor %}
+
+				]
+			}],
+		});
 });
 
 $(function () {
@@ -297,30 +297,30 @@ $(function () {
 });
 
 $(function () {
-    $('#rendimiento{{year}}').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Rendimiento promedio de cacao en baba y seco'
-        },
-        xAxis: {
-            categories: [{% for k in value.14.keys %}'{{k}}',{% endfor %}]
-        },
-        credits: {
-            enabled: false
-        },
-        yAxis: {
-                min: 0,
-                title: {
-                    text: 'Porcentajes (%)'
-                }
-            },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0,
-                dataLabels: {
+	$('#rendimiento{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Rendimiento promedio de cacao en baba y seco'
+		},
+		xAxis: {
+			categories: [{% for k in value.14.keys %}'{{k}}',{% endfor %}]
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Porcentajes (%)'
+			}
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0,
+				dataLabels: {
 					enabled: true,
 					format: '{point.y:.2f}%',
 					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
@@ -328,16 +328,16 @@ $(function () {
 						textShadow: '0 0 3px white'
 					}
 				}
-            }
-        },
-        series: [{
-            name: 'Baba',
-            data: [{% for v in value.14.values %}{{v.1}},{% endfor %}]
-        }, {
-            name: 'Seco',
-            data: [{% for v in value.14.values %}{{v.3}},{% endfor %}]
-        }]
-    });
+			}
+		},
+		series: [{
+			name: 'Baba',
+			data: [{% for v in value.14.values %}{{v.1}},{% endfor %}]
+		}, {
+			name: 'Seco',
+			data: [{% for v in value.14.values %}{{v.3}},{% endfor %}]
+		}]
+	});
 });
 {% endfor %}
 </script>
@@ -386,18 +386,20 @@ $(function () {
 	</ul>
 	<div class="tab-content">
 		{% for year,value in anno.items %}
-			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
-				<div class="container-fluid contenido-graficos">
-					<div class="row fila5">
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-							<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-							<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
+		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+			<div class="container-fluid contenido-graficos">
+				<div class="row fila5">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
-					<div class="row fila6">
-						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+				<div class="row fila6">
+					<div class="col-sm-12 col-md-6 col-lg-6 table-left">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas por socias y socios en cacao. Valor promedio: {{value.6|floatformat:"2"}} mz</caption>
 								<thead>
@@ -422,16 +424,19 @@ $(function () {
 									</tr>
 								</tbody>
 							</table>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-							<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
+						</div>	
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="rangos{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
 				</div>
 				<div class="row fila7">
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-							<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="rangos_organico{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad1'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad1">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas de cacao orgánico. Valor promedio: {{value.9|floatformat:"2"}} mz</caption>
 								<thead>
@@ -457,10 +462,13 @@ $(function () {
 								</tbody>
 							</table>
 						</div>
+					</div>
 				</div>
 
 				<div class="row fila8">
-						<div class="col-sm-12 col-md-6 col-lg-6 table-left">
+					<div class="col-sm-12 col-md-6 col-lg-6 table-left">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad2'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Áreas establecidas de cacao convencional. Valor promedio: {{value.12|floatformat:"2"}} mz</caption>
 								<thead>
@@ -486,16 +494,19 @@ $(function () {
 								</tbody>
 							</table>
 						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-							<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
 				</div>
-					
+
 				<div class="row fila9">
-						<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-							<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-						</div>
-						<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad3">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Rendimiento promedio de cacao en baba y seco. Valor promedio Baba: {{value.13|floatformat:"2"}} qq/mz, Seco: {{value.16|floatformat:"2"}} qq/mz</caption>
 								<thead>
@@ -525,9 +536,10 @@ $(function () {
 								</tbody>
 							</table>
 						</div>
-				</div>
+					</div>
 				</div>
 			</div>
+		</div>
 		{% endfor %}
 	</div>
 </div>

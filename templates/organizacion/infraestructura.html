@@ -8,85 +8,85 @@
 
 	});
 
-{% for year,value in anno.items %}
-$(function () {
-    $('#infraestructura{{year}}').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Infraestructura y maquinaria'
-        },
-        xAxis: {
-            categories: [{% for k,v in value.1.items %}'{{k}}',{% endfor %}]
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Condiciones de todos los tipos de infraestructura'
-            }
-        },
-        tooltip: {
-            formatter: function () {
-                return '<b>' + this.x + '</b><br/>' +
-                    this.series.name + ': ' + this.y + '%' + '<br/>'
-            }
-        },
-        legend: {
-            reversed: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.1,
-                borderWidth: 0,
-                dataLabels: {
-					enabled: true,
-					format: '{point.y:.1f}%',
-					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-					style: {
-						textShadow: '0 0 3px white'
+	{% for year,value in anno.items %}
+	$(function () {
+		$('#infraestructura{{year}}').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Infraestructura y maquinaria'
+			},
+			xAxis: {
+				categories: [{% for k,v in value.1.items %}'{{k}}',{% endfor %}]
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: 'Condiciones de todos los tipos de infraestructura'
+				}
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b><br/>' +
+					this.series.name + ': ' + this.y + '%' + '<br/>'
+				}
+			},
+			legend: {
+				reversed: true
+			},
+			plotOptions: {
+				column: {
+					pointPadding: 0.1,
+					borderWidth: 0,
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.1f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
 					}
 				}
-            }
-        },
-        series: [
-        {
-            name: 'Malo',
-            data: [
-            {% for k,v in value.1.items %}
-            	{% for x,y in v.items %}
-            		{% if x == 'Malo' %}
-            			{{y}},
-            		{% endif %}
-            	{% endfor %}
-            {% endfor %}
-            ]
-        },
-        {
-            name: 'Regular',
-            data: [
-            {% for k,v in value.1.items %}
-            	{% for x,y in v.items %}
-            		{% if x == 'Regular' %}
-            			{{y}},
-            		{% endif %}
-            	{% endfor %}
-            {% endfor %}
-            ]
-        },
-        {
-            name: 'Bueno',
-            data: [
-            {% for k,v in value.1.items %}
-            	{% for x,y in v.items %}
-            		{% if x == 'Bueno' %}
-            			{{y}},
-            		{% endif %}
-            	{% endfor %}
-            {% endfor %}
-            ]
-        }, ]
-    });
+			},
+			series: [
+			{
+				name: 'Malo',
+				data: [
+				{% for k,v in value.1.items %}
+				{% for x,y in v.items %}
+				{% if x == 'Malo' %}
+				{{y}},
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				]
+			},
+			{
+				name: 'Regular',
+				data: [
+				{% for k,v in value.1.items %}
+				{% for x,y in v.items %}
+				{% if x == 'Regular' %}
+				{{y}},
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				]
+			},
+			{
+				name: 'Bueno',
+				data: [
+				{% for k,v in value.1.items %}
+				{% for x,y in v.items %}
+				{% if x == 'Bueno' %}
+				{{y}},
+				{% endif %}
+				{% endfor %}
+				{% endfor %}
+				]
+			}, ]
+		});
 });
 {% endfor %}
 </script>
@@ -135,16 +135,18 @@ $(function () {
 	</ul>
 	<div class="tab-content">
 		{% for year,value in anno.items %}
-			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
-				<div class="container-fluid contenido-graficos">
-					<div class="row fila10">
-						<div class="col-md-12 col-lg-12 grafico-full">
-							<div id="infraestructura{{year}}" style="min-width: 310px; width: 1200px; height:500px; margin: 0 auto;"></div>
-						</div>
+		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+			<div class="container-fluid contenido-graficos">
+				<div class="row fila10">
+					<div class="col-md-12 col-lg-12 grafico-full">
+						<div id="infraestructura{{year}}" style="min-width: 310px; width: 1200px; height:500px; margin: 0 auto;"></div>
 					</div>
+				</div>
 
-					<div class="row fila11">
-						<div class="col-md-12 col-lg-12">
+				<div class="row fila11">
+					<div class="col-md-12 col-lg-12">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Capacidad de instalaciones</caption>
 								<thead>
@@ -173,6 +175,7 @@ $(function () {
 					</div>
 				</div>
 			</div>
+		</div>
 		{% endfor %}
 	</div>
 </div>

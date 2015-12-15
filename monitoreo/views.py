@@ -478,7 +478,6 @@ def propiedad(request,template='monitoreo/propiedad.html'):
     for x in Situacion.objects.exclude(nombre='Sin documento'):
         objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
         dic2[x] = saca_porcentajes(objeto1,count_no,False)
-    print dic2
     
     dic = {}
     for e in PROPIEDAD_CHOICE:
@@ -1255,7 +1254,6 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 
     #costo certificacion
     costo_certificacion = filtro.aggregate(costo = Avg('certificacion__costo_certificacion'))['costo']
-    print costo_certificacion
 
     return render(request, template, locals())
 
