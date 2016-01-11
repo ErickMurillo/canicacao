@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+
+        $('li.item-consulta').addClass('active');
+
+    })
+    $(function () {
+        $('#grafico').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Efectos de fenómenos naturales'
+            },
+            xAxis: {
+                categories: ['Sequía','Inundación','Lluvia','Viento','Deslizamiento']
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes(%)'
+                }
+
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y +'%';
+                }
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+            {% for key,value in riesgos.items %}
+            {
+              name: '{{key}}',
+              data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}}]
+          },
+          {% endfor %}
+
+          ]
+      });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Plantas improductivas'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for key,value in plantas.items %}
+                {
+                   name: "{{key}}",
+                   y: {{value}}
+               },
+               {% endfor %}
+               ]
+           }]
+       });
+});
+});
+
+$(function () {
+    $('#plagas').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Problemas en los cultivos de cacao'
+        },
+        xAxis: {
+            categories: ['Plagas y enfermedades','Quemas']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for key,value in plagas.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}}]
+      },
+      {% endfor %}
+
+      ]
+  });
+});
+
+$(function () {
+    $('#mercado').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Problemas en la comercialización'
+        },
+        xAxis: {
+            categories: ['Bajo precio','Bajo volumen','Estafa','Mala calidad']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: { 
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for key,value in mercados.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}}]
+      },
+      {% endfor %}
+
+      ]
+  });
+});
+
+$(function () {
+    $('#inversion').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Porcentaje de productores que invierten o piensan invertir en sus plantaciones de cacao'
+        },
+        xAxis: {
+            categories: ['Invierte en cacao','Interés de invertir']
+        },
+        //'Falta de crédito','Altos intereses','Robo de producto'
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for key,value in inversion.items %}
+        {
+          name: '{{key}}',
+          data: [{{value.0}},{{value.1}}]
+      },
+      {% endfor %}
+
+      ]
+  });
+});
+
+$(function () {
+    $('#inversion2').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Razones para no invertir'
+        },
+        xAxis: {
+            categories: ['Falta de crédito','Altos intereses','Robo de producto']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y +'%';
+            }
+        },
+        credits: {
+            enabled: false
+        },
+        plotOptions: {
+            column: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for key,value in inversion.items %}
+        {
+            name: '{{key}}',
+            data: [{{value.2}},{{value.3}},{{value.4}}]
+        },
+        {% endfor %}
+        
+        ]
+    });
+});
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#mitigacion').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Mitigación de riesgos'
+            },
+            xAxis: {
+                categories: ['Monitoreo de plagas','Plan de manejo de cultivo','Recurso financiero','Obras de almacenamiento de agua', 'Contrato de venta', 'Infraestructura de secado y almacenamiento']
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes(%)'
+                }
+
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y +'%';
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    }
+                }
+            },
+            series: [
+            {% for key,value in tabla_mitigacion.items %}
+            {
+                name: '{{key}}',
+                data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}},{{value.6}}]
+            },
+            {% endfor %}
+
+            ]
+        });
+});
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+{% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+
+
+<div class="row">
+   {% include "monitoreo/filtros.html" %} 
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+<!-- Nav tabs -->
+<ul class="nav nav-indicador" role="tablist">
+    <li role="indicador" class="active col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#vulnerabilidad" aria-controls="vulnerabilidad" role="tab" data-toggle="tab">Vulnerabilidad de la Finca</a></li>
+    <li role="indicador" class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#riesgo" aria-controls="riesgo" role="tab" data-toggle="tab">Riesgos en la finca</a></li>
+</ul>
+<!-- Tab panes -->
+<div class="tab-content ">
+    <div role="tabpanel" class="tab-pane active" id="vulnerabilidad">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Riesgos en la finca</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="grafico" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila2">
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                    <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+                    <div class="col-md-6" id="plagas" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila3">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="mercado" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila4">
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                    <div class="col-md-6" id="inversion" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+                    <div class="col-md-6" id="inversion2" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+
+
+  
+    </div>
+    <div role="tabpanel" class="tab-pane" id="riesgo">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Riesgos en la finca</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="mitigacion" style="min-width: 450px;  width: 90%; margin: 0 auto;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+</div>
+
+
+{% endblock content %}

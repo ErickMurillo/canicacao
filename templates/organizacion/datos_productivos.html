@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+	$(document).ready(function() {
+
+		$('li.item-org').addClass('active');
+
+	});
+
+	{% for year,value in anno.items %}
+	$(function () {
+
+	// var new_color1 = newRandomColor();
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#socios{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Número de socias y socios con cacao'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Mujeres",
+					y: {{value.0}},
+
+				}, 
+				{
+					name: "Hombres",
+					y: {{value.1}},
+
+				},
+				]
+			}]
+		});
+	});
+});
+
+	$(function () {
+
+		$(document).ready(function () {
+
+		// Build the chart
+		$('#presocios{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Número de pre-socias y pre-socios con cacao'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.percentage:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Mujeres",
+					y: {{value.2}}
+				}, 
+				{
+					name: "Hombres",
+					y: {{value.3}}
+				},
+				]
+			}]
+		});
+	});
+	});
+
+	
+$(function () {
+	$('#rendimiento{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Rendimiento promedio de cacao en baba y seco'
+		},
+		xAxis: {
+			categories: [{% for k in value.14.keys %}'{{k}}',{% endfor %}]
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Porcentajes (%)'
+			}
+		},
+		plotOptions: {
+			column: {
+				pointPadding: 0.2,
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}%',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		series: [{
+			name: 'Baba',
+			data: [{% for v in value.8.values %}{{v.1}},{% endfor %}]
+		}, {
+			name: 'Seco',
+			data: [{% for v in value.8.values %}{{v.3}},{% endfor %}]
+		}]
+	});
+});
+{% endfor %}
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+<div class="datos-dashboard">
+	<div class="row">
+		<div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+			<div class="ind-familia row">
+				<div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+				<div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+				<div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock tablero %}
+
+{% block content %}
+<style>
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
+
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+</style>
+{% include "organizacion/indicadoresorg.html" %}
+
+<div id="tabs">
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
+
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="tab-content">
+		{% for year,value in anno.items %}
+		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+			<div class="container-fluid contenido-graficos">
+				<div class="row fila5">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<div class="row fila8">
+					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad3">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Totales en mz</caption>
+								<thead>
+									<tr>
+										<th>Áreas establecidas por socias y socios en cacao</th>
+										<th>Áreas establecidas de cacao orgánico</th>
+										<th>Áreas establecidas de cacao convencional</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{{value.4}}</td>
+										<td>{{value.5}}</td>
+										<td>{{value.6}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row fila9">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad3">
+							<table class="table table-bordered table-striped table-hover">
+								<caption>Rendimiento promedio de cacao en baba y seco. Valor promedio Baba: {{value.7|floatformat:"2"}} qq/mz, Seco: {{value.10|floatformat:"2"}} qq/mz</caption>
+								<thead>
+									<tr>
+										<th>Rangos</th>
+										<th>Frecuencias baba</th>
+										<th>% baba</th>
+										<th>Frecuencias seco</th>
+										<th>% seco</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for k,v in value.8.items %}
+									<tr>
+										<td>{{k}}</td>
+										{% for valor in v %}
+										<td>{{valor}}</td>
+										{% endfor %}
+									</tr>
+									{% endfor %}
+									<tr>
+										<td>Total</td>
+										<td>{{value.9}}</td>
+										<td></td>
+										<td>{{value.11}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}

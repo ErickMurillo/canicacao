@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+    
+	$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Nivel educativo de los hombres en unidades productivas cacaoteras'
+        },
+
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: '% de personas con acceso a educación'
+                }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            'Hombres',
+            
+            ],
+            crosshair: true
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+                {% for value in grafo_hombres %}
+                {
+                    name: '{{value.0}}',
+                    data: [{{value.1}}],
+                   
+                },
+                {% endfor %}
+                ]
+    });
+});
+
+    $(function () {
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Nivel educativo de las mujeres en unidades productivas cacaoteras'
+        },
+
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: '% de personas con acceso a educación'
+                }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            'Mujeres',
+            
+            ],
+            crosshair: true
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+                {% for value in grafo_mujeres %}
+                {
+                    name: '{{value.0}}',
+                    data: [{{value.1}}],
+                   
+                },
+                {% endfor %}
+                ]
+    });
+});
+</script>
+
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+<!--<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio">Indicador >> Educación</h4>  
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-offset-6 col-lg-offset-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
+        </div>
+    </div>
+</div>-->
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Educación</li>
+        </ol>  
+    </div>
+    
+
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+
+    
+    <div class="row fila2">
+    <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+
+        <div id="modalidad"  class="table-responsive">
+
+            <table class="table table-bordered table-striped table-hover">
+                <caption>Educación
+                    
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Edades</th>
+                        <th>Número total</th>
+                        <th>No sabe leer %</th>
+                        <th>Primaria incompleta %</th>
+                        <th>Primaria completa %</th>
+                        <th>Secundaria incompleta %</th>
+                        <th>Bachiller %</th>
+                        <th>Universitario %</th>
+                        <th>Vive fuera de la comunidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for fila in tabla_educacion%}
+                    <tr>
+                        {%for celda in fila %}
+                        <td>{{celda|default:'0'}}</td>
+                        {%endfor%}
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+
+
+
+{% endblock content %}

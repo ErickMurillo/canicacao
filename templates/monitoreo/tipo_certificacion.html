@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$(function () {
+    $('#certificados').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Número de productores certificados'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Productores'
+            }
+        },
+        xAxis: {
+            categories: [
+            'Productores',
+
+            ],
+            crosshair: true
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y ;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:1f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {
+            name: "Certificado",
+            data: [{{certificados}}],
+        }, {
+            name: "No certificado",
+            data: [{{no_certificados}}],
+        }
+        ]
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Tipos de certificación'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in tabla_certificacion.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}} {% if forloop.counter == 1 %},
+                    sliced: true,
+                    selected: true
+                    {% endif %}
+                },
+                {% endfor %}
+                
+                ]
+            }]
+        });
+});
+});  
+
+$(function () {
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Número de productores con uno o más sellos'
+        },
+        yAxis: {
+            title: {
+                text: 'Valores'
+            }
+
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Productores'
+            }
+        },
+        xAxis: {
+            categories: [
+            'Productores',
+
+            ],
+            crosshair: true
+        },
+        tooltip: {
+            formatter: function() {
+                return ''+
+                this.series.name +': '+ this.y ;
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:1f}',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for list in lista  %}
+            {% for x in list %}
+                {% if forloop.counter == 1 %}
+                {
+                    name: "Con un sello",
+                    data: [{{x}}],
+                },
+                {% elif forloop.counter == 2 %}
+                {
+                    name: "Con dos sellos",
+                    data: [{{x}}],
+                },
+                {% else %}
+                {
+                    name: "Más de dos sellos",
+                    data: [{{x}}],
+                },
+                {% endif %}
+
+            {% endfor %}
+
+        {% endfor %}
+        ]
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container2').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Quién certifica?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in quien_certifica.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}},
+                },
+                {% endfor %}
+                
+                ]
+            }]
+        });
+});
+});  
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#container3').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: '¿Quién paga la certificación?'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {% for k,v in paga_certificacion.items %}
+                {
+                    name: "{{k}}",
+                    y: {{v}},
+                },
+                {% endfor %}
+                
+                ]
+            }]
+        });
+});
+});  
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+{% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Certificaciones</li>
+        </ol>  
+    </div>
+    
+
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="certificados" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container2" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+    <div class="row fila3">
+        <div class="col-sm-12 col-md-6 col-md-offset-3 col-lg-offset-3 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container3" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

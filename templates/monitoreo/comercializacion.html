@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block extra_js %}
+	<script>
+	    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+	    </script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Comercialización</li>
+        </ol>  
+    </div>
+    
+    <div class="row fila1">
+	    <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-offset-1 col-lg-10">
+	    	<h4 id="distancia">Distancia promedio recorrida para la comercialización: {{distancia|floatformat:2}} Km</h4>
+	    </div>
+    </div>
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-offset-2 col-lg-8">
+        <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+        	<div id="modalidad" class="table-responsive">
+				<table class="table table-hover table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Producto</th>
+							<th>Promedio Auto-consumo</th>
+							<th>Promedio de venta</th>
+							<th>Promedio precio de venta unitario (C$)</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for fila in tabla_productos %}
+			                <tr>
+			                    {% for celda in fila %}
+			                    <td>{{celda|intcomma}}</td>
+			                    {% endfor %}
+			                </tr>
+		                {%endfor%}
+					</tbody>
+				</table>
+			</div>
+        </div>
+    </div>
+</div>
+	
+
+{% endblock content %}

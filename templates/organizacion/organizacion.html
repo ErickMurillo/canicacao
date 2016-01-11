@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" src="/static/js/markerclusterer.js"></script>
+<script type="text/javascript" src="/static/js/infobox.js"></script>t>
+<script src="/static/js/select2.js" type="text/javascript"></script>
+<link href="/static/css/select2.css" rel="stylesheet" type="text/css"/>
+
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
+
+<script>
+    $(document).ready(function() {
+        $('li.item-org').addClass('active');    
+    });
+
+	var markers = [];
+	function initialize()
+	{	
+		var infowindow = new google.maps.InfoWindow();
+		var myLatlng = new google.maps.LatLng(13,-85);
+		var myOptions = {
+			zoom: 7,
+			center: myLatlng, 
+		}
+
+		var map = new google.maps.Map(document.getElementById('map-canvas'), myOptions);
+		var bounds = new google.maps.LatLngBounds();
+		var infowindow = new google.maps.InfoWindow();
+		var image = new google.maps.MarkerImage('/static/img/m.png');
+		
+		
+		$.getJSON("{% url 'obtener-lista-org' %}", function(data){
+			$.each(data, function(i, elemento){
+				var latlng = new google.maps.LatLng(elemento.lat, elemento.lon);
+				bounds.extend(latlng);	
+				var marker = new google.maps.Marker({
+					position: latlng,
+					map: map,
+					title: elemento.nombre,
+					icon: image,
+					item: '',
+                    id: elemento.id
+				});
+				markers.push(marker);
+
+				google.maps.event.addListener(marker, 'click', (function(mm, tt) {
+					return function() {
+						infowindow.setContent(tt);
+						infowindow.open(map, mm);
+					}
+				})(marker, elemento.nombre));
+				
+			});
+			var markerCluster = new MarkerClusterer(map, markers);
+
+		});
+		
+		//map.fitBounds(bounds);	
+	}
+
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+
+//new select
+
+ $(document).ready(function() {
+        $('#id_departamento').multiselect({
+        	buttonWidth: '250px',
+        	maxHeight: 250,
+        	includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
+        	buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+        });
+         $('#id_municipio').multiselect({
+         	enableCollapsibleOptGroups: true,
+         	buttonWidth: '250px',
+        	maxHeight: 250,
+        	includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
+         	buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+         });
+         $("#id_municipio").multiselect('disable');
+    });
+
+var foo = [];
+$(document).on('change','#id_departamento',function(){
+         
+    $('#id_departamento :selected').each(function(i, selected){ 
+        foo[i] = $(selected).val();    
+    });
+    $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
+        $("#id_municipio").multiselect('enable');
+       	$('#id_municipio').html('');
+        var municipio = $('#id_municipio')
+        if(data){
+           $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+                var group = $('<optgroup></optgroup>').attr('label', j);
+                $.each(item2, function(k, item3){
+                    group.append($('<option></option>').val(item3.id).html(item3.nombre));
+                });
+                group.appendTo(municipio);
+                $('#id_municipio').multiselect('rebuild');
+            });
+
+        });
+
+       }
+   });
+    
+});
+
+
+// var foo2 = [];
+// $(document).on('change','#id_municipio',function(){
+         
+//     $('#id_municipio :selected').each(function(i, selected){ 
+//         foo2[i] = $(selected).val();      
+//     });
+//     $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
+//         $('#id_comunidad').html('');
+//         $("#id_comunidad").prop("disabled", false);
+//         if(data){
+//             $.each(data, function(i, item){
+//                 $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
+//                 });
+//        }
+//    });
+//});
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+
+<style>
+	.footer{
+
+        position: relative; 
+        bottom: -50px !important;
+    }
+	#map-canvas{
+		height: 385px;
+		width: 95%;
+  		margin: 20px auto;
+
+	
+		padding: 0px;
+	}
+
+	.map{
+		margin-bottom: 50px
+	}
+
+	
+</style>
+<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	<div class="consulta-org-titulo">
+		<h4>Filtrar datos de las organizaciones</h4>
+	</div>
+	<div class="consulta-org">
+	<div class="row ">
+		
+		<form action="." method="POST">{% csrf_token %}
+			<div class="filtro-org-consulta">
+				<div class="form-group">
+					<label >Departamento</label>
+					<br>
+					{{form.departamento}}                    
+				</div>
+
+				<div class="form-group">
+					<label >Municipio</label>
+					<br>
+					{{form.municipio}}                  
+				</div>
+
+				<!--<div class="form-group">
+					<label >Comunidad</label>
+					<br>
+					{{form.comunidad}}                     
+				</div>-->
+
+				<div>
+					<input class="btn btn-org-consulta" type="submit" value="Consultar" name="consulta"/>
+
+				</div>	
+			</div>	
+		</form>
+	</div>
+
+	</div>
+
+</div>
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+	
+	<div class="row mapa-organizaciones">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mapa-titulo">
+			<h4>Ubicación de las organizaciones socias</h4>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+			<div id="map-canvas"></div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

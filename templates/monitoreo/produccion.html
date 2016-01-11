@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block extra_js %}
+<script>
+   $(document).ready(function() {
+
+    $('li.item-consulta').addClass('active');
+    
+})
+
+   $(function () {
+      $('#container').highcharts({
+         chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Producción de cacao'
+        },
+        yAxis: {
+            title: {
+               text: 'Toneladas'
+           }
+       },
+       xAxis: {
+        categories: [
+        'Toneladas',
+
+        ],
+        crosshair: true
+    },
+
+    tooltip: {
+        formatter: function() {
+           return ''+
+           this.series.name +': '+ this.y +' t';
+       }
+   },
+   legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle',
+    borderWidth: 0
+},
+plotOptions: {
+    series: {
+        borderWidth: 0,
+        dataLabels: {
+            enabled: true,
+            format: '{point.y:.1f}',
+            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+            style: {
+                textShadow: '0 0 3px white'
+            }
+        }
+    }
+},
+series: [
+{name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
+{name: 'Fermentado convencional', data: [{{fermentado|floatformat}}]},
+{name: 'Fermentado orgánico', data: [{{organico|floatformat}}]},
+]
+});
+});
+
+$(function () {
+    $('#container1').highcharts({
+        title: {
+            text: 'Meses de mayor producción de cacao',
+            x: -20 //center
+        },
+        
+        xAxis: {
+            categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+            'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+
+        {
+           name: 'Valores',
+           data: [{% for value in produccion.values %}{{value}},{% endfor %}]
+       },
+
+
+       ]
+   });
+});
+
+$(function () {
+        $('#problemas').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Problemas en las áreas de cacao'
+            },
+
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Porcentajes'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                        style: {
+                            textShadow: '0 0 3px black'
+                        }
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b>'
+            },
+
+            series: [{
+                name: "Problemas",
+                colorByPoint: true,
+                data: [ 
+            {
+                name: "Baja fertilidad del suelo",
+                y: {{fertilidad}},
+            }, {
+                name: "Árboles poco productivos",
+                y: {{arboles}},
+            }, {
+                name: "Plantaciones muy viejas",
+                y: {{plantaciones}},
+            }, {
+                name: "Plagas y enfermedades",
+                y: {{plagas}},
+            }, {
+                name: "Poca producción",
+                y: {{produccion_problemas}},
+            }, {
+                name: "Poca disponibilidad de mano de obra",
+                y: {{mano_obra}},
+            }
+
+            ]
+        }],
+    });
+});
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+{% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+    {% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Producción</li>
+        </ol>  
+    </div>
+    
+
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="">
+                <h4>Promedio de inversión en el mantenimieto:</h4>
+                <h5>Finca: C$ {{inversion_finca|floatformat:2|intcomma}}</h5>
+                <h5>Áreas de cacao: C$ {{inversion_cacao|floatformat:2|intcomma}}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row fila2" style="margin-top: 1.5em">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2"></th>
+                            <th colspan="4" style="text-align:center;">Edad de plantación</th>
+                        </tr>
+                        <tr>
+                            <th>4 -10 años</th>
+                            <th>10 - 20 años</th>
+                            <th>Mayor a 20 años</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Área total en ha</td>
+                            {% for values in edades.values %}
+                            <td>{{values.0|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>No. de plantas por ha</td>
+                            {% for values in edades.values %}
+                            <td>{{values.1|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas improductivas</td>
+                            {% for values in edades.values %}
+                            <td>{{values.2|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas establecidas con semilla</td>
+                            {% for values in edades.values %}
+                            <td>{{values.3|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>% de plantas establecidas por injerto</td>
+                            {% for values in edades.values %}
+                            <td>{{values.4|floatformat:2}}</td>
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+
+
+    <div class="row fila3">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+            <div class="col-md-6" id="problemas" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

@@ -1,0 +1,98 @@
+<div class="seleccion">
+	<div class="row">
+		<div class="col-xs-5 col-sm-3 col-md-3 col-lg-2 borde-filtro">
+			<p>Filtros seleccionados</p>
+		</div>
+		<div class="col-xs-6 col-sm-6 col-md-7 col-lg-10 datos-filtro">
+			<div class="row">
+				{% if request.session.anno %}
+				<div class="col-xs-4 col-sm-3 col-md-2 ind-filtro">
+					<h5>Año</h5>
+					<p>
+						{% for fecha in request.session.anno %}
+						{{ fecha }},
+						{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+				
+				{% if request.session.departamento %}
+				<div class="col-xs-4 col-sm-3 col-md-2 ind-filtro">
+					<h5>Departamento</h5>
+					<p>
+						{% for depto in request.session.departamento %}
+						{{ depto }},
+						{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+				
+				{% if request.session.municipio %}
+				<style>
+					.scroll {
+						max-height: 100px;
+						overflow-y: scroll;
+					}
+				</style>
+				<div class="col-xs-4 col-md-2 ind-filtro">
+					<h5>Municipio</h5>
+					<p class="scroll">
+						{% for mun in request.session.municipio %}
+						{{ mun }},
+						{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+				
+				{% if request.session.comunidad %}
+				<style>
+					.scroll {
+						max-height: 100px;
+						overflow-y: scroll;
+					}
+				</style>
+				<div class="col-xs-4 col-sm-3 col-md-2 ind-filtro">
+					<h5>Comunidad</h5>
+					<p class="scroll">
+						{% for com in request.session.comunidad %}
+						{{ com }},
+						{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+
+				{% if request.session.organizacion %}
+				<style>
+					.scroll {
+						max-height: 100px;
+						overflow-y: scroll;
+					}
+				</style>
+				<div class="col-xs-4 col-sm-3 col-md-2 ind-filtro">
+					<h5>Organización</h5>
+					<p class="scroll">
+						{% for org in request.session.organizacion %}
+						{{ org }},
+						{% endfor %}
+					</p>
+				</div>
+				{% endif %}
+
+				{% if request.session.socio %}
+				<div class="col-xs-4 col-sm-3 col-md-2 ind-filtro">
+					<h5>Socio</h5>
+					<p>
+						{% if request.session.socio == "1" %}
+						Si
+						{% else %}
+						No
+						{% endif %} 
+					</p>
+				</div>
+				{% endif %}
+
+
+			</div>
+		</div>
+	</div>
+</div>

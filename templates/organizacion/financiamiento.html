@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+	$(document).ready(function() {
+
+		$('li.item-org').addClass('active');
+
+	});
+
+	{% for year,value in anno.items %}
+
+$(function () {
+    $('#financiamiento{{year}}').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Acceso a financiamiento para el acopio y comercialización'
+        },
+
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Porcentajes (%)'
+                }
+            },
+
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        xAxis: {
+            categories: [
+            '',
+            
+            ],
+            crosshair: true
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+                {% for k,v in value.items %}
+                {
+                    name: '{{k}}',
+                    data: [{{v}}],
+                   
+                },
+                {% endfor %}
+                ]
+    });
+});
+{% endfor %}
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+<div class="datos-dashboard">
+	<div class="row">
+		<div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+			<div class="ind-familia row">
+				<div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+				<div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+				<div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock tablero %}
+
+{% block content %}
+<style>
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
+
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+</style>
+{% include "organizacion/indicadoresorg.html" %}
+<div id="tabs">
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
+
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="tab-content">
+		{% for year,value in anno.items %}
+			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+				<div class="container-fluid contenido-graficos">
+					<div class="row fila17">
+						<div class="col-sm-12 col-md-12 col-lg-12 grafico-full">
+							<div id="financiamiento{{year}}" style="min-width: 310px; width: 85%; margin: 0 auto;"></div>
+						</div>
+				</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% endblock content %}

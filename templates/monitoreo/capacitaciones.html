@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+   $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '¿Quién recibe la capacitación técnica?'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Capacitaciones',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%';
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+            series: [
+            {% for k,v in capacitaciones_2.items %}
+                {name: '{{k}}', data: [{{v}}]},
+            {% endfor %}
+            ]
+        });
+    });
+
+
+    $(function () {
+        $('#cap_socio').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '¿Quién recibe la capacitación socio-económica?'
+            },
+            yAxis: {
+                title: {
+                    text: 'Valores'
+                }
+
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+                xAxis: {
+                categories: [
+                    'Capacitaciones',
+                    
+                ],
+                crosshair: true
+            },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                    this.series.name +': '+ this.y + '%';
+                }
+            },
+             legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y} %',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+            series: [
+            {% for k,v in capacitaciones_socio.items %}
+                {name: '{{k}}', data: [{{v}}]},
+            {% endfor %}
+            ]
+        });
+    });
+	</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-indicador" role="tablist">
+    <li role="indicador" class="active col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Capacitaciones Técnicas</a></li>
+    <li role="indicador" class="col-xs-12 col-sm-6 col-md-4 col-lg-3"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Capacitaciones Socioeconómicas</a></li>
+    </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Capacitaciones</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="container" style="min-width: 450px;  width: 90%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila2">
+                <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+
+                <div id="modalidad" class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Capacitaciones técnicas recibidas</th>
+                                <th>Hijas</th>
+                                <th>Hijos</th>
+                                <th>Jefe familia varón</th>
+                                <th>Jefa familia mujer</th>
+                                <th>Total</th>
+                                <th>Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,value in dic.items %}
+                                <tr>
+                                    <td>{{key}}</td>
+                                    {% for x,y in value.0.items %}
+                                        <td>{{y}}</td>
+                                    {% endfor %}
+                                    <td>{{value.1}}</td>
+                                    <td>{{value.2}}</td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div role="tabpanel" class="tab-pane" id="profile">
+        <div class="container-fluid tab-indicador">
+            <div class="row">
+                <ol class="breadcrumb bread-indicador">
+                    <li><a href="/dashboard/">Tablero Principal</a></li>
+                    <li class="active">Capacitaciones</li>
+                </ol>  
+            </div>
+            <div class="row fila1">
+                <div class="col-lg-12 grafico-full">
+                    <div class="" id="cap_socio" style="min-width: 450px;  width: 90%; margin: 0 auto;"></div>
+                </div>
+            </div>
+            <div class="row fila2">
+                <a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad2'); return false;">Exportar tabla</a>
+
+                <div id="modalidad" class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>Capacitaciones socioeconómicas recibidas</th>
+                            <th>Hijas</th>
+                            <th>Hijos</th>
+                            <th>Jefe familia varón</th>
+                            <th>Jefa familia mujer</th>
+                            <th>Total</th>
+                            <th>Porcentaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,value in dic_socio.items %}
+                            <tr>
+                                <td>{{key}}</td>
+                                {% for x,y in value.0.items %}
+                                    <td>{{y}}</td>
+                                {% endfor %}
+                                <td>{{value.1}}</td>
+                                <td>{{value.2}}</td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+	
+{% endblock content %}

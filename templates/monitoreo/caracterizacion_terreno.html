@@ -1,0 +1,482 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart textura
+        $('#container0').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Textura del suelo'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Textura',
+                
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentajes (%)'
+            }
+        },
+        tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        
+        series: [
+        {% for k,v in tabla_textura.items %}
+           {
+            name: '{{k}}',
+            data: [{{v.por_textura}},]
+
+        }, 
+        {% endfor %}
+       ]
+    });
+
+		
+		  // Build the chart pendiente
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Pendiente'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Pendiente',
+                
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentajes (%)'
+            }
+        },
+        tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for k,v in tabla_pendiente.items %}
+           {
+            name: '{{k}}',
+            data: [{{v.por_pendiente}},]
+
+        }, 
+        {% endfor %}
+       ]
+    }); 
+
+			  // Build the chart hojarascas
+        $('#container2').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Cantidad de hojarasca'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'hojarascas',
+                
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentajes (%)'
+            }
+        },
+        tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for k,v in tabla_hojarasca.items %}
+           {
+            name: '{{k}}',
+            data: [{{v.por_horajasca}},]
+
+        }, 
+        {% endfor %}
+       ]
+    }); 
+	
+	// profunidad
+     $('#container3').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Profundidad'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Profundidad',
+                
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentajes (%)'
+            }
+        },
+        tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for k,v in tabla_profundidad.items %}
+           {
+            name: '{{k}}',
+            data: [{{v.por_profundidad}},]
+
+        }, 
+        {% endfor %}
+       ]
+    });
+
+
+	// Drenaje
+     $('#container4').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Drenaje natural'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [
+                'Drenaje',
+                
+            ],
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Porcentajes (%)'
+            }
+        },
+       tooltip: {
+                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+            },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        series: [
+        {% for k,v in tabla_drenaje.items %}
+           {
+            name: '{{k}}',
+            data: [{{v.por_drenaje}},]
+
+        }, 
+        {% endfor %}
+       ]
+    });
+
+    }); //document ready
+
+
+}); // funcion anonima
+
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+
+{% include "monitoreo/indicadores.html" %}
+
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Caracterización del Terreno</li>
+        </ol>  
+    </div>
+    <div class="row fila1">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="" id="container0" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 ">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-striped table-bordered table-hover">
+                    <caption>Textura</caption>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Frecuencia</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for key, value in tabla_textura.items%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.textura|floatformat}}</td>
+                            <td>{{value.por_textura|floatformat}}</td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 ">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+            
+                <table class="table table-striped table-bordered table-hover">
+                    <caption>Pendiente</caption>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Frecuencia</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for key, value in tabla_pendiente.items%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.pendiente|floatformat}}</td>
+                            <td>{{value.por_pendiente|floatformat}}</td>
+                        </tr>  
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row fila2">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="" id="container2" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 ">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-striped table-bordered table-hover">
+                    <caption>Hojarascas</caption>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Frecuencia</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for key, value in tabla_hojarasca.items%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.horajasca|floatformat}}</td>
+                            <td>{{value.por_horajasca|floatformat}}</td>
+                        </tr>  
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row fila3">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="" id="container3" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 ">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-striped table-bordered table-hover">
+                    <caption>Profundidad del terreno</caption>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Frecuencia</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for key, value in tabla_profundidad.items%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.profundidad|floatformat}}</td>
+                            <td>{{value.por_profundidad|floatformat}}</td>
+                        </tr>  
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row fila4">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+            <div class="" id="container4" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 ">
+            <a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+            <div class="table-responsive" id="modalidad">
+                <table class="table table-striped table-bordered table-hover">
+                    <caption>Drenaje del suelo</caption>
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Frecuencia</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for key, value in tabla_drenaje.items%}
+                        <tr>
+                            <td>{{key}}</td>
+                            <td>{{value.drenaje|floatformat}}</td>
+                            <td>{{value.por_drenaje|floatformat}}</td>
+                        </tr>  
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

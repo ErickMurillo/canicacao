@@ -1,0 +1,698 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script type="text/javascript" src="/static/js/markerclusterer.js"></script>
+<script type="text/javascript" src="/static/js/infobox.js"></script>
+<script src="/static/js/markerwithlabel.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    });
+	{% for year,value in anno.items %}
+	var map_{{year}};
+	{% endfor %}
+
+	var latlng = new google.maps.LatLng(13,-85);
+
+	function initialize() {
+		var myOptions = {
+			zoom: 7,
+			center: latlng,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			panControl: false,
+			zoomControl: false,
+			scaleControl: false,
+		};
+		var image = new google.maps.MarkerImage('/static/img/m2.png');
+
+		{% for year,value in anno.items %}
+
+		map_{{year}} = new google.maps.Map(document.getElementById("map_canvas_{{forloop.counter}}"),myOptions);
+
+		{% for x,y in value.14.items %}
+		var marker_{{forloop.counter}}_{{year}}  = new MarkerWithLabel({
+			position: new google.maps.LatLng({{y.0}}, {{y.1}}),
+			map: map_{{year}},
+		   //draggable: true,
+		   raiseOnDrag: true,
+		   labelContent: "{{y.2|floatformat:2}}",
+		   labelAnchor: new google.maps.Point(3, 30),
+		   labelClass: "labels", // the CSS class for the label
+		   labelInBackground: false,
+		   icon: image,
+		});
+		{% endfor %}
+
+		{% endfor %}
+
+	}
+
+	initialize();
+	$('.update').on('shown.bs.tab', function(e) {
+		{% for year,value in anno.items %}
+		google.maps.event.trigger(map_canvas_{{forloop.counter}}, 'resize');
+		map_{{year}}.setCenter(latlng);
+		{% endfor %}
+	});
+	
+</script>
+
+
+{% for year,value in anno.items %}
+<script>
+	$(function () {
+
+		$(document).ready(function () {
+
+		// Build the chart
+		$('#hectarea{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Porcentaje de áreas de cacao por edad de plantación'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{% for x,y in value.0.items %}
+				{
+					name: "{{x}}",
+					y: {{y}}
+				},
+				{% endfor %}
+				
+
+				]
+			}]
+		});
+	});
+	});
+
+
+	$(function () {
+		$('#rendimiento{{year}}').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Rendimiento expresado en kg por hectárea (Kg/ha)'
+			},
+
+			xAxis: {
+				type: 'category'
+			},
+			yAxis: {
+				title: {
+					text: 'Rendimiento'
+				}
+
+			},
+			legend: {
+				enabled: false
+			},
+			plotOptions: {
+				column: {
+					stacking: 'normal',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+						style: {
+							textShadow: '0 0 3px black'
+						}
+					}
+				}
+			},
+
+			tooltip: {
+				headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+				pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> kg/ha<br/>'
+			},
+
+			series: [{
+				name: "Rendimientos",
+				colorByPoint: true,
+				data: [
+			// {
+			//     name: "Seco",
+			//     y: {{value.2}},
+			// }, 
+			{
+				name: "Fermentado convencional",
+				y: {{value.3}},
+			}, {
+				name: "Fermentado Orgánico",
+				y: {{value.4}},
+			}
+			]
+		}],
+	});
+});
+
+$(function () {
+
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#tipo{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Producción de cacao'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Seco sin fermentar",
+					y: {{value.5}}
+				},  {
+					name: "Fermentado convencional",
+					y: {{value.6}}
+				}, {
+					name: "Fermentado orgánico",
+					y: {{value.7}}
+				}
+				]
+			}]
+		});
+	});
+});
+
+$(function () {
+
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#socio{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Productores Organizados y no Organizados'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			
+			series: [{
+				name: "Porcentajes",
+				colorByPoint: true,
+				data: [
+				{
+					name: "Organizado",
+					y: {{value.9}}
+				},  {
+					name: "No Organizado",
+					y: {{value.10}}
+				}
+				]
+			}]
+		});
+	});
+});
+
+
+$(function () {
+	$('#venta{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Auto-consumo vs Venta de cacao'
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			title: {
+				text: 'Toneladas'
+			}
+		},
+		xAxis: {
+            categories: [
+            'Cacao',
+            
+            ],
+            crosshair: true
+        },
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+		},
+		series: [
+		{
+			name: 'Auto-consumo',
+			data: [{{value.11|floatformat:3}}]
+		}, {
+			name: 'Ventas',
+			data: [{{value.12|floatformat:3}}]
+		},
+
+		]
+
+	});
+});
+
+$(function () {
+	$('#venta_cacao{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Venta por calidad de cacao en Tn'
+		},
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			title: {
+				text: 'Toneladas'
+			}
+		},
+		xAxis: {
+            categories: [
+            'Cacao',
+            
+            ],
+            crosshair: true
+        },
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		tooltip: {
+			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+			pointFormat: '<span style="color:{point.color}">{point.name}</span><b>{point.y:.2f}</b>'
+		},
+		series: [
+		{% for key,values in value.13.items %}
+		{
+			name: '{{key}}',
+			data: [{{values|floatformat:2}}]
+		}, 
+		{% endfor %}
+		
+		]
+
+	});
+});
+
+$(function () {
+
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#destino{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: '¿A quién (es) venden los productores su producción de cacao?'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentaje",
+				colorByPoint: true,
+				data: [
+				{% for x,y in value.15.items %}
+				{
+					name: "{{x}}",
+					y: {{y}}
+				}, 
+				{% endfor %}
+				
+				]
+			}]
+		});
+	});
+});  
+
+$(function () {
+
+	$(document).ready(function () {
+
+		// Build the chart
+		$('#destino_org{{year}}').highcharts({
+			chart: {
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				type: 'pie'
+			},
+			title: {
+				text: 'Mercado destino de la Producción'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: true,
+						format: '{point.y:.2f}%',
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+						style: {
+							textShadow: '0 0 3px white'
+						}
+					},
+					showInLegend: true
+				}
+
+			},
+			series: [{
+				name: "Porcentaje",
+				colorByPoint: true,
+				data: [
+				{% for x,y in value.16.items %}
+				{
+					name: "{{x}}",
+					y: {{y}}
+				}, 
+				{% endfor %}
+				
+				]
+			}]
+		});
+	});
+});  
+</script>
+{% endfor %}
+{% endblock extra_js %}
+
+{% block tablero %}
+{% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<style>
+/* .map{
+	margin-bottom: 10px;
+	margin-top: 10px;
+}*/
+.datos-filtro{
+	padding-bottom: 0.5em !important
+}
+
+.labels {
+ /*color: white;
+ background-color: #ff2b00;*/
+ font-family: "Roboto", sans-serif;
+ font-size: 14px;
+ text-align: center;
+ width: auto;
+ white-space: nowrap;
+ margin-left: -18px !important;
+ margin-top: -39px !important;
+ padding: 2px;
+ border-radius: 15px
+}
+
+</style>
+<div class="row">
+	{% include "monitoreo/filtros.html" %}
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	{% include "monitoreo/indicadores.html" %}
+</div>
+</div>
+
+
+<div id="tabs">
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-annos" role="navegacion">
+		<li role="titulo" class="col-xs-3 col-sm-3 col-md-2 col-lg-1">
+			<a >Años:</a>
+		</li>
+
+		{% for year in anno.keys %}
+		<li role="annos" class="{% if forloop.counter == 1 %}active{% endif %} col-xs-3 col-sm-3 col-md-2 col-lg-1" id="{{forloop.counter}}"><a href="#{{year}}" class="update" aria-controls="{{year}}" role="tab" data-toggle="tab">{{year}}</a></li>
+		{% endfor %}
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+
+		{% for year,value in anno.items %}
+		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
+
+			<div class="container-fluid contenido-graficos">
+
+				<div class="row fila1">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div class="grafic" id="hectarea{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div  id="rendimiento{{year}}" style="min-width: 310px;  width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<!--fila 2-->
+				<div class="row fila2">
+
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<h4 align="center">Producción de cacao en toneladas por departamento</h4>
+						<div id="map_canvas_{{forloop.counter}}" class="map" style="width:100%; height:363px"></div>
+					</div>
+
+
+					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2 ">
+						<div class="promedio-cacao">
+							<div class="row">
+								<div class="col-sm-8 col-md-8 col-lg-8 texto-indicador">
+									<h1>{{value.1|floatformat:2}} </h1>
+									<h2>Producción total en toneladas</h2>
+								</div>
+								<div class="col-sm-4 col-md-4 col-lg-4">
+									<img src="/static/img/arbol-01.png" alt="">
+								</div>
+							</div>
+						</div>
+						<div class="promedio-cultivo">
+							<div class="row">
+								<div class="col-sm-8 col-md-8 col-lg-8 texto-indicador">
+									<h1>{{value.8|floatformat:2}} ha</h1>
+									<h2>Promedio áreas de cacao por productor</h2>
+								</div>
+								<div class="col-sm-4 col-md-4 col-lg-4">
+									<img src="/static/img/arbolito-01.png" alt="">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--fila 3-->
+				<div class="row fila3">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="tipo{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="socio{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>
+
+				<!--fila 4-->
+				<div class="row fila4">
+					<div class="col-md-6 col-lg-6 grafico-left">
+						<div id="venta{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-6 col-lg-6 grafico-right">
+						<div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+
+				</div>
+
+				<div class="row fila5">
+					<div class="col-md-12 col-lg-6 grafico-left">
+						<div id="destino{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+					<div class="col-md-12 col-lg-6 grafico-right">
+						<div id="destino_org{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+<span class="ir-arriba fa fa-arrow-up"></span>
+		{% endfor %}
+
+
+	</div>
+
+</div>
+
+
+
+
+<!--{% for year,value in anno.items %}
+  <div id="map_canvas_{{forloop.counter}}" class="map" style="width:auto; height:400px"></div>
+  {% endfor %}-->
+
+<!--<div class="col-lg-3">
+			<a class="btn" href="">Miembros del hogar</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">Producción</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">practicas</a>
+		</div>
+		
+		<div class="col-lg-3">
+			<a class="btn" href="">Miembros del hogar</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">Tenecia de la propiedad</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">Producción</a>
+		</div>
+		<div class="col-lg-3">
+		   <a class="btn col-lg-3" href="">practicas</a>
+		</div> 
+<br>
+<br>
+ {% include "monitoreo/filtros.html" %} 
+
+	Familias : {{familias}}<br>
+	Hombres : {{hombres}}%<br>
+	Mujeres : {{mujeres}}%<br>
+	Organizaciones : {{organizaciones}}<br>
+	Socio : {{socio}}<br>
+	No Socio : {{no_socio}}<br>
+	Promedio mz cacao : {{avg_cacao}}<br>
+	Promedio área en mz por productor : {{avg_area_productor|floatformat:2}}<br>
+
+	
+	
+	<div class="col-md-12 indicadores">
+		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
+		<a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>
+	</div>
+-->
+{% endblock content %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+	<script>
+   $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+
+$(function () {
+    // Create the chart
+    $('#cap_socio').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Capacitaciones socioeconómicas recibidas'
+        },
+
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+        },
+
+        series: [{
+            name: "Capacitaciones",
+            colorByPoint: true,
+            data: [
+
+            {% for key,value in capacitaciones_socio.items %}
+                {
+                name: "{{key}}",
+                y: {{value}},
+                drilldown: "{{key}}"
+            },
+            {% endfor %}
+            ]
+        }],
+
+    });
+});
+
+	</script>
+{% endblock extra_js %}
+
+{% block content %}
+<style>
+    .table{
+        width: 70%;
+        margin: 0 auto;
+        margin-top: 40px
+    }
+ .btn-export {
+  float: none;
+  margin-left: 75%;
+  margin-top: 30px;
+}
+</style>
+
+{% include "monitoreo/filtros.html" %}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 tablero-titulo">
+          <h4 class="titulo-inicio"><a href="/dashboard/">Regresar al tablero principal</a></h4>  
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 col-lg-12">
+    <div id="cap_socio" style="min-width: 310px; height: 400px; max-width: 900px;margin: 0 auto"></div>
+</div>
+
+<a class="btn-export btn btn-default" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla</a>
+<div class="col-md-12 col-lg-12">
+<div id="modalidad">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Capacitaciones socioeconómicas recibidas</th>
+                    <th>Hijas</th>
+                    <th>Hijos</th>
+                    <th>Jefe familia varón</th>
+                    <th>Jefa familia mujer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in dic_socio.items %}
+                    <tr>
+                        <td>{{key}}</td>
+                        {% for x,y in value.items %}
+                            <td>{{y}}</td>
+                        {% endfor %}
+                    </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+
+	{% include "monitoreo/indicadores.html" %}
+{% endblock content %}

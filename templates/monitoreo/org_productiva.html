@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+
+	<script>
+        $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+        
+		$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Servicios que reciben productoras y productores de las organizaciones'
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },  
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y + '%';
+                }
+            },
+            xAxis: {
+            categories: [
+                'Servicios',
+                
+            ],
+            crosshair: true
+        },
+            legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+                {% for key,value in servicio_dic.items %}
+                {
+                    name: '{{key}}',
+                    data: [{{value}}],
+                    
+                },
+                {% endfor %}
+                ]
+    });
+});
+
+			$(function () {
+    $('#container1').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Beneficios de estar asociado'
+        },
+        yAxis: {
+            title: {
+                text: 'Frecuencia'
+            }
+
+        },
+        credits: {
+            enabled: false
+        },
+        yAxis: {
+                min: 0,
+                title: {
+                    text: 'Frecuencia'
+                }
+            },
+            xAxis: {
+            categories: [
+                'Beneficios',
+                
+            ],
+            crosshair: true
+        },
+            tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y + '%';
+                }
+            },
+            plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}%',
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                    style: {
+                        textShadow: '0 0 3px white'
+                    }
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+                {% for key,value in beneficio_dic.items %}
+                {
+                    name: '{{key}}',
+                    data: [{{value}}],
+                    
+                },
+                {% endfor %}
+                ]
+    });
+});
+
+
+	</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+    {% include "monitoreo/datostablero.html" %}
+{% endblock tablero %}
+
+{% block content %}
+<div class="row">
+{% include "monitoreo/filtros.html" %}
+</div>
+    {% include "monitoreo/indicadores.html" %}
+<div class="container-fluid contenido-indicador">
+    <div class="row">
+        <ol class="breadcrumb bread-indicador">
+            <li><a href="/dashboard/">Tablero Principal</a></li>
+            <li class="active">Organización productiva</li>
+        </ol>  
+    </div>
+    <div class="row fila1">
+        <div class="col-lg-12 grafico-full">
+            <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div> 
+    </div>
+    <div class="row fila2">
+        <div class="col-lg-12 grafico-full">
+            <div class="col-md-6" id="container1" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div> 
+    </div>
+</div>
+ 
+
+{% endblock content %}

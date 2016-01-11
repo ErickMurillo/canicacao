@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    $(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Mitigración de riesgos'
+        },
+        xAxis: {
+            categories: ['Monitoreo plagas','Manejo de plagas','Manejo de recursos','Almacenamiento de agua','Distribucion cacao', 'venta de cacao', 'tecnologia de secado']
+        },
+        yAxis: {
+            title: {
+                text: 'Porcentajes(%)'
+            }
+
+        },
+        tooltip: {
+                formatter: function() {
+                    return ''+
+                        this.series.name +': '+ this.y +'%';
+                }
+            },
+        credits: {
+            enabled: false
+        },
+        series: [
+            {% for key,value in tabla_mitigacion.items %}
+                {
+                    name: '{{key}}',
+                    data: [{{value.0}},{{value.1}},{{value.2}},{{value.3}},{{value.4}},{{value.5}},{{value.6}}]
+                },
+            {% endfor %}
+
+        ]
+    });
+});
+</script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12 col-lg-12">
+		<div id="container"></div>
+	</div>
+</div>
+{% include "monitoreo/indicadores.html" %}
+{% endblock content %}

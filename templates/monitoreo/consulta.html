@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<link href="/static/css/select2.min.css" rel="stylesheet" />
+<script src="/static/js/select2.min.js"></script>
+
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        
+        $('li.item-consulta').addClass('active');
+    
+    })
+  $(document).ready(function() {
+    $('#id_anno').multiselect({
+        buttonWidth: '250px',
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
+        buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+    });
+
+    $('#id_socio').multiselect({
+        buttonWidth: '250px',
+    });
+    $('#id_organizacion').multiselect({
+        buttonWidth: '250px',
+        maxHeight: 250,
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
+        buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+    });
+        $('#id_departamento').multiselect({
+            buttonWidth: '250px',
+            maxHeight: 250,
+            includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
+            buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+        });
+         $('#id_municipio').multiselect({
+            enableCollapsibleOptGroups: true,
+            buttonWidth: '250px',
+            maxHeight: 250,
+            includeSelectAllOption: true,
+            selectAllText: 'Seleccionar todos',
+            buttonText: function(options, select) {
+                if (options.length === 0) {
+                    return 'Sin selección ...';
+                }
+                else if (options.length > 3) {
+                    return 'Varias opciones seleccionadas!';
+                }
+                 else {
+                     var labels = [];
+                     options.each(function() {
+                         if ($(this).attr('label') !== undefined) {
+                             labels.push($(this).attr('label'));
+                         }
+                         else {
+                             labels.push($(this).html());
+                         }
+                     });
+                     return labels.join(', ') + '';
+                 }
+            }
+         });
+         $("#id_municipio").multiselect('disable');
+    });
+  
+
+var foo = [];
+$(document).on('change','#id_departamento',function(){
+         
+    $('#id_departamento :selected').each(function(i, selected){ 
+        foo[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
+        $('#id_municipio').html('');
+        $("#id_municipio").multiselect('enable');
+        var municipio = $('#id_municipio')
+        if(data){
+            
+           $.each(data, function(i, item){
+            $.each(item, function(j, item2){
+                var group = $('<optgroup></optgroup>').attr('label', j);
+                $.each(item2, function(k, item3){
+                    group.append($('<option></option>').val(item3.id).html(item3.nombre));
+                });
+                group.appendTo(municipio);
+                $('#id_municipio').multiselect('rebuild');
+            });
+
+        });
+       }
+   });
+
+    });
+
+var foo2 = [];
+$(document).on('change','#id_municipio',function(){
+         
+    $('#id_municipio :selected').each(function(i, selected){ 
+        foo2[i] = $(selected).val();      
+    });
+    $.getJSON('/ajax/comunies/?ids='+foo2.join(","), function(data){
+        $('#id_comunidad').html('');
+        $("#id_comunidad").prop("disabled", false);
+        if(data){
+            $.each(data, function(i, item){
+                $('#id_comunidad').append($('<option></option>').val(item.id).html(item.nombre));
+                });
+       }
+   });
+
+     $.getJSON('/ajax/organi/?ids='+foo2.join(","), function(data){
+        $('#id_organizacion').html('');
+        //$("#id_organizacion").prop("disabled", false);
+        if(data){
+            $.each(data, function(i, item){
+                $('#id_organizacion').append($('<option></option>').val(item.id).html(item.siglas));
+                });
+       }
+   });
+    });
+</script>
+
+{% endblock extra_js %}
+
+{% block content %}
+<style type="text/css">
+@media (min-width: 768px){
+    footer{
+
+        position: fixed;
+        bottom: 0px;
+    }
+}
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #CB6830 !important;
+    }
+    .select2-selection__clear {
+        color: #CB6830 !important;
+    }
+</style>
+
+<div class="formulario-consulta">
+               <!-- -->
+                <div class="filtros">
+                    <div class="row">
+                    <form action="." method="POST">{% csrf_token %}
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 select-filtro">
+                            <div class="form-group">
+                                <label >Fecha</label>
+                                <br>
+                                
+                                     {{form.anno}}
+                                                   
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 select-filtro">
+                            <div class="form-group">
+                                <label >Departamento</label>
+                                <br>
+                                {{form.departamento}}                    
+                            </div>
+
+                            <div class="form-group">
+                                <label >Municipio</label>
+                                <br>
+                                {{form.municipio}}                    
+                            </div>
+
+                            <!--<div class="form-group">
+                                <label >Comunidad</label>
+                                <br>
+                                {{form.comunidad}}                    
+                            </div>-->
+                        </div>
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 select-filtro">
+                            <div class="form-group">
+                                <label >Organización</label>
+                                <br>
+                               {{form.organizacion}}                    
+                            </div>
+                            <div class="form-group">
+                                <label >Socios</label>
+                                <br>
+                                {{form.socio}}
+                            </div>
+                        </div>
+                         
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 select-filtro">
+                            
+                          
+                            <input type="submit" value="Consultar" class="btn btn-default btn-filtro" name="consulta"/>
+
+
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block extra_js %}
+<script>
+	$(document).ready(function() {
+
+		$('li.item-org').addClass('active');
+
+	});
+</script>
+{% endblock extra_js %}
+
+{% block tablero %}
+<div class="datos-dashboard">
+	<div class="row">
+		<div class="col-xs-4 col-sm-3 col-md-4 col-lg-4 tablero-familia">
+			<div class="ind-familia row">
+				<div class=" col-lg-3 col-lg-offset-1 img-familia"><img src="/static/img/organizacion.png" alt=""></div>
+				<div class=" col-lg-3"><h1>{{organizaciones}}</h1></div>
+				<div class=" col-lg-4" style="margin-left: -25px"><p>Organizaciones</p></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock tablero %}
+
+{% block content %}
+<style>
+	.row {
+		margin-right: 0px !important;
+		margin-left: 0px !important; 
+	}
+
+	h3 {
+		color: #cb6830;
+		font-weight: bold;
+		margin-bottom: 5px;
+		margin-top: 5px;
+	}
+
+	.botonera-org {
+  		background-color: #e7e6e4;
+  		 display: block; 
+  		 margin-top: 5em !important;
+  		 margin-bottom: 5em !important;
+}
+</style>
+<div class="botonera-org">
+    <div class="row">
+    	<a class="btn col-sm-6 col-md-3 col-lg-3" href="/lista-organizaciones/">Lista de Organizaciones</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/status/">Estatus legal y aspectos jurídicos</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/documentacion/">Documentación</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/datos-productivos/">Datos productivos</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/infraestructura/">Infraestructura y maquinaria</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/comercio-organizaciones">Comercialización</a>
+        <a class="btn col-sm-6 col-md-3 col-lg-3" href="/financiamiento/">Financiamiento</a>
+    </div>
+</div>
+{% endblock content %}
