@@ -16,7 +16,7 @@ $(function () {
             type: 'column'
         },
         title: {
-            text: 'Acceso a financiamiento para el acopio y comercialización'
+            text: '¿De dónde proviene el financiamiento para el acopio y comercialización?'
         },
 
         credits: {
@@ -53,7 +53,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -62,7 +62,7 @@ $(function () {
             }
         },
         series: [
-                {% for k,v in value.items %}
+                {% for k,v in value.0.items %}
                 {
                     name: '{{k}}',
                     data: [{{v}}],
@@ -70,6 +70,59 @@ $(function () {
                 },
                 {% endfor %}
                 ]
+    });
+});
+
+$(function () {
+
+    $(document).ready(function () {
+
+        // Build the chart
+        $('#acceso{{year}}').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Acceso a financiamiento para el acopio y comercialización'
+            },
+
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.percentage:.2f}%',
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+                        style: {
+                            textShadow: '0 0 3px white'
+                        }
+                    },
+                    showInLegend: true
+                }
+
+            },
+            series: [{
+                name: "Porcentajes",
+                colorByPoint: true,
+                data: [
+                {
+                    name: "Si tiene",
+                    y: {{value.1}}
+                },
+                {
+                    name: "No tiene",
+                    y: {{value.2}}
+                },
+                ]
+            }]
+        });
     });
 });
 {% endfor %}
@@ -121,8 +174,11 @@ $(function () {
 			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 				<div class="container-fluid contenido-graficos">
 					<div class="row fila17">
-						<div class="col-sm-12 col-md-12 col-lg-12 grafico-full">
-							<div id="financiamiento{{year}}" style="min-width: 310px; width: 85%; margin: 0 auto;"></div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+                            <div id="acceso{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+                        </div>
+						<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+							<div id="financiamiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 						</div>
 				</div>
 				</div>

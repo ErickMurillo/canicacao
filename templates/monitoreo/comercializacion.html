@@ -44,16 +44,21 @@
 					<thead>
 						<tr>
 							<th>Producto</th>
-							<th>Promedio Auto-consumo</th>
-							<th>Promedio de venta</th>
-							<th>Promedio precio de venta unitario (C$)</th>
+							<th>Auto-consumo</th>
+							<th>Venta</th>
+							<th>Precio promedio de venta unitario (C$)</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for fila in tabla_productos %}
 			                <tr>
 			                    {% for celda in fila %}
-			                    <td>{{celda|intcomma}}</td>
+			                    <td>{% if celda.0 %}
+			                    		{{celda}}
+			                    	{% else %}
+			                    		{{celda|floatformat:"2"|intcomma}}
+			                    	{% endif %}
+			                    </td>
 			                    {% endfor %}
 			                </tr>
 		                {%endfor%}

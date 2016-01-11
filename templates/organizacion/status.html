@@ -23,11 +23,8 @@
 				type: 'pie'
 			},
 			title: {
-<<<<<<< HEAD
 				text: 'Estatus legal de la Organizaciones'
-=======
-				text: 'Estatus legal de la organización'
->>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
+
 			},
 
 			tooltip: {
@@ -70,11 +67,7 @@
 	$(function () {
 		$('#miembros{{year}}').highcharts({
 			title: {
-<<<<<<< HEAD
 				text: 'Número de miembros del Consejo de Administración para Organizaciones'
-=======
-				text: 'Número de miembros de JD por organización'
->>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
 			},
 			xAxis: {
 				categories: [{% for item in lista_status %} '{{item}}', {% endfor %}]

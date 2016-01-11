@@ -208,15 +208,6 @@ $(function () {
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 			<div class="container-fluid contenido-graficos">
-				<div class="row fila5">
-					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-				</div>
-
 				<div class="row fila8">
 					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
@@ -240,13 +231,15 @@ $(function () {
 							</table>
 						</div>
 					</div>
-
-
+				</div>
+				<div class="row fila5">
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
+						<div id="socios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
 					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-						<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						<div id="presocios{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
 				</div>
-
 
 				<div class="row fila9">
 					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">

@@ -44,7 +44,7 @@ def _queryset_filtrado(request):
 
 def IndexView(request,template="monitoreo/index.html"):
     hectarea = 0.7050
-    tonelada = 0.1
+    tonelada = 0.045351474
 
     mujeres = Encuesta.objects.filter(persona__sexo='2').count()
     hombres = Encuesta.objects.filter(persona__sexo='1').count()
@@ -122,7 +122,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
     #conversiones###############
     hectarea = 0.7050
-    tonelada = 0.1
+    tonelada = 0.045351474
     #1 libra = 0.00045359237 toneladas 
     libra_tonelada = 0.00045359237
     ############################
@@ -540,7 +540,7 @@ def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 
 def produccion(request,template='monitoreo/produccion.html'):
     filtro = _queryset_filtrado(request)
-    tonelada = 0.1
+    tonelada = 0.045351474
 
     ##############################################################
     familias = filtro.count()
@@ -720,7 +720,7 @@ def riesgos(request,template='monitoreo/riesgos.html'):
 
 def comercializacion(request,template='monitoreo/comercializacion.html'):
     filtro = _queryset_filtrado(request)
-    tonelada = 0.1
+    tonelada = 0.045351474
     kg = 0.453592
     ##############################################################
     familias = filtro.count()
@@ -754,41 +754,40 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
     lista_kg = [7,8,9,10]
     for obj in PRODUCTO_CHOICES:
         producto = filtro.filter(comercializacion_cacao__producto=obj[0]).aggregate(
-                auto_consumo=Avg('comercializacion_cacao__auto_consumo'),
-                venta=Avg('comercializacion_cacao__venta'),
+                auto_consumo=Sum('comercializacion_cacao__auto_consumo'),
+                venta=Sum('comercializacion_cacao__venta'),
                 precio_venta=Avg('comercializacion_cacao__precio_venta'))
         
-
+        print producto['precio_venta']
         #validacion y formato float
         if producto['auto_consumo'] != None:
             if obj[0] in lista_toneladas:
-                auto_consumo = (float(str(round(producto['auto_consumo'],2)))) * float(str(round(tonelada,2)))
+                auto_consumo = producto['auto_consumo'] * tonelada
             elif obj[0] in lista_kg:
-                auto_consumo = (float(str(round(producto['auto_consumo'],2)))) * float(str(round(kg,2)))
+                auto_consumo = producto['auto_consumo'] * kg
             else:
-                auto_consumo = float(str(round(producto['auto_consumo'],2)))
+                auto_consumo = producto['auto_consumo']
         else:
             auto_consumo = 0.0
 
         if producto['venta'] != None:
             if obj[0] in lista_toneladas:
-                venta = (float(str(round(producto['venta'],2)))) * float(str(round(tonelada,2)))
+                venta = producto['venta'] * tonelada
             elif obj[0] in lista_kg:
-                venta = (float(str(round(producto['venta'],2)))) * float(str(round(kg,2)))
+                venta = producto['venta'] * kg
             else:
-                venta = float(str(round(producto['venta'],2)))
-
+                venta = producto['venta']
         else:
             venta = 0.0
 
         #1 tonelada = 10 quintales
         if producto['precio_venta'] != None:
             if obj[0] in lista_toneladas:
-                precio_venta = (float(str(round(producto['precio_venta'],2)))) * 10
+                precio_venta = producto['precio_venta'] * 22.05
             elif obj[0] in lista_kg:
-                precio_venta = (float(str(round(producto['precio_venta'],2)))) * 2.2
+                precio_venta = producto['precio_venta'] * 2.2
             else:
-                precio_venta = float(str(round(producto['precio_venta'],2)))
+                precio_venta = producto['precio_venta']
         else:
             precio_venta = 0.0
         #-----------------------------------------------------------
@@ -959,15 +958,12 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
-<<<<<<< HEAD
     lista_t = []
     for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
         for x in obj.opciones:
             lista_t.append(int(x))
     total = len(lista_t)
 
-=======
->>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
     dic = {}
     for obj in CAPACITACIONES_CHOICES:
         lista = []
@@ -980,7 +976,7 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             p2 = lista.count(xz[0])
             conteo += p2
             capacitaciones[xz[1]] = p2
-<<<<<<< HEAD
+
         dic[obj[1]] = (capacitaciones,conteo,saca_porcentajes(conteo,total,False))
 
     capacitaciones_2 = {}
@@ -997,23 +993,6 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
                 lista_1.append(int(x))
     total_1 = len(lista_1)
 
-=======
-        dic[obj[1]] = (capacitaciones,conteo)
-
-    capacitaciones_2 = {}
-    lista = []
-    for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
-        for x in obj.opciones:
-            lista.append(int(x))
-
-    total = len(lista)
-
-    for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
-        p2 = lista.count(obj_1[0])
-        capacitaciones_2[obj_1[1]] = saca_porcentajes(p2,total,False)
-
-    #socioeconomicas------------------------------------------------------------------------------
->>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
     dic_socio = {}
     for obj in CAPACITACIONES_SOCIO_CHOICES:
         lista_socio = []
@@ -1028,24 +1007,11 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             p = lista_socio.count(xc[0])
             capacitaciones_socio[xc[1]] = p
             conteo += p
-<<<<<<< HEAD
+
         dic_socio[obj[1]] = (capacitaciones_socio,conteo,saca_porcentajes(conteo,total_1,False))
 
 
     capacitaciones_socio = {}
-=======
-        dic_socio[obj[1]] = (capacitaciones_socio,conteo)
-
-
-    capacitaciones_socio = {}
-    lista_1 = []
-    for obj_socio in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
-        if obj_socio.opciones_socio != None:
-            for x in obj_socio.opciones_socio:
-                lista_1.append(int(x))
-
-    total_1 = len(lista_1)
->>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
 
     for obj_1_socio in OPCIONES_CAPACITACIONES_CHOICES:
         p = lista_1.count(obj_1_socio[0])

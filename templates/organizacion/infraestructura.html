@@ -7,88 +7,6 @@
 		$('li.item-org').addClass('active');
 
 	});
-
-	{% for year,value in anno.items %}
-	$(function () {
-		$('#infraestructura{{year}}').highcharts({
-			chart: {
-				type: 'column'
-			},
-			title: {
-				text: 'Infraestructura y maquinaria'
-			},
-			xAxis: {
-				categories: [{% for k,v in value.1.items %}'{{k}}',{% endfor %}]
-			},
-			yAxis: {
-				min: 0,
-				title: {
-					text: 'Condiciones de todos los tipos de infraestructura'
-				}
-			},
-			tooltip: {
-				formatter: function () {
-					return '<b>' + this.x + '</b><br/>' +
-					this.series.name + ': ' + this.y + '%' + '<br/>'
-				}
-			},
-			legend: {
-				reversed: true
-			},
-			plotOptions: {
-				column: {
-					pointPadding: 0.1,
-					borderWidth: 0,
-					dataLabels: {
-						enabled: true,
-						format: '{point.y:.1f}%',
-						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-						style: {
-							textShadow: '0 0 3px white'
-						}
-					}
-				}
-			},
-			series: [
-			{
-				name: 'Malo',
-				data: [
-				{% for k,v in value.1.items %}
-				{% for x,y in v.items %}
-				{% if x == 'Malo' %}
-				{{y}},
-				{% endif %}
-				{% endfor %}
-				{% endfor %}
-				]
-			},
-			{
-				name: 'Regular',
-				data: [
-				{% for k,v in value.1.items %}
-				{% for x,y in v.items %}
-				{% if x == 'Regular' %}
-				{{y}},
-				{% endif %}
-				{% endfor %}
-				{% endfor %}
-				]
-			},
-			{
-				name: 'Bueno',
-				data: [
-				{% for k,v in value.1.items %}
-				{% for x,y in v.items %}
-				{% if x == 'Bueno' %}
-				{{y}},
-				{% endif %}
-				{% endfor %}
-				{% endfor %}
-				]
-			}, ]
-		});
-});
-{% endfor %}
 </script>
 {% endblock extra_js %}
 
@@ -119,6 +37,9 @@
 		margin-bottom: 5px;
 		margin-top: 5px;
 	}
+	th {
+ 		 text-align: center;
+}
 </style>
 {% include "organizacion/indicadoresorg.html" %}
 
@@ -137,36 +58,43 @@
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 			<div class="container-fluid contenido-graficos">
-				<div class="row fila10">
-					<div class="col-md-12 col-lg-12 grafico-full">
-						<div id="infraestructura{{year}}" style="min-width: 310px; width: 1200px; height:500px; margin: 0 auto;"></div>
-					</div>
-				</div>
-
 				<div class="row fila11">
 					<div class="col-md-12 col-lg-12">
 						<a class="btn-export" href="#" onclick="exportarXLS('modalidad'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
 						<div id="modalidad">
 							<table class="table table-bordered table-striped table-hover">
-								<caption>Capacidad de instalaciones</caption>
+								<caption>Instalaciones</caption>
 								<thead>
-									<tr>
+									<tr>	
 										<th>Tipo de infraestructura</th>
-										<th>Cantidad</th>
-										<th>Capacidad promedio(qq)</th>
+										<th>Tienen</th>
+										<th>No tienen</th>
+										<th colspan="3">Estado</th>
+										<th>Capacidad total (qq)</th>
+										<th>Capacidad promedio (qq)</th>
+									</tr>
+									<tr>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th>Bueno</th>
+										<th>Malo</th>
+										<th>Regular</th>
+										<th></th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									{% for k in value.0 %}
+									{% for x in value %}
 									<tr>
-										<td>{{k.0}}</td>
-										<td>{{k.1}}</td>
-										{% if k.2 == '---' %}
-										<td>{{k.2}}</td>
-										{% else %}
-										<td>{{k.2|floatformat:"2"}}</td>
-										{% endif %}
-										
+										<td>{{x.0}}</td>
+										<td>{{x.1}}</td>
+										<td>{{x.2}}</td>
+										{% for v in x.3 %}
+											<td>{{v}}</td>
+										{% endfor %}
+										<td>{{x.4|floatformat:"2"}}</td>
+										<td>{{x.5|floatformat:"2"}}</td>
 									</tr>
 									{% endfor %}
 								</tbody>
