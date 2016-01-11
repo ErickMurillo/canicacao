@@ -340,6 +340,7 @@ def datos_productivos(request,template="organizacion/datos_productivos.html"):
 		rendimiento['> 40 qq'] = (frec5,saca_porcentajes(frec5,total_frecue_rend_baba,False),
 										frec5_s,saca_porcentajes(frec5_s,total_frecue_rend_seco,False))
 
+
 		anno[year] = (socias,socios,pre_socias,pre_socios,total_areas_socios,total_areas_organico,total_areas_convencional,
 						avg_rend_baba,rendimiento,total_frecue_rend_baba,avg_rend_seco,total_frecue_rend_seco)
 

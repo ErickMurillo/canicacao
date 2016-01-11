@@ -959,12 +959,15 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
     organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
     ##############################################################
 
+<<<<<<< HEAD
     lista_t = []
     for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
         for x in obj.opciones:
             lista_t.append(int(x))
     total = len(lista_t)
 
+=======
+>>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
     dic = {}
     for obj in CAPACITACIONES_CHOICES:
         lista = []
@@ -977,6 +980,7 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             p2 = lista.count(xz[0])
             conteo += p2
             capacitaciones[xz[1]] = p2
+<<<<<<< HEAD
         dic[obj[1]] = (capacitaciones,conteo,saca_porcentajes(conteo,total,False))
 
     capacitaciones_2 = {}
@@ -993,6 +997,23 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
                 lista_1.append(int(x))
     total_1 = len(lista_1)
 
+=======
+        dic[obj[1]] = (capacitaciones,conteo)
+
+    capacitaciones_2 = {}
+    lista = []
+    for obj in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro):
+        for x in obj.opciones:
+            lista.append(int(x))
+
+    total = len(lista)
+
+    for obj_1 in OPCIONES_CAPACITACIONES_CHOICES:
+        p2 = lista.count(obj_1[0])
+        capacitaciones_2[obj_1[1]] = saca_porcentajes(p2,total,False)
+
+    #socioeconomicas------------------------------------------------------------------------------
+>>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
     dic_socio = {}
     for obj in CAPACITACIONES_SOCIO_CHOICES:
         lista_socio = []
@@ -1007,10 +1028,24 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
             p = lista_socio.count(xc[0])
             capacitaciones_socio[xc[1]] = p
             conteo += p
+<<<<<<< HEAD
         dic_socio[obj[1]] = (capacitaciones_socio,conteo,saca_porcentajes(conteo,total_1,False))
 
 
     capacitaciones_socio = {}
+=======
+        dic_socio[obj[1]] = (capacitaciones_socio,conteo)
+
+
+    capacitaciones_socio = {}
+    lista_1 = []
+    for obj_socio in Capacitaciones_Socioeconomicas.objects.filter(encuesta=filtro):
+        if obj_socio.opciones_socio != None:
+            for x in obj_socio.opciones_socio:
+                lista_1.append(int(x))
+
+    total_1 = len(lista_1)
+>>>>>>> 3876468af19b147562bcd0997119fc5e4740e352
 
     for obj_1_socio in OPCIONES_CAPACITACIONES_CHOICES:
         p = lista_1.count(obj_1_socio[0])

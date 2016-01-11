@@ -116,7 +116,6 @@
 	});
 	});
 
-	
 $(function () {
 	$('#rendimiento{{year}}').highcharts({
 		chart: {
@@ -241,7 +240,14 @@ $(function () {
 							</table>
 						</div>
 					</div>
+
+
+					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+						<div id="rangos_convencional{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
 				</div>
+
+
 				<div class="row fila9">
 					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
 						<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
@@ -251,6 +257,7 @@ $(function () {
 						<div id="modalidad3">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Rendimiento promedio de cacao en baba y seco. Valor promedio Baba: {{value.7|floatformat:"2"}} qq/mz, Seco: {{value.10|floatformat:"2"}} qq/mz</caption>
+
 								<thead>
 									<tr>
 										<th>Rangos</th>
@@ -262,6 +269,7 @@ $(function () {
 								</thead>
 								<tbody>
 									{% for k,v in value.8.items %}
+
 									<tr>
 										<td>{{k}}</td>
 										{% for valor in v %}
