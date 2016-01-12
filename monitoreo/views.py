@@ -49,7 +49,7 @@ def IndexView(request,template="monitoreo/index.html"):
     mujeres = Encuesta.objects.filter(persona__sexo='2').count()
     hombres = Encuesta.objects.filter(persona__sexo='1').count()
     area_cacao = (Encuesta.objects.all().aggregate(area_cacao=Sum('area_cacao__area'))['area_cacao']) * hectarea
-    organizaciones = Organizacion.objects.all().count()
+    organizaciones = Encuesta_Org.objects.all().distinct('organizacion').count()
 
     produccion_seco = Encuesta.objects.all().aggregate(total=Sum('produccion_cacao__produccion_c_seco'))['total']
     if produccion_seco == None:
@@ -217,7 +217,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
             if total_produccion_depto != 0:
                 prod_depto[depto] = (depto.latitud_1,depto.longitud_1,total_produccion_depto)
-
+            print total_produccion_depto
 
         #produccion x tipo cacao grafico------------------------------------------------------------------------
         p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
@@ -247,6 +247,10 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             organico = 0
 
         area_hectarea = area_prod * hectarea
+        #conversion de qq a kg
+        kg_fermentado = fermentado * 45.35
+        kg_organico = organico * 45.35
+        #----------------------------------
 
         try:
             rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
@@ -254,13 +258,12 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             rendimiento_seco = 0
 
         try:
-            rendimiento_fer = (fermentado * 100) / area_hectarea
-
+            rendimiento_fer = (kg_fermentado * 100) / area_hectarea
         except:
             rendimiento_fer = 0
 
         try:
-            rendimiento_org = (organico * 100) / area_hectarea
+            rendimiento_org = (kg_organico * 100) / area_hectarea
         except:
             rendimiento_org = 0
 
@@ -301,7 +304,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
         try:
             auto_consumo2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
-                    'comercializacion_cacao__auto_consumo'))['total'] ) * libra_tonelada
+                    'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
         except:
             auto_consumo2 = 0
 
@@ -315,7 +318,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
         try:
             venta2 = (filtro.filter(anno=year,comercializacion_cacao__producto=3).aggregate(total=Sum(
-                    'comercializacion_cacao__venta'))['total']) * libra_tonelada
+                    'comercializacion_cacao__venta'))['total']) * tonelada
         except:
             venta2 = 0
 
@@ -328,7 +331,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
             if obj[0] == 3:
                 try:
                     total = (filtro.filter(anno=year,comercializacion_cacao__producto=obj[0]).aggregate(total=Sum(
-                                            'comercializacion_cacao__venta'))['total']) * libra_tonelada
+                                            'comercializacion_cacao__venta'))['total']) * tonelada
                 except:
                     total = 0
             else:
@@ -377,7 +380,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
         anno[year] = (areas,total_produccion,rendimiento_seco,rendimiento_fer,rendimiento_org,
                         p_seco,p_fermentado,p_organico,avg_cacao,socio,no_socio,auto_consumo,venta,
                         comercializacion,prod_depto,destino_dic,destino_org_dic)
-
 
     return render(request, template, locals())
 
@@ -758,7 +760,6 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
                 venta=Sum('comercializacion_cacao__venta'),
                 precio_venta=Avg('comercializacion_cacao__precio_venta'))
         
-        print producto['precio_venta']
         #validacion y formato float
         if producto['auto_consumo'] != None:
             if obj[0] in lista_toneladas:
@@ -1224,7 +1225,7 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
     lista = []
     for obj in filtro:
         certificaciones = 0
-        for x in Certificacion.objects.filter(encuesta = obj):
+        for x in Certificacion.objects.filter(cacao_certificado=1,encuesta=obj):
             for z in x.tipo.all():
                 certificaciones += 1
         if certificaciones == 1:
