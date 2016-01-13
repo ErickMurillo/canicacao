@@ -68,13 +68,11 @@ def IndexView(request,template="monitoreo/index.html"):
         produccion_baba = 0
 
     try:
-        produccion_seco_total = produccion_seco + (produccion_baba/3)
+        produccion_seco_total = produccion_seco # + (produccion_baba/3)
     except:
         produccion_seco_total = 0
 
-
     produccion = (produccion_fermentado + produccion_organico + produccion_seco_total) * tonelada
-    
 
     return render(request, template, locals())
 
@@ -217,7 +215,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
             if total_produccion_depto != 0:
                 prod_depto[depto] = (depto.latitud_1,depto.longitud_1,total_produccion_depto)
-            print total_produccion_depto
 
         #produccion x tipo cacao grafico------------------------------------------------------------------------
         p_seco = saca_porcentajes((produccion_seco_total*tonelada),total_produccion,False)
@@ -1063,20 +1060,6 @@ def capacitaciones_socio(request,template = 'monitoreo/capacitaciones_socio.html
         capacitaciones_socio[obj_1[1]] = p
 
     return render(request, template, locals())
-#obtener puntos en el mapa
-def obtener_lista(request):
-    if request.is_ajax():
-        lista = []
-        for objeto in Encuesta.objects.all():
-            dicc = dict(nombre=objeto.persona.municipio.nombre, id=objeto.id,
-                        lon=float(objeto.persona.municipio.longitud),
-                        lat=float(objeto.persona.municipio.latitud)
-                        )
-            lista.append(dicc)
-
-        serializado = simplejson.dumps(lista)
-        return HttpResponse(serializado, content_type = 'application/json')
-
 
 #SALIDAS CARLOS
 def caracterizacion_terreno(request,template = 'monitoreo/caracterizacion_terreno.html'):
@@ -1497,6 +1480,20 @@ def get_organi(request):
 
     return HttpResponse(simplejson.dumps(list(organizaciones)), content_type='application/json')
 
+#obtener puntos en el mapa
+def obtener_lista(request):
+    if request.is_ajax():
+        lista = []
+        for objeto in Encuesta.objects.all():
+            dicc = dict(nombre=objeto.persona.municipio.nombre, id=objeto.id,
+                        lon=float(objeto.persona.municipio.longitud),
+                        lat=float(objeto.persona.municipio.latitud)
+                        )
+            lista.append(dicc)
+
+        serializado = simplejson.dumps(lista)
+        return HttpResponse(serializado, content_type = 'application/json')
+        
 #utils
 def saca_porcentajes(dato, total, formato=True):
     if dato != None:
@@ -1535,6 +1532,6 @@ def sumarLista(lista):
     sum=0
     for i in range(0,len(lista)):
         sum=sum+lista[i]
- 
     return sum
+
 

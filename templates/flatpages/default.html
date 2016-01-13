@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 
+{% block extra_js %}
+<script>
+	$(document).ready(function() {  
+	    $('li.item-acerca').addClass('active');
+	});
+</script>
+
+{% endblock extra_js %}
+
 {% block content %}
 <style>
 	#titulo{
