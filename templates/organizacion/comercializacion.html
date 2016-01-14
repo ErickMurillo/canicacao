@@ -238,6 +238,11 @@ $(function () {
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 			<div class="container-fluid contenido-graficos">
+			<div class="row">
+	            <ol class="breadcrumb bread-indicador">
+	                <li><a href="#">Comercialización</a></li>
+	            </ol>  
+	        </div>
 				<div class="row fila12">
 					<div class="col-sm-12 col-md-6 col-lg-6 table-left">
 						<a class="btn-export" href="#" onclick="exportarXLS('modalidad1'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>

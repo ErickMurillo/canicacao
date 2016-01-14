@@ -366,7 +366,7 @@ def infraestructura(request,template="organizacion/infraestructura.html"):
 			estado = []			
 			for x in ESTADO_CHOICES:
 				conteo = filtro.filter(infraestructura__tipo=obj[0],infraestructura__estado=x[0],anno=year).count()
-				estado.append(saca_porcentajes(conteo,count_org,False)) 
+				estado.append(saca_porcentajes(conteo,tienen,False)) 
 
 			if obj[0] == 7:
 				capacidad = "---"

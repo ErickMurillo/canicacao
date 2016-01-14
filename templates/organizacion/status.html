@@ -233,6 +233,11 @@ $(function () {
 		{% for year,value in anno.items %}
 			<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 				<div class="container-fluid contenido-graficos">
+				<div class="row">
+		            <ol class="breadcrumb bread-indicador">
+		                <li><a href="#">Estatus legal y aspectos jurídicos</a></li>
+		            </ol>  
+        		</div>
 					<div class="row fila1">
 						<div class="col-sm-6 col-md-8 col-lg-8 grafico-9">
 							<div id="status{{year}}" style="min-width: 310px; width: 800px; margin: 0 auto;"></div>

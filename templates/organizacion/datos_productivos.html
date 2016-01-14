@@ -208,6 +208,11 @@ $(function () {
 		{% for year,value in anno.items %}
 		<div role="tabpanel" class="tab-pane {% if forloop.counter == 1 %}active{% endif %}" id="{{year}}">
 			<div class="container-fluid contenido-graficos">
+			<div class="row">
+	            <ol class="breadcrumb bread-indicador">
+	                <li><a href="#">Datos productivos</a></li>
+	            </ol>  
+	        </div>
 				<div class="row fila8">
 					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
 						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
@@ -246,8 +251,8 @@ $(function () {
 						<div id="rendimiento{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
 					<div class="col-sm-12 col-md-6 col-lg-6 indicadores-t2">
-						<a class="btn-export" href="#" onclick="exportarXLS('modalidad3'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
-						<div id="modalidad3">
+						<a class="btn-export" href="#" onclick="exportarXLS('modalidad2'); return false;">Exportar tabla <span class="fa fa-file-excel-o"></span></a>
+						<div id="modalidad2">
 							<table class="table table-bordered table-striped table-hover">
 								<caption>Rendimiento promedio de cacao en baba y seco. Valor promedio Baba: {{value.7|floatformat:"2"}} qq/mz, Seco: {{value.10|floatformat:"2"}} qq/mz</caption>
 
