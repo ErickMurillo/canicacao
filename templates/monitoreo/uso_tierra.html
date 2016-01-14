@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block extra_js %}
 <script>
@@ -14,7 +15,7 @@
 			},
 			title: {
 
-				text: 'Usos de la tierra (Total: {{total|floatformat:2}} ha)'
+				text: 'Usos de la tierra (Total: {{total|floatformat:"2"|intcomma}} ha)'
 
 			},
 			yAxis: {
@@ -53,7 +54,7 @@
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}',
+                    format: '{point.y:.2f}',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -63,18 +64,18 @@
         },
 			series: [
 
-			{name: 'Bosques', data: [{{bosque|floatformat:2}}]},
-			{name: 'Tacotal', data: [{{tacotal|floatformat:2}}]},
-			{name: 'Cultivo anual', data: [{{cultivo_anual|floatformat:2}}]},
-			{name: 'Plantación forestal', data: [{{plantacion_forestal|floatformat:2}}]},
-			{name: 'Área de pasto abierto', data: [{{area_pasto_abierto|floatformat:2}}]},
-			{name: 'Área de pasto con árboles', data: [{{area_pasto_arboles|floatformat:2}}]},
+			{name: 'Bosques', data: [{{bosque|floatformat:"2"}}]},
+			{name: 'Tacotal', data: [{{tacotal|floatformat:"2"}}]},
+			{name: 'Cultivo anual', data: [{{cultivo_anual|floatformat:"2"}}]},
+			{name: 'Plantación forestal', data: [{{plantacion_forestal|floatformat:"2"}}]},
+			{name: 'Área de pasto abierto', data: [{{area_pasto_abierto|floatformat:"2"}}]},
+			{name: 'Área de pasto con árboles', data: [{{area_pasto_arboles|floatformat:"2"}}]},
 			//{name: 'Cultivo perenne', data: [{{cultivo_perenne}}]},
-			{name: 'Cultivo semiperenne', data: [{{cultivo_semi_perenne|floatformat:2}}]},
-			{name: 'Cacao', data: [{{cacao|floatformat:2}}]},
-			{name: 'Huerto mixto de cacao', data: [{{huerto_mixto_cacao|floatformat:2}}]},
-			{name: 'Café', data: [{{cafe|floatformat:2}}]},
-			{name: 'Otros', data: [{{otros|floatformat:2}}]},
+			{name: 'Cultivo semiperenne', data: [{{cultivo_semi_perenne|floatformat:"2"}}]},
+			{name: 'Cacao', data: [{{cacao|floatformat:"2"}}]},
+			{name: 'Huerto mixto de cacao', data: [{{huerto_mixto_cacao|floatformat:"2"}}]},
+			{name: 'Café', data: [{{cafe|floatformat:"2"}}]},
+			{name: 'Otros', data: [{{otros|floatformat:"2"}}]},
 			]
 		});
 	});

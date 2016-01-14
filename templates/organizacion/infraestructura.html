@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block extra_js %}
 <script>
@@ -93,13 +94,13 @@
 									{% for x in value %}
 									<tr>
 										<td>{{x.0}}</td>
-										<td>{{x.1}}</td>
-										<td>{{x.2}}</td>
+										<td>{{x.1|intcomma}}</td>
+										<td>{{x.2|intcomma}}</td>
 										{% for v in x.3 %}
 											<td>{{v}}</td>
 										{% endfor %}
-										<td>{{x.4|floatformat:"2"}}</td>
-										<td>{{x.5|floatformat:"2"}}</td>
+										<td>{{x.4|floatformat:"2"|intcomma}}</td>
+										<td>{{x.5|floatformat:"2"|intcomma}}</td>
 									</tr>
 									{% endfor %}
 								</tbody>

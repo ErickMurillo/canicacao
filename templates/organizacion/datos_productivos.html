@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block extra_js %}
 <script>
@@ -228,9 +229,9 @@ $(function () {
 								</thead>
 								<tbody>
 									<tr>
-										<td>{{value.4}}</td>
-										<td>{{value.5}}</td>
-										<td>{{value.6}}</td>
+										<td>{{value.4|intcomma}}</td>
+										<td>{{value.5|intcomma}}</td>
+										<td>{{value.6|intcomma}}</td>
 									</tr>
 								</tbody>
 							</table>
