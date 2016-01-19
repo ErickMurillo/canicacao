@@ -1,0 +1,86 @@
+.botones2 a{
+  text-decoration: none;
+}
+
+.button {
+  background: yellow;
+  display: inline-block;
+  padding: 2rem 4rem;
+  text-decoration: none;
+  font: bold 1rem Sans-Serif;
+  color: black;
+  position: relative;
+  overflow: hidden;
+  -moz-transition: 0.7s;
+  -o-transition: 0.7s;
+  -webkit-transition: 0.7s;
+  transition: 0.7s;
+}
+.button:before {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  width: 10px;
+  height: 10px;
+  background: #222;
+  border-radius: 50%;
+  -moz-transition: 0.7s;
+  -o-transition: 0.7s;
+  -webkit-transition: 0.7s;
+  transition: 0.7s;
+}
+.button span {
+  position: relative;
+}
+.button:hover, .button:focus {
+  color: white;
+}
+.button:hover:before, .button:focus:before {
+  width: 270px;
+  height: 270px;
+  opacity: 1;
+}
+
+.button:nth-child(1) {
+  background: #9b59b6;
+}
+
+.button:nth-child(2) {
+  background: #3498db;
+}
+.button:nth-child(2):before {
+  bottom: auto;
+  top: -40px;
+}
+
+.button:nth-child(3) {
+  background: #e74c3c;
+}
+.button:nth-child(3):before {
+  right: auto;
+  left: -40px;
+}
+
+.button:nth-child(4) {
+  background: #f1c40f;
+}
+.button:nth-child(4):before {
+  right: auto;
+  bottom: auto;
+  left: -40px;
+  top: -40px;
+}
+
+.button:nth-child(5) {
+  background: #1abc9c;
+}
+.button:nth-child(5):before {
+  right: auto;
+  bottom: auto;
+  left: 90px;
+  top: -40px;
+}
+.button:nth-child(5):hover:before, .button:nth-child(5):focus:before {
+  left: -50px;
+}
