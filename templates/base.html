@@ -62,6 +62,9 @@
 						<li class="item-consulta"><a href="/consulta/">Productores</a></li>
 						<li class="item-org"><a href="/organizacion/">Organizaciones</a></li>
 						<li class="item-acerca"><a href="/acerca-de/">Acerca de</a></li>
+						{% if user.is_authenticated %}
+						<li class="item-manual"><a href="/static/Manual_Usuario_Canicacao.pdf" download>Manual PDF</a></li>
+						{% endif %}
 					</ul>
 				</div><!-- /.navbar-collapse -->
 			</nav>
