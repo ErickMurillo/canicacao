@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 #url monitoreo
 urlpatterns = patterns('monitoreo.views',
@@ -9,6 +10,8 @@ urlpatterns = patterns('monitoreo.views',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^$', 'IndexView', name='index'),
+    url(r'^login/$', auth_views.login, {'template_name': 'login.html'}),
+    url(r'^logout/$', auth_views.logout,{'next_page': '/'}),
     url(r'^consulta', 'consulta', name='consulta'),
     url(r'^dashboard', 'dashboard', name='dashboard'),
 

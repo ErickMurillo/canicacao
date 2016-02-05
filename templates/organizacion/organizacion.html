@@ -1,16 +1,13 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-
-
+<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 <script type="text/javascript" src="/static/js/markerclusterer.js"></script>
-<script type="text/javascript" src="/static/js/infobox.js"></script>t>
-<script src="/static/js/select2.js" type="text/javascript"></script>
-<link href="/static/css/select2.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/static/js/infobox.js"></script>
+<!--<script src="/static/js/select2.js" type="text/javascript"></script>
+<link href="/static/css/select2.css" rel="stylesheet" type="text/css"/>-->
 <script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
-<link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
-
 <script>
     $(document).ready(function() {
         $('li.item-org').addClass('active');    
@@ -120,7 +117,7 @@
                  }
             }
          });
-         // $("#id_municipio").multiselect('disable');
+         $('#id_municipio').multiselect('disable');
     });
 
 var foo = [];
@@ -131,7 +128,7 @@ $(document).on('change','#id_departamento',function(){
     });
     $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
         $('#id_municipio').html('');
-        // $("#id_municipio").multiselect('enable');
+        $('#id_municipio').multiselect('enable');
         var municipio = $('#id_municipio')
         if(data){
            $.each(data, function(i, item){

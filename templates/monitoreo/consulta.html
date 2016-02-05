@@ -119,7 +119,7 @@ $(document).ready(function() {
              }
         }
     });
-    // $("#id_municipio").multiselect('disable');
+    $("#id_municipio").multiselect('disable');
 });
   
 
@@ -131,7 +131,7 @@ $(document).on('change','#id_departamento',function(){
     });
     $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
         $('#id_municipio').html('');
-        // $('#id_municipio').multiselect('enable');
+        $('#id_municipio').multiselect('enable');
         var municipio = $('#id_municipio')
         if(data){
             
