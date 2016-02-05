@@ -1,20 +1,16 @@
 {% extends "base.html" %}
 
 {% block extra_js %}
-<link href="/static/css/select2.min.css" rel="stylesheet" />
-<script src="/static/js/select2.min.js"></script>
-
-<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<!--<link href="/static/css/select2.min.css" rel="stylesheet" />
+<script src="/static/js/select2.min.js"></script>-->
 <link rel="stylesheet" href="/static/css/bootstrap-multiselect.css" type="text/css"/>
+<script type="text/javascript" src="/static/js/bootstrap-multiselect.js"></script>
+<script>
 
-<script type="text/javascript">
-
-    $(document).ready(function() {
-        
-        $('li.item-consulta').addClass('active');
-    
-    })
-  $(document).ready(function() {
+$(document).ready(function() {
+    $('li.item-consulta').addClass('active');
+});
+$(document).ready(function() {
     $('#id_anno').multiselect({
         buttonWidth: '250px',
         includeSelectAllOption: true,
@@ -70,61 +66,61 @@
                  }
             }
     });
-        $('#id_departamento').multiselect({
-            buttonWidth: '250px',
-            maxHeight: 250,
-            includeSelectAllOption: true,
-            selectAllText: 'Seleccionar todos',
-            buttonText: function(options, select) {
-                if (options.length === 0) {
-                    return 'Sin selección ...';
-                }
-                else if (options.length > 3) {
-                    return 'Varias opciones seleccionadas!';
-                }
-                 else {
-                     var labels = [];
-                     options.each(function() {
-                         if ($(this).attr('label') !== undefined) {
-                             labels.push($(this).attr('label'));
-                         }
-                         else {
-                             labels.push($(this).html());
-                         }
-                     });
-                     return labels.join(', ') + '';
-                 }
+    $('#id_departamento').multiselect({
+        buttonWidth: '250px',
+        maxHeight: 250,
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
+        buttonText: function(options, select) {
+            if (options.length === 0) {
+                return 'Sin selección ...';
             }
-        });
-         $('#id_municipio').multiselect({
-            enableCollapsibleOptGroups: true,
-            buttonWidth: '250px',
-            maxHeight: 250,
-            includeSelectAllOption: true,
-            selectAllText: 'Seleccionar todos',
-            buttonText: function(options, select) {
-                if (options.length === 0) {
-                    return 'Sin selección ...';
-                }
-                else if (options.length > 3) {
-                    return 'Varias opciones seleccionadas!';
-                }
-                 else {
-                     var labels = [];
-                     options.each(function() {
-                         if ($(this).attr('label') !== undefined) {
-                             labels.push($(this).attr('label'));
-                         }
-                         else {
-                             labels.push($(this).html());
-                         }
-                     });
-                     return labels.join(', ') + '';
-                 }
+            else if (options.length > 3) {
+                return 'Varias opciones seleccionadas!';
             }
-         });
-         $("#id_municipio").multiselect('disable');
+             else {
+                 var labels = [];
+                 options.each(function() {
+                     if ($(this).attr('label') !== undefined) {
+                         labels.push($(this).attr('label'));
+                     }
+                     else {
+                         labels.push($(this).html());
+                     }
+                 });
+                 return labels.join(', ') + '';
+             }
+        }
     });
+    $('#id_municipio').multiselect({
+        enableCollapsibleOptGroups: true,
+        buttonWidth: '250px',
+        maxHeight: 250,
+        includeSelectAllOption: true,
+        selectAllText: 'Seleccionar todos',
+        buttonText: function(options, select) {
+            if (options.length === 0) {
+                return 'Sin selección ...';
+            }
+            else if (options.length > 3) {
+                return 'Varias opciones seleccionadas!';
+            }
+             else {
+                 var labels = [];
+                 options.each(function() {
+                     if ($(this).attr('label') !== undefined) {
+                         labels.push($(this).attr('label'));
+                     }
+                     else {
+                         labels.push($(this).html());
+                     }
+                 });
+                 return labels.join(', ') + '';
+             }
+        }
+    });
+    // $("#id_municipio").multiselect('disable');
+});
   
 
 var foo = [];
@@ -135,7 +131,7 @@ $(document).on('change','#id_departamento',function(){
     });
     $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
         $('#id_municipio').html('');
-        $("#id_municipio").multiselect('enable');
+        // $('#id_municipio').multiselect('enable');
         var municipio = $('#id_municipio')
         if(data){
             
@@ -148,12 +144,10 @@ $(document).on('change','#id_departamento',function(){
                 group.appendTo(municipio);
                 $('#id_municipio').multiselect('rebuild');
             });
-
         });
        }
    });
-
-    });
+});
 
 var foo2 = [];
 $(document).on('change','#id_municipio',function(){
@@ -180,7 +174,7 @@ $(document).on('change','#id_municipio',function(){
                 });
        }
    });
-    });
+});
 </script>
 
 {% endblock extra_js %}

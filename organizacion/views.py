@@ -503,6 +503,7 @@ def get_munis(request):
 		lista = ids.split(',')
 		for id in lista:
 			try:
+				# encuesta = Encuesta_Org.objects.filter(organizacion__municipio__departamento__id=id).distinct().values_list('persona__municipio__id', flat=True)
 				departamento = Departamento.objects.get(pk=id)
 				municipios = Municipio.objects.filter(departamento__id=departamento.pk).order_by('nombre')
 				lista1 = []
