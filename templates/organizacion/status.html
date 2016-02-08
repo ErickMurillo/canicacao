@@ -28,7 +28,7 @@
 			},
 
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -128,7 +128,7 @@
 				size: 90,
 				showInLegend: false,
 				tooltip: {
-					pointFormat: '{point.y:.1f}%'
+					pointFormat: '{point.y:.2f}%'
 				},
 				dataLabels: {
 					enabled: true,
@@ -164,14 +164,14 @@ $(function () {
 				borderWidth: 0,
 				dataLabels: {
 					enabled: true,
-					format: '{point.y:.1f}%'
+					format: '{point.y:.2f}%'
 				}
 			}
 		},
 
 		tooltip: {
 			headerFormat: '<span style="font-size:11px">{series.name}</span>',
-			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.1f}%'
+			pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%'
 		},
 		series: [
 		{% for key,value in value.4.items %}

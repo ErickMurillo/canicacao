@@ -35,7 +35,7 @@
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
-                        format: '{point.y:.1f}%',
+                        format: '{point.y:.2f}%',
                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
@@ -74,7 +74,7 @@ $(function () {
                 text: 'Plantas improductivas'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
             plotOptions: {
                 pie: {
@@ -82,7 +82,7 @@ $(function () {
                     cursor: 'pointer',
                     dataLabels: {
                         enabled: true,
-                        format: '{point.y:.1f}%',
+                        format: '{point.y:.2f}%',
                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'
@@ -139,7 +139,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -343,7 +343,7 @@ $(function () {
                     borderWidth: 0,
                     dataLabels: {
                         enabled: true,
-                        format: '{point.y:.1f}%',
+                        format: '{point.y:.2f}%',
                         color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                         style: {
                             textShadow: '0 0 3px white'

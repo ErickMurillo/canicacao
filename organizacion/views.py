@@ -7,6 +7,7 @@ import json as simplejson
 from django.http import HttpResponse,HttpResponseRedirect
 from django.db.models import Sum, Count, Avg
 import collections
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def _queryset_filtrado(request):
@@ -29,7 +30,7 @@ def _queryset_filtrado(request):
 
 	return Encuesta_Org.objects.filter(**params)
 
-
+@login_required
 def get_organizacion(request,template="organizacion/organizacion.html"):
 	if request.method == 'POST':
 		mensaje = None
@@ -60,6 +61,7 @@ def get_organizacion(request,template="organizacion/organizacion.html"):
 
 	return render(request, template, locals())
 
+@login_required
 def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
 	org = Organizacion.objects.get(id=id)
 
@@ -126,6 +128,7 @@ def obtener_lista_org(request):
 		serializado = simplejson.dumps(lista)
 		return HttpResponse(serializado, content_type='application/json')
 
+@login_required
 def status(request,template='organizacion/status.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -223,6 +226,7 @@ def status(request,template='organizacion/status.html'):
 
 	return render(request,template,locals())
 
+@login_required
 def documentacion(request,template='organizacion/documentacion.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -250,6 +254,7 @@ def documentacion(request,template='organizacion/documentacion.html'):
 
 	return render(request,template,locals())
 
+@login_required
 def datos_productivos(request,template="organizacion/datos_productivos.html"):
 	filtro = _queryset_filtrado(request)
 
@@ -346,6 +351,7 @@ def datos_productivos(request,template="organizacion/datos_productivos.html"):
 
 	return render(request,template,locals())
 
+@login_required
 def infraestructura(request,template="organizacion/infraestructura.html"):
 	filtro = _queryset_filtrado(request)
 
@@ -387,6 +393,7 @@ def infraestructura(request,template="organizacion/infraestructura.html"):
 
 	return render(request,template,locals())
 
+@login_required
 def comercializacion_organizaciones(request,template="organizacion/comercializacion.html"):
 	filtro = _queryset_filtrado(request)
 
@@ -448,6 +455,7 @@ def comercializacion_organizaciones(request,template="organizacion/comercializac
 
 	return render(request,template,locals())
 
+@login_required
 def financiamiento(request,template="organizacion/financiamiento.html"):
 	filtro = _queryset_filtrado(request)
 
@@ -479,6 +487,7 @@ def financiamiento(request,template="organizacion/financiamiento.html"):
 
 	return render(request,template,locals())
 
+@login_required
 def lista_organizaciones(request,template='organizacion/lista_organizaciones.html'):
 	filtro = _queryset_filtrado(request)
 	organizaciones = filtro.distinct('organizacion__nombre').count()

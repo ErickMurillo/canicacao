@@ -82,7 +82,7 @@
 				text: 'Porcentaje de áreas de cacao por edad de plantación'
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -195,7 +195,7 @@ $(function () {
 				text: 'Producción de cacao'
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -250,7 +250,7 @@ $(function () {
 				text: 'Productores Organizados y no Organizados'
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -409,7 +409,7 @@ $(function () {
 				text: '¿A quién (es) venden los productores su producción de cacao?'
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+				pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -444,54 +444,116 @@ $(function () {
 	});
 });  
 
-$(function () {
+// $(function () {
 
-	$(document).ready(function () {
+// 	$(document).ready(function () {
 
-		// Build the chart
-		$('#destino_org{{year}}').highcharts({
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false,
-				type: 'pie'
-			},
-			title: {
-				text: 'Mercado destino de la Producción'
-			},
-			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
-			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: true,
-						format: '{point.y:.2f}%',
-						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-						style: {
-							textShadow: '0 0 3px white'
-						}
-					},
-					showInLegend: true
-				}
+// 		// Build the chart
+// 		$('#destino_org{{year}}').highcharts({
+// 			chart: {
+// 				plotBackgroundColor: null,
+// 				plotBorderWidth: null,
+// 				plotShadow: false,
+// 				type: 'pie'
+// 			},
+// 			title: {
+// 				text: 'Mercado destino de la Producción'
+// 			},
+// 			tooltip: {
+// 				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
+// 			},
+// 			plotOptions: {
+// 				pie: {
+// 					allowPointSelect: true,
+// 					cursor: 'pointer',
+// 					dataLabels: {
+// 						enabled: true,
+// 						format: '{point.y:.2f}%',
+// 						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+// 						style: {
+// 							textShadow: '0 0 3px white'
+// 						}
+// 					},
+// 					showInLegend: true
+// 				}
 
-			},
-			series: [{
-				name: "Porcentaje",
-				colorByPoint: true,
-				data: [
-				{% for x,y in value.16.items %}
-				{
-					name: "{{x}}",
-					y: {{y}}
-				}, 
-				{% endfor %}
+// 			},
+// 			series: [{
+// 				name: "Porcentaje",
+// 				colorByPoint: true,
+// 				data: [
+// 				{% for x,y in value.16.items %}
+// 				{
+// 					name: "{{x}}",
+// 					y: {{y}}
+// 				}, 
+// 				{% endfor %}
 				
-				]
-			}]
-		});
+// 				]
+// 			}]
+// 		});
+// 	});
+// });
+$(function () {
+	$('#destino_org{{year}}').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Mercado destino de la Producción'
+		},
+
+		credits: {
+			enabled: false
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Porcentajes (%)'
+			}
+		},
+
+		tooltip: {
+			formatter: function() {
+				return ''+
+				this.series.name +': '+ this.y +'%';
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle',
+			borderWidth: 0
+		},
+		xAxis: {
+			categories: [
+			'Destino de la producción',
+			
+			],
+			crosshair: true
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:.2f}%',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		series: [
+		{% for k,v in value.16.items %}
+		{
+			name: '{{k}}',
+			data: [{{v}}],
+			
+		},
+		{% endfor %}
+		]
 	});
 });  
 </script>

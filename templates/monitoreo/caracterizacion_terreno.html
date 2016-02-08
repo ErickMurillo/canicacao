@@ -36,7 +36,7 @@ $(function () {
             }
         },
         tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
         legend: {
             layout: 'vertical',
@@ -49,7 +49,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -95,7 +95,7 @@ $(function () {
             }
         },
         tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
         legend: {
             layout: 'vertical',
@@ -108,7 +108,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -152,7 +152,7 @@ $(function () {
             }
         },
         tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
         legend: {
             layout: 'vertical',
@@ -165,7 +165,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -209,7 +209,7 @@ $(function () {
             }
         },
         tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
         legend: {
             layout: 'vertical',
@@ -222,7 +222,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -267,7 +267,7 @@ $(function () {
             }
         },
        tooltip: {
-                pointFormat: '{series.name}: <b>{point.y:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y:.2f}%</b>'
             },
         legend: {
             layout: 'vertical',
@@ -280,7 +280,7 @@ $(function () {
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y:.1f}%',
+                    format: '{point.y:.2f}%',
                     color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
                     style: {
                         textShadow: '0 0 3px white'
@@ -345,8 +345,8 @@ $(function () {
                         {%for key, value in tabla_textura.items%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{value.textura|floatformat}}</td>
-                            <td>{{value.por_textura|floatformat}}</td>
+                            <td>{{value.textura}}</td>
+                            <td>{{value.por_textura|floatformat:"2"}}</td>
                         </tr>
                         {%endfor%}
                     </tbody>
@@ -378,8 +378,8 @@ $(function () {
                         {%for key, value in tabla_pendiente.items%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{value.pendiente|floatformat}}</td>
-                            <td>{{value.por_pendiente|floatformat}}</td>
+                            <td>{{value.pendiente}}</td>
+                            <td>{{value.por_pendiente|floatformat:"2"}}</td>
                         </tr>  
                         {%endfor%}
                     </tbody>
@@ -407,8 +407,8 @@ $(function () {
                         {%for key, value in tabla_hojarasca.items%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{value.horajasca|floatformat}}</td>
-                            <td>{{value.por_horajasca|floatformat}}</td>
+                            <td>{{value.horajasca}}</td>
+                            <td>{{value.por_horajasca|floatformat:"2"}}</td>
                         </tr>  
                         {%endfor%}
                     </tbody>
@@ -438,8 +438,8 @@ $(function () {
                         {%for key, value in tabla_profundidad.items%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{value.profundidad|floatformat}}</td>
-                            <td>{{value.por_profundidad|floatformat}}</td>
+                            <td>{{value.profundidad}}</td>
+                            <td>{{value.por_profundidad|floatformat:"2"}}</td>
                         </tr>  
                         {%endfor%}
                     </tbody>
@@ -467,8 +467,8 @@ $(function () {
                         {%for key, value in tabla_drenaje.items%}
                         <tr>
                             <td>{{key}}</td>
-                            <td>{{value.drenaje|floatformat}}</td>
-                            <td>{{value.por_drenaje|floatformat}}</td>
+                            <td>{{value.drenaje}}</td>
+                            <td>{{value.por_drenaje|floatformat:"2"}}</td>
                         </tr>  
                         {%endfor%}
                     </tbody>

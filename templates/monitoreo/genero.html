@@ -85,7 +85,7 @@
 				text: 'Mujeres que reciben ingresos por las actividades que realiza'
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.percentage:.2f}%</b>'
 			},
 			plotOptions: {
 				pie: {
@@ -93,7 +93,7 @@
 					cursor: 'pointer',
 					dataLabels: {
 						enabled: true,
-						format: '{point.percentage:.1f}%',
+						format: '{point.percentage:.2f}%',
 						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
 						style: {
 							textShadow: '0 0 3px white'
@@ -163,7 +163,7 @@
 					borderWidth: 0,
 					dataLabels: {
 						enabled: true,
-						format: '{point.y:1f} %',
+						format: '{point.y:2f}%',
 						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
 						style: {
 							textShadow: '0 0 3px white'
@@ -179,103 +179,220 @@
 		});
 	});
 
-$(function () {
+// $(function () {
 
-	$(document).ready(function () {
+// 	$(document).ready(function () {
 
-		// Build the chart
-		$('#container2').highcharts({
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false,
-				type: 'pie'
-			},
-			title: {
-				text: 'Usos domésticos de los ingresos percibidos por las mujeres por venta de cacao'
-			},
-			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: true,
-						format: '{point.percentage:.1f}%',
-						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-						style: {
-							textShadow: '0 0 3px white'
-						}
-					},
-					showInLegend: true
-				}
+// 		// Build the chart
+// 		$('#container2').highcharts({
+// 			chart: {
+// 				plotBackgroundColor: null,
+// 				plotBorderWidth: null,
+// 				plotShadow: false,
+// 				type: 'pie'
+// 			},
+// 			title: {
+// 				text: 'Usos domésticos de los ingresos percibidos por las mujeres por venta de cacao'
+// 			},
+// 			tooltip: {
+// 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+// 			},
+// 			plotOptions: {
+// 				pie: {
+// 					allowPointSelect: true,
+// 					cursor: 'pointer',
+// 					dataLabels: {
+// 						enabled: true,
+// 						format: '{point.percentage:.1f}%',
+// 						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+// 						style: {
+// 							textShadow: '0 0 3px white'
+// 						}
+// 					},
+// 					showInLegend: true
+// 				}
 				
-			},
-			series: [{
-				name: "Porcentaje",
-				colorByPoint: true,
-				data: [
-				{% for key,value in domestico.items %}
-				{
-					name: "{{key}}",
-					y: {{value}}
-				},
-				{% endfor %}
-				]
-			}]
-		});
+// 			},
+// 			series: [{
+// 				name: "Porcentaje",
+// 				colorByPoint: true,
+// 				data: [
+// 				{% for key,value in domestico.items %}
+// 				{
+// 					name: "{{key}}",
+// 					y: {{value}}
+// 				},
+// 				{% endfor %}
+// 				]
+// 			}]
+// 		});
+// 	});
+// });
+$(function () {
+	$('#container2').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Usos domésticos de los ingresos percibidos por las mujeres por venta de cacao'
+		},
+		yAxis: {
+			title: {
+				text: 'Valores'
+			}
+
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Porcentaje (%)'
+			}
+		},
+		xAxis: {
+			categories: [
+			'Uso de los ingresos',
+			
+			],
+			crosshair: true
+		},
+		tooltip: {
+			formatter: function() {
+				return ''+
+				this.series.name +': '+ this.y + '%' ;
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle',
+			borderWidth: 0
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:2f}%',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		series: [
+		{% for key,value in domestico.items %}
+ 			{name: '{{key}}', data: [{{value}}]},
+		{% endfor %}
+		]
 	});
 });
+// $(function () {
 
-$(function () {
+// 	$(document).ready(function () {
 
-	$(document).ready(function () {
-
-		// Build the chart
-		$('#container4').highcharts({
-			chart: {
-				plotBackgroundColor: null,
-				plotBorderWidth: null,
-				plotShadow: false,
-				type: 'pie'
-			},
-			title: {
-				text: 'Usos agricolas de los ingresos percibidos por las mujeres por venta de cacao'
-			},
-			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-			},
-			plotOptions: {
-				pie: {
-					allowPointSelect: true,
-					cursor: 'pointer',
-					dataLabels: {
-						enabled: true,
-						format: '{point.percentage:.1f}%',
-						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
-						style: {
-							textShadow: '0 0 3px white'
-						}
-					},
-					showInLegend: true
-				}
+// 		// Build the chart
+// 		$('#container4').highcharts({
+// 			chart: {
+// 				plotBackgroundColor: null,
+// 				plotBorderWidth: null,
+// 				plotShadow: false,
+// 				type: 'pie'
+// 			},
+// 			title: {
+// 				text: 'Usos agricolas de los ingresos percibidos por las mujeres por venta de cacao'
+// 			},
+// 			tooltip: {
+// 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+// 			},
+// 			plotOptions: {
+// 				pie: {
+// 					allowPointSelect: true,
+// 					cursor: 'pointer',
+// 					dataLabels: {
+// 						enabled: true,
+// 						format: '{point.percentage:.1f}%',
+// 						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+// 						style: {
+// 							textShadow: '0 0 3px white'
+// 						}
+// 					},
+// 					showInLegend: true
+// 				}
 				
-			},
-			series: [{
-				name: "Porcentaje",
-				colorByPoint: true,
-				data: [
-				{% for key,value in agricola.items %}
-				{
-					name: "{{key}}",
-					y: {{value}}
-				},
-				{% endfor %}
-				]
-			}]
-		});
+// 			},
+// 			series: [{
+// 				name: "Porcentaje",
+// 				colorByPoint: true,
+// 				data: [
+// 				{% for key,value in agricola.items %}
+// 				{
+// 					name: "{{key}}",
+// 					y: {{value}}
+// 				},
+// 				{% endfor %}
+// 				]
+// 			}]
+// 		});
+// 	});
+// });
+$(function () {
+	$('#container4').highcharts({
+		chart: {
+			type: 'column'
+		},
+		title: {
+			text: 'Usos agricolas de los ingresos percibidos por las mujeres por venta de cacao'
+		},
+		yAxis: {
+			title: {
+				text: 'Valores'
+			}
+
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: 'Porcentaje (%)'
+			}
+		},
+		xAxis: {
+			categories: [
+			'Uso de los ingresos',
+			
+			],
+			crosshair: true
+		},
+		tooltip: {
+			formatter: function() {
+				return ''+
+				this.series.name +': '+ this.y + '%' ;
+			}
+		},
+		legend: {
+			layout: 'vertical',
+			align: 'right',
+			verticalAlign: 'middle',
+			borderWidth: 0
+		},
+		plotOptions: {
+			series: {
+				borderWidth: 0,
+				dataLabels: {
+					enabled: true,
+					format: '{point.y:2f}%',
+					color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'black',
+					style: {
+						textShadow: '0 0 3px white'
+					}
+				}
+			}
+		},
+		series: [
+		{% for key,value in agricola.items %}
+ 			{name: '{{key}}', data: [{{value}}]},
+		{% endfor %}
+		]
 	});
 });
 
