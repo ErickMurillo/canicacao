@@ -14,7 +14,11 @@
 	#titulo{
 		margin-bottom: 25px
 	}
+    footer{
 
+        position: inherit;
+
+    }
 	@media (min-width: 768px){
 	    footer{
 
@@ -23,7 +27,7 @@
 	    }
 	}
 </style>
-	<div class="container">
+	<div class="container acerca">
 		<h3 id="titulo">{{flatpage.title}}</h3>
 		<p>{{flatpage.content|safe}}</p>
 	</div>
