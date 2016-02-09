@@ -33,7 +33,7 @@ sombras()
 .encabezado .row
 	margin-right 0px !important
 
-.encabezado h4
+.encabezado h5
 	color blanco
 	margin-left 50px
 	vertical-align middle
@@ -47,9 +47,10 @@ sombras()
 
 a.sesion
 	padding-right 30px
-	font-size 18px
+	font-size 14px
 	color blanco
 	text-decoration none
+	font-weight bold
 
 
 /*Inicio de menu*/
@@ -58,8 +59,6 @@ a.sesion
 	margin-left 50px
 	padding 12px 15px
 
-.navbar-brand>img 
-	width 120%
 
 
 .navbar-default
@@ -72,8 +71,9 @@ a.sesion
 
 .navbar-default .navbar-nav>li>a 
 	color white
-	padding 20px 30px
-	margin-right 40px
+	font-weight bold
+	font-size 0.9em
+	
 
 .navbar-default .navbar-nav>li>a:hover,.navbar-default .navbar-nav>li>a:focus
 	color white 
@@ -135,92 +135,62 @@ a.sesion
 	padding-left 30px
 	
 .ind-mujer
-	background-color #DE4A4A
+.ind-hombre
+.ind-cacao
 	color white
 	padding-top 10px
 	padding-bottom 10px
 	margin-right 20px
 	text-align center
+	.numero
+		font-size 1.5em
+		margin-bottom 0px
+	.texto
+		font-size 1em
+.ind-mujer	
+	background-color #DE4A4A
 
-.ind-mujer p
-	font-size 1.5em
-	margin 0px 0px 0px !important
-
-
+			
 .ind-hombre
 	background-color #305EEF
-	color white
-	padding-top 10px
-	padding-bottom 10px
-	margin-right 20px
-	text-align center
-
-.ind-hombre p
-	font-size 1.5em
-	margin 0px 0px 0px !important
 
 .ind-cacao
 	background-color #04A586
-	color white
-	padding-top 10px
-	padding-bottom 10px
-	margin-right 20px
-	text-align center
-	margin-top 0px
+	
+		
 
-.ind-cacao p
-	font-size 1.5em
-	margin 0px 0px 6px !important
 
-.text-cacao
-	font-size 1em !important
 
 /*segunda fila de indicadores*/
 
 .ind-produccion
-	background-color cafe
+.ind-otro
+.ind-consulta
+	
 	color white
 	padding-top 10px
 	padding-bottom 10px
 	margin-right 20px
 	margin-top 15px
 	text-align center
-
-.ind-produccion p
-	font-size 1.5em
-	margin 0px 0px 0px !important
-
-
-.ind-produccion img
-	height 125%
-
-
+	.texto
+		font-size 1em
+	.numero
+		font-size 1.5em
+.ind-produccion
+	background-color cafe
+	
+	img
+		height 125%
 .ind-otro
 	background-color #719025
-	color white
-	padding-top 10px
-	padding-bottom 10px
-	margin-right 20px
-	margin-top 15px
-	text-align center
-
-.ind-otro p
-	font-size 1.3em
-	margin 0px 0px 0px !important
-
 
 .ind-consulta
 	background-color #FFA245
-	color white
-	padding-top 10px
-	padding-bottom 10px
-	margin-right 20px
-	margin-top 15px
-	text-align center
+	.texto
+		padding-top 20px
 
-.ind-consulta p
-	font-size 1.5em
-	margin 0px 0px 0px !important
+
 
 
 .mapeo
@@ -684,8 +654,23 @@ li[role='titulo']>a
 	border 3px solid #e7e6e4
 .tab-indicador
 	padding-top 20px
+	
+button.multiselect.dropdown-toggle.btn.btn-default
+	width 100% !important
+	border-radius 0px !important
+	margin-bottom 10px
+.btn-group
+	width 90% !important
+.logos .col-md-6{
+	margin-bottom 20px
+	min-height 48px
+}
+
+
 /**************************XS-Device************************************/
 @media (max-width: 767px)
+	.navbar-default .navbar-nav>li>a 
+		margin-right 0px
 	.ind-cacao
 	.ind-hombre
 	.ind-mujer
@@ -731,6 +716,8 @@ li[role='titulo']>a
 
 /**************************SM-Device************************************/
 @media (min-width: 768px)
+	.navbar-default .navbar-nav>li>a 
+		margin-right 0px
 	.ind-cacao
 		  padding-bottom 6px
 		  margin-top 15px
@@ -741,12 +728,15 @@ li[role='titulo']>a
 	.ind-hombre
 	.ind-produccion
 	.ind-consulta
-		margin-right 5px
-		margin-left 15px
-	.ind-cacao p
-		font-size 1.5em
-	.text-cacao
-		font-size 1em !important
+	.ind-mujer
+	.ind-cacao
+	.ind-otro
+		margin-right 0px
+		margin-left 0px
+		min-height 98px
+		max-height 98px
+		
+	
 	.promedio-cacao h2, .promedio-cultivo h2
 		font-size 20px
 	.indicadores-t2, .grafico-right
@@ -766,24 +756,13 @@ li[role='titulo']>a
 /**************************MD-Device************************************/
  
 @media (min-width: 992px)
-	.ind-mujer p
-		font-size 1.5em
-	.ind-hombre p
-		font-size 1.5em
-
-	.ind-cacao p
-		font-size 1.1em
-	.text-cacao
-		font-size 0.8em !important
-	.ind-produccion p
-		font-size 1.2em
-	.ind-otro .text-orgind
-		font-size 1em
+	.navbar-default .navbar-nav>li>a 
+		margin-right 20px
 	.logos img
 		width 100%
 	.logos .heiferimg img
-		width 30% !important
-		margin-top 30px
+		width 40% !important
+		margin-top 0px  !important
 	.grafico-right
 	.indicadores-t2
 		width 49.5%
@@ -799,9 +778,13 @@ li[role='titulo']>a
 		margin-top 25px
 	.tabs-org
 		min-height 500px !important
+
+		
 		
 /**************************LG-Device************************************/		
 @media (min-width: 1200px)
+	.navbar-default .navbar-nav>li>a 
+		margin-right 30px
 	.ind-cacao
 	.ind-hombre
 	.ind-mujer
@@ -815,17 +798,18 @@ li[role='titulo']>a
 	.ind-otro
 		margin-right 0px
 		margin-left 0px
-		min-height 89px;
+		max-height 90px
+   		min-height 90px
 	.ind-cacao
 		margin-top 0px
 	.ind-consulta
-		padding-bottom: 10px;
+		padding-bottom 10px
 	.col-xs-offset-1
 	.col-sm-offset-1
 		margin-left 0px
 	.logos .heiferimg img
-		  width: 60% !important;
-		  margin-top 0px
+		width 50% !important
+		margin-top 0px  !important
 	.grafico-right
 	.indicadores-t2
 		width 49%

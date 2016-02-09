@@ -1,1 +1,81 @@
-.modal-footer {   border-top: 0px; }
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+body {
+  background: #6d4b35;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.login {
+  width: 400px;
+  margin: 100px auto;
+  font-size: 16px;
+}
+
+/* Reset top and bottom margins from certain elements */
+.login-header,
+.login p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+.login-header {
+  background: #cb6830;
+  padding: 20px;
+  font-size: 1.4em;
+  font-weight: normal;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.login-container {
+  background: #ebebeb;
+  padding: 12px;
+}
+
+/* Every row inside .login-container is defined with p tags */
+.login p {
+  padding: 12px;
+}
+
+.login input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+  padding: 16px;
+  outline: 0;
+  font-family: inherit;
+  font-size: 0.95em;
+}
+
+#id_password,
+#id_username {
+  background: #fff;
+  border-color: #bbb;
+  color: #555;
+  border-radius: 0px;
+}
+
+/* Text fields' focus effect */
+#id_password:focus,
+#id_username:focus {
+  border-color: #888;
+}
+
+.login input[type="submit"] {
+  background: #cb6830;
+  border-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0px;
+}
+
+
+
+/* Buttons' focus effect */
+.login input[type="submit"]:focus {
+  border-color: #cb6830;
+}
