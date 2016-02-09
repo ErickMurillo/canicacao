@@ -118,10 +118,10 @@ def get_org_detail(request,id=None,template="organizacion/orgdetail.html"):
 def obtener_lista_org(request):
 	if request.is_ajax():
 		lista = []
-		for objeto in Organizacion.objects.all():
-			dicc = dict(nombre=objeto.municipio.nombre, id=objeto.id,
-						lon=float(objeto.municipio.longitud),
-						lat=float(objeto.municipio.latitud)
+		for objeto in Encuesta_Org.objects.all().distinct('organizacion'):
+			dicc = dict(nombre=objeto.organizacion.municipio.nombre, id=objeto.organizacion.id,
+						lon=float(objeto.organizacion.municipio.longitud),
+						lat=float(objeto.organizacion.municipio.latitud)
 						)
 			lista.append(dicc)
 
