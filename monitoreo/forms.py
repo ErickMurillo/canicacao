@@ -72,6 +72,10 @@ def departamentos():
     foo = Encuesta.objects.all().order_by('persona__comunidad__municipio__departamento__nombre').distinct().values_list('persona__comunidad__municipio__departamento__id', flat=True)
     return Departamento.objects.filter(id__in=foo)
 
+def organizaciones():
+    foo = Encuesta.objects.all().order_by('organizacion').distinct().values_list('organizacion', flat=True)
+    return Organizacion.objects.filter(id__in=foo)
+
 SI_NO_CHOICE = (('','----'),(1,'Si'),(2,'No'))
 
 class EncuestaConsulta(forms.Form):
@@ -81,5 +85,5 @@ class EncuestaConsulta(forms.Form):
         self.fields['departamento'] = forms.ModelMultipleChoiceField(queryset=departamentos(), required=False, label=u'Departamentos')
         self.fields['municipio'] = forms.ModelMultipleChoiceField(queryset=Municipio.objects.all().order_by('nombre'), required=False)
         self.fields['comunidad'] = forms.ModelMultipleChoiceField(queryset=Comunidad.objects.all(), required=False)
-        self.fields['organizacion'] = forms.ModelMultipleChoiceField(queryset=Organizacion.objects.all(),required=False)
+        self.fields['organizacion'] = forms.ModelMultipleChoiceField(queryset=organizaciones(),required=False)
         self.fields['socio'] = forms.ChoiceField(label=u'Socio',choices=SI_NO_CHOICE,required=False)
