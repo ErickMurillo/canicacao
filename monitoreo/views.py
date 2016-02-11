@@ -69,7 +69,7 @@ def IndexView(request,template="monitoreo/index.html"):
 		produccion_baba = 0
 
 	try:
-		produccion_seco_total = produccion_seco # + (produccion_baba/3)
+		produccion_seco_total = produccion_seco  + (produccion_baba/3)
 	except:
 		produccion_seco_total = 0
 
@@ -177,7 +177,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			produccion_baba = 0
 
 		try:
-			produccion_seco_total = produccion_seco #+ (produccion_baba/3)
+			produccion_seco_total = produccion_seco + (produccion_baba/3)
 		except:
 			produccion_seco_total = 0
 
@@ -206,7 +206,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 				produccion_baba_depto = 0
 
 			try:
-				produccion_seco_total_depto = produccion_seco_depto #+ (produccion_baba_depto/3)
+				produccion_seco_total_depto = produccion_seco_depto + (produccion_baba_depto/3)
 			except:
 				produccion_seco_total_depto = 0
 
@@ -225,10 +225,17 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 
 		#rendimiento cacao kg x ha -----------------------------------------------------------------------------
 
-		area_prod = filtro.filter(anno=year,plantacion__edad__in=[3,4,5]).aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
-		if area_prod == None:
-			area_prod = 0
+		#areas certificadas------------------------------------------------
+		area_prod_cert = filtro.filter(anno=year,plantacion__edad__in=[3,4,5],certificacion__cacao_certificado='1').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+		if area_prod_cert == None:
+			area_prod_cert = 0
 
+		#areas no certificadas----------------------------------------------
+		area_prod_no_cert = filtro.filter(anno=year,plantacion__edad__in=[3,4,5],certificacion__cacao_certificado='2').aggregate(area_cacao=Sum('plantacion__area'))['area_cacao']
+		if area_prod_no_cert == None:
+			area_prod_no_cert = 0
+
+		#----------------------------------------------------------- --------
 		baba = filtro.filter(anno=year).aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
 		if baba == None:
 			baba = 0
@@ -245,8 +252,11 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		if organico == None:
 			organico = 0
 
-		area_hectarea = area_prod * hectarea
+		area_hectarea_cert = area_prod_cert * hectarea
+		area_hectarea_no_cert = area_prod_no_cert * hectarea
+
 		#conversion de qq a kg
+		print area_prod_cert
 		kg_fermentado = fermentado * 45.35
 		kg_organico = organico * 45.35
 		#----------------------------------
@@ -257,12 +267,12 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			rendimiento_seco = 0
 
 		try:
-			rendimiento_fer = (kg_fermentado * 100) / area_hectarea
+			rendimiento_fer = (kg_fermentado * 100) / area_hectarea_no_cert
 		except:
 			rendimiento_fer = 0
 
 		try:
-			rendimiento_org = (kg_organico * 100) / area_hectarea
+			rendimiento_org = (kg_organico * 100) / area_hectarea_cert
 		except:
 			rendimiento_org = 0
 
@@ -786,7 +796,6 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
 		else:
 			venta = 0.0
 
-		#1 tonelada = 10 quintales
 		if producto['precio_venta'] != None:
 			if obj[0] in lista_toneladas:
 				precio_venta = producto['precio_venta'] * 22.05
