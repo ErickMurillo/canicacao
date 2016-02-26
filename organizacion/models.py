@@ -160,7 +160,7 @@ class Infraestructura(models.Model):
 		verbose_name_plural = "Infraestructura y maquinaria"
 
 TIPO_PROD_CHOICES = (
-	(1,'Caco rojo'),
+	(1,'Cacao rojo'),
 	(2,'Cacao fermentado'),
 	(3,'Ambos'),
 	)
@@ -181,7 +181,7 @@ DESTINO_CHOICES = (
 class Comercializacion_Org(models.Model):
 	#fecha = models.IntegerField(verbose_name='Año de recolección de información')
 	cacao_baba_acopiado = models.FloatField(verbose_name='Cacao en baba acopiado (qq)')
-	cacao_seco_comercializado = models.FloatField(verbose_name='Cacao en seco comercializado (qq)')
+	cacao_seco_comercializado = models.FloatField(verbose_name='Cacao seco comercializado (qq)')
 	socios_cacao = models.IntegerField(verbose_name='Socios que entregaron cacao al acopio')
 	productores_no_asociados = models.IntegerField(verbose_name='Productores no asociados')
 	tipo_producto = models.IntegerField(choices=TIPO_PROD_CHOICES,verbose_name='Tipo de producto comercializado')

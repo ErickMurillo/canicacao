@@ -256,7 +256,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		area_hectarea_no_cert = area_prod_no_cert * hectarea
 
 		#conversion de qq a kg
-		print area_prod_cert
 		kg_fermentado = fermentado * 45.35
 		kg_organico = organico * 45.35
 		#----------------------------------
