@@ -27,8 +27,8 @@ class Datos_ProductivosInline(admin.StackedInline):
 		(('No. de socias/os con cacao'), {'fields' : (('socias','socios'),)}),
 		(('No. pre-socias/os con cacao'), {'fields' : (('pre_socias','pre_socios'),)}),
 		(('Áreas'), {'fields' : (('area_total','area_cert_organico','area_convencional'),)}),
-		(('Rendimiento promedio de cacao en baba'), {'fields' : (('cacao_baba','area_cacao_baba'),)}),
-		(('Rendimiento promedio de cacao seco'), {'fields' : (('cacao_seco','area_cacao_seco'),)}),
+		(('Rendimiento promedio de cacao en baba por manzana'), {'fields' : (('cacao_baba','area_cacao_baba'),)}),
+		(('Rendimiento promedio de cacao seco por manzana'), {'fields' : (('cacao_seco','area_cacao_seco'),)}),
 	]
 
 class InfraestructuraInline(admin.TabularInline):

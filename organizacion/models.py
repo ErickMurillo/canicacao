@@ -185,7 +185,7 @@ class Comercializacion_Org(models.Model):
 	socios_cacao = models.IntegerField(verbose_name='Socios que entregaron cacao al acopio')
 	productores_no_asociados = models.IntegerField(verbose_name='Productores no asociados')
 	tipo_producto = models.IntegerField(choices=TIPO_PROD_CHOICES,verbose_name='Tipo de producto comercializado')
-	tipo_mercado = MultiSelectField(choices=TIPO_MERCADO_CHOICES)
+	tipo_mercado = MultiSelectField(choices=TIPO_MERCADO_CHOICES,verbose_name='Tipo de certificación')
 	destino_produccion = MultiSelectField(choices=DESTINO_CHOICES)
 	#organizacion = models.ForeignKey(Organizacion)
 	encuesta = models.ForeignKey(Encuesta_Org,null=True,blank=True)
