@@ -426,29 +426,15 @@ def comercializacion_organizaciones(request,template="organizacion/comercializac
 
 		#Certificación utilizada para comercializar cacao -----------------------------
 		certificacion_cacao = {}
-		lista = []
-		for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
-			for x in obj.tipo_mercado:
-				lista.append(int(x))
-
-		list_count = len(lista)
-
 		for obj in TIPO_MERCADO_CHOICES:
-			p2 = lista.count(obj[0])
-			certificacion_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
+			conteo = filtro.filter(comercializacion_org__tipo_mercado__contains=obj[0],anno=year).count()
+			certificacion_cacao[obj[1]] = saca_porcentajes(conteo,count_org,False)
 		
 		#Destino de la producción de cacao---------------------------------------------
 		destino_produccion = {}
-		lista_produccion = []
-		for obj in Comercializacion_Org.objects.filter(encuesta__anno=year):
-			for x in obj.destino_produccion:
-				lista_produccion.append(int(x))
-
-		list_count_p = len(lista_produccion)
-
 		for obj in DESTINO_CHOICES:
-			p2 = lista_produccion.count(obj[0])
-			destino_produccion[obj[1]] = saca_porcentajes(p2, count_org, False)
+			conteo = filtro.filter(comercializacion_org__destino_produccion__contains=obj[0],anno=year).count()
+			destino_produccion[obj[1]] = saca_porcentajes(conteo,count_org,False)
 
 		anno[year] = (tipo_producto,certificacion_cacao,destino_produccion,cacao_baba,avg_cacao_baba,cacao_seco,
 						avg_cacao_seco,socios_cacao,avg_socios_cacao,no_socios,avg_no_socios)
@@ -467,19 +453,12 @@ def financiamiento(request,template="organizacion/financiamiento.html"):
 		count_org = filtro.filter(anno=year).distinct('organizacion__nombre').count()
 		#Acceso a financiamiento para el acopio y comercialización---------------------
 		financiamiento_cacao = {}
-		lista_financ = []
-		for obj in Acopio_Comercio.objects.filter(encuesta__anno=year):
-			for x in obj.seleccion:
-				lista_financ.append(int(x))
-
-		list_count_p = len(lista_financ)
-
 		for obj in ACOPIO_COMERCIO_CHOICES:
-			p2 = lista_financ.count(obj[0])
-			financiamiento_cacao[obj[1]] = saca_porcentajes(p2, count_org, False)
+			conteo = filtro.filter(acopio_comercio__seleccion__contains=obj[0],anno=year).count()
+			financiamiento_cacao[obj[1]] = saca_porcentajes(conteo,count_org,False)
 
 		#grafico conteo financiamiento
-		si_acceso = Acopio_Comercio.objects.filter(encuesta__anno=year).count()
+		si_acceso = filtro.filter(anno=year).count()
 		no_acceso = count_org - si_acceso 
 
 		#diccionario de los años ------------------------------------------------------

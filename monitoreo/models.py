@@ -442,7 +442,7 @@ class Plantacion(models.Model):
 	edad_real = models.FloatField(verbose_name='Edad real de la Plantación (años)')
 	numero_plantas = models.IntegerField(verbose_name='Número de plantas en el área')
 	numero_p_semilla = models.IntegerField(verbose_name='Número de plantas establecidas por semilla')
-	numero_p_injerto = models.IntegerField(verbose_name='Número de plantas establecidas por injerto')
+	numero_p_injerto = models.IntegerField(verbose_name='Número de plantas establecidas injertadas')
 	numero_p_improductivas = models.IntegerField(verbose_name='Número de plantas improductivas en el área')
 	encuesta = models.ForeignKey(Encuesta)
 

@@ -84,7 +84,7 @@ class Encuesta_OrgAdmin(admin.ModelAdmin):
 
 	exclude = ('usuario',)
 	fieldsets = [
-		('Información de la Organización', {'fields': ('fecha','organizacion')}),
+		('Información de la Organización', {'fields': ('fecha','organizacion','anno')}),
 	]
 
 	inlines = [Aspectos_JuridicosInline,DocumentacionInline,Datos_ProductivosInline,InfraestructuraInline,
