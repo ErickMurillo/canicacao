@@ -127,7 +127,7 @@ SEXO_CHOICE = (
 
 class Persona(models.Model):
 	nombre =  models.CharField(max_length=200,verbose_name='Nombre de jefa/e de familia')
-	cedula = models.CharField(max_length=20,verbose_name='Céula de entrevistado/a',null=True,blank=True)
+	cedula = models.CharField(max_length=20,verbose_name='Cédula de entrevistado/a',null=True,blank=True)
 	fecha_nacimiento = models.DateField(verbose_name='Fecha de nacimiento')
 	sexo = models.IntegerField(choices=SEXO_CHOICE)
 	profesion = models.ForeignKey(Profesion)
