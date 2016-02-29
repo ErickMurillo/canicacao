@@ -55,6 +55,7 @@ urlpatterns += patterns('',
 #url organizacion
 urlpatterns += patterns('organizacion.views',
     url(r'^org-mapa/$', 'obtener_lista_org', name='obtener-lista-org'),
+    url(r'^org/ajax/munis/$', 'get_munis_org', name='get-munis-org'),
     url(r'^organizacion/', 'get_organizacion', name='organizacion'),
     url(r'^org-dashboard/', 'orgdashboard', name='orgdashboard'),
     url(r'^status/', 'status', name='status'),

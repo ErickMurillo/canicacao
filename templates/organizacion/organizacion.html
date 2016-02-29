@@ -126,7 +126,7 @@ $(document).on('change','#id_departamento',function(){
     $('#id_departamento :selected').each(function(i, selected){ 
         foo[i] = $(selected).val();    
     });
-    $.getJSON('/ajax/munis/?ids='+foo.join(","), function(data){
+    $.getJSON('/org/ajax/munis/?ids='+foo.join(","), function(data){
         $('#id_municipio').html('');
         $('#id_municipio').multiselect('enable');
         var municipio = $('#id_municipio')
@@ -190,7 +190,9 @@ $(document).on('change','#id_departamento',function(){
 		margin-bottom: 50px
 	}
 
-	
+	.consulta-org form{
+		min-height: 426px;
+	}
 </style>
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 	<div class="consulta-org-titulo">

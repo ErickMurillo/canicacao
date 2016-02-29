@@ -482,7 +482,7 @@ def orgdashboard(request,template="organizacion/dashboard.html"):
 	return render(request, template, locals())
 
 #ajax filtros
-def get_munis(request):
+def get_munis_org(request):
 	'''Metodo para obtener los municipios via Ajax segun los departamentos selectos'''
 	ids = request.GET.get('ids', '')
 	dicc = {}
@@ -491,9 +491,9 @@ def get_munis(request):
 		lista = ids.split(',')
 		for id in lista:
 			try:
-				# encuesta = Encuesta_Org.objects.filter(organizacion__municipio__departamento__id=id).distinct().values_list('persona__municipio__id', flat=True)
+				encuesta = Encuesta_Org.objects.all().distinct().values_list('organizacion__municipio__id', flat=True)
 				departamento = Departamento.objects.get(pk=id)
-				municipios = Municipio.objects.filter(departamento__id=departamento.pk).order_by('nombre')
+				municipios = Municipio.objects.filter(departamento__id=departamento.pk,id__in=encuesta).order_by('nombre')
 				lista1 = []
 				for municipio in municipios:
 					muni = {}
