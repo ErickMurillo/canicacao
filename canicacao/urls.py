@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+
+admin.site.site_header = "Administración Canicacao"
+admin.site.site_title = "Administración Canicacao"
 
 #url monitoreo
 urlpatterns = patterns('monitoreo.views',

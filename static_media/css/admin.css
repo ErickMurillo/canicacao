@@ -13,3 +13,12 @@ ul li {
 .original p {
 	display: none;
 }
+
+div.breadcrumbs {
+  background: #685642 !important;
+}
+
+#bottombar > button, #bottombar > a {
+	background: #B3A580 !important;
+}
+

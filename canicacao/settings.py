@@ -20,7 +20,8 @@ SECRET_KEY = 't52*+v4n0u3f47*c2!y2(gpb9thg7s*$2llt6$9w!8t_8kw_sb'
 # Application definition
 
 INSTALLED_APPS = (
-    'flat',
+    # 'flat',
+    'wpadmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,6 +50,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
 )
 
 ROOT_URLCONF = 'canicacao.urls'
