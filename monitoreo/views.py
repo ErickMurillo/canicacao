@@ -123,7 +123,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 	#conversiones###############
 	hectarea = 0.7050
 	tonelada = 0.045351474
-	#1 libra = 0.00045359237 toneladas 
+	#1 libra = 0.00045359237 toneladas
 	libra_tonelada = 0.00045359237
 	############################
 
@@ -303,7 +303,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			# (9,'Cajeta de cacao'),
 			# (10,'Pasta de cacao'),
 			)
- 
+
 		try:
 			auto_consumo1 = (filtro.filter(anno=year,comercializacion_cacao__producto__in=[4,5]).aggregate(total=Sum(
 					'comercializacion_cacao__auto_consumo'))['total'] ) * tonelada
@@ -381,7 +381,7 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		for obj_1 in DESTINO_CHOICES:
 			p2 = lista_org.count(obj_1[0])
 			destino_org_dic[obj_1[1]] = saca_porcentajes(p2, list_count_org, False)
-		
+
 
 		#diccionario todos los valores x anio
 
@@ -445,7 +445,7 @@ def educacion(request,template='monitoreo/educacion.html'):
 
 		if e[0] in lista_hombres:
 			grafo_hombres.append([e[1],variables])
-		elif e[0] in lista_mujeres: 
+		elif e[0] in lista_mujeres:
 			grafo_mujeres.append([e[1],variables])
 		#grafo.append([e[1],variables])
 
@@ -490,7 +490,7 @@ def propiedad(request,template='monitoreo/propiedad.html'):
 	for x in Situacion.objects.exclude(nombre='Sin documento'):
 		objeto1 = filtro.filter(tenencia_propiedad__no=x).count()
 		dic2[x] = saca_porcentajes(objeto1,count_no,False)
-	
+
 	dic = {}
 	for e in PROPIEDAD_CHOICE:
 		for x in e:
@@ -514,7 +514,7 @@ def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 		mujeres = 0
 	organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
 	##############################################################
-	
+
 	total = (filtro.aggregate(area_total=Sum('uso_tierra__area_total'))['area_total']) * hectarea
 
 	#grafico numero de manzanas
@@ -608,7 +608,7 @@ def produccion(request,template='monitoreo/produccion.html'):
 		area_total = (filtro.filter(plantacion__edad=obj[0]).aggregate(total=Sum('plantacion__area'))['total']) * hectarea
 		#----------------------------------------------------------------------------------------------------
 		numero_plantas = filtro.filter(plantacion__edad=obj[0]).aggregate(plantas =
-											Sum('plantacion__numero_plantas'))['plantas'] 
+											Sum('plantacion__numero_plantas'))['plantas']
 		numero_plantas_ha = numero_plantas / area_total
 		#----------------------------------------------------------------------------------------------------
 		improductivas = filtro.filter(plantacion__edad=obj[0]).aggregate(improductivas =
@@ -773,7 +773,7 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
 				auto_consumo=Sum('comercializacion_cacao__auto_consumo'),
 				venta=Sum('comercializacion_cacao__venta'),
 				precio_venta=Avg('comercializacion_cacao__precio_venta'))
-		
+
 		#validacion y formato float
 		if producto['auto_consumo'] != None:
 			if obj[0] in lista_toneladas:
@@ -833,7 +833,7 @@ def genero(request,template='monitoreo/genero.html'):
 	suma_total = 0
 	for obj in Actividades_Produccion.objects.all():
 		suma_total += filtro.filter(genero__actividades=obj).count()
-	   
+
 	for obj in Actividades_Produccion.objects.all():
 		mujer = filtro.filter(genero__actividades=obj).count()
 		genero[obj] = saca_porcentajes(mujer,suma_total,False)
@@ -845,7 +845,7 @@ def genero(request,template='monitoreo/genero.html'):
 		recibe_ing = filtro.filter(genero__ingresos=obj[0]).count()
 		dic[obj[1]] = saca_porcentajes(recibe_ing,count_genero,False)
 
-	avg_ingresos = filtro.aggregate(avg=Avg('genero__ingreso_mesual'))['avg'] 
+	avg_ingresos = filtro.aggregate(avg=Avg('genero__ingreso_mesual'))['avg']
 
 	agricola = {}
 	domestico = {}
@@ -947,7 +947,7 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
 		mujeres = 0
 	organizaciones = Organizacion.objects.filter(encuesta=filtro).distinct('nombre').count()
 	##############################################################
-	
+
 	servicio_dic = {}
 	for obj in Tipos_Servicio.objects.exclude(servicio='Empleo'):
 		servicio = filtro.filter(organizacion_asociada__tipos_servicio=obj).count()
@@ -990,8 +990,8 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
 		for cap in Capacitaciones_Tecnicas.objects.filter(encuesta=filtro,capacitaciones=obj[0]):
 			for x in cap.opciones:
 				lista.append(int(x))
-				conteo = 0 
-		for xz in OPCIONES_CAPACITACIONES_CHOICES: 
+				conteo = 0
+		for xz in OPCIONES_CAPACITACIONES_CHOICES:
 			p2 = lista.count(xz[0])
 			conteo += p2
 			capacitaciones[xz[1]] = p2
@@ -1213,7 +1213,7 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 	familias = filtro.count()
 	try:
 		hombres = (filtro.filter(persona__sexo = '1').count()/float(familias))*100
-	except: 
+	except:
 		 hombres = 0
 	try:
 		mujeres = (filtro.filter(persona__sexo = '2').count()/float(familias))*100
@@ -1242,12 +1242,12 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 			conteo_2 += 1
 		elif certificaciones > 2:
 			conteo_3 += 1
-	lista.append([conteo_1, conteo_2, conteo_3]) 
+	lista.append([conteo_1, conteo_2, conteo_3])
 
 	#tipo de certificacion
 	tabla_certificacion = {}
 	for k in Lista_Certificaciones.objects.all().exclude(nombre = 'Convencional'):
-		tipos = filtro.filter(certificacion__tipo = k).count() 
+		tipos = filtro.filter(certificacion__tipo = k).count()
 		tabla_certificacion[k.nombre] = saca_porcentajes(tipos,familias,False)
 
 	#quien certifica
@@ -1270,7 +1270,7 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 @login_required
 def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 	filtro = _queryset_filtrado(request)
-   
+
    ##############################################################
 	familias = filtro.count()
 	try:
@@ -1300,7 +1300,7 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 		(8,'Fertilización orgánica'),
 		(6,'Uso de riego'),
 	)
-	total = len(lista_viveros) - (lista_viveros.count(1) + lista_viveros.count(3)) 
+	total = len(lista_viveros) - (lista_viveros.count(1) + lista_viveros.count(3))
 
 	for op in VIVEROS_CHOICES:
 		p2 = lista_viveros.count(op[0])
@@ -1324,7 +1324,7 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 		(1,'Estiércol'),
 		(8,'Fertilizante completo'),
 	)
- 
+
 	for op in FERTILIZACION_CHOICES:
 		p2 = lista_fertilizacion.count(op[0])
 		fertilizacion[op[1]] = saca_porcentajes(p2,len(lista_fertilizacion),False)
@@ -1342,7 +1342,7 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 		(5,'Fungicidas'),
 		(6,'Eliminación fruto enfermo'),
 		(1,'Control de malas hierbas con machete'),
-		(4,'Uso de productos naturales contra hongos'), 
+		(4,'Uso de productos naturales contra hongos'),
 		(2,'Herbicidas'),
 	)
 
@@ -1404,13 +1404,13 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 		(2,'Selección de cacao en baba'),
 		(3,'Fermentación en sacos'),
 		(5,'Fermentación en cajillas'),
-		(4,'Fermentación en cajones'),  
+		(4,'Fermentación en cajones'),
 	)
 
 	for op in P_MANEJO_POST_C_CHOICES:
 		p2 = lista_pract_manejo_post_c.count(op[0])
 		pract_manejo_post_c[op[1]] = saca_porcentajes(p2,len(lista_pract_manejo_post_c),False)
-	
+
 	#dispone de centro de acopio de cacao------------------------------------------------
 	centro_acopio = {}
 	for obj in SI_NO_CHOICES:
@@ -1428,7 +1428,7 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 @login_required
 def ampliar_areas_cacao(request,template='monitoreo/ampliar_areas_cacao.html'):
 	filtro = _queryset_filtrado(request)
-   
+
    ##############################################################
 	familias = filtro.count()
 	try:
@@ -1521,7 +1521,7 @@ def obtener_lista(request):
 
 		serializado = simplejson.dumps(lista)
 		return HttpResponse(serializado, content_type = 'application/json')
-		
+
 #utils
 def saca_porcentajes(dato, total, formato=True):
 	if dato != None:
@@ -1561,5 +1561,3 @@ def sumarLista(lista):
 	for i in range(0,len(lista)):
 		sum=sum+lista[i]
 	return sum
-
-

@@ -19,7 +19,7 @@ class Status(models.Model):
 
 TIPO_CHOICES = (
 	(1,'Miembro Canicacao'),
-	(1,'Organización de apoyo'),
+	(2,'Organización de apoyo'),
 	)
 class Organizacion(models.Model):
 	nombre = models.CharField(max_length=200,verbose_name='Organización/Institución')
