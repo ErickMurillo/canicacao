@@ -6,7 +6,7 @@
    $(document).ready(function() {
 
     $('li.item-consulta').addClass('active');
-    
+
 })
 
    $(function () {
@@ -56,7 +56,7 @@ plotOptions: {
     }
 },
 series: [
-{name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
+// {name: 'Seco sin fermentar', data: [{{seco|floatformat}}]},
 {name: 'Fermentado convencional', data: [{{fermentado|floatformat}}]},
 {name: 'Fermentado orgánico', data: [{{organico|floatformat}}]},
 ]
@@ -69,7 +69,7 @@ $(function () {
             text: 'Meses de mayor producción de cacao',
             x: -20 //center
         },
-        
+
         xAxis: {
             categories: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
             'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -145,7 +145,7 @@ $(function () {
             series: [{
                 name: "Problemas",
                 colorByPoint: true,
-                data: [ 
+                data: [
             {
                 name: "Baja fertilidad del suelo",
                 y: {{fertilidad}},
@@ -189,9 +189,9 @@ $(function () {
         <ol class="breadcrumb bread-indicador">
             <li><a href="/dashboard/">Tablero Principal</a></li>
             <li class="active">Producción</li>
-        </ol>  
+        </ol>
     </div>
-    
+
 
     <div class="row fila1">
         <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">

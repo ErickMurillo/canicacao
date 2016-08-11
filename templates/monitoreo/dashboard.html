@@ -10,9 +10,9 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        
+
         $('li.item-consulta').addClass('active');
-    
+
     });
 	{% for year,value in anno.items %}
 	var map_{{year}};
@@ -60,7 +60,7 @@
 		map_{{year}}.setCenter(latlng);
 		{% endfor %}
 	});
-	
+
 </script>
 
 
@@ -110,7 +110,7 @@
 					y: {{y}}
 				},
 				{% endfor %}
-				
+
 
 				]
 			}]
@@ -166,7 +166,7 @@
 			// {
 			//     name: "Seco",
 			//     y: {{value.2}},
-			// }, 
+			// },
 			{
 				name: "Fermentado convencional",
 				y: {{value.3}},
@@ -268,7 +268,7 @@ $(function () {
 				}
 
 			},
-			
+
 			series: [{
 				name: "Porcentajes",
 				colorByPoint: true,
@@ -306,7 +306,7 @@ $(function () {
 		xAxis: {
             categories: [
             'Cacao en toneladas',
-            
+
             ],
             crosshair: true
         },
@@ -360,7 +360,7 @@ $(function () {
 		xAxis: {
             categories: [
             'Cacao',
-            
+
             ],
             crosshair: true
         },
@@ -386,9 +386,9 @@ $(function () {
 		{
 			name: '{{key}}',
 			data: [{{values|floatformat:2}}]
-		}, 
+		},
 		{% endfor %}
-		
+
 		]
 
 	});
@@ -435,14 +435,14 @@ $(function () {
 				{
 					name: "{{x}}",
 					y: {{y}}
-				}, 
+				},
 				{% endfor %}
-				
+
 				]
 			}]
 		});
 	});
-});  
+});
 
 // $(function () {
 
@@ -486,9 +486,9 @@ $(function () {
 // 				{
 // 					name: "{{x}}",
 // 					y: {{y}}
-// 				}, 
+// 				},
 // 				{% endfor %}
-				
+
 // 				]
 // 			}]
 // 		});
@@ -528,7 +528,7 @@ $(function () {
 		xAxis: {
 			categories: [
 			'Destino de la producción',
-			
+
 			],
 			crosshair: true
 		},
@@ -550,12 +550,12 @@ $(function () {
 		{
 			name: '{{k}}',
 			data: [{{v}}],
-			
+
 		},
 		{% endfor %}
 		]
 	});
-});  
+});
 </script>
 {% endfor %}
 {% endblock extra_js %}
@@ -668,33 +668,26 @@ $(function () {
 				<!--fila 3-->
 				<div class="row fila3">
 					<div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
-						<div id="tipo{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+            <div id="socio{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
 					<div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
-						<div id="socio{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+						<div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
 				</div>
 
 				<!--fila 4-->
 				<div class="row fila4">
 					<div class="col-md-6 col-lg-6 grafico-left">
-						<div id="venta{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-					<div class="col-md-6 col-lg-6 grafico-right">
-						<div id="venta_cacao{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
-
-				</div>
-
-				<div class="row fila5">
-					<div class="col-md-12 col-lg-6 grafico-left">
 						<div id="destino{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
 					</div>
-					<div class="col-md-12 col-lg-6 grafico-right">
-						<div id="destino_org{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
-					</div>
 
 				</div>
+
+				<!--<div class="row fila5">
+					<div class="col-md-12 col-lg-6 grafico-left">
+					  <div id="destino_org{{year}}" style="min-width: 310px; width: 540px; margin: 0 auto;"></div>
+					</div>
+				</div>-->
 			</div>
 		</div>
 <span class="ir-arriba fa fa-arrow-up"></span>
@@ -724,7 +717,7 @@ $(function () {
 		<div class="col-lg-3">
 		   <a class="btn col-lg-3" href="">practicas</a>
 		</div>
-		
+
 		<div class="col-lg-3">
 			<a class="btn" href="">Miembros del hogar</a>
 		</div>
@@ -736,10 +729,10 @@ $(function () {
 		</div>
 		<div class="col-lg-3">
 		   <a class="btn col-lg-3" href="">practicas</a>
-		</div> 
+		</div>
 <br>
 <br>
- {% include "monitoreo/filtros.html" %} 
+ {% include "monitoreo/filtros.html" %}
 
 	Familias : {{familias}}<br>
 	Hombres : {{hombres}}%<br>
@@ -750,8 +743,8 @@ $(function () {
 	Promedio mz cacao : {{avg_cacao}}<br>
 	Promedio área en mz por productor : {{avg_area_productor|floatformat:2}}<br>
 
-	
-	
+
+
 	<div class="col-md-12 indicadores">
 		<a class="btn btn-default" href="/educacion/" role="button">Miembros del hogar</a>
 		<a class="btn btn-default" href="/propiedad/" role="button">Tenencia de la propiedad</a>

@@ -10,7 +10,7 @@ class Aspectos_JuridicosInline(admin.StackedInline):
 	can_delete = False
 	fieldsets = [
 		((None), {'fields' : (('tiene_p_juridica','act_p_juridica','solvencia_tributaria','junta_directiva'),
-								('lista_socios','ruc'),('mujeres','hombres'))}),	
+								('lista_socios','ruc'),('mujeres','hombres'))}),
 	]
 
 class DocumentacionInline(admin.TabularInline):
@@ -40,7 +40,7 @@ class InfraestructuraInline(admin.TabularInline):
 class Comercializacion_OrgInline(admin.TabularInline):
 	model = Comercializacion_Org
 	can_delete = False
-	max_num = 1
+	extra = 1
 
 class Comercializacion_ImportanciaInline(admin.TabularInline):
 	model = Comercializacion_Importancia
@@ -96,7 +96,7 @@ class Encuesta_OrgAdmin(admin.ModelAdmin):
 
 	class Media:
 		js = ('js/admin_org.js',)
-	
+
 admin.site.register(Organizacion,OrganizacionAdmin)
 admin.site.register(Status)
 admin.site.register(Encuesta_Org,Encuesta_OrgAdmin)

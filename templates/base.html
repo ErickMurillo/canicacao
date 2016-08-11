@@ -37,7 +37,7 @@
 					</a>
 
 				</div>
-			</div>	
+			</div>
 			</div>
 			<nav class="navbar navbar-default" role="navigation">
 				<!-- Brand and toggle get grouped for better mobile display -->
@@ -52,15 +52,17 @@
 					<img src="/static/img/cacao2.png" alt="">
 					</a>
 				</div>
-			
+
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse navbar-ex1-collapse">
-					
+
 
 					<ul class="nav navbar-nav navbar-right">
 						<li class="item-inicio activate"><a href="/">Inicio</a></li>
 						<li class="item-consulta"><a href="/consulta/">Productores</a></li>
-						<li class="item-org"><a href="/organizacion/">Organizaciones</a></li>
+						{% if user.is_authenticated %}
+						{% if user.is_superuser %}<li class="item-org"><a href="/organizacion/">Organizaciones</a></li>{% endif %}
+						{% endif %}
 						<li class="item-acerca"><a href="/acerca-de/">Acerca de</a></li>
 						{% if user.is_authenticated %}
 						<li class="item-manual"><a href="/static/Manual_Usuario_Canicacao.pdf" download>Manual PDF</a></li>
@@ -77,7 +79,7 @@
 		{% block content %}{% endblock content %}
 		</div>
 		<footer class="footer">
-			<p class="Copyright">© Copyright 2015. Desarrollado por 
+			<p class="Copyright">© Copyright 2015. Desarrollado por
 				<a href="www.simas.org.ni">SIMAS</a>
 			</p>
 		</footer>
@@ -141,6 +143,6 @@
     			}
     		});
     	});
-    </script>  
+    </script>
 </body>
 </html>

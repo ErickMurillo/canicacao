@@ -42,7 +42,6 @@ def _queryset_filtrado(request):
 
 	return Encuesta.objects.filter(**params).order_by('anno')
 
-@login_required
 def IndexView(request,template="monitoreo/index.html"):
 	hectarea = 0.7050
 	tonelada = 0.045351474
@@ -77,7 +76,6 @@ def IndexView(request,template="monitoreo/index.html"):
 
 	return render(request, template, locals())
 
-@login_required
 def consulta(request,template="monitoreo/consulta.html"):
 	if request.method == 'POST':
 		mensaje = None
@@ -115,7 +113,6 @@ def consulta(request,template="monitoreo/consulta.html"):
 
 	return render(request, template, locals())
 
-@login_required
 def dashboard(request,template='monitoreo/dashboard.html'):
 	filtro = _queryset_filtrado(request)
 	#nuevas salidas
@@ -236,9 +233,13 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 			area_prod_no_cert = 0
 
 		#----------------------------------------------------------- --------
-		baba = filtro.filter(anno=year).aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
+		baba = filtro.filter(anno=year,certificacion__cacao_certificado='1').aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
 		if baba == None:
 			baba = 0
+
+		baba_no_cert = filtro.filter(anno=year,certificacion__cacao_certificado='2').aggregate(cacao_baba_s=Sum('produccion_cacao__produccion_c_baba'))['cacao_baba_s']
+		if baba_no_cert == None:
+			baba_no_cert = 0
 
 		seco = filtro.filter(anno=year).aggregate(cacao_seco_s=Sum('produccion_cacao__produccion_c_seco'))['cacao_seco_s']
 		if seco == None:
@@ -261,12 +262,12 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 		#----------------------------------
 
 		try:
-			rendimiento_seco = ((baba/3) + seco) * 100 / area_hectarea
+			rendimiento_seco = (baba * 100) / area_hectarea
 		except:
 			rendimiento_seco = 0
 
 		try:
-			rendimiento_fer = (kg_fermentado * 100) / area_hectarea_no_cert
+			rendimiento_fer = (baba_no_cert * 100) / area_hectarea_no_cert
 		except:
 			rendimiento_fer = 0
 
@@ -392,7 +393,6 @@ def dashboard(request,template='monitoreo/dashboard.html'):
 	return render(request, template, locals())
 
 #nivel de educacion
-@login_required
 def educacion(request,template='monitoreo/educacion.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -461,7 +461,6 @@ def educacion(request,template='monitoreo/educacion.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def propiedad(request,template='monitoreo/propiedad.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -498,7 +497,6 @@ def propiedad(request,template='monitoreo/propiedad.html'):
 			dic[e[1]] = saca_porcentajes(objeto,count_si,False)
 	return render(request, template, locals())
 
-@login_required
 def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 	filtro = _queryset_filtrado(request)
 	hectarea = 0.7050
@@ -551,7 +549,6 @@ def uso_tierra(request,template='monitoreo/uso_tierra.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def produccion(request,template='monitoreo/produccion.html'):
 	filtro = _queryset_filtrado(request)
 	tonelada = 0.045351474
@@ -632,7 +629,6 @@ def produccion(request,template='monitoreo/produccion.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def riesgos(request,template='monitoreo/riesgos.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -733,7 +729,6 @@ def riesgos(request,template='monitoreo/riesgos.html'):
 							)
 	return render(request, template, locals())
 
-@login_required
 def comercializacion(request,template='monitoreo/comercializacion.html'):
 	filtro = _queryset_filtrado(request)
 	tonelada = 0.045351474
@@ -812,7 +807,6 @@ def comercializacion(request,template='monitoreo/comercializacion.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def genero(request,template='monitoreo/genero.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -888,7 +882,6 @@ def genero(request,template='monitoreo/genero.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def reforestacion(request,template='monitoreo/reforestacion.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -931,7 +924,6 @@ def reforestacion(request,template='monitoreo/reforestacion.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -960,7 +952,6 @@ def organizacion_productiva(request,template='monitoreo/org_productiva.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def capacitaciones(request,template='monitoreo/capacitaciones.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1038,7 +1029,6 @@ def capacitaciones(request,template='monitoreo/capacitaciones.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def capacitaciones_socio(request,template = 'monitoreo/capacitaciones_socio.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1084,7 +1074,6 @@ def capacitaciones_socio(request,template = 'monitoreo/capacitaciones_socio.html
 	return render(request, template, locals())
 
 #SALIDAS CARLOS
-@login_required
 def caracterizacion_terreno(request,template = 'monitoreo/caracterizacion_terreno.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1161,7 +1150,6 @@ def caracterizacion_terreno(request,template = 'monitoreo/caracterizacion_terren
 
 	return render(request, template, locals())
 
-@login_required
 def mitigacion_riesgos(request,template = 'monitoreo/mitigacion_riesgos.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1205,7 +1193,6 @@ def mitigacion_riesgos(request,template = 'monitoreo/mitigacion_riesgos.html'):
 							)
 	return render(request, template, locals())
 
-@login_required
 def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1267,7 +1254,6 @@ def tipo_certificacion(request,template='monitoreo/tipo_certificacion.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1425,7 +1411,6 @@ def tecnicas_aplicadas(request,template = 'monitoreo/tecnicas_aplicadas.html'):
 
 	return render(request, template, locals())
 
-@login_required
 def ampliar_areas_cacao(request,template='monitoreo/ampliar_areas_cacao.html'):
 	filtro = _queryset_filtrado(request)
 
@@ -1446,6 +1431,10 @@ def ampliar_areas_cacao(request,template='monitoreo/ampliar_areas_cacao.html'):
 	for obj in SI_NO_CHOICES:
 		conteo = filtro.filter(adicional__interes = obj[0]).count()
 		ampliar_areas[obj[1]] = conteo
+
+	hectarea = 0.7050
+	areas_total = filtro.aggregate(total = Sum('adicional__cuanto'))['total'] * hectarea
+	avg_areas = filtro.aggregate(avg = Avg('adicional__cuanto'))['avg'] * hectarea
 
 	return render(request, template, locals())
 

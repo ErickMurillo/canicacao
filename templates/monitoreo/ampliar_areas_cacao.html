@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block extra_js %}
 <script type="text/javascript">
-    $(document).ready(function() {  
+    $(document).ready(function() {
         $('li.item-consulta').addClass('active');
     });
 	$(function () {
@@ -37,7 +38,7 @@
                     },
                     showInLegend: true
                 }
-                
+
             },
             series: [{
                 name: "Porcentaje",
@@ -73,12 +74,18 @@
         <ol class="breadcrumb bread-indicador">
             <li><a href="/dashboard/">Tablero Principal</a></li>
             <li class="active">Ampliación áreas de cacao</li>
-        </ol>  
+        </ol>
     </div>
 
     <div class="row fila1">
-        <div class="col-sm-12 col-md-6 col-md-offset-3 col-lg-offset-3 col-lg-6 grafico-left">
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-left">
             <div class="col-md-6" id="container" style="min-width: 310px;  width: 100%; margin: 0 auto;"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 grafico-right">
+          <div class="">
+              <h4>Áreas totales: {{areas_total|floatformat:2|intcomma}} ha</h4>
+              <h4>Promedio de áreas por porductor: {{avg_areas|floatformat:2|intcomma}} ha</h4>
+          </div>
         </div>
     </div>
 </div>
